@@ -3,20 +3,48 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111D2EF42418C8BA0083373C /* UserStoreError.swift */; };
+		1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1127C5592415E18800A78AA0 /* GoogleService-Info.plist */; };
+		1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */; };
+		1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5632415E3AE00A78AA0 /* Coordinator.swift */; };
+		1127C5672415E47500A78AA0 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5662415E47500A78AA0 /* Navigator.swift */; };
+		1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5692415E4B400A78AA0 /* NavigatorTransitionType.swift */; };
+		1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C56B2415E55A00A78AA0 /* HomeCoordinator.swift */; };
+		1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C56D2415E58400A78AA0 /* HomeViewModel.swift */; };
+		1127C5702415E5C400A78AA0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C56F2415E5C400A78AA0 /* HomeViewController.swift */; };
+		1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5732415EA5200A78AA0 /* Nameable.swift */; };
+		1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */; };
+		1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 1127C5782415EE2000A78AA0 /* .swiftlint.yml */; };
+		1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C57B2415F80B00A78AA0 /* HomeViewController.xib */; };
+		1127C57E2415FBA200A78AA0 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C57D2415FBA200A78AA0 /* SignInViewModel.swift */; };
+		1127C5802415FBAC00A78AA0 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C57F2415FBAC00A78AA0 /* SignInViewController.swift */; };
+		1127C5822415FBBD00A78AA0 /* SignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5812415FBBD00A78AA0 /* SignInCoordinator.swift */; };
+		1127C586241606CD00A78AA0 /* SignInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* SignInViewController.xib */; };
+		1127C58824160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58724160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift */; };
+		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
+		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
+		119C541024164AFE00F27D87 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C540F24164AFE00F27D87 /* User.swift */; };
+		119C54182416646E00F27D87 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54172416646E00F27D87 /* UserStore.swift */; };
+		119C541A2416654900F27D87 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54192416654900F27D87 /* API.swift */; };
+		119C541C2416704800F27D87 /* FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C541B2416704800F27D87 /* FirestoreModel.swift */; };
+		119C541E2416709300F27D87 /* FirestoreModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C541D2416709300F27D87 /* FirestoreModelData.swift */; };
+		119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5420241691DF00F27D87 /* DocumentReference.swift */; };
+		119C5423241691EF00F27D87 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5422241691EF00F27D87 /* Query.swift */; };
+		119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54282418768A00F27D87 /* User+FirestoreModel.swift */; };
 		7880071E2413F37100F43B71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7880071D2413F37100F43B71 /* AppDelegate.swift */; };
 		788007202413F37100F43B71 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7880071F2413F37100F43B71 /* GameScene.sks */; };
 		788007222413F37100F43B71 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 788007212413F37100F43B71 /* Actions.sks */; };
 		788007242413F37100F43B71 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788007232413F37100F43B71 /* GameScene.swift */; };
-		788007262413F37100F43B71 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788007252413F37100F43B71 /* GameViewController.swift */; };
 		788007292413F37100F43B71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788007272413F37100F43B71 /* Main.storyboard */; };
 		7880072B2413F37400F43B71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7880072A2413F37400F43B71 /* Assets.xcassets */; };
 		7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7880072C2413F37400F43B71 /* LaunchScreen.storyboard */; };
 		788007392413F37500F43B71 /* HookiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788007382413F37500F43B71 /* HookiesTests.swift */; };
 		788007442413F37500F43B71 /* HookiesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788007432413F37500F43B71 /* HookiesUITests.swift */; };
+		8EFAA52240503BF1D2690C48 /* Pods_Hookies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EDB2C81BBB678BF9D36AFA /* Pods_Hookies.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,12 +65,40 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		111D2EF42418C8BA0083373C /* UserStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoreError.swift; sourceTree = "<group>"; };
+		1127C5592415E18800A78AA0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		1127C5632415E3AE00A78AA0 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		1127C5662415E47500A78AA0 /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
+		1127C5692415E4B400A78AA0 /* NavigatorTransitionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorTransitionType.swift; sourceTree = "<group>"; };
+		1127C56B2415E55A00A78AA0 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
+		1127C56D2415E58400A78AA0 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		1127C56F2415E5C400A78AA0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		1127C5732415EA5200A78AA0 /* Nameable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nameable.swift; sourceTree = "<group>"; };
+		1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Nameable.swift"; sourceTree = "<group>"; };
+		1127C5782415EE2000A78AA0 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		1127C57B2415F80B00A78AA0 /* HomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		1127C57D2415FBA200A78AA0 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		1127C57F2415FBAC00A78AA0 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		1127C5812415FBBD00A78AA0 /* SignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCoordinator.swift; sourceTree = "<group>"; };
+		1127C585241606CD00A78AA0 /* SignInViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignInViewController.xib; sourceTree = "<group>"; };
+		1127C58724160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+GIDSignInDelegate.swift"; sourceTree = "<group>"; };
+		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
+		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
+		119C540F24164AFE00F27D87 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		119C54172416646E00F27D87 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
+		119C54192416654900F27D87 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		119C541B2416704800F27D87 /* FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreModel.swift; sourceTree = "<group>"; };
+		119C541D2416709300F27D87 /* FirestoreModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreModelData.swift; sourceTree = "<group>"; };
+		119C5420241691DF00F27D87 /* DocumentReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
+		119C5422241691EF00F27D87 /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
+		119C54282418768A00F27D87 /* User+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+FirestoreModel.swift"; sourceTree = "<group>"; };
+		37EDB2C81BBB678BF9D36AFA /* Pods_Hookies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hookies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7880071A2413F37100F43B71 /* Hookies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hookies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7880071D2413F37100F43B71 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7880071F2413F37100F43B71 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		788007212413F37100F43B71 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		788007232413F37100F43B71 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		788007252413F37100F43B71 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		788007282413F37100F43B71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7880072A2413F37400F43B71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7880072D2413F37400F43B71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -53,6 +109,8 @@
 		7880073F2413F37500F43B71 /* HookiesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HookiesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		788007432413F37500F43B71 /* HookiesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookiesUITests.swift; sourceTree = "<group>"; };
 		788007452413F37500F43B71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hookies.release.xcconfig"; path = "Target Support Files/Pods-Hookies/Pods-Hookies.release.xcconfig"; sourceTree = "<group>"; };
+		E4BD33A3262713B50F5A8AF8 /* Pods-Hookies.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hookies.debug.xcconfig"; path = "Target Support Files/Pods-Hookies/Pods-Hookies.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EFAA52240503BF1D2690C48 /* Pods_Hookies.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,13 +139,184 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D11E04A2253E26F9B991E66 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				37EDB2C81BBB678BF9D36AFA /* Pods_Hookies.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		111D2EF32418C89B0083373C /* Exceptions */ = {
+			isa = PBXGroup;
+			children = (
+				111D2EF42418C8BA0083373C /* UserStoreError.swift */,
+			);
+			path = Exceptions;
+			sourceTree = "<group>";
+		};
+		1127C5572415DAA900A78AA0 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				1127C5582415DAB800A78AA0 /* API */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		1127C5582415DAB800A78AA0 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				111D2EF32418C89B0083373C /* Exceptions */,
+				119C54272418766100F27D87 /* Extensions */,
+				119C541F24168C9D00F27D87 /* AdapterModels */,
+				119C54172416646E00F27D87 /* UserStore.swift */,
+				119C54192416654900F27D87 /* API.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		1127C55B2415E2BD00A78AA0 /* Contexts */ = {
+			isa = PBXGroup;
+			children = (
+				1127C55D2415E2E800A78AA0 /* SignIn */,
+				1127C55C2415E2E100A78AA0 /* Home */,
+			);
+			path = Contexts;
+			sourceTree = "<group>";
+		};
+		1127C55C2415E2E100A78AA0 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				788007232413F37100F43B71 /* GameScene.swift */,
+				1127C56B2415E55A00A78AA0 /* HomeCoordinator.swift */,
+				1127C56D2415E58400A78AA0 /* HomeViewModel.swift */,
+				1127C56F2415E5C400A78AA0 /* HomeViewController.swift */,
+				1127C57B2415F80B00A78AA0 /* HomeViewController.xib */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		1127C55D2415E2E800A78AA0 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				1127C5812415FBBD00A78AA0 /* SignInCoordinator.swift */,
+				1127C57D2415FBA200A78AA0 /* SignInViewModel.swift */,
+				1127C57F2415FBAC00A78AA0 /* SignInViewController.swift */,
+				1127C585241606CD00A78AA0 /* SignInViewController.xib */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		1127C55E2415E32E00A78AA0 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				7880071D2413F37100F43B71 /* AppDelegate.swift */,
+				1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		1127C5612415E38100A78AA0 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				1127C5752415EA9300A78AA0 /* Extensions */,
+				1127C5682415E49800A78AA0 /* Enumerations */,
+				1127C5652415E45400A78AA0 /* Handlers */,
+				1127C5622415E39E00A78AA0 /* Protocols */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		1127C5622415E39E00A78AA0 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				1127C5632415E3AE00A78AA0 /* Coordinator.swift */,
+				1127C5732415EA5200A78AA0 /* Nameable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		1127C5652415E45400A78AA0 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				1127C5662415E47500A78AA0 /* Navigator.swift */,
+			);
+			path = Handlers;
+			sourceTree = "<group>";
+		};
+		1127C5682415E49800A78AA0 /* Enumerations */ = {
+			isa = PBXGroup;
+			children = (
+				1127C5692415E4B400A78AA0 /* NavigatorTransitionType.swift */,
+			);
+			path = Enumerations;
+			sourceTree = "<group>";
+		};
+		1127C5752415EA9300A78AA0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */,
+				1127C58724160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift */,
+				1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */,
+				1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1127C5832415FFAA00A78AA0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				119C540E24164AF400F27D87 /* User */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		119C540E24164AF400F27D87 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				119C540F24164AFE00F27D87 /* User.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		119C541F24168C9D00F27D87 /* AdapterModels */ = {
+			isa = PBXGroup;
+			children = (
+				119C541B2416704800F27D87 /* FirestoreModel.swift */,
+				119C541D2416709300F27D87 /* FirestoreModelData.swift */,
+				119C54282418768A00F27D87 /* User+FirestoreModel.swift */,
+			);
+			path = AdapterModels;
+			sourceTree = "<group>";
+		};
+		119C54272418766100F27D87 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				119C5420241691DF00F27D87 /* DocumentReference.swift */,
+				119C5422241691EF00F27D87 /* Query.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		74506FEAC88EC4570C7397CB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E4BD33A3262713B50F5A8AF8 /* Pods-Hookies.debug.xcconfig */,
+				C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		788007112413F37100F43B71 = {
 			isa = PBXGroup;
 			children = (
+				1127C5782415EE2000A78AA0 /* .swiftlint.yml */,
 				7880071C2413F37100F43B71 /* Hookies */,
 				788007372413F37500F43B71 /* HookiesTests */,
 				788007422413F37500F43B71 /* HookiesUITests */,
 				7880071B2413F37100F43B71 /* Products */,
+				74506FEAC88EC4570C7397CB /* Pods */,
+				0D11E04A2253E26F9B991E66 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,14 +333,17 @@
 		7880071C2413F37100F43B71 /* Hookies */ = {
 			isa = PBXGroup;
 			children = (
-				7880071D2413F37100F43B71 /* AppDelegate.swift */,
+				1127C5572415DAA900A78AA0 /* Shared */,
+				1127C55E2415E32E00A78AA0 /* App */,
+				1127C5612415E38100A78AA0 /* Classes */,
+				1127C55B2415E2BD00A78AA0 /* Contexts */,
+				1127C5832415FFAA00A78AA0 /* Models */,
 				7880071F2413F37100F43B71 /* GameScene.sks */,
 				788007212413F37100F43B71 /* Actions.sks */,
-				788007232413F37100F43B71 /* GameScene.swift */,
-				788007252413F37100F43B71 /* GameViewController.swift */,
 				788007272413F37100F43B71 /* Main.storyboard */,
 				7880072A2413F37400F43B71 /* Assets.xcassets */,
 				7880072C2413F37400F43B71 /* LaunchScreen.storyboard */,
+				1127C5592415E18800A78AA0 /* GoogleService-Info.plist */,
 				7880072F2413F37400F43B71 /* Info.plist */,
 			);
 			path = Hookies;
@@ -141,9 +374,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 788007482413F37500F43B71 /* Build configuration list for PBXNativeTarget "Hookies" */;
 			buildPhases = (
+				328830B91F25EC09414D25A4 /* [CP] Check Pods Manifest.lock */,
 				788007162413F37100F43B71 /* Sources */,
 				788007172413F37100F43B71 /* Frameworks */,
 				788007182413F37100F43B71 /* Resources */,
+				5CEAE3EAA6394A8F152F55D3 /* [CP] Embed Pods Frameworks */,
+				1127C57A2415EE8A00A78AA0 /* ShellScript */,
+				A0F85D06529C6B21E2AD5765 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -241,8 +478,12 @@
 				788007292413F37100F43B71 /* Main.storyboard in Resources */,
 				788007202413F37100F43B71 /* GameScene.sks in Resources */,
 				7880072B2413F37400F43B71 /* Assets.xcassets in Resources */,
+				1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */,
 				7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */,
 				788007222413F37100F43B71 /* Actions.sks in Resources */,
+				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
+				1127C586241606CD00A78AA0 /* SignInViewController.xib in Resources */,
+				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,14 +503,113 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1127C57A2415EE8A00A78AA0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		328830B91F25EC09414D25A4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Hookies-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5CEAE3EAA6394A8F152F55D3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hookies/Pods-Hookies-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hookies/Pods-Hookies-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Hookies/Pods-Hookies-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A0F85D06529C6B21E2AD5765 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hookies/Pods-Hookies-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hookies/Pods-Hookies-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Hookies/Pods-Hookies-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		788007162413F37100F43B71 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */,
+				1127C5802415FBAC00A78AA0 /* SignInViewController.swift in Sources */,
+				1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */,
+				1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */,
+				1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */,
+				1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */,
+				119C5423241691EF00F27D87 /* Query.swift in Sources */,
+				1127C5822415FBBD00A78AA0 /* SignInCoordinator.swift in Sources */,
+				119C541E2416709300F27D87 /* FirestoreModelData.swift in Sources */,
+				1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */,
+				119C54182416646E00F27D87 /* UserStore.swift in Sources */,
+				1127C57E2415FBA200A78AA0 /* SignInViewModel.swift in Sources */,
 				788007242413F37100F43B71 /* GameScene.swift in Sources */,
-				788007262413F37100F43B71 /* GameViewController.swift in Sources */,
+				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
+				119C541A2416654900F27D87 /* API.swift in Sources */,
+				1127C5702415E5C400A78AA0 /* HomeViewController.swift in Sources */,
+				111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */,
+				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
+				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
+				119C541C2416704800F27D87 /* FirestoreModel.swift in Sources */,
 				7880071E2413F37100F43B71 /* AppDelegate.swift in Sources */,
+				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
+				1127C58824160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift in Sources */,
+				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
+				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
+				119C541024164AFE00F27D87 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,9 +780,12 @@
 		};
 		788007492413F37500F43B71 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E4BD33A3262713B50F5A8AF8 /* Pods-Hookies.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 376AL79MD8;
 				INFOPLIST_FILE = Hookies/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -457,9 +800,12 @@
 		};
 		7880074A2413F37500F43B71 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 376AL79MD8;
 				INFOPLIST_FILE = Hookies/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
