@@ -48,10 +48,11 @@ class AuthViewController: UIViewController {
             return
         }
         viewModel.createAccountWithUsername(username: username) { user, error in
+            if let error = error {
+                self.toast(message: error.errorDescription ?? "Failed to create account")
+                return
+            }
             guard let user = user else {
-                if let error = error {
-                    self.toast(message: error.errorDescription ?? "Failed to create account")
-                }
                 return
             }
             self.navigationDelegate?.didSignIn(user: user)

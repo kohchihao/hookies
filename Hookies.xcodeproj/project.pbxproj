@@ -24,7 +24,6 @@
 		1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C57F2415FBAC00A78AA0 /* AuthViewController.swift */; };
 		1127C5822415FBBD00A78AA0 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5812415FBBD00A78AA0 /* AuthCoordinator.swift */; };
 		1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* AuthViewController.xib */; };
-		1127C58824160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58724160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift */; };
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
 		119C541024164AFE00F27D87 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C540F24164AFE00F27D87 /* User.swift */; };
@@ -82,7 +81,6 @@
 		1127C57F2415FBAC00A78AA0 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		1127C5812415FBBD00A78AA0 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
 		1127C585241606CD00A78AA0 /* AuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
-		1127C58724160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+GIDSignInDelegate.swift"; sourceTree = "<group>"; };
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
 		119C540F24164AFE00F27D87 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -255,10 +253,8 @@
 		1127C5752415EA9300A78AA0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */,
-				1127C58724160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift */,
-				1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */,
-				1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */,
+				117BA3222418EC08001089D1 /* UILabel */,
+				117BA3212418EBF7001089D1 /* UIViewController */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -269,6 +265,23 @@
 				119C540E24164AF400F27D87 /* User */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		117BA3212418EBF7001089D1 /* UIViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */,
+				1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */,
+			);
+			path = UIViewController;
+			sourceTree = "<group>";
+		};
+		117BA3222418EC08001089D1 /* UILabel */ = {
+			isa = PBXGroup;
+			children = (
+				1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */,
+			);
+			path = UILabel;
 			sourceTree = "<group>";
 		};
 		119C540E24164AF400F27D87 /* User */ = {
@@ -606,7 +619,6 @@
 				119C541C2416704800F27D87 /* FirestoreModel.swift in Sources */,
 				7880071E2413F37100F43B71 /* AppDelegate.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
-				1127C58824160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift in Sources */,
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
 				119C541024164AFE00F27D87 /* User.swift in Sources */,
