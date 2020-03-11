@@ -17,6 +17,10 @@ class UserStore {
         collection = userCollection
     }
 
+    /// Determines whether the user is signed in.
+    /// There are 2 requirements for user to be signed in:
+    ///     - Authenticated through firebase authentication
+    ///     - Has an existing record in the firestore users collection.
     func isSignedIn(completion: @escaping (_ isSignedIn: Bool) -> Void) {
         guard let user = Auth.auth().currentUser else {
             return completion(false)
@@ -30,6 +34,7 @@ class UserStore {
         }
     }
 
+    /// Get a user with the given uid.
     func get(withUid uid: String, completion: @escaping (_ user: User?, _ error: Error?) -> Void) {
         let ref = collection.document(uid)
         ref.getModel(User.self) { user, error in
@@ -41,6 +46,11 @@ class UserStore {
         }
     }
 
+    /// Attempt to create a user record with its username in firestore database.
+    /// - Precondition:
+    ///     - The user must be authenticated through firebase authentication
+    ///     - `username` meets the `minNameLen` and `maxNameLen` criteria
+    ///     - `username` in the firestore users collection, the username must be unique.
     func createAccountWithUsername(username: String,
                                    completion: @escaping (_ user: User?, _ error: UserStoreError?) -> Void) {
         guard let currentUser = Auth.auth().currentUser else {
@@ -65,6 +75,7 @@ class UserStore {
         }
     }
 
+    /// Add a entry of `user` into the users collection.
     private func add(user: User, completion: @escaping (_ user: User?,
         _ error: UserStoreError?) -> Void) {
 

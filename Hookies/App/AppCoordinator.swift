@@ -31,13 +31,13 @@ class AppCoordinator: Coordinator {
             if isSignedIn {
                 self.navigateToHome()
             } else {
-                self.navigateToSignIn()
+                self.navigateToAuth()
             }
         })
     }
 
-    func navigateToSignIn() {
-        let signInCoordinator = SignInCoordinator(with: navigator)
+    func navigateToAuth() {
+        let signInCoordinator = AuthCoordinator(with: navigator)
         signInCoordinator.coordinatorDelegate = self
         signInCoordinator.start()
     }

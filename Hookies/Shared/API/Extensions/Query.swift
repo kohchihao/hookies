@@ -11,6 +11,10 @@ import FirebaseFirestore
 
 extension Query {
 
+    /// Gets a collection of strongly typed models from a given query.
+    /// - Parameters:
+    ///     - Model.Type:  The type of the model to type cast the firestore records into.
+    ///     - completion: The callback handler when the function completes.
     func getModels<Model: FirestoreModel>(_: Model.Type, completion: @escaping ([Model]?, Error?) -> Void) {
         getDocuments { snapshot, error in
             if let error = error {

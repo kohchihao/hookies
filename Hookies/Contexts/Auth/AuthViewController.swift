@@ -1,5 +1,5 @@
 //
-//  SignInViewController.swift
+//  AuthViewController.swift
 //  Hookies
 //
 //  Created by Jun Wei Koh on 9/3/20.
@@ -13,18 +13,18 @@ protocol SignInNavigationDelegate: class {
     func didSignIn(user: User)
 }
 
-class SignInViewController: UIViewController {
+class AuthViewController: UIViewController {
     weak var navigationDelegate: SignInNavigationDelegate?
-    private var viewModel: SignInViewModelRepresentable
+    private var viewModel: AuthViewModelRepresentable
 
     @IBOutlet private var signInDialog: UIView!
     @IBOutlet private var usernamePromptDialog: UIView!
     @IBOutlet private var userNameField: UITextField!
 
     // MARK: - INIT
-    init(with viewModel: SignInViewModelRepresentable) {
+    init(with viewModel: AuthViewModelRepresentable) {
         self.viewModel = viewModel
-        super.init(nibName: SignInViewController.name, bundle: nil)
+        super.init(nibName: AuthViewController.name, bundle: nil)
     }
 
     @available(*, unavailable)
@@ -54,7 +54,7 @@ class SignInViewController: UIViewController {
     }
 }
 
-extension SignInViewController: SignInViewModelDelegate {
+extension AuthViewController: SignInViewModelDelegate {
     func toPromptForUsername(isSignedIn: Bool) {
         if isSignedIn {
             signInDialog.isUserInteractionEnabled = true

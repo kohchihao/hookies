@@ -20,10 +20,10 @@
 		1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */; };
 		1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 1127C5782415EE2000A78AA0 /* .swiftlint.yml */; };
 		1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C57B2415F80B00A78AA0 /* HomeViewController.xib */; };
-		1127C57E2415FBA200A78AA0 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C57D2415FBA200A78AA0 /* SignInViewModel.swift */; };
-		1127C5802415FBAC00A78AA0 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C57F2415FBAC00A78AA0 /* SignInViewController.swift */; };
-		1127C5822415FBBD00A78AA0 /* SignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5812415FBBD00A78AA0 /* SignInCoordinator.swift */; };
-		1127C586241606CD00A78AA0 /* SignInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* SignInViewController.xib */; };
+		1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C57D2415FBA200A78AA0 /* AuthViewModel.swift */; };
+		1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C57F2415FBAC00A78AA0 /* AuthViewController.swift */; };
+		1127C5822415FBBD00A78AA0 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5812415FBBD00A78AA0 /* AuthCoordinator.swift */; };
+		1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* AuthViewController.xib */; };
 		1127C58824160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58724160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift */; };
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
@@ -78,10 +78,10 @@
 		1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Nameable.swift"; sourceTree = "<group>"; };
 		1127C5782415EE2000A78AA0 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		1127C57B2415F80B00A78AA0 /* HomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
-		1127C57D2415FBA200A78AA0 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
-		1127C57F2415FBAC00A78AA0 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		1127C5812415FBBD00A78AA0 /* SignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCoordinator.swift; sourceTree = "<group>"; };
-		1127C585241606CD00A78AA0 /* SignInViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignInViewController.xib; sourceTree = "<group>"; };
+		1127C57D2415FBA200A78AA0 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		1127C57F2415FBAC00A78AA0 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		1127C5812415FBBD00A78AA0 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
+		1127C585241606CD00A78AA0 /* AuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
 		1127C58724160D4900A78AA0 /* AppDelegate+GIDSignInDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+GIDSignInDelegate.swift"; sourceTree = "<group>"; };
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
@@ -178,7 +178,7 @@
 		1127C55B2415E2BD00A78AA0 /* Contexts */ = {
 			isa = PBXGroup;
 			children = (
-				1127C55D2415E2E800A78AA0 /* SignIn */,
+				1127C55D2415E2E800A78AA0 /* Auth */,
 				1127C55C2415E2E100A78AA0 /* Home */,
 			);
 			path = Contexts;
@@ -196,15 +196,15 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		1127C55D2415E2E800A78AA0 /* SignIn */ = {
+		1127C55D2415E2E800A78AA0 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				1127C5812415FBBD00A78AA0 /* SignInCoordinator.swift */,
-				1127C57D2415FBA200A78AA0 /* SignInViewModel.swift */,
-				1127C57F2415FBAC00A78AA0 /* SignInViewController.swift */,
-				1127C585241606CD00A78AA0 /* SignInViewController.xib */,
+				1127C5812415FBBD00A78AA0 /* AuthCoordinator.swift */,
+				1127C57D2415FBA200A78AA0 /* AuthViewModel.swift */,
+				1127C57F2415FBAC00A78AA0 /* AuthViewController.swift */,
+				1127C585241606CD00A78AA0 /* AuthViewController.xib */,
 			);
-			path = SignIn;
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		1127C55E2415E32E00A78AA0 /* App */ = {
@@ -482,7 +482,7 @@
 				7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */,
 				788007222413F37100F43B71 /* Actions.sks in Resources */,
 				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
-				1127C586241606CD00A78AA0 /* SignInViewController.xib in Resources */,
+				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -585,17 +585,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */,
-				1127C5802415FBAC00A78AA0 /* SignInViewController.swift in Sources */,
+				1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */,
 				1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */,
 				1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */,
 				1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */,
 				1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */,
 				119C5423241691EF00F27D87 /* Query.swift in Sources */,
-				1127C5822415FBBD00A78AA0 /* SignInCoordinator.swift in Sources */,
+				1127C5822415FBBD00A78AA0 /* AuthCoordinator.swift in Sources */,
 				119C541E2416709300F27D87 /* FirestoreModelData.swift in Sources */,
 				1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */,
 				119C54182416646E00F27D87 /* UserStore.swift in Sources */,
-				1127C57E2415FBA200A78AA0 /* SignInViewModel.swift in Sources */,
+				1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */,
 				788007242413F37100F43B71 /* GameScene.swift in Sources */,
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
 				119C541A2416654900F27D87 /* API.swift in Sources */,

@@ -40,6 +40,6 @@ extension AppDelegate: GIDSignInDelegate {
     }
 
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-        appCoordinator?.navigateToSignIn()
+        appCoordinator?.navigateToAuth()
     }
 }

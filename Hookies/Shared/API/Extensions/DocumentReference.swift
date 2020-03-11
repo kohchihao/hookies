@@ -28,6 +28,9 @@ extension DocumentReference {
     }
 
     /// Get a strongly typed casted model of a Firestore document.
+    /// - Parameters:
+    ///     - Model.Type:  The type of the model to type cast the firestore records into.
+    ///     - completion: The callback handler when the function completes.
     func getModel<Model: FirestoreModel>(_: Model.Type, completion: @escaping (Model?, Error?) -> Void) {
         getDocument { snapshot, error in
             if let error = error {

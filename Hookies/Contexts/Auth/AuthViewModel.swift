@@ -1,5 +1,5 @@
 //
-//  SignInViewModel.swift
+//  AuthViewModel.swift
 //  Hookies
 //
 //  Created by Jun Wei Koh on 9/3/20.
@@ -9,13 +9,13 @@
 import Foundation
 import FirebaseAuth
 
-protocol SignInViewModelRepresentable {
+protocol AuthViewModelRepresentable {
     var delegate: SignInViewModelDelegate? { get set }
     func createAccountWithUsername(username: String,
                                    completion: @escaping (_ user: User?, _ error: LocalizedError?) -> Void)
 }
 
-class SignInViewModel: SignInViewModelRepresentable {
+class AuthViewModel: AuthViewModelRepresentable {
     weak var delegate: SignInViewModelDelegate?
 
     init() {

@@ -1,5 +1,5 @@
 //
-//  SignInCoordinator.swift
+//  AuthCoordinator.swift
 //  Hookies
 //
 //  Created by Jun Wei Koh on 9/3/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SignInCoordinator: Coordinator {
+class AuthCoordinator: Coordinator {
 
     // MARK: - PROPERTIES
     var coordinators: [Coordinator] = []
@@ -29,16 +29,16 @@ class SignInCoordinator: Coordinator {
     }
 
     // MARK: - FUNCTIONS
-    private func viewController() -> SignInViewController {
-       let viewModel = SignInViewModel()
-       let viewController = SignInViewController(with: viewModel)
+    private func viewController() -> AuthViewController {
+       let viewModel = AuthViewModel()
+       let viewController = AuthViewController(with: viewModel)
        viewController.navigationDelegate = self
        return viewController
     }
 }
 
 // MARK: - HomeViewNavigationDelegate
-extension SignInCoordinator: SignInNavigationDelegate {
+extension AuthCoordinator: SignInNavigationDelegate {
     func didSignIn(user: User) {
         let homeCoordinator = HomeCoordinator(with: navigator)
         homeCoordinator.coordinatorDelegate = self
