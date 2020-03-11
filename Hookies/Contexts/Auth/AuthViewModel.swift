@@ -13,19 +13,27 @@ protocol AuthViewModelRepresentable {
     var delegate: SignInViewModelDelegate? { get set }
     func createAccountWithUsername(username: String,
                                    completion: @escaping (_ user: User?, _ error: LocalizedError?) -> Void)
+    func cleanup()
 }
 
 class AuthViewModel: AuthViewModelRepresentable {
     weak var delegate: SignInViewModelDelegate?
+    private var authListener: AuthStateDidChangeListenerHandle?
 
     init() {
-        Auth.auth().addStateDidChangeListener { _, user in
+        authListener = Auth.auth().addStateDidChangeListener { _, user in
             guard user != nil else {
                 return
             }
             API.shared.user.isSignedIn(completion: { isSignIn in
-                self.delegate?.toPromptForUsername(isSignedIn: isSignIn)
+                self.delegate?.toPromptForUsername(toPrompt: isSignIn)
             })
+        }
+    }
+
+    func cleanup() {
+        if let authListener = self.authListener {
+            Auth.auth().removeStateDidChangeListener(authListener)
         }
     }
 
@@ -42,5 +50,5 @@ class AuthViewModel: AuthViewModelRepresentable {
 }
 
 protocol SignInViewModelDelegate: class {
-    func toPromptForUsername(isSignedIn: Bool)
+    func toPromptForUsername(toPrompt: Bool)
 }

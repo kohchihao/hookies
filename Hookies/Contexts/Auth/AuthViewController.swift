@@ -27,6 +27,11 @@ class AuthViewController: UIViewController {
         super.init(nibName: AuthViewController.name, bundle: nil)
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        viewModel.cleanup()
+        super.viewDidDisappear(animated)
+    }
+
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -55,8 +60,8 @@ class AuthViewController: UIViewController {
 }
 
 extension AuthViewController: SignInViewModelDelegate {
-    func toPromptForUsername(isSignedIn: Bool) {
-        if isSignedIn {
+    func toPromptForUsername(toPrompt: Bool) {
+        if toPrompt {
             signInDialog.isUserInteractionEnabled = true
             usernamePromptDialog.isHidden = true
             usernamePromptDialog.isUserInteractionEnabled = false
