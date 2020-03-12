@@ -27,18 +27,14 @@ class ButtonNode: SKSpriteNode {
 
                 /* Visible */
                 self.alpha = 1
-                break
             case .ButtonNodeStateSelected:
                 /* Semi transparent */
                 self.alpha = 0.7
-                break
             case .ButtonNodeStateHidden:
                 /* Disable touch */
                 self.isUserInteractionEnabled = false
-
                 /* Hide */
                 self.alpha = 0
-                break
             }
         }
     }

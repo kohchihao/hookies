@@ -27,7 +27,6 @@ class GameScene: SKScene {
         self.player?.zPosition = 2
     }
 
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         isTouching = true
     }
@@ -45,7 +44,7 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         if isTouching {
-            let moveAction = SKAction.moveBy(x: 10, y:0, duration: 1)
+            let moveAction = SKAction.moveBy(x: 10, y: 0, duration: 1)
             self.player?.run(moveAction)
 
         }
@@ -94,7 +93,7 @@ class GameScene: SKScene {
     // MARK: - Centering camera
 
     func centerOnNode(node: SKNode) {
-        let action = SKAction.move(to: CGPoint(x:node.position.x , y:0 ), duration: 0.5)
+        let action = SKAction.move(to: CGPoint(x: node.position.x, y: 0), duration: 0.5)
         self.cam?.run(action)
         self.background?.run(action)
     }
@@ -105,6 +104,4 @@ class GameScene: SKScene {
         }
         centerOnNode(node: player)
     }
-
-
 }

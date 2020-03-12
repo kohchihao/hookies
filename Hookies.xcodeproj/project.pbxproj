@@ -34,8 +34,6 @@
 		119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5420241691DF00F27D87 /* DocumentReference.swift */; };
 		119C5423241691EF00F27D87 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5422241691EF00F27D87 /* Query.swift */; };
 		119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54282418768A00F27D87 /* User+FirestoreModel.swift */; };
-		7880071E2413F37100F43B71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7880071D2413F37100F43B71 /* AppDelegate.swift */; };
-		788007202413F37100F43B71 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7880071F2413F37100F43B71 /* GameScene.sks */; };
 		788007222413F37100F43B71 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 788007212413F37100F43B71 /* Actions.sks */; };
 		788007242413F37100F43B71 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788007232413F37100F43B71 /* GameScene.swift */; };
 		788007292413F37100F43B71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788007272413F37100F43B71 /* Main.storyboard */; };
@@ -43,10 +41,12 @@
 		7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7880072C2413F37400F43B71 /* LaunchScreen.storyboard */; };
 		788007392413F37500F43B71 /* HookiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788007382413F37500F43B71 /* HookiesTests.swift */; };
 		788007442413F37500F43B71 /* HookiesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788007432413F37500F43B71 /* HookiesUITests.swift */; };
+		8EFAA52240503BF1D2690C48 /* Pods_Hookies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EDB2C81BBB678BF9D36AFA /* Pods_Hookies.framework */; };
 		D923C134241A1610004AB20A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C133241A1610004AB20A /* Background.swift */; };
 		D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */; };
 		D923C138241A23B1004AB20A /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C137241A23B1004AB20A /* ButtonNode.swift */; };
-		8EFAA52240503BF1D2690C48 /* Pods_Hookies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EDB2C81BBB678BF9D36AFA /* Pods_Hookies.framework */; };
+		D923C13C241A42B5004AB20A /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D923C13B241A42B5004AB20A /* GameScene.sks */; };
+		D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C13D241A4346004AB20A /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,8 +96,6 @@
 		119C54282418768A00F27D87 /* User+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+FirestoreModel.swift"; sourceTree = "<group>"; };
 		37EDB2C81BBB678BF9D36AFA /* Pods_Hookies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hookies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7880071A2413F37100F43B71 /* Hookies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hookies.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7880071D2413F37100F43B71 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7880071F2413F37100F43B71 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		788007212413F37100F43B71 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		788007232413F37100F43B71 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		788007282413F37100F43B71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -110,10 +108,12 @@
 		7880073F2413F37500F43B71 /* HookiesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HookiesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		788007432413F37500F43B71 /* HookiesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookiesUITests.swift; sourceTree = "<group>"; };
 		788007452413F37500F43B71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hookies.release.xcconfig"; path = "Target Support Files/Pods-Hookies/Pods-Hookies.release.xcconfig"; sourceTree = "<group>"; };
 		D923C133241A1610004AB20A /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrapplingHookButton.swift; sourceTree = "<group>"; };
 		D923C137241A23B1004AB20A /* ButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
-		C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hookies.release.xcconfig"; path = "Target Support Files/Pods-Hookies/Pods-Hookies.release.xcconfig"; sourceTree = "<group>"; };
+		D923C13B241A42B5004AB20A /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		D923C13D241A4346004AB20A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E4BD33A3262713B50F5A8AF8 /* Pods-Hookies.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hookies.debug.xcconfig"; path = "Target Support Files/Pods-Hookies/Pods-Hookies.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -214,7 +214,7 @@
 		1127C55E2415E32E00A78AA0 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				7880071D2413F37100F43B71 /* AppDelegate.swift */,
+				D923C13D241A4346004AB20A /* AppDelegate.swift */,
 				1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */,
 			);
 			path = App;
@@ -354,13 +354,11 @@
 			children = (
 				D923C13A241A2CD7004AB20A /* Maps */,
 				D923C132241A15F7004AB20A /* Nodes */,
-				7880071D2413F37100F43B71 /* AppDelegate.swift */,
 				1127C5572415DAA900A78AA0 /* Shared */,
 				1127C55E2415E32E00A78AA0 /* App */,
 				1127C5612415E38100A78AA0 /* Classes */,
 				1127C55B2415E2BD00A78AA0 /* Contexts */,
 				1127C5832415FFAA00A78AA0 /* Models */,
-				7880071F2413F37100F43B71 /* GameScene.sks */,
 				788007212413F37100F43B71 /* Actions.sks */,
 				788007272413F37100F43B71 /* Main.storyboard */,
 				7880072A2413F37400F43B71 /* Assets.xcassets */,
@@ -402,7 +400,7 @@
 		D923C13A241A2CD7004AB20A /* Maps */ = {
 			isa = PBXGroup;
 			children = (
-				7880071F2413F37100F43B71 /* GameScene.sks */,
+				D923C13B241A42B5004AB20A /* GameScene.sks */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -516,11 +514,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				788007292413F37100F43B71 /* Main.storyboard in Resources */,
-				788007202413F37100F43B71 /* GameScene.sks in Resources */,
 				7880072B2413F37400F43B71 /* Assets.xcassets in Resources */,
 				1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */,
 				7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */,
 				788007222413F37100F43B71 /* Actions.sks in Resources */,
+				D923C13C241A42B5004AB20A /* GameScene.sks in Resources */,
 				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
@@ -637,19 +635,17 @@
 				119C54182416646E00F27D87 /* UserStore.swift in Sources */,
 				1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */,
 				788007242413F37100F43B71 /* GameScene.swift in Sources */,
-				788007262413F37100F43B71 /* GameViewController.swift in Sources */,
 				D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */,
-				7880071E2413F37100F43B71 /* AppDelegate.swift in Sources */,
 				D923C134241A1610004AB20A /* Background.swift in Sources */,
 				D923C138241A23B1004AB20A /* ButtonNode.swift in Sources */,
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
+				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
 				119C541A2416654900F27D87 /* API.swift in Sources */,
 				1127C5702415E5C400A78AA0 /* HomeViewController.swift in Sources */,
 				111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */,
 				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
 				119C541C2416704800F27D87 /* FirestoreModel.swift in Sources */,
-				7880071E2413F37100F43B71 /* AppDelegate.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,

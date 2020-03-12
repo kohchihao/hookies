@@ -38,12 +38,10 @@ class Background: SKSpriteNode {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
 
     override init(texture: SKTexture!, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
     }
-
-
 }
