@@ -19,6 +19,9 @@ class HomeViewController: UIViewController {
     weak var navigationDelegate: HomeViewNavigationDelegate?
     private var viewModel: HomeViewModelRepresentable
 
+    @IBOutlet private var powerSlider: UISlider!
+    private var gameScene: GameScene?
+
     // MARK: - INIT
     init(with viewModel: HomeViewModelRepresentable) {
         self.viewModel = viewModel
@@ -35,12 +38,14 @@ class HomeViewController: UIViewController {
 
         if let view = self.view as? SKView {
             // Load the SKScene from 'GameScene.sks'
-            if let scene = GameScene(fileNamed: "GameScene") {
+            if let scene = GameScene(fileNamed: "CannotDieMap") {
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
 
                 // Present the scene
                 view.presentScene(scene)
+                gameScene = scene
+                gameScene?.viewController = self
             }
 
             view.ignoresSiblingOrder = true
@@ -72,5 +77,17 @@ class HomeViewController: UIViewController {
         } catch let logoutError as NSError {
             toast(message: "Error signing out: " + logoutError.localizedDescription)
         }
+    }
+
+    @IBAction private func onPowerSliderChanged(_ sender: UISlider) {
+        gameScene?.setPowerLaunch(at: Int(sender.value))
+    }
+
+    func hidePowerSlider() {
+        powerSlider.isHidden = true
+    }
+
+    func unhidePowerSlider() {
+        powerSlider.isHidden = false
     }
 }

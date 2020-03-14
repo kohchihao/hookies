@@ -9,6 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
+                <outlet property="powerSlider" destination="Yvv-FX-Ago" id="pEe-fe-f4P"/>
                 <outlet property="view" destination="iN0-l3-epB" id="L4r-E6-4QR"/>
             </connections>
         </placeholder>
@@ -25,6 +26,13 @@
                         <action selector="onLogoutButtonClicked:" destination="-1" eventType="touchUpInside" id="bRX-Kg-3IB"/>
                     </connections>
                 </button>
+                <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="1" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Yvv-FX-Ago" userLabel="powerSlider">
+                    <rect key="frame" x="412" y="719" width="200" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <action selector="onPowerSliderChanged:" destination="-1" eventType="valueChanged" id="at1-UR-mab"/>
+                    </connections>
+                </slider>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

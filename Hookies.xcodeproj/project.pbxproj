@@ -45,7 +45,7 @@
 		D923C134241A1610004AB20A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C133241A1610004AB20A /* Background.swift */; };
 		D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */; };
 		D923C138241A23B1004AB20A /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C137241A23B1004AB20A /* ButtonNode.swift */; };
-		D923C13C241A42B5004AB20A /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D923C13B241A42B5004AB20A /* GameScene.sks */; };
+		D923C13C241A42B5004AB20A /* CannotDieMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D923C13B241A42B5004AB20A /* CannotDieMap.sks */; };
 		D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C13D241A4346004AB20A /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -112,7 +112,7 @@
 		D923C133241A1610004AB20A /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrapplingHookButton.swift; sourceTree = "<group>"; };
 		D923C137241A23B1004AB20A /* ButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
-		D923C13B241A42B5004AB20A /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		D923C13B241A42B5004AB20A /* CannotDieMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = CannotDieMap.sks; sourceTree = "<group>"; };
 		D923C13D241A4346004AB20A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E4BD33A3262713B50F5A8AF8 /* Pods-Hookies.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hookies.debug.xcconfig"; path = "Target Support Files/Pods-Hookies/Pods-Hookies.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -400,7 +400,7 @@
 		D923C13A241A2CD7004AB20A /* Maps */ = {
 			isa = PBXGroup;
 			children = (
-				D923C13B241A42B5004AB20A /* GameScene.sks */,
+				D923C13B241A42B5004AB20A /* CannotDieMap.sks */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -518,7 +518,7 @@
 				1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */,
 				7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */,
 				788007222413F37100F43B71 /* Actions.sks in Resources */,
-				D923C13C241A42B5004AB20A /* GameScene.sks in Resources */,
+				D923C13C241A42B5004AB20A /* CannotDieMap.sks in Resources */,
 				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,

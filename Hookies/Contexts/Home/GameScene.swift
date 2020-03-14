@@ -17,6 +17,12 @@ class GameScene: SKScene {
 
     private var background: Background?
     private var grapplingHookButton: GrapplingHookButton?
+    private var countdownLabel: SKLabelNode?
+    private var count = 5
+
+    weak var viewController: HomeViewController!
+
+    private var powerLaunch = 50
 
     override func didMove(to view: SKView) {
         initialiseBackground(with: view.frame.size)
@@ -25,6 +31,9 @@ class GameScene: SKScene {
 
         self.player = self.childNode(withName: "//player") as? SKSpriteNode
         self.player?.zPosition = 2
+
+        countdown(count: count)
+        calculateNearestBolt()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -46,8 +55,8 @@ class GameScene: SKScene {
         if isTouching {
             let moveAction = SKAction.moveBy(x: 10, y: 0, duration: 1)
             self.player?.run(moveAction)
-
         }
+        calculateNearestBolt()
     }
 
     // MARK: - Initialise background
@@ -103,5 +112,77 @@ class GameScene: SKScene {
             return
         }
         centerOnNode(node: player)
+    }
+
+    // MARK: - Launch player
+
+    func launch() {
+
+    }
+
+    func setPowerLaunch(at power: Int) {
+        powerLaunch = power
+    }
+
+    // MARK: - Count down to start game
+
+    func startCountdown() {
+
+    }
+
+    func countdown(count: Int) {
+        countdownLabel = SKLabelNode()
+        countdownLabel?.position = CGPoint(x: 0, y: 0)
+        countdownLabel?.fontColor = .black
+        countdownLabel?.fontSize = size.height / 30
+        countdownLabel?.zPosition = 100
+        countdownLabel?.text = "Launching player in \(count)..."
+
+        self.cam?.addChild(countdownLabel!)
+
+        let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0),
+                                                  SKAction.run(countdownAction)])
+
+        run(SKAction.sequence([SKAction.repeat(counterDecrement, count: 5), SKAction.run(endCountdown)]))
+
+    }
+
+    func countdownAction() {
+        count -= 1
+        countdownLabel?.text = "Launching player in \(count)..."
+    }
+
+    func endCountdown() {
+        countdownLabel?.removeFromParent()
+        viewController.hidePowerSlider()
+    }
+
+    // MARK: - Calculate nearest bolt
+
+    func calculateNearestBolt() {
+        let allBolts = self["bolt"] // getting all the bolts within the scene.
+        guard let player = player else {
+            return
+        }
+        let playerPosition = player.position
+        var closestBolt: SKSpriteNode?
+        var closestDistance = Double.greatestFiniteMagnitude
+        for bolt in allBolts {
+            let boltPosition = bolt.position
+            let distanceX = boltPosition.x - playerPosition.x
+            let distanceY = boltPosition.y - playerPosition.y
+            let distance = sqrt(distanceX * distanceX + distanceY * distanceY)
+            closestDistance = min(Double(distance), closestDistance)
+            if closestDistance == Double(distance) {
+                closestBolt = bolt as? SKSpriteNode
+            }
+        }
+        enumerateChildNodes(withName: "bolt") { node, _ in
+            node.isHidden = false
+        }
+
+        closestBolt?.isHidden = true
+
+        print(allBolts)
     }
 }
