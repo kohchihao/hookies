@@ -10,9 +10,13 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    // TODO: To remove
+    let playerId = "id"
+    let playerImage = "Owlet_Monster"
 
     private var isTouching = false
-    private var player: SKSpriteNode?
+    private var player: Player?
+    private var cannon: Cannon?
     private var cam: SKCameraNode?
 
     private var background: Background?
@@ -22,18 +26,40 @@ class GameScene: SKScene {
 
     weak var viewController: HomeViewController!
 
-    private var powerLaunch = 50
+    private var powerLaunch = 1_000
 
     override func didMove(to view: SKView) {
         initialiseBackground(with: view.frame.size)
         initialiseGrapplingHookButton()
         initialiseCamera()
 
-        self.player = self.childNode(withName: "//player") as? SKSpriteNode
-        self.player?.zPosition = 2
+        guard let playerNode = self.childNode(withName: "//player") as? SKSpriteNode else {
+                return
+        }
+        playerNode.removeFromParent()
+
+        guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode else {
+                return
+        }
+
+        guard let playerClosestBolt = getNearestBolt(from: cannonNode.position) else {
+            return
+        }
+
+        cannon = Cannon(node: cannonNode)
+        player = Player(
+            id: playerId,
+            position: cannonNode.position,
+            imageName: playerImage,
+            closestBolt: playerClosestBolt
+        )
+
+        guard let player = player else {
+            return
+        }
+        addChild(player.node)
 
         countdown(count: count)
-        calculateNearestBolt()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -52,11 +78,11 @@ class GameScene: SKScene {
 
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        if isTouching {
-            let moveAction = SKAction.moveBy(x: 10, y: 0, duration: 1)
-            self.player?.run(moveAction)
-        }
-        calculateNearestBolt()
+//        if isTouching {
+//            let moveAction = SKAction.moveBy(x: 10, y: 0, duration: 1)
+//            self.player?.run(moveAction)
+//        }
+//        calculateNearestBolt()
     }
 
     // MARK: - Initialise background
@@ -111,7 +137,7 @@ class GameScene: SKScene {
         guard let player = player else {
             return
         }
-        centerOnNode(node: player)
+        centerOnNode(node: player.node)
     }
 
     // MARK: - Launch player
@@ -143,7 +169,7 @@ class GameScene: SKScene {
         let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0),
                                                   SKAction.run(countdownAction)])
 
-        run(SKAction.sequence([SKAction.repeat(counterDecrement, count: 5), SKAction.run(endCountdown)]))
+        run(SKAction.sequence([SKAction.repeat(counterDecrement, count: count), SKAction.run(endCountdown)]))
 
     }
 
@@ -155,22 +181,26 @@ class GameScene: SKScene {
     func endCountdown() {
         countdownLabel?.removeFromParent()
         viewController.hidePowerSlider()
+
+        guard let player = player else {
+            return
+        }
+//
+        let velocity = getLaunchVelocity()
+        cannon?.launch(player: player, with: velocity)
+        cannon?.node.removeFromParent()
     }
 
     // MARK: - Calculate nearest bolt
 
-    func calculateNearestBolt() {
+    func getNearestBolt(from position: CGPoint) -> SKSpriteNode? {
         let allBolts = self["bolt"] // getting all the bolts within the scene.
-        guard let player = player else {
-            return
-        }
-        let playerPosition = player.position
         var closestBolt: SKSpriteNode?
         var closestDistance = Double.greatestFiniteMagnitude
         for bolt in allBolts {
             let boltPosition = bolt.position
-            let distanceX = boltPosition.x - playerPosition.x
-            let distanceY = boltPosition.y - playerPosition.y
+            let distanceX = boltPosition.x - position.x
+            let distanceY = boltPosition.y - position.y
             let distance = sqrt(distanceX * distanceX + distanceY * distanceY)
             closestDistance = min(Double(distance), closestDistance)
             if closestDistance == Double(distance) {
@@ -183,6 +213,15 @@ class GameScene: SKScene {
 
         closestBolt?.isHidden = true
 
-        print(allBolts)
+//        print(allBolts)
+
+        return closestBolt
+    }
+
+    private func getLaunchVelocity() -> CGVector {
+        let dx = CGFloat(powerLaunch)
+        let dy = CGFloat(powerLaunch)
+
+        return CGVector(dx: dx, dy: dy)
     }
 }
