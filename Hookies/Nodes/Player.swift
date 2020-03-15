@@ -8,12 +8,13 @@
 
 import SpriteKit
 
-struct Player {
+class Player {
     // MARK: - Properties
     private let type = SpriteType.player
     let id: String
     let node: SKSpriteNode
-    private(set) var closestBolt: SKSpriteNode
+    var closestBolt: SKSpriteNode
+    private(set) var line: SKShapeNode?
     private(set) var attachedBolt: SKSpriteNode?
 
     var isAttachedToBolt: Bool {
@@ -46,5 +47,38 @@ struct Player {
     // MARK: - Functions
     func launch(with velocity: CGVector) {
         self.node.physicsBody?.velocity = velocity
+    }
+
+    func tetherToClosestBolt() {
+        line = makeLine(from: node.position, to: closestBolt.position)
+
+        // TODO: Check if anything is in path if line
+
+        attachedBolt = closestBolt
+    }
+
+    func updateLine() {
+        guard let attachedBolt = attachedBolt, line != nil else {
+            return
+        }
+
+        line = makeLine(from: node.position, to: attachedBolt.position)
+    }
+
+    func releaseFromBolt() {
+        line = nil
+        attachedBolt = nil
+    }
+
+    private func makeLine(from origin: CGPoint, to destination: CGPoint) -> SKShapeNode {
+        let path = CGMutablePath()
+        path.move(to: origin)
+        path.addLine(to: destination)
+
+        let currLine = SKShapeNode(path: path)
+        currLine.strokeColor = SKColor.white
+        currLine.lineWidth = 3.0
+
+        return currLine
     }
 }

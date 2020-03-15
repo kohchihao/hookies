@@ -83,6 +83,17 @@ class GameScene: SKScene {
 //            self.player?.run(moveAction)
 //        }
 //        calculateNearestBolt()
+        guard let player = player else {
+            return
+        }
+
+        guard let playerClosestBolt = getNearestBolt(from: player.node.position) else {
+            return
+        }
+
+        player.closestBolt = playerClosestBolt
+
+        handleTetheringToBolt()
     }
 
     // MARK: - Initialise background
@@ -117,12 +128,6 @@ class GameScene: SKScene {
             return
         }
         grapplingHookButton = GrapplingHookButton(in: sceneFrame)
-        guard let grapplingHookButton = grapplingHookButton else {
-            return
-        }
-        grapplingHookButton.selectedHandler = {
-            print("Hello")
-        }
     }
 
     // MARK: - Centering camera
@@ -223,5 +228,38 @@ class GameScene: SKScene {
         let dy = CGFloat(powerLaunch)
 
         return CGVector(dx: dx, dy: dy)
+    }
+
+    private func handleTetheringToBolt() {
+        guard let grapplingHookButton = grapplingHookButton else {
+            return
+        }
+
+        grapplingHookButton.touchBeganHandler = {
+            self.player?.tetherToClosestBolt()
+            guard let playerLine = self.player?.line else {
+                return
+            }
+
+            self.addChild(playerLine)
+        }
+
+        if let playerLine = player?.line, player?.attachedBolt != nil {
+            playerLine.removeFromParent()
+            player?.updateLine()
+
+            guard let updatedPlayerLine = player?.line else {
+                return
+            }
+            addChild(updatedPlayerLine)
+        }
+
+        grapplingHookButton.touchEndHandler = {
+            guard let playerLine = self.player?.line else {
+                return
+            }
+            self.player?.releaseFromBolt()
+            playerLine.removeFromParent()
+        }
     }
 }

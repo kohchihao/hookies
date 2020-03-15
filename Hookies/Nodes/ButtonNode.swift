@@ -15,7 +15,8 @@ enum ButtonNodeState {
 class ButtonNode: SKSpriteNode {
 
     /* Setup a dummy action closure */
-    var selectedHandler: () -> Void = { print("No button action set") }
+    var touchBeganHandler: () -> Void = { print("No button action set") }
+    var touchEndHandler: () -> Void = { print("No button action set") }
 
     /* Button state management */
     var state: ButtonNodeState = .ButtonNodeStateActive {
@@ -51,11 +52,12 @@ class ButtonNode: SKSpriteNode {
 
     // MARK: - Touch handling
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchBeganHandler()
         state = .ButtonNodeStateSelected
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        selectedHandler()
+        touchEndHandler()
         state = .ButtonNodeStateActive
     }
 
