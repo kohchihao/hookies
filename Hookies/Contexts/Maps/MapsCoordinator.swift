@@ -1,5 +1,5 @@
 //
-//  PreGameLobbyCoordinator.swift
+//  MapsCoordinator.swift
 //  Hookies
 //
 //  Created by Marcus Koh on 15/3/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PreGameLobbyCoordinator: Coordinator {
+class MapsCoordinator: Coordinator {
 
     // MARK: - PROPERTIES
     var coordinators: [Coordinator] = []
@@ -29,19 +29,15 @@ class PreGameLobbyCoordinator: Coordinator {
     }
 
     // MARK: - FUNCTIONS
-    private func viewController() -> PreGameLobbyViewController {
-       let viewModel = PreGameLobbyViewModel()
-       let viewController = PreGameLobbyViewController(with: viewModel)
+    private func viewController() -> MapsViewController {
+       let viewModel = MapsViewModel()
+       let viewController = MapsViewController(with: viewModel)
        viewController.navigationDelegate = self
        return viewController
     }
 }
 
-// MARK: - PreGameLobbyViewNavigationDelegate
-extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
-    func didPressSelectMapButton(in: PreGameLobbyViewController) {
-        let mapsCoordinator = MapsCoordinator(with: navigator)
-        mapsCoordinator.coordinatorDelegate = self
-        mapsCoordinator.start()
-    }
+// MARK: - MapsNavigationDelegate
+extension MapsCoordinator: MapsNavigationDelegate {
+
 }
