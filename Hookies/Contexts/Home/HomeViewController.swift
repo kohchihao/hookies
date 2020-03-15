@@ -13,14 +13,13 @@ import FirebaseAuth
 
 protocol HomeViewNavigationDelegate: class {
     func didPressLogoutButton(in: HomeViewController) throws
+    func didPressHostMatchButton(in: HomeViewController)
+    func didPressJoinMatchButton(in: HomeViewController)
 }
 
 class HomeViewController: UIViewController {
     weak var navigationDelegate: HomeViewNavigationDelegate?
     private var viewModel: HomeViewModelRepresentable
-
-    @IBOutlet private var powerSlider: UISlider!
-    private var gameScene: GameScene?
 
     // MARK: - INIT
     init(with viewModel: HomeViewModelRepresentable) {
@@ -35,24 +34,6 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if let view = self.view as? SKView {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = GameScene(fileNamed: "CannotDieMap") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
-
-                // Present the scene
-                view.presentScene(scene)
-                gameScene = scene
-                gameScene?.viewController = self
-            }
-
-            view.ignoresSiblingOrder = true
-
-            view.showsFPS = true
-            view.showsNodeCount = true
-        }
     }
 
     override var shouldAutorotate: Bool {
@@ -79,15 +60,11 @@ class HomeViewController: UIViewController {
         }
     }
 
-    @IBAction private func onPowerSliderChanged(_ sender: UISlider) {
-        gameScene?.setPowerLaunch(at: Int(sender.value))
+    @IBAction private func onHostMatchClicked(_ sender: UIButton) {
+        navigationDelegate?.didPressHostMatchButton(in: self)
     }
 
-    func hidePowerSlider() {
-        powerSlider.isHidden = true
-    }
-
-    func unhidePowerSlider() {
-        powerSlider.isHidden = false
+    @IBAction private func onJoinMatchClicked(_ sender: UIButton) {
+        navigationDelegate?.didPressJoinMatchButton(in: self)
     }
 }

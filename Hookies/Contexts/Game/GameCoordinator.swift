@@ -1,14 +1,14 @@
 //
-//  AuthCoordinator.swift
+//  GameCoordinator.swift
 //  Hookies
 //
-//  Created by Jun Wei Koh on 9/3/20.
+//  Created by Marcus Koh on 15/3/20.
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
 import Foundation
 
-class AuthCoordinator: Coordinator {
+class GameCoordinator: Coordinator {
 
     // MARK: - PROPERTIES
     var coordinators: [Coordinator] = []
@@ -29,19 +29,15 @@ class AuthCoordinator: Coordinator {
     }
 
     // MARK: - FUNCTIONS
-    private func viewController() -> AuthViewController {
-       let viewModel = AuthViewModel()
-       let viewController = AuthViewController(with: viewModel)
+    private func viewController() -> GameViewController {
+       let viewModel = GameViewModel()
+       let viewController = GameViewController(with: viewModel)
        viewController.navigationDelegate = self
        return viewController
     }
 }
 
-// MARK: - SignInNavigationDelegate
-extension AuthCoordinator: SignInNavigationDelegate {
-    func didSignIn(user: User) {
-        let homeCoordinator = HomeCoordinator(with: navigator)
-        homeCoordinator.coordinatorDelegate = self
-        homeCoordinator.start()
-    }
+// MARK: - GameViewNavigationDelegate
+extension GameCoordinator: GameViewNavigationDelegate {
+
 }

@@ -20,7 +20,7 @@ class GameScene: SKScene {
     private var countdownLabel: SKLabelNode?
     private var count = 5
 
-    weak var viewController: HomeViewController!
+    weak var viewController: GameViewController!
 
     private var powerLaunch = 50
 
@@ -182,7 +182,5 @@ class GameScene: SKScene {
         }
 
         closestBolt?.isHidden = true
-
-        print(allBolts)
     }
 }

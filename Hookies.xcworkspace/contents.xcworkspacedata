@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/marcuskoh/Desktop/CS3217/hookies/Hookies/Contexts/PreGameLobby/PreGameLobbyViewModel.swift">
+   </FileRef>
+   <FileRef
       location = "group:Hookies.xcodeproj">
    </FileRef>
    <FileRef
