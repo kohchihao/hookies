@@ -14,26 +14,27 @@ class PreGameLobbyCoordinator: Coordinator {
     var coordinators: [Coordinator] = []
     weak var coordinatorDelegate: CoordinatorDelegate?
 
+    private let viewModel = PreGameLobbyViewModel()
+
     // MARK: - PRIVATE PROPERTIES
     private let navigator: NavigatorRepresentable
 
     // MARK: - INIT
     init(with navigator: NavigatorRepresentable) {
-       self.navigator = navigator
+        self.navigator = navigator
     }
 
     // MARK: - START
     func start() {
-       coordinatorDelegate?.coordinatorDidStart(self)
-       navigator.transition(to: viewController(), as: .push)
+        coordinatorDelegate?.coordinatorDidStart(self)
+        navigator.transition(to: viewController(), as: .push)
     }
 
     // MARK: - FUNCTIONS
     private func viewController() -> PreGameLobbyViewController {
-       let viewModel = PreGameLobbyViewModel()
-       let viewController = PreGameLobbyViewController(with: viewModel)
-       viewController.navigationDelegate = self
-       return viewController
+        let viewController = PreGameLobbyViewController(with: viewModel)
+        viewController.navigationDelegate = self
+        return viewController
     }
 }
 
@@ -42,6 +43,13 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
     func didPressSelectMapButton(in: PreGameLobbyViewController) {
         let mapsCoordinator = MapsCoordinator(with: navigator)
         mapsCoordinator.coordinatorDelegate = self
+        mapsCoordinator.mapDelegate = self
         mapsCoordinator.start()
+    }
+}
+
+extension PreGameLobbyCoordinator: MapDelegate {
+    func onSelected(for map: MapType) {
+        viewModel.delegate?.updateSelectedMap(mapType: map)
     }
 }

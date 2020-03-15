@@ -52,6 +52,8 @@
 		D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */; };
 		D9A123D0241E6BB200A6DB7F /* MapsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9A123CF241E6BB200A6DB7F /* MapsViewController.xib */; };
 		D9A123D3241E6EC500A6DB7F /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D2241E6EC500A6DB7F /* RoundButton.swift */; };
+		D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D5241E71C000A6DB7F /* MapType.swift */; };
+		D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */; };
 		D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */; };
 		D9FF1A66241E0DA600E7965F /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A65241E0DA600E7965F /* PreGameLobbyViewModel.swift */; };
 		D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */; };
@@ -133,6 +135,8 @@
 		D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
 		D9A123CF241E6BB200A6DB7F /* MapsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapsViewController.xib; sourceTree = "<group>"; };
 		D9A123D2241E6EC500A6DB7F /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		D9A123D5241E71C000A6DB7F /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
+		D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDelegate.swift; sourceTree = "<group>"; };
 		D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyCoordinator.swift; sourceTree = "<group>"; };
 		D9FF1A65241E0DA600E7965F /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreGameLobbyViewModel.swift; path = /Users/marcuskoh/Desktop/CS3217/hookies/Hookies/Contexts/PreGameLobby/PreGameLobbyViewModel.swift; sourceTree = "<absolute>"; };
 		D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewController.swift; sourceTree = "<group>"; };
@@ -431,6 +435,7 @@
 		D923C13A241A2CD7004AB20A /* Maps */ = {
 			isa = PBXGroup;
 			children = (
+				D9A123D4241E719C00A6DB7F /* Enumerations */,
 				D92F9404241D2E890021DBE4 /* DeadlockMap.sks */,
 				D923C13B241A42B5004AB20A /* CannotDieMap.sks */,
 			);
@@ -444,6 +449,7 @@
 				D9A123CB241E6B9600A6DB7F /* MapsViewModel.swift */,
 				D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */,
 				D9A123CF241E6BB200A6DB7F /* MapsViewController.xib */,
+				D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -454,6 +460,14 @@
 				D9A123D2241E6EC500A6DB7F /* RoundButton.swift */,
 			);
 			path = Customise;
+			sourceTree = "<group>";
+		};
+		D9A123D4241E719C00A6DB7F /* Enumerations */ = {
+			isa = PBXGroup;
+			children = (
+				D9A123D5241E71C000A6DB7F /* MapType.swift */,
+			);
+			path = Enumerations;
 			sourceTree = "<group>";
 		};
 		D9FF1A62241E0D5800E7965F /* PreGameLobby */ = {
@@ -713,7 +727,9 @@
 				119C541E2416709300F27D87 /* FirestoreModelData.swift in Sources */,
 				1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */,
 				119C54182416646E00F27D87 /* UserStore.swift in Sources */,
+				D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */,
 				1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */,
+				D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */,
 				D9FF1A66241E0DA600E7965F /* PreGameLobbyViewModel.swift in Sources */,
 				D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */,
 				D9FF1A7F241E325900E7965F /* GamePlayCoordinator.swift in Sources */,

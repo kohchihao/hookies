@@ -18,6 +18,8 @@ class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
     private var viewModel: PreGameLobbyViewModelRepresentable
 
+    @IBOutlet private var selectedMapLabel: UILabel!
+
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
@@ -31,6 +33,7 @@ class PreGameLobbyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.delegate = self
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -39,5 +42,12 @@ class PreGameLobbyViewController: UIViewController {
 
     @IBAction private func onSelectMapClicked(_ sender: UIButton) {
         navigationDelegate?.didPressSelectMapButton(in: self)
+    }
+}
+
+extension PreGameLobbyViewController: RoomStateViewModelDelegate {
+    func updateSelectedMap(mapType: MapType) {
+        viewModel.selectedMap = mapType
+        selectedMapLabel.text = mapType.rawValue
     }
 }

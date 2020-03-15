@@ -13,27 +13,29 @@ class MapsCoordinator: Coordinator {
     // MARK: - PROPERTIES
     var coordinators: [Coordinator] = []
     weak var coordinatorDelegate: CoordinatorDelegate?
+    weak var mapDelegate: MapDelegate?
 
     // MARK: - PRIVATE PROPERTIES
     private let navigator: NavigatorRepresentable
 
     // MARK: - INIT
     init(with navigator: NavigatorRepresentable) {
-       self.navigator = navigator
+        self.navigator = navigator
     }
 
     // MARK: - START
     func start() {
-       coordinatorDelegate?.coordinatorDidStart(self)
-       navigator.transition(to: viewController(), as: .push)
+        coordinatorDelegate?.coordinatorDidStart(self)
+        navigator.transition(to: viewController(), as: .modal)
     }
 
     // MARK: - FUNCTIONS
     private func viewController() -> MapsViewController {
-       let viewModel = MapsViewModel()
-       let viewController = MapsViewController(with: viewModel)
-       viewController.navigationDelegate = self
-       return viewController
+        let viewModel = MapsViewModel()
+        let viewController = MapsViewController(with: viewModel)
+        viewController.navigationDelegate = self
+        viewController.mapDelegate = mapDelegate
+        return viewController
     }
 }
 

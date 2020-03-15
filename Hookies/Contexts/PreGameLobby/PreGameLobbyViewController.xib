@@ -9,6 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PreGameLobbyViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
+                <outlet property="selectedMapLabel" destination="Mqv-bn-hYX" id="ehg-Bk-jKM"/>
                 <outlet property="view" destination="tig-dl-f0g" id="i1H-5V-yC2"/>
             </connections>
         </placeholder>
@@ -25,10 +26,17 @@
                         <action selector="onSelectMapClicked:" destination="-1" eventType="touchUpInside" id="ban-on-P5V"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-bn-hYX" userLabel="selectedMapLabel">
+                    <rect key="frame" x="20" y="58" width="157" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <viewLayoutGuide key="safeArea" id="Jre-8K-DKd"/>
-            <point key="canvasLocation" x="19" y="141"/>
+            <point key="canvasLocation" x="18.75" y="140.625"/>
         </view>
     </objects>
 </document>
