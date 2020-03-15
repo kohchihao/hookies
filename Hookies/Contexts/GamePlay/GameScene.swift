@@ -20,7 +20,7 @@ class GameScene: SKScene {
     private var countdownLabel: SKLabelNode?
     private var count = 5
 
-    weak var viewController: GameViewController!
+    weak var viewController: GamePlayViewController!
 
     private var powerLaunch = 50
 

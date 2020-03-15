@@ -40,8 +40,8 @@ class PreGameLobbyCoordinator: Coordinator {
 // MARK: - PreGameLobbyViewNavigationDelegate
 extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
     func didPressSelectMapButton(in: PreGameLobbyViewController) {
-        let gameCoordinator = GameCoordinator(with: navigator)
-        gameCoordinator.coordinatorDelegate = self
-        gameCoordinator.start()
+        let gamePlayCoordinator = GamePlayCoordinator(with: navigator)
+        gamePlayCoordinator.coordinatorDelegate = self
+        gamePlayCoordinator.start()
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GameCoordinator: Coordinator {
+class GamePlayCoordinator: Coordinator {
 
     // MARK: - PROPERTIES
     var coordinators: [Coordinator] = []
@@ -29,15 +29,15 @@ class GameCoordinator: Coordinator {
     }
 
     // MARK: - FUNCTIONS
-    private func viewController() -> GameViewController {
-       let viewModel = GameViewModel()
-       let viewController = GameViewController(with: viewModel)
+    private func viewController() -> GamePlayViewController {
+       let viewModel = GamePlayViewModel()
+       let viewController = GamePlayViewController(with: viewModel)
        viewController.navigationDelegate = self
        return viewController
     }
 }
 
 // MARK: - GameViewNavigationDelegate
-extension GameCoordinator: GameViewNavigationDelegate {
+extension GamePlayCoordinator: GameViewNavigationDelegate {
 
 }

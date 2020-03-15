@@ -8,23 +8,23 @@
 
 import Foundation
 import SpriteKit
-import GameplayKit
+import UIKit
 
 protocol GameViewNavigationDelegate: class {
 
 }
 
-class GameViewController: UIViewController {
+class GamePlayViewController: UIViewController {
     weak var navigationDelegate: GameViewNavigationDelegate?
-    private var viewModel: GameViewModelRepresentable
+    private var viewModel: GamePlayViewModelRepresentable
 
     private var gameScene: GameScene?
     @IBOutlet private var powerSlider: UISlider!
 
     // MARK: - INIT
-    init(with viewModel: GameViewModelRepresentable) {
+    init(with viewModel: GamePlayViewModelRepresentable) {
         self.viewModel = viewModel
-        super.init(nibName: GameViewController.name, bundle: nil)
+        super.init(nibName: GamePlayViewController.name, bundle: nil)
     }
 
     @available(*, unavailable)

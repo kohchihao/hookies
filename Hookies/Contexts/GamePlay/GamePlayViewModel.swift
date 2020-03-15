@@ -8,8 +8,8 @@
 
 import Foundation
 
-protocol GameViewModelRepresentable {
+protocol GamePlayViewModelRepresentable {
 }
 
-class GameViewModel: GameViewModelRepresentable {
+class GamePlayViewModel: GamePlayViewModelRepresentable {
 }
