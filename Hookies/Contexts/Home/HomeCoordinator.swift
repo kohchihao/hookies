@@ -43,9 +43,6 @@ class HomeCoordinator: Coordinator {
 extension HomeCoordinator: HomeViewNavigationDelegate {
     func didPressLogoutButton(in: HomeViewController) throws {
         try Auth.auth().signOut()
-        let signInCoordinator = AuthCoordinator(with: navigator)
-        signInCoordinator.coordinatorDelegate = self
-        signInCoordinator.start()
     }
 
     func didPressHostMatchButton(in: HomeViewController) {

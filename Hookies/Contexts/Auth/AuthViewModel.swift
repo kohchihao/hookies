@@ -10,32 +10,17 @@ import Foundation
 import FirebaseAuth
 
 protocol AuthViewModelRepresentable {
-    var delegate: SignInViewModelDelegate? { get set }
+    var toPromptForUsername: Bool { get }
 
     func createAccountWithUsername(username: String,
                                    completion: @escaping (_ user: User?, _ error: LocalizedError?) -> Void)
-    func cleanup()
 }
 
 class AuthViewModel: AuthViewModelRepresentable {
-    weak var delegate: SignInViewModelDelegate?
-    private var authListener: AuthStateDidChangeListenerHandle?
+    private(set) var toPromptForUsername: Bool
 
-    init() {
-        authListener = Auth.auth().addStateDidChangeListener { _, user in
-            guard user != nil else {
-                return
-            }
-            API.shared.user.isSignedIn(completion: { isSignIn in
-                self.delegate?.toPromptForUsername(toPrompt: isSignIn)
-            })
-        }
-    }
-
-    func cleanup() {
-        if let authListener = self.authListener {
-            Auth.auth().removeStateDidChangeListener(authListener)
-        }
+    init(authState: AuthState) {
+        toPromptForUsername = (authState == .missingUsername)
     }
 
     func createAccountWithUsername(username: String,
@@ -46,10 +31,5 @@ class AuthViewModel: AuthViewModelRepresentable {
             }
             completion(user, nil)
         }
-
     }
-}
-
-protocol SignInViewModelDelegate: class {
-    func toPromptForUsername(toPrompt: Bool)
 }

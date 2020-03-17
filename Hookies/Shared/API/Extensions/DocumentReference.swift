@@ -31,7 +31,8 @@ extension DocumentReference {
     /// - Parameters:
     ///     - Model.Type:  The type of the model to type cast the firestore records into.
     ///     - completion: The callback handler when the function completes.
-    func getDocumentModel<Model: FirestoreModel>(_: Model.Type, completion: @escaping (Model?, Error?) -> Void) {
+    func getDocumentModel<Model: FirestoreModel>(_: Model.Type,
+                                                 completion: @escaping (Model?, Error?) -> Void) {
         getDocument { snapshot, error in
             self.handleCompletion(Model.self, snapshot: snapshot, error: error,
                                   completion: completion)
@@ -41,8 +42,8 @@ extension DocumentReference {
     /// Add a listener to the model.
     /// Whenever there is an update to the firestore of the given model, the listener will be activated.
     func addListener<Model: FirestoreModel>(_: Model.Type,
-                                            listener: @escaping (Model?, Error?) -> Void) {
-        addSnapshotListener { snapshot, error in
+                                            listener: @escaping (Model?, Error?) -> Void) -> ListenerRegistration {
+        return addSnapshotListener { snapshot, error in
             self.handleCompletion(Model.self, snapshot: snapshot, error: error,
                                   completion: listener)
         }

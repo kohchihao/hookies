@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1107D0602420DBA00058F590 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107D05F2420DBA00058F590 /* AuthState.swift */; };
 		110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CDC241F3CD200840C4E /* Gameplay.swift */; };
 		110B3CDF241F3DAE00840C4E /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CDE241F3DAE00840C4E /* Vector.swift */; };
 		110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CE0241F3EC000840C4E /* Powerup.swift */; };
@@ -95,6 +96,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1107D05F2420DBA00058F590 /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		110B3CDC241F3CD200840C4E /* Gameplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gameplay.swift; sourceTree = "<group>"; };
 		110B3CDE241F3DAE00840C4E /* Vector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
 		110B3CE0241F3EC000840C4E /* Powerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Powerup.swift; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				1127C5692415E4B400A78AA0 /* NavigatorTransitionType.swift */,
+				1107D05F2420DBA00058F590 /* AuthState.swift */,
 			);
 			path = Enumerations;
 			sourceTree = "<group>";
@@ -781,6 +784,7 @@
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
 				D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */,
 				119C541A2416654900F27D87 /* API.swift in Sources */,
+				1107D0602420DBA00058F590 /* AuthState.swift in Sources */,
 				110B3CEB241F655500840C4E /* PlayerGameState+FirestoreModel.swift in Sources */,
 				1127C5702415E5C400A78AA0 /* HomeViewController.swift in Sources */,
 				D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */,

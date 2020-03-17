@@ -50,13 +50,6 @@ extension FirestoreModel {
         return data
     }
 
-    /// Determines whether Any is of type Optional
-    private func isOptional(_ instance: Any) -> Bool {
-        let mirror = Mirror(reflecting: instance)
-        let style = mirror.displayStyle
-        return style == .optional
-    }
-
     /// Unwrap Optionals from Any.
     /// If Any is not an Optional, return its original value.
     /// If Any is Optional and is Nil, return NSNull()

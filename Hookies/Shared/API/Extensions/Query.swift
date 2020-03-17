@@ -17,7 +17,6 @@ extension Query {
     ///     - completion: The callback handler when the function completes.
     func getModels<Model: FirestoreModel>(_: Model.Type, completion: @escaping ([Model]?, Error?) -> Void) {
         getDocuments { snapshot, error in
-            print("snapshot state", snapshot)
             self.handleCompletion(Model.self, snapshot: snapshot, error: error,
                                   completion: completion)
         }

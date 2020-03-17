@@ -8,6 +8,7 @@
 
 import UIKit
 import GoogleSignIn
+import Firebase
 
 protocol SignInNavigationDelegate: class {
     func didSignIn(user: User)
@@ -17,6 +18,17 @@ class AuthViewController: UIViewController {
     weak var navigationDelegate: SignInNavigationDelegate?
     private var viewModel: AuthViewModelRepresentable
     private var loadingView = UIView()
+    private var isSigningIn = false {
+        didSet {
+            if isSigningIn {
+                view.isUserInteractionEnabled = false
+                showActivityIndicator(view: view, loadingView: loadingView)
+            } else {
+                view.isUserInteractionEnabled = true
+                removeActivityIndicator(loadingView: loadingView)
+            }
+        }
+    }
     private var isCreatingAccount = false {
         didSet {
             if isCreatingAccount {
@@ -38,10 +50,10 @@ class AuthViewController: UIViewController {
     init(with viewModel: AuthViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: AuthViewController.name, bundle: nil)
+        GIDSignIn.sharedInstance().delegate = self
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        viewModel.cleanup()
         super.viewDidDisappear(animated)
     }
 
@@ -52,8 +64,8 @@ class AuthViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
+        toPromptForUsername(toPrompt: viewModel.toPromptForUsername)
     }
 
     @IBAction private func onSubmitButtonClicked(_ sender: Any) {
@@ -75,18 +87,40 @@ class AuthViewController: UIViewController {
             self.navigationDelegate?.didSignIn(user: user)
         }
     }
-}
 
-extension AuthViewController: SignInViewModelDelegate {
-    func toPromptForUsername(toPrompt: Bool) {
+    private func toPromptForUsername(toPrompt: Bool) {
         if toPrompt {
-            signInArea.isUserInteractionEnabled = true
-            usernamePromptArea.isHidden = true
-            usernamePromptArea.isUserInteractionEnabled = false
-        } else {
             signInArea.isUserInteractionEnabled = false
             usernamePromptArea.isHidden = false
             usernamePromptArea.isUserInteractionEnabled = true
+        } else {
+            signInArea.isUserInteractionEnabled = true
+            usernamePromptArea.isHidden = true
+            usernamePromptArea.isUserInteractionEnabled = false
+        }
+    }
+}
+
+// MARK: - GIDSignInDelegate
+extension AuthViewController: GIDSignInDelegate {
+    @available(iOS 9.0, *)
+    func application(_ application: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url)
+    }
+
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        guard error == nil, let authentication = user.authentication else {
+            return
+        }
+        isSigningIn = true
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        Auth.auth().signIn(with: credential) { _, error in
+            if let error = error {
+                self.isSigningIn = false
+                self.toast(message: error.localizedDescription)
+            }
         }
     }
 }
