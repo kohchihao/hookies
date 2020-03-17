@@ -57,6 +57,10 @@ class AuthViewController: UIViewController {
         super.viewDidDisappear(animated)
     }
 
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -66,6 +70,7 @@ class AuthViewController: UIViewController {
         super.viewDidLoad()
         GIDSignIn.sharedInstance()?.presentingViewController = self
         toPromptForUsername(toPrompt: viewModel.toPromptForUsername)
+        usernamePromptDialog.layer.cornerRadius = 15
     }
 
     @IBAction private func onSubmitButtonClicked(_ sender: Any) {
