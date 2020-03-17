@@ -12,25 +12,43 @@ import Firebase
 class UserStore {
 
     private let collection: CollectionReference
+    private var authListener: AuthStateDidChangeListenerHandle?
 
     init(userCollection: CollectionReference) {
         collection = userCollection
     }
 
-    /// Determines whether the user is signed in.
+    /// Determines the auth status of the user
     /// There are 2 requirements for user to be signed in:
     ///     - Authenticated through firebase authentication
     ///     - Has an existing record in the firestore users collection.
-    func isSignedIn(completion: @escaping (_ isSignedIn: Bool) -> Void) {
+    func authStatus(completion: @escaping (_: AuthState) -> Void) {
         guard let user = Auth.auth().currentUser else {
-            return completion(false)
+            return completion(.notAuthenticated)
         }
 
-        API.shared.user.get(withUid: user.uid) { user, error in
+        get(withUid: user.uid) { user, error in
             guard error == nil, user != nil else {
-                return completion(false)
+                return completion(.missingUsername)
             }
-            return completion(true)
+            return completion(.authenticated)
+        }
+    }
+
+    func subscribeToAuthStatus(listener: @escaping (_: AuthState) -> Void) {
+        authListener = Auth.auth().addStateDidChangeListener({ auth, _  in
+            guard auth.currentUser != nil else {
+                return listener(.notAuthenticated)
+            }
+            self.authStatus { state in
+                listener(state)
+            }
+        })
+    }
+
+    func removeAuthSubscription() {
+        if let authListener = authListener {
+            Auth.auth().removeStateDidChangeListener(authListener)
         }
     }
 
@@ -39,10 +57,9 @@ class UserStore {
         let ref = collection.document(uid)
         ref.getDocumentModel(User.self) { user, error in
             guard let user = user else {
-                completion(nil, error)
-                return
+                return completion(nil, error)
             }
-            completion(user, error)
+            return completion(user, error)
         }
     }
 
@@ -81,7 +98,7 @@ class UserStore {
 
         let ref = collection.document(user.documentID)
         collection
-            .whereField("userName", isEqualTo: user.username)
+            .whereField("username", isEqualTo: user.username)
             .getDocuments(completion: { result, error in
                 guard error == nil, let result = result else {
                     return

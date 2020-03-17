@@ -10,7 +10,8 @@ extension Powerup where Self: FirestoreRepresentable {
     var representation: [String: Any?] {
         return [
             "isPowerupActivated": isActivated,
-            "powerupName": name
+            "powerupName": name,
+            "powerupOwnerId": ownerId
         ]
     }
 }
