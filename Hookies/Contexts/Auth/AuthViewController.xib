@@ -10,7 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AuthViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
                 <outlet property="signInArea" destination="2cZ-iF-7xD" id="bPx-nS-TZ7"/>
-                <outlet property="userNameField" destination="xUw-bD-YjL" id="GUl-Zg-J5I"/>
+                <outlet property="usernameField" destination="xUw-bD-YjL" id="GUl-Zg-J5I"/>
                 <outlet property="usernamePromptArea" destination="I7q-2d-bSa" id="Frz-4v-nFh"/>
                 <outlet property="usernamePromptDialog" destination="meh-K2-Hk4" id="C3c-3J-8bN"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kmf-nb-9vA"/>
@@ -65,7 +65,7 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xUw-bD-YjL" userLabel="userNameField">
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xUw-bD-YjL" userLabel="usernameField">
                                     <rect key="frame" x="138.5" y="188" width="184" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>

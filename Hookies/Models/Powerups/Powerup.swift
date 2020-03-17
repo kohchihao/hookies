@@ -8,8 +8,8 @@
 
 import Foundation
 
-protocol Powerup {
-    var owner: User? { get }
+protocol Powerup: Nameable, FirestoreRepresentable {
+    var ownerId: String? { get }
     var name: String { get }
     var isActivated: Bool { get }
 

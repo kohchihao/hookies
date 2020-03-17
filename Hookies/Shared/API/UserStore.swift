@@ -34,6 +34,12 @@ class UserStore {
         }
     }
 
+    func subscribedToAuthStatus(listener: @escaping (_ isSignedIn: Bool) -> Void) {
+        Auth.auth().addStateDidChangeListener({ auth, error  in
+            
+        })
+    }
+
     /// Get a user with the given uid.
     func get(withUid uid: String, completion: @escaping (_ user: User?, _ error: Error?) -> Void) {
         let ref = collection.document(uid)
@@ -81,7 +87,7 @@ class UserStore {
 
         let ref = collection.document(user.documentID)
         collection
-            .whereField("userName", isEqualTo: user.username)
+            .whereField("username", isEqualTo: user.username)
             .getDocuments(completion: { result, error in
                 guard error == nil, let result = result else {
                     return

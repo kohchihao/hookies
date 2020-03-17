@@ -29,13 +29,14 @@ extension FirestoreModel {
     func defaultSerializer() -> [String: Any?] {
         var data = [String: Any?]()
         Mirror(reflecting: self).children.forEach { child in
-            guard let property = child.label.flatMap({ Property(label: $0, value: child.value) }) else {
-                    return
+            guard let property = child.label.flatMap({
+                Property(label: $0, value: unwrap(any: child.value))
+            }) else {
+                return
             }
 
             switch property.value {
-            // swiftlint:disable syntactic_sugar
-            case Optional<Any>.none:
+            case is NSNull:
                 break
             case let firestoreRep as FirestoreRepresentable:
                 data.merge(firestoreRep.representation) { _, new in new }
@@ -47,5 +48,29 @@ extension FirestoreModel {
             }
         }
         return data
+    }
+
+    /// Determines whether Any is of type Optional
+    private func isOptional(_ instance: Any) -> Bool {
+        let mirror = Mirror(reflecting: instance)
+        let style = mirror.displayStyle
+        return style == .optional
+    }
+
+    /// Unwrap Optionals from Any.
+    /// If Any is not an Optional, return its original value.
+    /// If Any is Optional and is Nil, return NSNull()
+    func unwrap(any: Any) -> Any {
+        let mirror = Mirror(reflecting: any)
+        if mirror.displayStyle != .optional {
+            return any
+        }
+
+        if mirror.children.isEmpty {
+            return NSNull()
+        }
+        let (_, some) = mirror.children.first!
+        return some
+
     }
 }

@@ -28,6 +28,10 @@ struct FirestoreModelData {
         return value
     }
 
+    func optionalValue<T>(forKey key: String) -> T? {
+        return data[key] as? T
+    }
+
     enum ModelDataError: Error {
         case typeCastFailed
     }

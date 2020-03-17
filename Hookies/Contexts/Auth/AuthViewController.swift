@@ -32,7 +32,7 @@ class AuthViewController: UIViewController {
     @IBOutlet private var signInArea: UIView!
     @IBOutlet private var usernamePromptArea: UIView!
     @IBOutlet private var usernamePromptDialog: UIView!
-    @IBOutlet private var userNameField: UITextField!
+    @IBOutlet private var usernameField: UITextField!
 
     // MARK: - INIT
     init(with viewModel: AuthViewModelRepresentable) {
@@ -57,7 +57,7 @@ class AuthViewController: UIViewController {
     }
 
     @IBAction private func onSubmitButtonClicked(_ sender: Any) {
-        guard let username = userNameField.text else {
+        guard let username = usernameField.text else {
             return
         }
         isCreatingAccount = true
