@@ -13,6 +13,8 @@ import FirebaseAuth
 
 protocol HomeViewNavigationDelegate: class {
     func didPressLogoutButton(in: HomeViewController) throws
+    func didPressHostMatchButton(in: HomeViewController)
+    func didPressJoinMatchButton(in: HomeViewController)
 }
 
 class HomeViewController: UIViewController {
@@ -32,22 +34,6 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if let view = self.view as? SKView {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
-
-                // Present the scene
-                view.presentScene(scene)
-            }
-
-            view.ignoresSiblingOrder = true
-
-            view.showsFPS = true
-            view.showsNodeCount = true
-        }
     }
 
     override var shouldAutorotate: Bool {
@@ -72,5 +58,13 @@ class HomeViewController: UIViewController {
         } catch let logoutError as NSError {
             toast(message: "Error signing out: " + logoutError.localizedDescription)
         }
+    }
+
+    @IBAction private func onHostMatchClicked(_ sender: UIButton) {
+        navigationDelegate?.didPressHostMatchButton(in: self)
+    }
+
+    @IBAction private func onJoinMatchClicked(_ sender: UIButton) {
+        navigationDelegate?.didPressJoinMatchButton(in: self)
     }
 }
