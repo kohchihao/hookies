@@ -6,7 +6,7 @@
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
-private struct Property {
+public struct Property {
     let label: String
     let value: Any
 }
@@ -26,16 +26,26 @@ protocol FirestoreModel {
 
 extension FirestoreModel {
 
-    var serialized: [String: Any?] {
+    func defaultSerializer() -> [String: Any?] {
         var data = [String: Any?]()
         Mirror(reflecting: self).children.forEach { child in
             guard let property = child.label.flatMap({ Property(label: $0, value: child.value) }) else {
-                return
+                    return
             }
 
-            data[property.label] = property.value
+            switch property.value {
+            // swiftlint:disable syntactic_sugar
+            case Optional<Any>.none:
+                break
+            case let firestoreRep as FirestoreRepresentable:
+                data.merge(firestoreRep.representation) { _, new in new }
+            case let vector as Vector:
+                data[property.label + "X"] = vector.x
+                data[property.label + "Y"] = vector.y
+            default:
+                data[property.label] = property.value
+            }
         }
-
         return data
     }
 }

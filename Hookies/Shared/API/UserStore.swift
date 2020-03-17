@@ -37,7 +37,7 @@ class UserStore {
     /// Get a user with the given uid.
     func get(withUid uid: String, completion: @escaping (_ user: User?, _ error: Error?) -> Void) {
         let ref = collection.document(uid)
-        ref.getModel(User.self) { user, error in
+        ref.getDocumentModel(User.self) { user, error in
             guard let user = user else {
                 completion(nil, error)
                 return
@@ -65,7 +65,7 @@ class UserStore {
         if username.count > maxNameLen {
             return completion(nil, UserStoreError.nameTooLong(maxLen: maxNameLen))
         }
-        let user = User(uid: currentUser.uid, userName: username, email: currentUser.email)
+        let user = User(uid: currentUser.uid, username: username, email: currentUser.email)
         add(user: user) { user, error in
             if let error = error {
                 return completion(nil, error)
@@ -81,17 +81,17 @@ class UserStore {
 
         let ref = collection.document(user.documentID)
         collection
-            .whereField("userName", isEqualTo: user.userName)
+            .whereField("userName", isEqualTo: user.username)
             .getDocuments(completion: { result, error in
                 guard error == nil, let result = result else {
                     return
                 }
 
                 if result.isEmpty {
-                    ref.setModel(user)
+                    ref.setDataModel(user)
                     return completion(user, nil)
                 } else {
-                    return completion(nil, UserStoreError.userNameExistError)
+                    return completion(nil, UserStoreError.usernameExistError)
                 }
         })
     }
