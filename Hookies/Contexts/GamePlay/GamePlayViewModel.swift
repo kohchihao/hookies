@@ -9,7 +9,14 @@
 import Foundation
 
 protocol GamePlayViewModelRepresentable {
+    var selectedMap: MapType { get set }
 }
 
 class GamePlayViewModel: GamePlayViewModelRepresentable {
+    var selectedMap: MapType
+
+    init(withSelectedMap selectedMap: MapType) {
+        self.selectedMap = selectedMap
+    }
+
 }

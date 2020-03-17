@@ -16,24 +16,26 @@ class GamePlayCoordinator: Coordinator {
 
     // MARK: - PRIVATE PROPERTIES
     private let navigator: NavigatorRepresentable
+    private let mapType: MapType
 
     // MARK: - INIT
-    init(with navigator: NavigatorRepresentable) {
-       self.navigator = navigator
+    init(with navigator: NavigatorRepresentable, and mapType: MapType) {
+        self.navigator = navigator
+        self.mapType = mapType
     }
 
     // MARK: - START
     func start() {
-       coordinatorDelegate?.coordinatorDidStart(self)
-       navigator.transition(to: viewController(), as: .push)
+        coordinatorDelegate?.coordinatorDidStart(self)
+        navigator.transition(to: viewController(), as: .push)
     }
 
     // MARK: - FUNCTIONS
     private func viewController() -> GamePlayViewController {
-       let viewModel = GamePlayViewModel()
-       let viewController = GamePlayViewController(with: viewModel)
-       viewController.navigationDelegate = self
-       return viewController
+        let viewModel = GamePlayViewModel(withSelectedMap: mapType)
+        let viewController = GamePlayViewController(with: viewModel)
+        viewController.navigationDelegate = self
+        return viewController
     }
 }
 

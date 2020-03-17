@@ -12,6 +12,7 @@ import GameplayKit
 
 protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
+    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType)
 }
 
 class PreGameLobbyViewController: UIViewController {
@@ -42,6 +43,13 @@ class PreGameLobbyViewController: UIViewController {
 
     @IBAction private func onSelectMapClicked(_ sender: UIButton) {
         navigationDelegate?.didPressSelectMapButton(in: self)
+    }
+
+    @IBAction private func onStartClicked(_ sender: UIButton) {
+        guard let selectedMap = viewModel.selectedMap else {
+            return
+        }
+        navigationDelegate?.didPressStartButton(in: self, withSelectedMapType: selectedMap)
     }
 }
 
