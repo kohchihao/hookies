@@ -16,8 +16,21 @@ protocol SignInNavigationDelegate: class {
 class AuthViewController: UIViewController {
     weak var navigationDelegate: SignInNavigationDelegate?
     private var viewModel: AuthViewModelRepresentable
+    private var loadingView = UIView()
+    private var isCreatingAccount = false {
+        didSet {
+            if isCreatingAccount {
+                view.isUserInteractionEnabled = false
+                showActivityIndicator(view: view, loadingView: loadingView)
+            } else {
+                view.isUserInteractionEnabled = true
+                removeActivityIndicator(loadingView: loadingView)
+            }
+        }
+    }
 
-    @IBOutlet private var signInDialog: UIView!
+    @IBOutlet private var signInArea: UIView!
+    @IBOutlet private var usernamePromptArea: UIView!
     @IBOutlet private var usernamePromptDialog: UIView!
     @IBOutlet private var userNameField: UITextField!
 
@@ -47,14 +60,18 @@ class AuthViewController: UIViewController {
         guard let username = userNameField.text else {
             return
         }
+        isCreatingAccount = true
         viewModel.createAccountWithUsername(username: username) { user, error in
             if let error = error {
                 self.toast(message: error.errorDescription ?? "Failed to create account")
+                self.isCreatingAccount = false
                 return
             }
             guard let user = user else {
+                self.isCreatingAccount = false
                 return
             }
+            self.isCreatingAccount = false
             self.navigationDelegate?.didSignIn(user: user)
         }
     }
@@ -63,13 +80,13 @@ class AuthViewController: UIViewController {
 extension AuthViewController: SignInViewModelDelegate {
     func toPromptForUsername(toPrompt: Bool) {
         if toPrompt {
-            signInDialog.isUserInteractionEnabled = true
-            usernamePromptDialog.isHidden = true
-            usernamePromptDialog.isUserInteractionEnabled = false
+            signInArea.isUserInteractionEnabled = true
+            usernamePromptArea.isHidden = true
+            usernamePromptArea.isUserInteractionEnabled = false
         } else {
-            signInDialog.isUserInteractionEnabled = false
-            usernamePromptDialog.isHidden = false
-            usernamePromptDialog.isUserInteractionEnabled = true
+            signInArea.isUserInteractionEnabled = false
+            usernamePromptArea.isHidden = false
+            usernamePromptArea.isUserInteractionEnabled = true
         }
     }
 }

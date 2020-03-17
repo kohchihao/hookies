@@ -11,10 +11,14 @@ extension User: FirestoreModel {
         return uid
     }
 
+    var serialized: [String: Any?] {
+        return defaultSerializer()
+    }
+
     init?(modelData: FirestoreModelData) {
         try? self.init(
             uid: modelData.documentID,
-            userName: modelData.value(forKey: "userName"),
+            username: modelData.value(forKey: "username"),
             email: modelData.value(forKey: "email")
         )
     }
