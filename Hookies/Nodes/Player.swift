@@ -35,7 +35,9 @@ class Player {
             return
         }
 
-        self.node.physicsBody = SKPhysicsBody(texture: texture, size: self.node.size)
+//        self.node.physicsBody = SKPhysicsBody(texture: texture, size: self.node.size)
+        self.node.physicsBody = SKPhysicsBody(rectangleOf: self.node.size)
+
         self.node.physicsBody?.isDynamic = type.isDynamic
         self.node.physicsBody?.affectedByGravity = type.affectedByGravity
         self.node.physicsBody?.allowsRotation = type.allowRotation
@@ -71,6 +73,7 @@ class Player {
     }
 
     private func makeLine(from origin: CGPoint, to destination: CGPoint) -> SKShapeNode {
+        let type = SpriteType.line
         let path = CGMutablePath()
         path.move(to: origin)
         path.addLine(to: destination)
@@ -78,6 +81,11 @@ class Player {
         let currLine = SKShapeNode(path: path)
         currLine.strokeColor = SKColor.white
         currLine.lineWidth = 3.0
+
+        currLine.physicsBody = SKPhysicsBody(rectangleOf: currLine.frame.size)
+//        currLine.physicsBody?.isDynamic = type.isDynamic
+//        currLine.physicsBody?.allowsRotation = type.allowRotation
+//        currLine.physicsBody?.affectedByGravity = type.affectedByGravity
 
         return currLine
     }

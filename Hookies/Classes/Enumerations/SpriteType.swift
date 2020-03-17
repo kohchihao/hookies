@@ -10,6 +10,8 @@ import SpriteKit
 
 enum SpriteType {
     case player
+    case bolt
+    case line
     case finishingLine
 }
 
@@ -29,12 +31,14 @@ extension SpriteType {
             return 2
         case .finishingLine:
             return 1
+        default:
+            return 0
         }
     }
 
     var isDynamic: Bool {
         switch self {
-        case .player:
+        case .player, .line:
             return true
         default:
             return false
@@ -60,6 +64,8 @@ extension SpriteType {
             return 0x1 << 1
         case .finishingLine:
             return 0x1 << 2
+        default:
+            return 0x1
         }
     }
 
