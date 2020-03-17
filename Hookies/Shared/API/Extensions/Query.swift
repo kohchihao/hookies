@@ -17,19 +17,31 @@ extension Query {
     ///     - completion: The callback handler when the function completes.
     func getModels<Model: FirestoreModel>(_: Model.Type, completion: @escaping ([Model]?, Error?) -> Void) {
         getDocuments { snapshot, error in
-            if let error = error {
-                completion(nil, error)
-                return
-            }
-
-            guard let snapshot = snapshot else {
-                completion(nil, nil)
-                return
-            }
-
-            completion(snapshot.documents.compactMap {
-                Model(modelData: FirestoreModelData(snapshot: $0))
-            }, nil)
+            self.handleCompletion(Model.self, snapshot: snapshot, error: error,
+                                  completion: completion)
         }
+    }
+
+    func addListener<Model: FirestoreModel>(_: Model.Type,
+                                            listener: @escaping ([Model]?, Error?) -> Void) -> ListenerRegistration {
+        return addSnapshotListener({ snapshot, error in
+            self.handleCompletion(Model.self, snapshot: snapshot, error: error,
+                                  completion: listener)
+        })
+    }
+
+    private func handleCompletion<Model: FirestoreModel>(_: Model.Type,
+                                                         snapshot: QuerySnapshot?,
+                                                         error: Error?,
+                                                         completion: @escaping ([Model]?, Error?) -> Void) {
+        if let error = error {
+            return completion(nil, error)
+        }
+        guard let snapshot = snapshot else {
+            return completion(nil, nil)
+        }
+        completion(snapshot.documents.compactMap {
+            Model(modelData: FirestoreModelData(snapshot: $0))
+        }, nil)
     }
 }

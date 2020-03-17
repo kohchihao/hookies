@@ -13,7 +13,7 @@ extension DocumentReference {
     /// Set the given model to the firestore document.
     /// If the document already exist on firestore, will update it.
     /// If the document does not exist, a document will be inserted.
-    func setModel(_ model: FirestoreModel) {
+    func setDataModel(_ model: FirestoreModel) {
         var documentData = [String: Any]()
 
         for (key, value) in model.serialized {
@@ -31,19 +31,33 @@ extension DocumentReference {
     /// - Parameters:
     ///     - Model.Type:  The type of the model to type cast the firestore records into.
     ///     - completion: The callback handler when the function completes.
-    func getModel<Model: FirestoreModel>(_: Model.Type, completion: @escaping (Model?, Error?) -> Void) {
+    func getDocumentModel<Model: FirestoreModel>(_: Model.Type, completion: @escaping (Model?, Error?) -> Void) {
         getDocument { snapshot, error in
-            if let error = error {
-                completion(nil, error)
-                return
-            }
-
-            guard let snapshot = snapshot else {
-                completion(nil, nil)
-                return
-            }
-
-            completion(Model(modelData: FirestoreModelData(snapshot: snapshot)), nil)
+            self.handleCompletion(Model.self, snapshot: snapshot, error: error,
+                                  completion: completion)
         }
+    }
+
+    /// Add a listener to the model.
+    /// Whenever there is an update to the firestore of the given model, the listener will be activated.
+    func addListener<Model: FirestoreModel>(_: Model.Type,
+                                            listener: @escaping (Model?, Error?) -> Void) {
+        addSnapshotListener { snapshot, error in
+            self.handleCompletion(Model.self, snapshot: snapshot, error: error,
+                                  completion: listener)
+        }
+    }
+
+    private func handleCompletion<Model: FirestoreModel>(_: Model.Type,
+                                                         snapshot: DocumentSnapshot?,
+                                                         error: Error?,
+                                                         completion: @escaping (Model?, Error?) -> Void) {
+        if let error = error {
+            return completion(nil, error)
+        }
+        guard let snapshot = snapshot else {
+            return completion(nil, nil)
+        }
+        completion(Model(modelData: FirestoreModelData(snapshot: snapshot)), nil)
     }
 }

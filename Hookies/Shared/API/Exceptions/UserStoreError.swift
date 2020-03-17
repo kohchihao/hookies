@@ -9,7 +9,7 @@
 import Foundation
 
 enum UserStoreError: Error {
-    case userNameExistError
+    case usernameExistError
     case notAuthenticated
     case nameTooShort(minLen: Int)
     case nameTooLong(maxLen: Int)
@@ -19,7 +19,7 @@ extension UserStoreError: LocalizedError {
     var errorDescription: String? {
         let result = "Failed to create account."
         switch self {
-        case .userNameExistError:
+        case .usernameExistError:
             return "\(result) Username is already taken"
         case .notAuthenticated:
             return "\(result) You must be authenticated first"

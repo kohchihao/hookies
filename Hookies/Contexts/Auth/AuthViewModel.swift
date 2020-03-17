@@ -11,6 +11,7 @@ import FirebaseAuth
 
 protocol AuthViewModelRepresentable {
     var delegate: SignInViewModelDelegate? { get set }
+
     func createAccountWithUsername(username: String,
                                    completion: @escaping (_ user: User?, _ error: LocalizedError?) -> Void)
     func cleanup()

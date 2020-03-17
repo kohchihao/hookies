@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CDC241F3CD200840C4E /* Gameplay.swift */; };
+		110B3CDF241F3DAE00840C4E /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CDE241F3DAE00840C4E /* Vector.swift */; };
+		110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CE0241F3EC000840C4E /* Powerup.swift */; };
+		110B3CE5241F431700840C4E /* Gameplay+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CE4241F431700840C4E /* Gameplay+FirestoreModel.swift */; };
+		110B3CE7241F45D900840C4E /* GameplayStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CE6241F45D900840C4E /* GameplayStore.swift */; };
+		110B3CEB241F655500840C4E /* PlayerGameState+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEA241F655500840C4E /* PlayerGameState+FirestoreModel.swift */; };
+		110B3CED2420605600840C4E /* FirestoreRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEC2420605600840C4E /* FirestoreRepresentable.swift */; };
+		110B3CEF242062C300840C4E /* Powerup+FirestoreRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEE242062C300840C4E /* Powerup+FirestoreRepresentable.swift */; };
+		110B3CF124206C4A00840C4E /* PlayerGameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CF024206C4A00840C4E /* PlayerGameState.swift */; };
 		111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111D2EF42418C8BA0083373C /* UserStoreError.swift */; };
 		1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1127C5592415E18800A78AA0 /* GoogleService-Info.plist */; };
 		1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */; };
@@ -26,6 +35,7 @@
 		1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* AuthViewController.xib */; };
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
+		117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */; };
 		119C541024164AFE00F27D87 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C540F24164AFE00F27D87 /* User.swift */; };
 		119C54182416646E00F27D87 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54172416646E00F27D87 /* UserStore.swift */; };
 		119C541A2416654900F27D87 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54192416654900F27D87 /* API.swift */; };
@@ -83,6 +93,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		110B3CDC241F3CD200840C4E /* Gameplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gameplay.swift; sourceTree = "<group>"; };
+		110B3CDE241F3DAE00840C4E /* Vector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
+		110B3CE0241F3EC000840C4E /* Powerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Powerup.swift; sourceTree = "<group>"; };
+		110B3CE4241F431700840C4E /* Gameplay+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Gameplay+FirestoreModel.swift"; sourceTree = "<group>"; };
+		110B3CE6241F45D900840C4E /* GameplayStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayStore.swift; sourceTree = "<group>"; };
+		110B3CEA241F655500840C4E /* PlayerGameState+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlayerGameState+FirestoreModel.swift"; sourceTree = "<group>"; };
+		110B3CEC2420605600840C4E /* FirestoreRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreRepresentable.swift; sourceTree = "<group>"; };
+		110B3CEE242062C300840C4E /* Powerup+FirestoreRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Powerup+FirestoreRepresentable.swift"; sourceTree = "<group>"; };
+		110B3CF024206C4A00840C4E /* PlayerGameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGameState.swift; sourceTree = "<group>"; };
 		111D2EF42418C8BA0083373C /* UserStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoreError.swift; sourceTree = "<group>"; };
 		1127C5592415E18800A78AA0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -102,6 +121,7 @@
 		1127C585241606CD00A78AA0 /* AuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
+		117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ActivityIndicator.swift"; sourceTree = "<group>"; };
 		119C540F24164AFE00F27D87 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		119C54172416646E00F27D87 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		119C54192416654900F27D87 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -206,6 +226,7 @@
 				119C54272418766100F27D87 /* Extensions */,
 				119C541F24168C9D00F27D87 /* AdapterModels */,
 				119C54172416646E00F27D87 /* UserStore.swift */,
+				110B3CE6241F45D900840C4E /* GameplayStore.swift */,
 				119C54192416654900F27D87 /* API.swift */,
 			);
 			path = API;
@@ -303,7 +324,11 @@
 		1127C5832415FFAA00A78AA0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				119C540E24164AF400F27D87 /* User */,
+				119C540F24164AFE00F27D87 /* User.swift */,
+				110B3CDC241F3CD200840C4E /* Gameplay.swift */,
+				110B3CDE241F3DAE00840C4E /* Vector.swift */,
+				110B3CE0241F3EC000840C4E /* Powerup.swift */,
+				110B3CF024206C4A00840C4E /* PlayerGameState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -313,6 +338,7 @@
 			children = (
 				1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */,
 				1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */,
+				117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */,
 			);
 			path = UIViewController;
 			sourceTree = "<group>";
@@ -325,20 +351,16 @@
 			path = UILabel;
 			sourceTree = "<group>";
 		};
-		119C540E24164AF400F27D87 /* User */ = {
-			isa = PBXGroup;
-			children = (
-				119C540F24164AFE00F27D87 /* User.swift */,
-			);
-			path = User;
-			sourceTree = "<group>";
-		};
 		119C541F24168C9D00F27D87 /* AdapterModels */ = {
 			isa = PBXGroup;
 			children = (
+				110B3CEC2420605600840C4E /* FirestoreRepresentable.swift */,
 				119C541B2416704800F27D87 /* FirestoreModel.swift */,
 				119C541D2416709300F27D87 /* FirestoreModelData.swift */,
 				119C54282418768A00F27D87 /* User+FirestoreModel.swift */,
+				110B3CE4241F431700840C4E /* Gameplay+FirestoreModel.swift */,
+				110B3CEA241F655500840C4E /* PlayerGameState+FirestoreModel.swift */,
+				110B3CEE242062C300840C4E /* Powerup+FirestoreRepresentable.swift */,
 			);
 			path = AdapterModels;
 			sourceTree = "<group>";
@@ -715,6 +737,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */,
+				110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */,
 				119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */,
 				1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */,
 				1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */,
@@ -723,8 +746,11 @@
 				1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */,
 				1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */,
 				119C5423241691EF00F27D87 /* Query.swift in Sources */,
+				110B3CF124206C4A00840C4E /* PlayerGameState.swift in Sources */,
 				1127C5822415FBBD00A78AA0 /* AuthCoordinator.swift in Sources */,
 				119C541E2416709300F27D87 /* FirestoreModelData.swift in Sources */,
+				117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */,
+				110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */,
 				1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */,
 				119C54182416646E00F27D87 /* UserStore.swift in Sources */,
 				D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */,
@@ -739,6 +765,7 @@
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
 				D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */,
 				119C541A2416654900F27D87 /* API.swift in Sources */,
+				110B3CEB241F655500840C4E /* PlayerGameState+FirestoreModel.swift in Sources */,
 				1127C5702415E5C400A78AA0 /* HomeViewController.swift in Sources */,
 				D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */,
 				111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */,
@@ -746,13 +773,18 @@
 				D9FF1A82241E325900E7965F /* GamePlayViewModel.swift in Sources */,
 				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
 				D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */,
+				110B3CE7241F45D900840C4E /* GameplayStore.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
+				110B3CED2420605600840C4E /* FirestoreRepresentable.swift in Sources */,
+				110B3CDF241F3DAE00840C4E /* Vector.swift in Sources */,
+				110B3CEF242062C300840C4E /* Powerup+FirestoreRepresentable.swift in Sources */,
 				119C541C2416704800F27D87 /* FirestoreModel.swift in Sources */,
 				D9FF1A81241E325900E7965F /* GameScene.swift in Sources */,
 				D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
+				110B3CE5241F431700840C4E /* Gameplay+FirestoreModel.swift in Sources */,
 				119C541024164AFE00F27D87 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

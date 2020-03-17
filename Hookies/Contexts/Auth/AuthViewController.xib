@@ -9,9 +9,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AuthViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
-                <outlet property="signInDialog" destination="2cZ-iF-7xD" id="bPx-nS-TZ7"/>
+                <outlet property="signInArea" destination="2cZ-iF-7xD" id="bPx-nS-TZ7"/>
                 <outlet property="userNameField" destination="xUw-bD-YjL" id="GUl-Zg-J5I"/>
-                <outlet property="usernamePromptDialog" destination="I7q-2d-bSa" id="Frz-4v-nFh"/>
+                <outlet property="usernamePromptArea" destination="I7q-2d-bSa" id="Frz-4v-nFh"/>
+                <outlet property="usernamePromptDialog" destination="meh-K2-Hk4" id="C3c-3J-8bN"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kmf-nb-9vA"/>
             </connections>
         </placeholder>
