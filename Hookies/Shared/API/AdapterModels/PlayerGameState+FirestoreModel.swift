@@ -23,11 +23,14 @@ extension PlayerGameState: FirestoreModel {
                                       y: modelData.value(forKey: "positionY"))
             let velocity = try Vector(x: modelData.value(forKey: "velocityX"),
                                       y: modelData.value(forKey: "velocityY"))
-            let attachedPosition = try Vector(x: modelData.value(forKey: "attachedToX"),
-                                              y: modelData.value(forKey: "attachedToY"))
             let powerup = try PowerupCreator.create(name: modelData.value(forKey: "powerupName"),
                                                     isActivated: modelData.value(forKey: "isPowerupActivated"),
-                                                    ownerId: modelData.optionalValue(forKey: "powerupOwner"))
+                                                    ownerId: modelData.optionalValue(forKey: "powerupOwnerId"))
+            var attachedPosition: Vector?
+            if let attachedToX: Double = modelData.optionalValue(forKey: "attachedToX"),
+                let attachedToY: Double = modelData.optionalValue(forKey: "attachedToY") {
+                attachedPosition = Vector(x: attachedToX, y: attachedToY)
+            }
 
             self.init(
                 playerId: modelData.documentID,
