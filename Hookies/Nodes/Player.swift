@@ -16,6 +16,7 @@ class Player {
     var closestBolt: SKSpriteNode
     private(set) var line: SKShapeNode?
     private(set) var attachedBolt: SKSpriteNode?
+    private var previousAttachedBolt: SKSpriteNode?
 
     var isAttachedToBolt: Bool {
         return attachedBolt != nil
@@ -31,14 +32,17 @@ class Player {
         self.node.position = position
         self.node.size = type.size
 
-        guard let texture = self.node.texture else {
-            return
-        }
+//        guard let texture = self.node.texture else {
+//            return
+//        }
 
 //        self.node.physicsBody = SKPhysicsBody(texture: texture, size: self.node.size)
         self.node.physicsBody = SKPhysicsBody(rectangleOf: self.node.size)
 
         self.node.physicsBody?.isDynamic = type.isDynamic
+        self.node.physicsBody?.mass = type.mass
+        self.node.physicsBody?.linearDamping = type.linearDamping
+        self.node.physicsBody?.friction = type.friction
         self.node.physicsBody?.affectedByGravity = type.affectedByGravity
         self.node.physicsBody?.allowsRotation = type.allowRotation
         self.node.physicsBody?.categoryBitMask = type.bitMask
@@ -52,41 +56,80 @@ class Player {
     }
 
     func tetherToClosestBolt() {
-        line = makeLine(from: node.position, to: closestBolt.position)
+        let isAttachingToSameBolt = closestBolt.position == previousAttachedBolt?.position
+
+        if isAttachingToSameBolt {
+            var positionYOffset = CGFloat(0)
+
+            let isAboveBolt = node.position.y > closestBolt.position.y
+            let isBelowBolt = node.position.y < closestBolt.position.y
+
+            if isAboveBolt {
+                positionYOffset = CGFloat(-15)
+            }
+
+            if isBelowBolt {
+                positionYOffset = CGFloat(15)
+            }
+
+            node.position = CGPoint(x: node.position.x, y: node.position.y + positionYOffset)
+        }
+
+        line = makeLine(to: closestBolt)
 
         // TODO: Check if anything is in path if line
 
-        attachedBolt = closestBolt
-    }
+        self.attachedBolt = closestBolt
 
-    func updateLine() {
-        guard let attachedBolt = attachedBolt, line != nil else {
-            return
+        if !isAttachingToSameBolt {
+            boostVelocity(withRespectTo: closestBolt)
         }
-
-        line = makeLine(from: node.position, to: attachedBolt.position)
     }
 
     func releaseFromBolt() {
-        line = nil
-        attachedBolt = nil
+        self.previousAttachedBolt = attachedBolt
+
+        self.line = nil
+        self.attachedBolt = nil
     }
 
-    private func makeLine(from origin: CGPoint, to destination: CGPoint) -> SKShapeNode {
+    private func makeLine(to bolt: SKSpriteNode) -> SKShapeNode {
         let type = SpriteType.line
+
+        let distanceX = self.node.position.x - bolt.position.x
+        let distanceY = self.node.position.y - bolt.position.y
+        let distance = sqrt((distanceX * distanceX) + (distanceY * distanceY))
+
         let path = CGMutablePath()
-        path.move(to: origin)
-        path.addLine(to: destination)
+        path.move(to: self.node.position)
+        path.addLine(to: bolt.position)
+        path.addLine(to: CGPoint(x: bolt.position.x + 1, y: bolt.position.y + 1))
+        path.addLine(to: CGPoint(x: self.node.position.x - 1, y: self.node.position.y - 1))
+        path.closeSubpath()
 
         let currLine = SKShapeNode(path: path)
         currLine.strokeColor = SKColor.white
-        currLine.lineWidth = 3.0
+        currLine.lineWidth = 1.0
 
-        currLine.physicsBody = SKPhysicsBody(rectangleOf: currLine.frame.size)
-//        currLine.physicsBody?.isDynamic = type.isDynamic
-//        currLine.physicsBody?.allowsRotation = type.allowRotation
-//        currLine.physicsBody?.affectedByGravity = type.affectedByGravity
+        currLine.physicsBody = SKPhysicsBody(circleOfRadius: distance, center: bolt.position)
+        currLine.physicsBody?.affectedByGravity = type.affectedByGravity
+        currLine.physicsBody?.categoryBitMask = type.bitMask
+        currLine.physicsBody?.collisionBitMask = type.collisionBitMask
 
         return currLine
+    }
+
+    private func boostVelocity(withRespectTo bolt: SKSpriteNode) {
+        var boostX = 1_000
+        let boostY = -1_000
+
+        let isInFrontOfBolt = node.position.x > bolt.position.x
+
+        if isInFrontOfBolt {
+            boostX *= -1
+        }
+
+        let boost = CGVector(dx: boostX, dy: boostY)
+        node.physicsBody?.applyImpulse(boost)
     }
 }

@@ -36,6 +36,33 @@ extension SpriteType {
         }
     }
 
+    var friction: CGFloat {
+        switch self {
+        case .player:
+            return 0
+        default:
+            return 0.2
+        }
+    }
+
+    var linearDamping: CGFloat {
+        switch self {
+        case .player:
+            return 0
+        default:
+            return 0.1
+        }
+    }
+
+    var mass: CGFloat {
+        switch self {
+        case .player:
+            return 1
+        default:
+            return 0.1
+        }
+    }
+
     var isDynamic: Bool {
         switch self {
         case .player, .line:
@@ -55,7 +82,10 @@ extension SpriteType {
     }
 
     var allowRotation: Bool {
-        return false
+        switch self {
+        default:
+            return false
+        }
     }
 
     var bitMask: UInt32 {
@@ -65,7 +95,7 @@ extension SpriteType {
         case .finishingLine:
             return 0x1 << 2
         default:
-            return 0x1
+            return 0
         }
     }
 
@@ -73,8 +103,10 @@ extension SpriteType {
         switch self {
         case .player:
             return SpriteType.finishingLine.bitMask
-        default:
+        case .finishingLine:
             return SpriteType.player.bitMask
+        default:
+            return 0
         }
     }
 }

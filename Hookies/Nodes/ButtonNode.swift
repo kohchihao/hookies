@@ -18,8 +18,6 @@ class ButtonNode: SKSpriteNode {
     var touchBeganHandler: () -> Void = { print("No button action set") }
     var touchEndHandler: () -> Void = { print("No button action set") }
 
-    weak var delegate: ButtonNodeDelegate?
-
     /* Button state management */
     var state: ButtonNodeState = .ButtonNodeStateActive {
         didSet {
@@ -54,12 +52,12 @@ class ButtonNode: SKSpriteNode {
 
     // MARK: - Touch handling
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.didTouchBegan()
+        touchBeganHandler()
         state = .ButtonNodeStateSelected
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.didTouchEnd()
+        touchEndHandler()
         state = .ButtonNodeStateActive
     }
 

@@ -24,6 +24,10 @@ class GameScene: SKScene {
     private var countdownLabel: SKLabelNode?
     private var count = 2
 
+    private var playerAttachedAnchor: SKNode?
+    private var anchorToPlayerLineJointPin: SKPhysicsJointPin?
+    private var playerLineToPlayerPositionJointPin: SKPhysicsJointPin?
+
     weak var viewController: HomeViewController!
 
     private var powerLaunch = 1_000
@@ -83,7 +87,9 @@ class GameScene: SKScene {
 //            self.player?.run(moveAction)
 //        }
 //        calculateNearestBolt()
+
         updatePlayerClosestBolt()
+        handlePlayerTetheringToClosestBolt()
     }
 
     // MARK: - Initialise background
@@ -118,7 +124,6 @@ class GameScene: SKScene {
             return
         }
         grapplingHookButton = GrapplingHookButton(in: sceneFrame)
-        grapplingHookButton?.delegate = self
     }
 
     // MARK: - Centering camera
@@ -138,8 +143,13 @@ class GameScene: SKScene {
 
     // MARK: - Launch player
 
-    func launch() {
-
+    func launchPlayer() {
+        guard let player = player else {
+            return
+        }
+        let velocity = getLaunchVelocity()
+        cannon?.launch(player: player, with: velocity)
+        cannon?.node.removeFromParent()
     }
 
     func setPowerLaunch(at power: Int) {
@@ -149,7 +159,7 @@ class GameScene: SKScene {
     // MARK: - Count down to start game
 
     func startCountdown() {
-
+        // TODO: Disable all game buttons
     }
 
     func countdown(count: Int) {
@@ -175,22 +185,16 @@ class GameScene: SKScene {
     }
 
     func endCountdown() {
+        // TODO: Enable all the game buttons
         countdownLabel?.removeFromParent()
         viewController.hidePowerSlider()
+        launchPlayer()
 
-        guard let player = player else {
-            return
-        }
-
-        let velocity = getLaunchVelocity()
-//        cannon?.launch(player: player, with: velocity)
-//        cannon?.node.removeFromParent()
     }
 
     // MARK: - Calculate nearest bolt
 
     func getNearestBolt(from position: CGPoint) -> SKSpriteNode? {
-        let type = SpriteType.bolt
         let allBolts = self["bolt"] // getting all the bolts within the scene.
         var closestBolt: SKSpriteNode?
         var closestDistance = Double.greatestFiniteMagnitude
@@ -208,16 +212,7 @@ class GameScene: SKScene {
             node.isHidden = false
         }
 
-        guard let unwrappedClosestBolt = closestBolt else {
-            return nil
-        }
-
-        unwrappedClosestBolt.physicsBody = SKPhysicsBody(circleOfRadius: unwrappedClosestBolt.size.width / 2.0)
-        unwrappedClosestBolt.physicsBody?.isDynamic = type.isDynamic
-//        unwrappedClosestBolt.physicsBody?.allowsRotation = type.allowRotation
-//        unwrappedClosestBolt.physicsBody?.affectedByGravity = type.affectedByGravity
-
-        return unwrappedClosestBolt
+        return closestBolt
     }
 
     private func getLaunchVelocity() -> CGVector {
@@ -239,90 +234,77 @@ class GameScene: SKScene {
         player.closestBolt = playerClosestBolt
     }
 
-    private func handleTetheringToBolt() {
-//        if let playerLine = player?.line, player?.attachedBolt != nil {
-//            playerLine.removeFromParent()
-//            player?.updateLine()
-//
-//            guard let updatedPlayerLine = player?.line else {
-//                return
-//            }
-//            addChild(updatedPlayerLine)
-//        }
-    }
-
-    private func handleTouchBegan() {
-        guard let player = player else {
+    private func handlePlayerTetheringToClosestBolt() {
+        guard let grapplingHookButton = grapplingHookButton else {
             return
         }
 
-        player.tetherToClosestBolt()
-        guard let playerLine = player.line,
-            let playerAttachedBolt = player.attachedBolt else {
-                return
+        grapplingHookButton.touchBeganHandler = {
+            self.handleGrapplingHookBtnTouchBegan()
         }
 
-        guard let boltPhysicsBody = playerAttachedBolt.physicsBody,
-            let linePhysicsBody = playerLine.physicsBody,
-            let playerPhyscisBody = player.node.physicsBody else {
+        grapplingHookButton.touchEndHandler = {
+            self.handleGrapplingHookBtnTouchEnd()
+        }
+    }
+
+    private func handleGrapplingHookBtnTouchBegan() {
+        self.player?.tetherToClosestBolt()
+
+        guard let playerPosition = self.player?.node.position,
+            let playerLine = self.player?.line,
+            let playerAttachedBolt = self.player?.attachedBolt else {
                 return
         }
-
-        addChild(playerLine)
 
         let anchor = SKNode()
         anchor.position = playerAttachedBolt.position
         anchor.physicsBody = SKPhysicsBody()
-        anchor.physicsBody?.isDynamic = false
-        addChild(anchor)
+        anchor.physicsBody?.isDynamic = SpriteType.bolt.isDynamic
 
-//        let boltToLine = SKPhysicsJointPin.joint(
-//            withBodyA: anchor.physicsBody!,
-//            bodyB: linePhysicsBody,
-//            anchor: anchor.position
-//        )
-//        physicsWorld.add(boltToLine)
+        self.addChild(anchor)
+        self.addChild(playerLine)
+        playerAttachedAnchor = anchor
+
+        guard let anchorPhysicsBody = anchor.physicsBody,
+            let linePhysicsBody = playerLine.physicsBody,
+            let playerPhyscisBody = self.player?.node.physicsBody else {
+                return
+        }
 
         let boltToLine = SKPhysicsJointPin.joint(
-            withBodyA: boltPhysicsBody,
+            withBodyA: anchorPhysicsBody,
             bodyB: linePhysicsBody,
-            anchor: playerAttachedBolt.position
+            anchor: anchor.position
         )
-        physicsWorld.add(boltToLine)
-        print("anchor: \(anchor.position)")
-        print("position: \(playerAttachedBolt.position)")
+        self.physicsWorld.add(boltToLine)
+        self.anchorToPlayerLineJointPin = boltToLine
 
         let lineToPlayer = SKPhysicsJointPin.joint(
             withBodyA: playerPhyscisBody,
             bodyB: linePhysicsBody,
-            anchor: player.node.position
+            anchor: playerPosition
         )
-//        physicsWorld.add(lineToPlayer)
-
-//        let playerToBolt = SKPhysicsJointLimit.joint(
-//            withBodyA: anchor.physicsBody!,
-//            bodyB: playerPhyscisBody,
-//            anchorA: anchor.position,
-//            anchorB: player.node.position
-//        )
-//        physicsWorld.add(playerToBolt)
+        self.physicsWorld.add(lineToPlayer)
+        self.playerLineToPlayerPositionJointPin = lineToPlayer
     }
 
-    private func handleTouchEnd() {
-        guard let playerLine = self.player?.line else {
+    private func handleGrapplingHookBtnTouchEnd() {
+        guard let playerLine = self.player?.line,
+            let playerAttachedAnchor = self.playerAttachedAnchor,
+            let anchorToPlayerLineJointPin = self.anchorToPlayerLineJointPin,
+            let playerLineToPlayerPositionJointPin = self.playerLineToPlayerPositionJointPin else {
             return
         }
+
         self.player?.releaseFromBolt()
         playerLine.removeFromParent()
-    }
-}
 
-extension GameScene: ButtonNodeDelegate {
-    func didTouchBegan() {
-        handleTouchBegan()
-    }
-
-    func didTouchEnd() {
-        handleTouchEnd()
+        playerAttachedAnchor.removeFromParent()
+        self.physicsWorld.remove(anchorToPlayerLineJointPin)
+        self.physicsWorld.remove(playerLineToPlayerPositionJointPin)
+        self.playerAttachedAnchor = nil
+        self.anchorToPlayerLineJointPin = nil
+        self.playerLineToPlayerPositionJointPin = nil
     }
 }
