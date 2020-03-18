@@ -159,10 +159,12 @@ class GameScene: SKScene {
     // MARK: - Count down to start game
 
     func startCountdown() {
-        // TODO: Disable all game buttons
+        disableGameButtons()
     }
 
     func countdown(count: Int) {
+        startCountdown()
+
         countdownLabel = SKLabelNode()
         countdownLabel?.position = CGPoint(x: 0, y: 0)
         countdownLabel?.fontColor = .black
@@ -185,11 +187,10 @@ class GameScene: SKScene {
     }
 
     func endCountdown() {
-        // TODO: Enable all the game buttons
+        enableGameButtons()
         countdownLabel?.removeFromParent()
         viewController.hidePowerSlider()
         launchPlayer()
-
     }
 
     // MARK: - Calculate nearest bolt
@@ -220,6 +221,22 @@ class GameScene: SKScene {
         let dy = CGFloat(powerLaunch)
 
         return CGVector(dx: dx, dy: dy)
+    }
+
+    private func disableGameButtons() {
+        guard let grapplingHookButton = grapplingHookButton else {
+            return
+        }
+
+        grapplingHookButton.state = .ButtonNodeStateDisabled
+    }
+
+    private func enableGameButtons() {
+        guard let grapplingHookButton = grapplingHookButton else {
+            return
+        }
+
+        grapplingHookButton.state = .ButtonNodeStateActive
     }
 
     private func updatePlayerClosestBolt() {
