@@ -64,6 +64,7 @@
 		D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C13D241A4346004AB20A /* AppDelegate.swift */; };
 		D92F9405241D2E8A0021DBE4 /* DeadlockMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D92F9404241D2E890021DBE4 /* DeadlockMap.sks */; };
 		D9617E6724239741000A2AD8 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9617E6624239741000A2AD8 /* PreGameLobbyViewModel.swift */; };
+		D9617E6924239F6A000A2AD8 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9617E6824239F6A000A2AD8 /* PreGameLobbyViewModel.swift */; };
 		D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123C9241E6B8500A6DB7F /* MapsCoordinator.swift */; };
 		D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123CB241E6B9600A6DB7F /* MapsViewModel.swift */; };
 		D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */; };
@@ -163,6 +164,7 @@
 		D923C13D241A4346004AB20A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D92F9404241D2E890021DBE4 /* DeadlockMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeadlockMap.sks; sourceTree = "<group>"; };
 		D9617E6624239741000A2AD8 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
+		D9617E6824239F6A000A2AD8 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		D9A123C9241E6B8500A6DB7F /* MapsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsCoordinator.swift; sourceTree = "<group>"; };
 		D9A123CB241E6B9600A6DB7F /* MapsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewModel.swift; sourceTree = "<group>"; };
 		D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
@@ -522,6 +524,7 @@
 			isa = PBXGroup;
 			children = (
 				D9617E6624239741000A2AD8 /* PreGameLobbyViewModel.swift */,
+				D9617E6824239F6A000A2AD8 /* PreGameLobbyViewModel.swift */,
 				D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */,
 				D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */,
 				D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */,
@@ -808,6 +811,7 @@
 				D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */,
 				110B3CE7241F45D900840C4E /* GameplayStore.swift in Sources */,
 				D9617E6724239741000A2AD8 /* PreGameLobbyViewModel.swift in Sources */,
+				D9617E6924239F6A000A2AD8 /* PreGameLobbyViewModel.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
 				110B3CED2420605600840C4E /* FirestoreRepresentable.swift in Sources */,
 				110B3CDF241F3DAE00840C4E /* Vector.swift in Sources */,
