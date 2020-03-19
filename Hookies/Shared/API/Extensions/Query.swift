@@ -41,7 +41,7 @@ extension Query {
             return completion(nil, nil)
         }
         completion(snapshot.documents.compactMap {
-            Model(modelData: FirestoreModelData(snapshot: $0))
+            Model(modelData: FirestoreDataModel(snapshot: $0))
         }, nil)
     }
 }

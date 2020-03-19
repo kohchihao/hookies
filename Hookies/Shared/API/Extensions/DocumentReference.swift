@@ -59,6 +59,6 @@ extension DocumentReference {
         guard let snapshot = snapshot else {
             return completion(nil, nil)
         }
-        completion(Model(modelData: FirestoreModelData(snapshot: snapshot)), nil)
+        completion(Model(modelData: FirestoreDataModel(snapshot: snapshot)), nil)
     }
 }

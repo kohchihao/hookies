@@ -18,7 +18,7 @@ extension Gameplay: FirestoreModel {
         ]
     }
 
-    init?(modelData: FirestoreModelData) {
+    init?(modelData: FirestoreDataModel) {
         try? self.init(
             gameId: modelData.documentID,
             playersId: modelData.value(forKey: "playersId")

@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A protocol that will enforce a class/struct to be convertible to Firebase key value pairs representation.
 protocol FirestoreRepresentable {
     var representation: [String: Any?] { get }
 }

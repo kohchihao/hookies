@@ -6,15 +6,11 @@
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
-public struct Property {
-    let label: String
-    let value: Any
-}
-
 import FirebaseFirestore
 
+/// An instance of FirestoreModel would represent a model that is covertable to a document in Firestore.
 protocol FirestoreModel {
-    init?(modelData: FirestoreModelData)
+    init?(modelData: FirestoreDataModel)
 
     /// ID of the document in Firestore.
     var documentID: String { get }
@@ -25,12 +21,12 @@ protocol FirestoreModel {
 }
 
 extension FirestoreModel {
-
+    /// A default serializer that will convert a model can convert all its attributes to become a key value pair.
     func defaultSerializer() -> [String: Any?] {
         var data = [String: Any?]()
         Mirror(reflecting: self).children.forEach { child in
             guard let property = child.label.flatMap({
-                Property(label: $0, value: unwrap(any: child.value))
+                FirebaseProperty(label: $0, value: unwrap(any: child.value))
             }) else {
                 return
             }
@@ -66,4 +62,9 @@ extension FirestoreModel {
         return some
 
     }
+}
+
+private struct FirebaseProperty {
+    let label: String
+    let value: Any
 }
