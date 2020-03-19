@@ -17,7 +17,7 @@ extension PlayerGameState: FirestoreModel {
         return defaultSerializer()
     }
 
-    init?(modelData: FirestoreModelData) {
+    init?(modelData: FirestoreDataModel) {
         do {
             let position = try Vector(x: modelData.value(forKey: "positionX"),
                                       y: modelData.value(forKey: "positionY"))
