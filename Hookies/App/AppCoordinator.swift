@@ -23,21 +23,27 @@ class AppCoordinator: Coordinator {
         window.rootViewController = navigator.root()
         window.makeKeyAndVisible()
         self.navigator = navigator
+        self.subscribeToAuthState()
     }
 
     // MARK: - FUNCTIONS
-    func start() {
-        API.shared.user.isSignedIn(completion: { isSignedIn in
-            if isSignedIn {
+    func start() {}
+
+    func subscribeToAuthState() {
+        API.shared.user.subscribeToAuthStatus(listener: { authState in
+            switch authState {
+            case .notAuthenticated:
+                self.navigateToAuth(authState)
+            case .missingUsername:
+                self.navigateToAuth(authState)
+            case .authenticated:
                 self.navigateToHome()
-            } else {
-                self.navigateToAuth()
             }
         })
     }
 
-    func navigateToAuth() {
-        let signInCoordinator = AuthCoordinator(with: navigator)
+    func navigateToAuth(_ authState: AuthState) {
+        let signInCoordinator = AuthCoordinator(with: navigator, authState: authState)
         signInCoordinator.coordinatorDelegate = self
         signInCoordinator.start()
     }

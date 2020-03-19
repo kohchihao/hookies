@@ -1,5 +1,5 @@
 //
-//  FirestoreModelData.swift
+//  FirestoreDataModel.swift
 //  Hookies
 //
 //  Created by Jun Wei Koh on 9/3/20.
@@ -9,7 +9,8 @@
 import Foundation
 import FirebaseFirestore
 
-struct FirestoreModelData {
+/// A model that is used to wrap around a snapshot of data from FIrestore.
+struct FirestoreDataModel {
 
     let snapshot: DocumentSnapshot
 
@@ -26,6 +27,10 @@ struct FirestoreModelData {
             throw ModelDataError.typeCastFailed
         }
         return value
+    }
+
+    func optionalValue<T>(forKey key: String) -> T? {
+        return data[key] as? T
     }
 
     enum ModelDataError: Error {

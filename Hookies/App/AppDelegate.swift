@@ -60,7 +60,6 @@ extension AppDelegate {
 
     func setupThirdPartyAuth() {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-        GIDSignIn.sharedInstance().delegate = self
     }
 
     // MARK: COORDINATOR
@@ -74,38 +73,5 @@ extension AppDelegate {
         appCoordinator = AppCoordinator(with: window, navigator: navigator)
         appCoordinator.start()
         window.makeKeyAndVisible()
-    }
-}
-
-extension AppDelegate: GIDSignInDelegate {
-
-    @available(iOS 9.0, *)
-    func application(_ application: UIApplication, open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
-      return GIDSignIn.sharedInstance().handle(url)
-    }
-
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        guard error == nil, let authentication = user.authentication else {
-            return
-        }
-
-        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                       accessToken: authentication.accessToken)
-        Auth.auth().signIn(with: credential) { _, error in
-            guard error == nil else {
-                return
-            }
-
-            API.shared.user.isSignedIn(completion: { isSignedIn in
-                if isSignedIn {
-                    self.appCoordinator?.navigateToHome()
-                }
-            })
-        }
-    }
-
-    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-        appCoordinator?.navigateToAuth()
     }
 }

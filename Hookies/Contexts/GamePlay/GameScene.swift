@@ -28,7 +28,7 @@ class GameScene: SKScene {
     private var anchorToPlayerLineJointPin: SKPhysicsJointPin?
     private var playerLineToPlayerPositionJointPin: SKPhysicsJointPin?
 
-    weak var viewController: HomeViewController!
+    weak var viewController: GamePlayViewController!
 
     private var powerLaunch = 1_000
 
