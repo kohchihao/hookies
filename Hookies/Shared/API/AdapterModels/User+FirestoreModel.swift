@@ -15,7 +15,7 @@ extension User: FirestoreModel {
         return defaultSerializer()
     }
 
-    init?(modelData: FirestoreModelData) {
+    init?(modelData: FirestoreDataModel) {
         try? self.init(
             uid: modelData.documentID,
             username: modelData.value(forKey: "username"),
