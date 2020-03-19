@@ -50,6 +50,10 @@
 		785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */; };
 		785B79DA2423581B001D7028 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785B79D92423581B001D7028 /* GameKit.framework */; };
 		785B79DC24236B6D001D7028 /* Lobby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79DB24236B6D001D7028 /* Lobby.swift */; };
+		785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79DE24237636001D7028 /* JoinGameCoordinator.swift */; };
+		785B79E124237647001D7028 /* JoinGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79E024237647001D7028 /* JoinGameViewModel.swift */; };
+		785B79E324237659001D7028 /* JoinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79E224237659001D7028 /* JoinGameViewController.swift */; };
+		785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 785B79E424237AE4001D7028 /* JoinGameViewController.xib */; };
 		788007222413F37100F43B71 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 788007212413F37100F43B71 /* Actions.sks */; };
 		788007292413F37100F43B71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788007272413F37100F43B71 /* Main.storyboard */; };
 		7880072B2413F37400F43B71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7880072A2413F37400F43B71 /* Assets.xcassets */; };
@@ -142,6 +146,10 @@
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785B79D92423581B001D7028 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		785B79DB24236B6D001D7028 /* Lobby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lobby.swift; sourceTree = "<group>"; };
+		785B79DE24237636001D7028 /* JoinGameCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameCoordinator.swift; sourceTree = "<group>"; };
+		785B79E024237647001D7028 /* JoinGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewModel.swift; sourceTree = "<group>"; };
+		785B79E224237659001D7028 /* JoinGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewController.swift; sourceTree = "<group>"; };
+		785B79E424237AE4001D7028 /* JoinGameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JoinGameViewController.xib; sourceTree = "<group>"; };
 		7880071A2413F37100F43B71 /* Hookies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hookies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		788007212413F37100F43B71 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		788007282413F37100F43B71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -259,6 +267,7 @@
 			children = (
 				D9A123C8241E6B6500A6DB7F /* Maps */,
 				D9FF1A6B241E1B6700E7965F /* GamePlay */,
+				785B79DD242375CA001D7028 /* JoinGame */,
 				D9FF1A62241E0D5800E7965F /* PreGameLobby */,
 				1127C55D2415E2E800A78AA0 /* Auth */,
 				1127C55C2415E2E100A78AA0 /* Home */,
@@ -405,6 +414,17 @@
 				C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		785B79DD242375CA001D7028 /* JoinGame */ = {
+			isa = PBXGroup;
+			children = (
+				785B79DE24237636001D7028 /* JoinGameCoordinator.swift */,
+				785B79E024237647001D7028 /* JoinGameViewModel.swift */,
+				785B79E224237659001D7028 /* JoinGameViewController.swift */,
+				785B79E424237AE4001D7028 /* JoinGameViewController.xib */,
+			);
+			path = JoinGame;
 			sourceTree = "<group>";
 		};
 		788007112413F37100F43B71 = {
@@ -657,6 +677,7 @@
 				D923C13C241A42B5004AB20A /* CannotDieMap.sks in Resources */,
 				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
 				D9FF1A80241E325900E7965F /* GamePlayViewController.xib in Resources */,
+				785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
 				D9FF1A6A241E0DE600E7965F /* PreGameLobbyViewController.xib in Resources */,
@@ -766,6 +787,7 @@
 				1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */,
 				1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */,
 				110B3CF624207AAA00840C4E /* PowerupCreator.swift in Sources */,
+				785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */,
 				D9A123D3241E6EC500A6DB7F /* RoundButton.swift in Sources */,
 				1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */,
 				1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */,
@@ -799,6 +821,7 @@
 				D9FF1A7E241E325900E7965F /* GamePlayViewController.swift in Sources */,
 				D9FF1A82241E325900E7965F /* GamePlayViewModel.swift in Sources */,
 				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
+				785B79E124237647001D7028 /* JoinGameViewModel.swift in Sources */,
 				D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */,
 				110B3CE7241F45D900840C4E /* GameplayStore.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
@@ -813,6 +836,7 @@
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
 				110B3CE5241F431700840C4E /* Gameplay+FirestoreModel.swift in Sources */,
+				785B79E324237659001D7028 /* JoinGameViewController.swift in Sources */,
 				119C541024164AFE00F27D87 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
