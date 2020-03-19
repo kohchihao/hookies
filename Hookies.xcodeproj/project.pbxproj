@@ -63,6 +63,7 @@
 		D923C13C241A42B5004AB20A /* CannotDieMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D923C13B241A42B5004AB20A /* CannotDieMap.sks */; };
 		D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C13D241A4346004AB20A /* AppDelegate.swift */; };
 		D92F9405241D2E8A0021DBE4 /* DeadlockMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D92F9404241D2E890021DBE4 /* DeadlockMap.sks */; };
+		D9617E6724239741000A2AD8 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9617E6624239741000A2AD8 /* PreGameLobbyViewModel.swift */; };
 		D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123C9241E6B8500A6DB7F /* MapsCoordinator.swift */; };
 		D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123CB241E6B9600A6DB7F /* MapsViewModel.swift */; };
 		D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */; };
@@ -71,7 +72,6 @@
 		D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D5241E71C000A6DB7F /* MapType.swift */; };
 		D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */; };
 		D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */; };
-		D9FF1A66241E0DA600E7965F /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A65241E0DA600E7965F /* PreGameLobbyViewModel.swift */; };
 		D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */; };
 		D9FF1A6A241E0DE600E7965F /* PreGameLobbyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */; };
 		D9FF1A7E241E325900E7965F /* GamePlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A79241E325800E7965F /* GamePlayViewController.swift */; };
@@ -162,6 +162,7 @@
 		D923C13B241A42B5004AB20A /* CannotDieMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = CannotDieMap.sks; sourceTree = "<group>"; };
 		D923C13D241A4346004AB20A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D92F9404241D2E890021DBE4 /* DeadlockMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeadlockMap.sks; sourceTree = "<group>"; };
+		D9617E6624239741000A2AD8 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		D9A123C9241E6B8500A6DB7F /* MapsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsCoordinator.swift; sourceTree = "<group>"; };
 		D9A123CB241E6B9600A6DB7F /* MapsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewModel.swift; sourceTree = "<group>"; };
 		D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
@@ -170,7 +171,6 @@
 		D9A123D5241E71C000A6DB7F /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDelegate.swift; sourceTree = "<group>"; };
 		D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyCoordinator.swift; sourceTree = "<group>"; };
-		D9FF1A65241E0DA600E7965F /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreGameLobbyViewModel.swift; path = /Users/junweikoh/Desktop/CS3217_Offline.nosync/hookies/Hookies/Contexts/PreGameLobby/PreGameLobbyViewModel.swift; sourceTree = "<absolute>"; };
 		D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewController.swift; sourceTree = "<group>"; };
 		D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreGameLobbyViewController.xib; sourceTree = "<group>"; };
 		D9FF1A79241E325800E7965F /* GamePlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamePlayViewController.swift; sourceTree = "<group>"; };
@@ -521,8 +521,8 @@
 		D9FF1A62241E0D5800E7965F /* PreGameLobby */ = {
 			isa = PBXGroup;
 			children = (
+				D9617E6624239741000A2AD8 /* PreGameLobbyViewModel.swift */,
 				D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */,
-				D9FF1A65241E0DA600E7965F /* PreGameLobbyViewModel.swift */,
 				D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */,
 				D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */,
 			);
@@ -777,7 +777,7 @@
 				110B3CF124206C4A00840C4E /* PlayerGameState.swift in Sources */,
 				1127C5822415FBBD00A78AA0 /* AuthCoordinator.swift in Sources */,
 				2B6D6974241D153A0057F1B5 /* SpriteType.swift in Sources */,
-				119C541E2416709300F27D87 /* FirestoreModelData.swift in Sources */,
+				119C541E2416709300F27D87 /* FirestoreDataModel.swift in Sources */,
 				1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */,
 				119C54182416646E00F27D87 /* UserStore.swift in Sources */,
 				2B6D6970241CC9390057F1B5 /* Player.swift in Sources */,
@@ -789,7 +789,6 @@
 				D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */,
 				1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */,
 				D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */,
-				D9FF1A66241E0DA600E7965F /* PreGameLobbyViewModel.swift in Sources */,
 				D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */,
 				D9FF1A7F241E325900E7965F /* GamePlayCoordinator.swift in Sources */,
 				D923C134241A1610004AB20A /* Background.swift in Sources */,
@@ -808,6 +807,7 @@
 				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
 				D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */,
 				110B3CE7241F45D900840C4E /* GameplayStore.swift in Sources */,
+				D9617E6724239741000A2AD8 /* PreGameLobbyViewModel.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
 				110B3CED2420605600840C4E /* FirestoreRepresentable.swift in Sources */,
 				110B3CDF241F3DAE00840C4E /* Vector.swift in Sources */,

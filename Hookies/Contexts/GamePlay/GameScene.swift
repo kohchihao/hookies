@@ -14,7 +14,6 @@ class GameScene: SKScene {
     let playerId = "id"
     let playerImage = "Owlet_Monster"
 
-    private var isTouching = false
     private var player: Player?
     private var cannon: Cannon?
     private var cam: SKCameraNode?
@@ -62,19 +61,16 @@ class GameScene: SKScene {
             return
         }
         addChild(player.node)
-
-        countdown(count: count)
+        startCountdown()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isTouching = true
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isTouching = false
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -82,12 +78,6 @@ class GameScene: SKScene {
 
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-//        if isTouching {
-//            let moveAction = SKAction.moveBy(x: 10, y: 0, duration: 1)
-//            self.player?.run(moveAction)
-//        }
-//        calculateNearestBolt()
-
         updatePlayerClosestBolt()
         handlePlayerTetheringToClosestBolt()
     }
@@ -160,11 +150,10 @@ class GameScene: SKScene {
 
     func startCountdown() {
         disableGameButtons()
+        countdown(count: count)
     }
 
     func countdown(count: Int) {
-        startCountdown()
-
         countdownLabel = SKLabelNode()
         countdownLabel?.position = CGPoint(x: 0, y: 0)
         countdownLabel?.fontColor = .black
@@ -323,5 +312,13 @@ class GameScene: SKScene {
         self.playerAttachedAnchor = nil
         self.anchorToPlayerLineJointPin = nil
         self.playerLineToPlayerPositionJointPin = nil
+    }
+
+    // MARK: - Resolve deadlock
+
+    private func resolveDeadlock() {
+        // potential deadlock scenario
+        // 1. close to 0 x,y velocity
+        // 2. 
     }
 }
