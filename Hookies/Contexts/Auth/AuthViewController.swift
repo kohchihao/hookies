@@ -51,10 +51,22 @@ class AuthViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: AuthViewController.name, bundle: nil)
         GIDSignIn.sharedInstance().delegate = self
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillChangeFrame(_:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillChangeFrame(_:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -71,6 +83,30 @@ class AuthViewController: UIViewController {
         GIDSignIn.sharedInstance()?.presentingViewController = self
         toPromptForUsername(toPrompt: viewModel.toPromptForUsername)
         usernamePromptDialog.layer.cornerRadius = 15
+    }
+
+    @objc
+    private func keyboardWillChangeFrame(_ notification: Notification) {
+        guard let info = (notification as NSNotification).userInfo,
+            let animationDuration = info[UIResponder.keyboardAnimationDurationUserInfoKey]
+                as? TimeInterval else {
+                    return
+        }
+
+        var keyboardHeight: CGFloat = 0
+        if notification.name == UIResponder.keyboardWillShowNotification {
+            guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+                return
+            }
+
+            keyboardHeight = keyboardFrame.cgRectValue.height
+        }
+
+        self.usernamePromptDialog.center = CGPoint(x: self.view.frame.width / 2,
+                                                   y: (self.view.frame.height - keyboardHeight) / 2)
+        UIView.animate(withDuration: animationDuration, animations: {
+            self.view.layoutIfNeeded()
+        })
     }
 
     @IBAction private func onSubmitButtonClicked(_ sender: Any) {
