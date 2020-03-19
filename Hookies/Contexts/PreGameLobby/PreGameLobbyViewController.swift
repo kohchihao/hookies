@@ -20,6 +20,8 @@ class PreGameLobbyViewController: UIViewController {
     private var viewModel: PreGameLobbyViewModelRepresentable
 
     @IBOutlet private var selectedMapLabel: UILabel!
+    @IBOutlet private var gameSessionIdLabel: UILabel!
+    @IBOutlet private var playersIdLabel: UILabel!
 
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
@@ -35,6 +37,8 @@ class PreGameLobbyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
+        gameSessionIdLabel.text = viewModel.lobby.lobbyId
+        preparePlayers()
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -50,6 +54,13 @@ class PreGameLobbyViewController: UIViewController {
             return
         }
         navigationDelegate?.didPressStartButton(in: self, withSelectedMapType: selectedMap)
+    }
+
+    private func preparePlayers() {
+        for playerId in viewModel.lobby.playersId {
+            playersIdLabel.text?.append(playerId)
+            playersIdLabel.text?.append("\n")
+        }
     }
 }
 

@@ -9,6 +9,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PreGameLobbyViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
+                <outlet property="gameSessionIdLabel" destination="E5t-UX-zdb" id="UAr-gf-YAa"/>
+                <outlet property="playersIdLabel" destination="Qzx-jZ-WWH" id="eeI-fz-eje"/>
                 <outlet property="selectedMapLabel" destination="Mqv-bn-hYX" id="ehg-Bk-jKM"/>
                 <outlet property="view" destination="tig-dl-f0g" id="i1H-5V-yC2"/>
             </connections>
@@ -41,6 +43,20 @@
                         <action selector="onStartClicked:" destination="-1" eventType="touchUpInside" id="hKY-Cv-VK8"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5t-UX-zdb">
+                    <rect key="frame" x="421" y="254" width="248" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qzx-jZ-WWH">
+                    <rect key="frame" x="421" y="410" width="182" height="102"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <viewLayoutGuide key="safeArea" id="Jre-8K-DKd"/>
