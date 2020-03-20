@@ -15,10 +15,12 @@ class API {
     private let db: Firestore
     let user: UserStore
     let gameplay: GameplayStore
+    let lobby: LobbyStore
 
     private init() {
         db = Firestore.firestore()
         user = UserStore(userCollection: db.collection("users"))
         gameplay = GameplayStore(gameplayCollection: db.collection("gameplays"))
+        lobby = LobbyStore(lobbyCollection: db.collection("lobbies"))
     }
 }

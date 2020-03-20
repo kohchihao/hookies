@@ -36,6 +36,10 @@ extension FirestoreModel {
                 break
             case let firestoreRep as FirestoreRepresentable:
                 data.merge(firestoreRep.representation) { _, new in new }
+            case let stringRep as StringRepresentable:
+                data[property.label] = stringRep.stringValue
+            case let dictionary as [String: Any]:
+                data[property.label] = convertDictionary(dictionary)
             case let vector as Vector:
                 data[property.label + "X"] = vector.x
                 data[property.label + "Y"] = vector.y
@@ -44,6 +48,20 @@ extension FirestoreModel {
             }
         }
         return data
+    }
+
+    func convertDictionary(_ dictionary: [String: Any]) -> [String: Any] {
+        return dictionary.mapValues({ value in
+            switch value {
+            case let dict as [String: Any]:
+                return convertDictionary(dict)
+            case let stringRep as StringRepresentable:
+                return stringRep.stringValue
+            default:
+                return value
+            }
+        })
+
     }
 
     /// Unwrap Optionals from Any.
