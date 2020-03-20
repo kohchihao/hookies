@@ -38,6 +38,8 @@ class GamePlayViewController: UIViewController {
         if let view = self.view as? SKView {
             // Load the SKScene from 'GameScene.sks'
             if let scene = GameScene(fileNamed: viewModel.selectedMap.rawValue) {
+                scene.gameplayId = viewModel.gameplayId
+
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
 

@@ -8,12 +8,13 @@
 
 import SpriteKit
 import GameplayKit
+import Dispatch
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    // TODO: To remove
-    let playerId = "id"
-    let playerImage = "Owlet_Monster"
+    let playerIdDispatchGroup = DispatchGroup()
 
+    var gameplayId: String?
+    private var currPlayerId: String?
     private var player: Player?
     private var cannon: Cannon?
     private var finishingLine: SKSpriteNode?
@@ -35,6 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var powerLaunch = 1_000
 
     override func didMove(to view: SKView) {
+        getCurrentPlayerId()
         initialiseContactDelegate()
         initialiseBackground(with: view.frame.size)
         initialiseGrapplingHookButton()
@@ -47,7 +49,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         cannon = Cannon(node: cannonNode)
 
-        initialisePlayer(at: cannonNode.position)
+        playerIdDispatchGroup.notify(queue: DispatchQueue.main) {
+            self.initialisePlayer(at: cannonNode.position)
+        }
+
         startCountdown()
     }
 
@@ -72,6 +77,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
             handlePlayerAtFinishingLine()
+        }
+    }
+
+    // MARK: - Get current player id
+    private func getCurrentPlayerId() {
+        playerIdDispatchGroup.enter()
+
+        API.shared.user.currentUser { user, error in
+            if error != nil {
+                return
+            }
+
+            self.currPlayerId = user?.uid
+            self.playerIdDispatchGroup.leave()
         }
     }
 
@@ -136,21 +155,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Initialise Player
 
     private func initialisePlayer(at position: CGPoint) {
-        guard let playerClosestBolt = getNearestBolt(from: position) else {
-            return
+        guard let gameplayId = gameplayId,
+            let currPlayerId = currPlayerId else {
+                return
         }
 
-        self.player = Player(
-            id: playerId,
-            position: position,
-            imageName: playerImage,
-            closestBolt: playerClosestBolt
-        )
+        var currPlayerCostume: String?
+        API.shared.lobby.get(lobbyId: gameplayId, completion: { lobby, error in
+            if error != nil {
+                return
+            }
 
-        guard let player = player else {
-            return
-        }
-        addChild(player.node)
+            print(currPlayerId)
+            currPlayerCostume = lobby?.costumesId[currPlayerId]?.stringValue
+
+            guard let currPlayerImageName = currPlayerCostume,
+                let playerClosestBolt = self.getNearestBolt(from: position) else {
+                    return
+            }
+
+            self.player = Player(
+                id: currPlayerId,
+                position: position,
+                imageName: currPlayerImageName,
+                closestBolt: playerClosestBolt
+            )
+
+            guard let player = self.player else {
+                return
+            }
+            self.addChild(player.node)
+        })
     }
 
     // MARK: - Centering camera
