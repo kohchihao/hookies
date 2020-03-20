@@ -12,6 +12,7 @@ struct PlayerGameState {
     private(set) var playerId: String
     private(set) var position: Vector
     private(set) var velocity: Vector
+    private(set) var imageName: String
     private(set) var powerup: Powerup?
     private(set) var attachedPosition: Vector?
 }

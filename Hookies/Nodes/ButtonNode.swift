@@ -9,13 +9,14 @@
 import SpriteKit
 
 enum ButtonNodeState {
-    case ButtonNodeStateActive, ButtonNodeStateSelected, ButtonNodeStateHidden
+    case ButtonNodeStateActive, ButtonNodeStateSelected, ButtonNodeStateDisabled, ButtonNodeStateHidden
 }
 
 class ButtonNode: SKSpriteNode {
 
     /* Setup a dummy action closure */
-    var selectedHandler: () -> Void = { print("No button action set") }
+    var touchBeganHandler: () -> Void = {  }
+    var touchEndHandler: () -> Void = {  }
 
     /* Button state management */
     var state: ButtonNodeState = .ButtonNodeStateActive {
@@ -30,6 +31,9 @@ class ButtonNode: SKSpriteNode {
             case .ButtonNodeStateSelected:
                 /* Semi transparent */
                 self.alpha = 0.7
+            case .ButtonNodeStateDisabled:
+                self.isUserInteractionEnabled = false
+                self.alpha = 0.2
             case .ButtonNodeStateHidden:
                 /* Disable touch */
                 self.isUserInteractionEnabled = false
@@ -52,11 +56,12 @@ class ButtonNode: SKSpriteNode {
     // MARK: - Touch handling
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         state = .ButtonNodeStateSelected
+        touchBeganHandler()
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        selectedHandler()
         state = .ButtonNodeStateActive
+        touchEndHandler()
     }
 
     // MARK: - Init Other ways
