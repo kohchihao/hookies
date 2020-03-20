@@ -56,8 +56,7 @@ class GameplayStore {
     }
 
     /// Save an instance of gameplay into firestore.
-    func save(gameplay: Gameplay,
-              completion: @escaping (_ gameplay: Gameplay?, _ error: Error?) -> Void) {
+    func save(gameplay: Gameplay) {
         let ref = collection.document(gameplay.documentID)
         ref.setDataModel(gameplay)
         for state in gameplay.playersGameState {

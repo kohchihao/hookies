@@ -29,7 +29,6 @@
 		1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C56D2415E58400A78AA0 /* HomeViewModel.swift */; };
 		1127C5702415E5C400A78AA0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C56F2415E5C400A78AA0 /* HomeViewController.swift */; };
 		1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5732415EA5200A78AA0 /* Nameable.swift */; };
-		1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */; };
 		1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 1127C5782415EE2000A78AA0 /* .swiftlint.yml */; };
 		1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C57B2415F80B00A78AA0 /* HomeViewController.xib */; };
 		1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C57D2415FBA200A78AA0 /* AuthViewModel.swift */; };
@@ -39,11 +38,12 @@
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
 		117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */; };
+		118A4A6F2424861E005B7188 /* UIViewController+Nameable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A6E2424861E005B7188 /* UIViewController+Nameable.swift */; };
+		118A4A7124248641005B7188 /* FirestoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7024248641005B7188 /* FirestoreDataModel.swift */; };
+		118A4A7324248663005B7188 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7224248663005B7188 /* UserStore.swift */; };
 		119C541024164AFE00F27D87 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C540F24164AFE00F27D87 /* User.swift */; };
-		119C54182416646E00F27D87 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54172416646E00F27D87 /* UserStore.swift */; };
 		119C541A2416654900F27D87 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54192416654900F27D87 /* API.swift */; };
 		119C541C2416704800F27D87 /* FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C541B2416704800F27D87 /* FirestoreModel.swift */; };
-		119C541E2416709300F27D87 /* FirestoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C541D2416709300F27D87 /* FirestoreDataModel.swift */; };
 		119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5420241691DF00F27D87 /* DocumentReference.swift */; };
 		119C5423241691EF00F27D87 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5422241691EF00F27D87 /* Query.swift */; };
 		119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54282418768A00F27D87 /* User+FirestoreModel.swift */; };
@@ -121,7 +121,6 @@
 		1127C56D2415E58400A78AA0 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		1127C56F2415E5C400A78AA0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		1127C5732415EA5200A78AA0 /* Nameable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nameable.swift; sourceTree = "<group>"; };
-		1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Nameable.swift"; sourceTree = "<group>"; };
 		1127C5782415EE2000A78AA0 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		1127C57B2415F80B00A78AA0 /* HomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
 		1127C57D2415FBA200A78AA0 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -131,11 +130,12 @@
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
 		117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ActivityIndicator.swift"; sourceTree = "<group>"; };
+		118A4A6E2424861E005B7188 /* UIViewController+Nameable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Nameable.swift"; sourceTree = "<group>"; };
+		118A4A7024248641005B7188 /* FirestoreDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDataModel.swift; sourceTree = "<group>"; };
+		118A4A7224248663005B7188 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		119C540F24164AFE00F27D87 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		119C54172416646E00F27D87 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		119C54192416654900F27D87 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		119C541B2416704800F27D87 /* FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreModel.swift; sourceTree = "<group>"; };
-		119C541D2416709300F27D87 /* FirestoreDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDataModel.swift; sourceTree = "<group>"; };
 		119C5420241691DF00F27D87 /* DocumentReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
 		119C5422241691EF00F27D87 /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		119C54282418768A00F27D87 /* User+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+FirestoreModel.swift"; sourceTree = "<group>"; };
@@ -247,8 +247,8 @@
 				111D2EF32418C89B0083373C /* Exceptions */,
 				119C54272418766100F27D87 /* Extensions */,
 				119C541F24168C9D00F27D87 /* AdapterModels */,
-				119C54172416646E00F27D87 /* UserStore.swift */,
 				110B3CE6241F45D900840C4E /* GameplayStore.swift */,
+				118A4A7224248663005B7188 /* UserStore.swift */,
 				119C54192416654900F27D87 /* API.swift */,
 			);
 			path = API;
@@ -361,8 +361,8 @@
 			isa = PBXGroup;
 			children = (
 				1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */,
-				1127C5762415EAA500A78AA0 /* UIViewController+Nameable.swift */,
 				117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */,
+				118A4A6E2424861E005B7188 /* UIViewController+Nameable.swift */,
 			);
 			path = UIViewController;
 			sourceTree = "<group>";
@@ -380,7 +380,7 @@
 			children = (
 				110B3CEC2420605600840C4E /* FirestoreRepresentable.swift */,
 				119C541B2416704800F27D87 /* FirestoreModel.swift */,
-				119C541D2416709300F27D87 /* FirestoreDataModel.swift */,
+				118A4A7024248641005B7188 /* FirestoreDataModel.swift */,
 				119C54282418768A00F27D87 /* User+FirestoreModel.swift */,
 				110B3CE4241F431700840C4E /* Gameplay+FirestoreModel.swift */,
 				110B3CEA241F655500840C4E /* PlayerGameState+FirestoreModel.swift */,
@@ -781,17 +781,18 @@
 				1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */,
 				119C54182416646E00F27D87 /* UserStore.swift in Sources */,
 				2B6D6970241CC9390057F1B5 /* Player.swift in Sources */,
-				119C541E2416709300F27D87 /* FirestoreDataModel.swift in Sources */,
 				117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */,
+				118A4A7124248641005B7188 /* FirestoreDataModel.swift in Sources */,
 				110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */,
-				1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */,
-				119C54182416646E00F27D87 /* UserStore.swift in Sources */,
 				D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */,
 				1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */,
 				D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */,
+				118A4A7324248663005B7188 /* UserStore.swift in Sources */,
+				D9FF1A66241E0DA600E7965F /* PreGameLobbyViewModel.swift in Sources */,
 				D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */,
 				D9FF1A7F241E325900E7965F /* GamePlayCoordinator.swift in Sources */,
 				D923C134241A1610004AB20A /* Background.swift in Sources */,
+				118A4A6F2424861E005B7188 /* UIViewController+Nameable.swift in Sources */,
 				D923C138241A23B1004AB20A /* ButtonNode.swift in Sources */,
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
