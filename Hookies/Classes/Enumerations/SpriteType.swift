@@ -102,6 +102,15 @@ extension SpriteType {
     var collisionBitMask: UInt32 {
         switch self {
         case .player:
+            return 0x1
+        default:
+            return 0
+        }
+    }
+
+    var contactTestBitMask: UInt32 {
+        switch self {
+        case .player:
             return SpriteType.finishingLine.bitMask
         case .finishingLine:
             return SpriteType.player.bitMask

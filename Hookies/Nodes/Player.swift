@@ -44,7 +44,7 @@ class Player {
         self.node.physicsBody?.allowsRotation = type.allowRotation
         self.node.physicsBody?.categoryBitMask = type.bitMask
         self.node.physicsBody?.collisionBitMask = type.collisionBitMask
-        self.node.physicsBody?.contactTestBitMask = type.collisionBitMask
+        self.node.physicsBody?.contactTestBitMask = type.contactTestBitMask
     }
 
     // MARK: - Functions
@@ -87,6 +87,22 @@ class Player {
         self.previousAttachedBolt = attachedBolt
         self.line = nil
         self.attachedBolt = nil
+    }
+
+    func bringToStop() {
+        guard let velocity = node.physicsBody?.velocity else {
+            return
+        }
+
+        let hasPlayerStop = velocity.dx <= 0.5 && velocity.dy <= 0.5
+
+        if !hasPlayerStop {
+            let oppositeForce = CGVector(dx: -velocity.dx, dy: -velocity.dy)
+            node.physicsBody?.applyForce(oppositeForce)
+        } else {
+            node.physicsBody?.velocity = CGVector.zero
+            node.physicsBody?.restitution = 0
+        }
     }
 
     private func makeLine(to bolt: SKSpriteNode) -> SKShapeNode {
