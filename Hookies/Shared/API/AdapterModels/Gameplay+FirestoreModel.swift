@@ -14,14 +14,24 @@ extension Gameplay: FirestoreModel {
     var serialized: [String: Any?] {
         return [
             "gameId": documentID,
-            "playersId": playersId
+            "playersId": playersId,
+            "gameState": gameState.rawValue
         ]
     }
 
     init?(modelData: FirestoreDataModel) {
-        try? self.init(
-            gameId: modelData.documentID,
-            playersId: modelData.value(forKey: "playersId")
-        )
+        do {
+            guard let gameState = try GameState(rawValue: modelData.value(forKey: "gameState"))
+                else {
+                    return nil
+            }
+            try self.init(
+                gameId: modelData.documentID,
+                gameState: gameState,
+                playersId: modelData.value(forKey: "playersId")
+            )
+        } catch {
+            return nil
+        }
     }
 }

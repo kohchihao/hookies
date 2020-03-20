@@ -28,6 +28,7 @@ extension Lobby: FirestoreModel {
             try self.init(
                 lobbyId: modelData.documentID,
                 hostId: modelData.value(forKey: "hostId"),
+                lobbyState: modelData.value(forKey: "lobbyState"),
                 selectedMapType: selectedMap,
                 playersId: modelData.value(forKey: "playersId"),
                 costumesId: costumes
