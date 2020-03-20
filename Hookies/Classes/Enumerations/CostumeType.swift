@@ -8,8 +8,14 @@
 
 import Foundation
 
-enum CostumeType: String {
+enum CostumeType: String, CaseIterable {
     case Pink
     case Owlet
     case Dude
+}
+
+extension CostumeType: StringRepresentable {
+    var stringValue: String {
+        return self.rawValue
+    }
 }

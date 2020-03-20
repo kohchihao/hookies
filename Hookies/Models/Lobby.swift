@@ -32,6 +32,15 @@ struct Lobby {
         }
     }
 
+    init(lobbyId: String, hostId: String, selectedMapType: MapType?,
+         playersId: [String], costumesId: [String: CostumeType]) {
+        self.lobbyId = lobbyId
+        self.hostId = hostId
+        self.selectedMapType = selectedMapType
+        self.playersId = playersId
+        self.costumesId = costumesId
+    }
+
     mutating func addPlayerId(playerId: String) {
         guard !playersId.contains(playerId) && playerId != hostId else {
             return
