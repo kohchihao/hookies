@@ -52,6 +52,16 @@ class UserStore {
         }
     }
 
+    func currentUser(completion: @escaping (User?, Error?) -> Void) {
+        guard let currentUser = Auth.auth().currentUser else {
+            return completion(nil, nil)
+        }
+
+        get(withUid: currentUser.uid) { user, error in
+            completion(user, error)
+        }
+    }
+
     /// Get a user with the given uid.
     func get(withUid uid: String, completion: @escaping (_ user: User?, _ error: Error?) -> Void) {
         let ref = collection.document(uid)
