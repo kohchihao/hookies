@@ -14,7 +14,7 @@ class PreGameLobbyCoordinator: Coordinator {
     var coordinators: [Coordinator] = []
     weak var coordinatorDelegate: CoordinatorDelegate?
 
-    private let viewModel = PreGameLobbyViewModel()
+    private var viewModel: PreGameLobbyViewModel
 
     // MARK: - PRIVATE PROPERTIES
     private let navigator: NavigatorRepresentable
@@ -22,6 +22,12 @@ class PreGameLobbyCoordinator: Coordinator {
     // MARK: - INIT
     init(with navigator: NavigatorRepresentable) {
         self.navigator = navigator
+        self.viewModel = PreGameLobbyViewModel()
+    }
+
+    init(with navigator: NavigatorRepresentable, withLobby: Lobby) {
+        self.navigator = navigator
+        self.viewModel = PreGameLobbyViewModel(lobby: withLobby)
     }
 
     // MARK: - START

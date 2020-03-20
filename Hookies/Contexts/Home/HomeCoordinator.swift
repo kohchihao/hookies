@@ -52,6 +52,8 @@ extension HomeCoordinator: HomeViewNavigationDelegate {
     }
 
     func didPressJoinMatchButton(in: HomeViewController) {
-
+        let joinGameCoordinator = JoinGameCoordinator(with: navigator)
+        joinGameCoordinator.coordinatorDelegate = self
+        joinGameCoordinator.start()
     }
 }

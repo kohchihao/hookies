@@ -17,9 +17,15 @@ protocol PreGameLobbyViewNavigationDelegate: class {
 
 class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
-    private var viewModel: PreGameLobbyViewModelRepresentable
+    private var viewModel: PreGameLobbyViewModelRepresentable {
+        didSet {
+            updateView()
+        }
+    }
 
     @IBOutlet private var selectedMapLabel: UILabel!
+    @IBOutlet private var gameSessionIdLabel: UILabel!
+    @IBOutlet private var playersIdLabel: UILabel!
 
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
@@ -35,6 +41,7 @@ class PreGameLobbyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
+        updateView()
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -51,11 +58,30 @@ class PreGameLobbyViewController: UIViewController {
         }
         navigationDelegate?.didPressStartButton(in: self, withSelectedMapType: selectedMap)
     }
+
+    private func updateView() {
+        print("refreshView")
+        print(viewModel.lobby.lobbyId)
+        gameSessionIdLabel.text = viewModel.lobby.lobbyId
+        preparePlayers()
+    }
+
+    private func preparePlayers() {
+        playersIdLabel.text?.append(viewModel.lobby.hostId)
+        for playerId in viewModel.lobby.playersId {
+            playersIdLabel.text?.append(playerId)
+            playersIdLabel.text?.append("\n")
+        }
+    }
 }
 
 extension PreGameLobbyViewController: RoomStateViewModelDelegate {
     func updateSelectedMap(mapType: MapType) {
         viewModel.selectedMap = mapType
         selectedMapLabel.text = mapType.rawValue
+    }
+
+    func updateLobbyViewModel(lobbyViewModel: PreGameLobbyViewModelRepresentable) {
+        self.viewModel = lobbyViewModel
     }
 }

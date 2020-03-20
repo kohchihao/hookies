@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JoinGameViewController" customModule="Hookies" customModuleProvider="target">
+            <connections>
+                <outlet property="joinGameDialog" destination="zSa-1l-fgT" id="23c-Dy-QoT"/>
+                <outlet property="lobbyIdField" destination="D4L-qM-MBg" id="iCn-Lt-N1U"/>
+                <outlet property="view" destination="ezu-An-7nl" id="i8M-Ju-KZN"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="ezu-An-7nl">
+            <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zSa-1l-fgT" userLabel="Dialog">
+                    <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dialog_bg" translatesAutoresizingMaskIntoConstraints="NO" id="oVX-po-nuR">
+                            <rect key="frame" x="287" y="159" width="450" height="450"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="450" id="jrc-y6-gWB"/>
+                                <constraint firstAttribute="width" constant="450" id="pSd-Jy-DkT"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XDy-Gf-gjA" userLabel="submit" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
+                            <rect key="frame" x="398" y="463" width="228" height="30"/>
+                            <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="228" id="WRV-5z-mr6"/>
+                            </constraints>
+                            <state key="normal" title="Submit">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="15"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="submitButtonTappedWithSender:" destination="-1" eventType="touchUpInside" id="NmA-cU-3YP"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hV3-9S-GXt" userLabel="close">
+                            <rect key="frame" x="312" y="191" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="fZx-A1-mgN"/>
+                                <constraint firstAttribute="height" constant="40" id="uwu-eU-xDC"/>
+                            </constraints>
+                            <state key="normal" image="close"/>
+                            <connections>
+                                <action selector="closeButtonTappedWithSender:" destination="-1" eventType="touchUpInside" id="Ehl-sD-P7Y"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the Lobby ID:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u7j-lQ-v6L" userLabel="Enter the Lobby ID:">
+                            <rect key="frame" x="409" y="278" width="206" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D4L-qM-MBg" userLabel="lobbyIdField">
+                            <rect key="frame" x="389" y="367" width="246" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="246" id="IHb-L7-uYl"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="D4L-qM-MBg" firstAttribute="centerX" secondItem="XDy-Gf-gjA" secondAttribute="centerX" id="5Sa-ns-xts"/>
+                        <constraint firstItem="oVX-po-nuR" firstAttribute="centerX" secondItem="D4L-qM-MBg" secondAttribute="centerX" id="BPg-Ic-R64"/>
+                        <constraint firstItem="hV3-9S-GXt" firstAttribute="leading" secondItem="oVX-po-nuR" secondAttribute="leading" constant="25" id="HWS-xI-Dqs"/>
+                        <constraint firstItem="u7j-lQ-v6L" firstAttribute="centerX" secondItem="D4L-qM-MBg" secondAttribute="centerX" id="MJa-pS-NhB"/>
+                        <constraint firstItem="hV3-9S-GXt" firstAttribute="top" secondItem="oVX-po-nuR" secondAttribute="top" constant="32" id="f3q-Zb-tOw"/>
+                        <constraint firstItem="oVX-po-nuR" firstAttribute="centerY" secondItem="zSa-1l-fgT" secondAttribute="centerY" id="f9Z-mE-dmU"/>
+                        <constraint firstItem="XDy-Gf-gjA" firstAttribute="top" secondItem="D4L-qM-MBg" secondAttribute="bottom" constant="62" id="jkJ-mx-taS"/>
+                        <constraint firstItem="oVX-po-nuR" firstAttribute="centerY" secondItem="D4L-qM-MBg" secondAttribute="centerY" id="lIQ-p4-uYK"/>
+                        <constraint firstItem="D4L-qM-MBg" firstAttribute="top" secondItem="u7j-lQ-v6L" secondAttribute="bottom" constant="59" id="pey-Z6-MBl"/>
+                        <constraint firstItem="oVX-po-nuR" firstAttribute="centerX" secondItem="zSa-1l-fgT" secondAttribute="centerX" id="q8t-Yv-rkR"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="zSa-1l-fgT" firstAttribute="centerX" secondItem="ezu-An-7nl" secondAttribute="centerX" id="Cyb-wy-vRn"/>
+                <constraint firstItem="zSa-1l-fgT" firstAttribute="leading" secondItem="Xaa-RV-YWP" secondAttribute="leading" id="DmX-80-Yta"/>
+                <constraint firstItem="zSa-1l-fgT" firstAttribute="bottom" secondItem="Xaa-RV-YWP" secondAttribute="bottom" id="RPs-fu-KhI"/>
+                <constraint firstItem="zSa-1l-fgT" firstAttribute="top" secondItem="Xaa-RV-YWP" secondAttribute="top" id="TP5-6s-mga"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Xaa-RV-YWP"/>
+            <point key="canvasLocation" x="318.75" y="253.90625"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="close" width="214" height="215"/>
+        <image name="dialog_bg" width="1102" height="1100"/>
+    </resources>
+</document>
