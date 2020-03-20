@@ -32,7 +32,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     weak var viewController: GamePlayViewController!
 
-    private var powerLaunch = 2_000
+    private var powerLaunch = 1_000
 
     override func didMove(to view: SKView) {
         initialiseContactDelegate()
@@ -248,11 +248,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Game Buttons
 
     private func disableGameButtons() {
-        guard let grapplingHookButton = grapplingHookButton else {
-            return
-        }
-
-    private func disableGameButtons() {
         grapplingHookButton?.state = .ButtonNodeStateDisabled
         jumpButton?.state = .ButtonNodeStateHidden
     }
@@ -383,7 +378,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     // MARK: - Handle player at finishing line
-    
+
     private func handlePlayerAtFinishingLine() {
         hasPlayerFinishRace = true
         disableGameButtons()
