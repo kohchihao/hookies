@@ -22,6 +22,9 @@ class Player {
         return attachedBolt != nil
     }
 
+    var isStuck = false
+    var contactedPlatforms: [SKSpriteNode: Int] = [:]
+
     // MARK: - Init
     init(id: String, position: CGPoint, imageName: String, closestBolt: SKSpriteNode) {
         self.closestBolt = closestBolt
@@ -32,13 +35,7 @@ class Player {
         self.node.position = position
         self.node.size = type.size
 
-//        guard let texture = self.node.texture else {
-//            return
-//        }
-
-//        self.node.physicsBody = SKPhysicsBody(texture: texture, size: self.node.size)
         self.node.physicsBody = SKPhysicsBody(rectangleOf: self.node.size)
-
         self.node.physicsBody?.isDynamic = type.isDynamic
         self.node.physicsBody?.mass = type.mass
         self.node.physicsBody?.linearDamping = type.linearDamping
@@ -88,7 +85,6 @@ class Player {
 
     func releaseFromBolt() {
         self.previousAttachedBolt = attachedBolt
-
         self.line = nil
         self.attachedBolt = nil
     }
@@ -131,5 +127,48 @@ class Player {
 
         let boost = CGVector(dx: boostX, dy: boostY)
         node.physicsBody?.applyImpulse(boost)
+    }
+
+    // MARK: - Checks for deadlock
+
+    func checkIfStuck() {
+        guard let physicsBody = node.physicsBody else {
+            return
+        }
+
+        let isVelocityNearlyZero = isVelocityNearlyZeroDeadlock(physicsBody)
+        let isInfiniteBouncing = isInfiniteBouncingDeadlock(physicsBody)
+
+        isStuck = isVelocityNearlyZero || isInfiniteBouncing
+    }
+
+    /// Checks for velocity is nearly 0.
+    private func isVelocityNearlyZeroDeadlock(_ physicsBody: SKPhysicsBody) -> Bool {
+        let playerHorizontalVelocity = physicsBody.velocity.dx
+        let isVelocityNearlyZero = playerHorizontalVelocity < CGFloat(0.5)
+            && playerHorizontalVelocity > CGFloat(-0.5)
+        return isVelocityNearlyZero
+    }
+
+    /// Checks for infinite bouncing.
+    private func isInfiniteBouncingDeadlock(_ physicsBody: SKPhysicsBody) -> Bool {
+        let contactedPhysicsBodies = physicsBody.allContactedBodies()
+        for contactedBody in contactedPhysicsBodies {
+            guard let spriteNode = contactedBody.node as? SKSpriteNode else {
+                return false
+            }
+            if spriteNode.name == "platform" {
+                if let touchCount = contactedPlatforms[spriteNode] {
+                    contactedPlatforms[spriteNode] = touchCount + 1
+                    if contactedPlatforms[spriteNode] == 10 {
+                        contactedPlatforms.removeAll()
+                        return true
+                    }
+                } else {
+                    contactedPlatforms[spriteNode] = 1
+                }
+            }
+        }
+        return false
     }
 }
