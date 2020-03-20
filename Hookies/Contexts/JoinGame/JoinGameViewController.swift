@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol JoinGameViewNavigationDelegate: class {
-
+    func didPressJoinLobbyButton(in: JoinGameViewController, withLobby: Lobby)
 }
 
 class JoinGameViewController: UIViewController {
@@ -65,7 +65,19 @@ class JoinGameViewController: UIViewController {
         joinGameDialog.layer.cornerRadius = 15
     }
 
-    @IBAction func closeButtonTapped(sender: UIButton) {
+    @IBAction private func closeButtonTapped(sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    // TODO: Retrieve lobby from firestore
+    @IBAction private func submitButtonTapped(sender: UIButton) {
+        guard let lobbyId = lobbyIdField.text else {
+            return
+        }
+        let lobby = Lobby(hostId: lobbyId)
+        print(lobby.hostId)
+        self.dismiss(animated: true, completion: nil)
+        navigationDelegate?.didPressJoinLobbyButton(in: self, withLobby: lobby)
         self.dismiss(animated: true, completion: nil)
     }
 

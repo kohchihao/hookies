@@ -33,7 +33,16 @@ class JoinGameCoordinator: Coordinator {
     // MARK: - FUNCTIONS
     private func viewController() -> JoinGameViewController {
         let viewController = JoinGameViewController(with: viewModel)
-        //viewController.navigationDelegate = self
+        viewController.navigationDelegate = self
         return viewController
+    }
+}
+
+// MARK: - JoinGameViewNavigationDelegate
+extension JoinGameCoordinator: JoinGameViewNavigationDelegate {
+    func didPressJoinLobbyButton(in: JoinGameViewController, withLobby: Lobby) {
+        let preGameLobbyCoordinator = PreGameLobbyCoordinator(with: navigator, withLobby: withLobby)
+        preGameLobbyCoordinator.coordinatorDelegate = self
+        preGameLobbyCoordinator.start()
     }
 }

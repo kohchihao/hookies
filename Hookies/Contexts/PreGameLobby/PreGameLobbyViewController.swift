@@ -38,6 +38,7 @@ class PreGameLobbyViewController: UIViewController {
         super.viewDidLoad()
         viewModel.delegate = self
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
+        print(viewModel.lobby.playersId)
         preparePlayers()
     }
 
@@ -57,6 +58,7 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func preparePlayers() {
+        playersIdLabel.text?.append(viewModel.lobby.hostId)
         for playerId in viewModel.lobby.playersId {
             playersIdLabel.text?.append(playerId)
             playersIdLabel.text?.append("\n")
