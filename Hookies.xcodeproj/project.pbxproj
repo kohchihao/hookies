@@ -38,6 +38,7 @@
 		1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* AuthViewController.xib */; };
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
+		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
 		117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */; };
 		118A4A752424885E005B7188 /* LobbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A742424885E005B7188 /* LobbyStore.swift */; };
 		118A4A7724248876005B7188 /* Lobby+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */; };
@@ -136,6 +137,7 @@
 		1127C585241606CD00A78AA0 /* AuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
+		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
 		117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ActivityIndicator.swift"; sourceTree = "<group>"; };
 		118A4A742424885E005B7188 /* LobbyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyStore.swift; sourceTree = "<group>"; };
 		118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lobby+FirestoreModel.swift"; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 			children = (
 				1127C5632415E3AE00A78AA0 /* Coordinator.swift */,
 				1127C5732415EA5200A78AA0 /* Nameable.swift */,
+				113727052424C3C700AB4B79 /* StringRepresentable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -848,6 +851,7 @@
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
 				110B3CE5241F431700840C4E /* Gameplay+FirestoreModel.swift in Sources */,
+				113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */,
 				785B79E324237659001D7028 /* JoinGameViewController.swift in Sources */,
 				119C541024164AFE00F27D87 /* User.swift in Sources */,
 			);

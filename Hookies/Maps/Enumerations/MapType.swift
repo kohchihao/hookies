@@ -12,3 +12,9 @@ enum MapType: String, CaseIterable {
     case DeadlockMap
     case CannotDieMap
 }
+
+extension MapType: StringRepresentable {
+    var stringValue: String {
+        return self.rawValue
+    }
+}

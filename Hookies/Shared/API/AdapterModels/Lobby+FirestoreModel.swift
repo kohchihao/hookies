@@ -18,12 +18,22 @@ extension Lobby: FirestoreModel {
     }
 
     init?(modelData: FirestoreDataModel) {
-        try? self.init(
-            lobbyId: modelData.documentID,
-            hostId: modelData.value(forKey: "hostId"),
-            mapId: modelData.optionalValue(forKey: "mapId"),
-            playersId: modelData.value(forKey: "playersId"),
-            costumes: modelData.value(forKey: "costumes")
-        )
+        var selectedMap: MapType?
+        if let mapString: String = modelData.optionalValue(forKey: "selectedMapType") {
+            selectedMap = MapType(rawValue: mapString)
+        }
+        do {
+            let costumesId: [String: String] = try modelData.value(forKey: "costumesId")
+            let costumes = costumesId.compactMapValues({ CostumeType(rawValue: $0) })
+            try self.init(
+                lobbyId: modelData.documentID,
+                hostId: modelData.value(forKey: "hostId"),
+                selectedMapType: selectedMap,
+                playersId: modelData.value(forKey: "playersId"),
+                costumesId: costumes
+            )
+        } catch {
+            return nil
+        }
     }
 }

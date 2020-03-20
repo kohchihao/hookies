@@ -11,7 +11,6 @@ import Foundation
 struct Lobby {
     private(set) var lobbyId: String
     private(set) var hostId: String
-    private(set) var mapId: String?
     private(set) var playersId: [String]
     private(set) var selectedMapType: MapType?
     private(set) var costumesId: [String: CostumeType]
@@ -31,6 +30,15 @@ struct Lobby {
         for (playerId, costumeType) in costumesId {
             addCostumeId(playerId: playerId, costumeType: costumeType)
         }
+    }
+
+    init(lobbyId: String, hostId: String, selectedMapType: MapType?,
+         playersId: [String], costumesId: [String: CostumeType]) {
+        self.lobbyId = lobbyId
+        self.hostId = hostId
+        self.selectedMapType = selectedMapType
+        self.playersId = playersId
+        self.costumesId = costumesId
     }
 
     mutating func addPlayerId(playerId: String) {
