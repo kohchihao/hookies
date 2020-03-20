@@ -64,7 +64,9 @@
 		D923C13C241A42B5004AB20A /* CannotDieMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D923C13B241A42B5004AB20A /* CannotDieMap.sks */; };
 		D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C13D241A4346004AB20A /* AppDelegate.swift */; };
 		D92F9405241D2E8A0021DBE4 /* DeadlockMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D92F9404241D2E890021DBE4 /* DeadlockMap.sks */; };
+		D9617E6724239741000A2AD8 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9617E6624239741000A2AD8 /* PreGameLobbyViewModel.swift */; };
 		D9617E6924239F6A000A2AD8 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9617E6824239F6A000A2AD8 /* PreGameLobbyViewModel.swift */; };
+		D9617E6B2423A99F000A2AD8 /* JumpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9617E6A2423A99F000A2AD8 /* JumpButton.swift */; };
 		D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123C9241E6B8500A6DB7F /* MapsCoordinator.swift */; };
 		D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123CB241E6B9600A6DB7F /* MapsViewModel.swift */; };
 		D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */; };
@@ -164,7 +166,9 @@
 		D923C13B241A42B5004AB20A /* CannotDieMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = CannotDieMap.sks; sourceTree = "<group>"; };
 		D923C13D241A4346004AB20A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D92F9404241D2E890021DBE4 /* DeadlockMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeadlockMap.sks; sourceTree = "<group>"; };
+		D9617E6624239741000A2AD8 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		D9617E6824239F6A000A2AD8 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
+		D9617E6A2423A99F000A2AD8 /* JumpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpButton.swift; sourceTree = "<group>"; };
 		D9A123C9241E6B8500A6DB7F /* MapsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsCoordinator.swift; sourceTree = "<group>"; };
 		D9A123CB241E6B9600A6DB7F /* MapsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewModel.swift; sourceTree = "<group>"; };
 		D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
@@ -478,6 +482,7 @@
 				D923C137241A23B1004AB20A /* ButtonNode.swift */,
 				2B6D696F241CC9390057F1B5 /* Player.swift */,
 				2B6D6971241D0EB40057F1B5 /* Cannon.swift */,
+				D9617E6A2423A99F000A2AD8 /* JumpButton.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -523,6 +528,7 @@
 		D9FF1A62241E0D5800E7965F /* PreGameLobby */ = {
 			isa = PBXGroup;
 			children = (
+				D9617E6624239741000A2AD8 /* PreGameLobbyViewModel.swift */,
 				D9617E6824239F6A000A2AD8 /* PreGameLobbyViewModel.swift */,
 				2B5659512423978600D7C31B /* PreGameLobbyViewModel.swift */,
 				D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */,
@@ -811,6 +817,7 @@
 				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
 				D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */,
 				110B3CE7241F45D900840C4E /* GameplayStore.swift in Sources */,
+				D9617E6724239741000A2AD8 /* PreGameLobbyViewModel.swift in Sources */,
 				D9617E6924239F6A000A2AD8 /* PreGameLobbyViewModel.swift in Sources */,
 				2B5659522423978600D7C31B /* PreGameLobbyViewModel.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
@@ -821,6 +828,7 @@
 				D9FF1A81241E325900E7965F /* GameScene.swift in Sources */,
 				D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
+				D9617E6B2423A99F000A2AD8 /* JumpButton.swift in Sources */,
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
 				2B6D6972241D0EB40057F1B5 /* Cannon.swift in Sources */,

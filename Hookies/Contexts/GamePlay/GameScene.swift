@@ -14,7 +14,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let playerId = "id"
     let playerImage = "Owlet_Monster"
 
-    private var isTouching = false
     private var player: Player?
     private var cannon: Cannon?
     private var finishingLine: SKSpriteNode?
@@ -22,6 +21,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private var background: Background?
     private var grapplingHookButton: GrapplingHookButton?
+    private var jumpButton: JumpButton?
     private var countdownLabel: SKLabelNode?
     private var count = 2
     private var hasPlayerFinishRace = false
@@ -32,42 +32,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     weak var viewController: GamePlayViewController!
 
-    private var powerLaunch = 2_000
+    private var powerLaunch = 1_000
 
     override func didMove(to view: SKView) {
         initialiseContactDelegate()
         initialiseBackground(with: view.frame.size)
         initialiseGrapplingHookButton()
+        initialiseJumpButton()
         initialiseCamera()
         initialiseFinishingLinePhysicsBody()
 
         guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode else {
-                return
+            return
         }
         cannon = Cannon(node: cannonNode)
 
         initialisePlayer(at: cannonNode.position)
-        countdown(count: count)
+        startCountdown()
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isTouching = true
-    }
-
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    }
-
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isTouching = false
-    }
-
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-    }
+    // MARK: - Update
 
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         updatePlayerClosestBolt()
         handlePlayerTetheringToClosestBolt()
+        player?.checkIfStuck()
+        resolveDeadlock()
+        handleJumpButton()
         handlePlayerAfterFinishingLine()
     }
 
@@ -106,11 +98,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         guard let cam = cam else {
             return
         }
-        guard let grapplingHookButton = grapplingHookButton else {
+        guard let grapplingHookButton = grapplingHookButton, let jumpButton = jumpButton else {
             return
         }
         addChild(cam)
         cam.addChild(grapplingHookButton)
+        cam.addChild(jumpButton)
     }
 
      // MARK: - Initialise Grappling Hook button
@@ -190,11 +183,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private func startCountdown() {
         disableGameButtons()
+        countdown(count: count)
     }
 
-    private func countdown(count: Int) {
-        startCountdown()
-
+    func countdown(count: Int) {
         countdownLabel = SKLabelNode()
         countdownLabel?.position = CGPoint(x: 0, y: 0)
         countdownLabel?.fontColor = .black
@@ -256,19 +248,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Game Buttons
 
     private func disableGameButtons() {
-        guard let grapplingHookButton = grapplingHookButton else {
-            return
-        }
-
-        grapplingHookButton.state = .ButtonNodeStateDisabled
+        grapplingHookButton?.state = .ButtonNodeStateDisabled
+        jumpButton?.state = .ButtonNodeStateHidden
     }
 
     private func enableGameButtons() {
-        guard let grapplingHookButton = grapplingHookButton else {
-            return
-        }
-
-        grapplingHookButton.state = .ButtonNodeStateActive
+        grapplingHookButton?.state = .ButtonNodeStateActive
     }
 
     private func updatePlayerClosestBolt() {
@@ -286,25 +271,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Player tethering to hook
 
     private func handlePlayerTetheringToClosestBolt() {
-        guard let grapplingHookButton = grapplingHookButton else {
-            return
-        }
-
-        grapplingHookButton.touchBeganHandler = {
-            self.handleGrapplingHookBtnTouchBegan()
-        }
-
-        grapplingHookButton.touchEndHandler = {
-            self.handleGrapplingHookBtnTouchEnd()
-        }
+        grapplingHookButton?.touchBeganHandler = handleGrapplingHookBtnTouchBegan
+        grapplingHookButton?.touchEndHandler = handleGrapplingHookBtnTouchEnd
     }
 
     private func handleGrapplingHookBtnTouchBegan() {
         self.player?.tetherToClosestBolt()
+        joinPlayerToBolt()
+    }
 
+    private func joinPlayerToBolt() {
+        let playerInitialVelocity = self.player?.node.physicsBody?.velocity
         guard let playerPosition = self.player?.node.position,
             let playerLine = self.player?.line,
-            let playerAttachedBolt = self.player?.attachedBolt else {
+            let playerAttachedBolt = self.player?.attachedBolt
+            else {
                 return
         }
 
@@ -319,7 +300,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         guard let anchorPhysicsBody = anchor.physicsBody,
             let linePhysicsBody = playerLine.physicsBody,
-            let playerPhyscisBody = self.player?.node.physicsBody else {
+            let playerPhyscisBody = self.player?.node.physicsBody
+            else {
                 return
         }
 
@@ -338,6 +320,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         )
         self.physicsWorld.add(lineToPlayer)
         self.playerLineToPlayerPositionJointPin = lineToPlayer
+        self.player?.node.physicsBody?.applyImpulse(playerInitialVelocity!)
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
@@ -359,7 +342,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.playerLineToPlayerPositionJointPin = nil
     }
 
+    // MARK: - Resolve deadlock
+
+    private func initialiseJumpButton() {
+        guard let sceneFrame = self.scene?.frame else {
+            return
+        }
+        jumpButton = JumpButton(in: sceneFrame)
+    }
+
+    private func handleJumpButton() {
+        jumpButton?.touchBeganHandler = handleJumpButtonTouched
+        jumpButton?.touchEndHandler = handleJumpButtonTouchEnd
+    }
+
+    private func handleJumpButtonTouched() {
+        player?.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
+    }
+
+    private func handleJumpButtonTouchEnd() {
+        jumpButton?.state = .ButtonNodeStateHidden
+    }
+
+    private func resolveDeadlock() {
+        guard grapplingHookButton?.state != .ButtonNodeStateDisabled else {
+            return
+        }
+        guard let player = player, !player.isAttachedToBolt else {
+            return
+        }
+
+        if player.isStuck {
+            jumpButton?.state = .ButtonNodeStateActive
+        }
+    }
+
     // MARK: - Handle player at finishing line
+
     private func handlePlayerAtFinishingLine() {
         hasPlayerFinishRace = true
         disableGameButtons()
