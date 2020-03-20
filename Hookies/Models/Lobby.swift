@@ -16,7 +16,7 @@ struct Lobby {
     private(set) var costumesId: [String: CostumeType]
 
     init(hostId: String) {
-        lobbyId = UUID().uuidString
+        lobbyId = RandomIDGenerator.getRandomID(length: 6)
         self.hostId = hostId
         self.playersId = [hostId]
         self.costumesId = [hostId: .Pink]

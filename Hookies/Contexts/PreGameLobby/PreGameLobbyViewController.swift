@@ -17,11 +17,7 @@ protocol PreGameLobbyViewNavigationDelegate: class {
 
 class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
-    private var viewModel: PreGameLobbyViewModelRepresentable {
-        didSet {
-            updateView()
-        }
-    }
+    private var viewModel: PreGameLobbyViewModelRepresentable
 
     @IBOutlet private var selectedMapLabel: UILabel!
     @IBOutlet private var gameSessionIdLabel: UILabel!
@@ -31,6 +27,8 @@ class PreGameLobbyViewController: UIViewController {
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: PreGameLobbyViewController.name, bundle: nil)
+        saveLobby(lobby: viewModel.lobby)
+        subscribeToLobby(lobby: viewModel.lobby)
     }
 
     @available(*, unavailable)
@@ -48,6 +46,28 @@ class PreGameLobbyViewController: UIViewController {
         return true
     }
 
+    func saveLobby(lobby: Lobby) {
+        API.shared.lobby.save(lobby: lobby)
+    }
+
+    func subscribeToLobby(lobby: Lobby) {
+        API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard let updatedLobby = lobby else {
+                return
+            }
+            self.viewModel.lobby = updatedLobby
+            self.updateView()
+        })
+    }
+
+    deinit {
+        API.shared.lobby.unsubscribeFromLobby()
+    }
+
     @IBAction private func onSelectMapClicked(_ sender: UIButton) {
         navigationDelegate?.didPressSelectMapButton(in: self)
     }
@@ -60,18 +80,17 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func updateView() {
-        print("refreshView")
-        print(viewModel.lobby.lobbyId)
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
         preparePlayers()
     }
 
     private func preparePlayers() {
-        playersIdLabel.text?.append(viewModel.lobby.hostId)
-        for playerId in viewModel.lobby.playersId {
-            playersIdLabel.text?.append(playerId)
-            playersIdLabel.text?.append("\n")
-        }
+        playersIdLabel.text = viewModel.lobby.hostId
+//        playersIdLabel.text?.append(viewModel.lobby.hostId)
+//        for playerId in viewModel.lobby.playersId {
+//            playersIdLabel.text?.append(playerId)
+//            playersIdLabel.text?.append("\n")
+//        }
     }
 }
 
