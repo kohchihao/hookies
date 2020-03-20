@@ -26,6 +26,10 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
         }
         self.lobby = Lobby(hostId: hostId)
     }
+
+    init(lobby: Lobby) {
+        self.lobby = lobby
+    }
 }
 
 protocol RoomStateViewModelDelegate: class {

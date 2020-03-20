@@ -16,7 +16,7 @@ struct Lobby {
     init(hostId: String) {
         lobbyId = UUID().uuidString
         self.hostId = hostId
-        self.playersId = []
+        self.playersId = [hostId]
     }
 
     init(hostId: String, playersId: [String]) {
