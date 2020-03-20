@@ -13,8 +13,8 @@ struct Gameplay {
     private(set) var playersId: [String] = []
     private(set) var playersGameState: Set<PlayerGameState> = Set()
 
-    init() {
-        gameId = UUID().uuidString
+    init(gameId: String) {
+        self.gameId = gameId
     }
 
     init(gameId: String, playersId: [String]) {
