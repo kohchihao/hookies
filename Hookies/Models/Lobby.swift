@@ -23,7 +23,7 @@ struct Lobby {
         self.costumes = [:]
     }
 
-    init(hostId: String, mapId: String, playersId: [String]) {
+    init(hostId: String, mapId: String?, playersId: [String]) {
         lobbyId = UUID().uuidString
         self.hostId = hostId
         self.mapId = mapId
