@@ -39,6 +39,8 @@
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
 		117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */; };
+		118A4A752424885E005B7188 /* LobbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A742424885E005B7188 /* LobbyStore.swift */; };
+		118A4A7724248876005B7188 /* Lobby+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */; };
 		119C541024164AFE00F27D87 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C540F24164AFE00F27D87 /* User.swift */; };
 		119C54182416646E00F27D87 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54172416646E00F27D87 /* UserStore.swift */; };
 		119C541A2416654900F27D87 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54192416654900F27D87 /* API.swift */; };
@@ -134,6 +136,8 @@
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
 		117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ActivityIndicator.swift"; sourceTree = "<group>"; };
+		118A4A742424885E005B7188 /* LobbyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyStore.swift; sourceTree = "<group>"; };
+		118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lobby+FirestoreModel.swift"; sourceTree = "<group>"; };
 		119C540F24164AFE00F27D87 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		119C54172416646E00F27D87 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		119C54192416654900F27D87 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -257,6 +261,7 @@
 				119C541F24168C9D00F27D87 /* AdapterModels */,
 				119C54172416646E00F27D87 /* UserStore.swift */,
 				110B3CE6241F45D900840C4E /* GameplayStore.swift */,
+				118A4A742424885E005B7188 /* LobbyStore.swift */,
 				119C54192416654900F27D87 /* API.swift */,
 			);
 			path = API;
@@ -394,6 +399,7 @@
 				110B3CE4241F431700840C4E /* Gameplay+FirestoreModel.swift */,
 				110B3CEA241F655500840C4E /* PlayerGameState+FirestoreModel.swift */,
 				110B3CEE242062C300840C4E /* Powerup+FirestoreRepresentable.swift */,
+				118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */,
 			);
 			path = AdapterModels;
 			sourceTree = "<group>";
@@ -789,6 +795,7 @@
 				110B3CF624207AAA00840C4E /* PowerupCreator.swift in Sources */,
 				785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */,
 				D9A123D3241E6EC500A6DB7F /* RoundButton.swift in Sources */,
+				118A4A752424885E005B7188 /* LobbyStore.swift in Sources */,
 				1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */,
 				1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */,
 				1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */,
@@ -800,6 +807,7 @@
 				117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */,
 				110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */,
 				1127C5772415EAA500A78AA0 /* UIViewController+Nameable.swift in Sources */,
+				118A4A7724248876005B7188 /* Lobby+FirestoreModel.swift in Sources */,
 				119C54182416646E00F27D87 /* UserStore.swift in Sources */,
 				D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */,
 				1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */,
