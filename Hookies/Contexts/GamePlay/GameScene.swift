@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     // TODO: To remove
     let playerId = "id"
     let playerImage = "Owlet_Monster"
@@ -17,12 +17,14 @@ class GameScene: SKScene {
     private var isTouching = false
     private var player: Player?
     private var cannon: Cannon?
+    private var finishingLine: SKSpriteNode?
     private var cam: SKCameraNode?
 
     private var background: Background?
     private var grapplingHookButton: GrapplingHookButton?
     private var countdownLabel: SKLabelNode?
     private var count = 2
+    private var hasPlayerFinishRace = false
 
     private var playerAttachedAnchor: SKNode?
     private var anchorToPlayerLineJointPin: SKPhysicsJointPin?
@@ -30,39 +32,21 @@ class GameScene: SKScene {
 
     weak var viewController: GamePlayViewController!
 
-    private var powerLaunch = 1_000
+    private var powerLaunch = 2_000
 
     override func didMove(to view: SKView) {
+        initialiseContactDelegate()
         initialiseBackground(with: view.frame.size)
         initialiseGrapplingHookButton()
         initialiseCamera()
-
-        guard let playerNode = self.childNode(withName: "//player") as? SKSpriteNode else {
-                return
-        }
-        playerNode.removeFromParent()
+        initialiseFinishingLinePhysicsBody()
 
         guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode else {
                 return
         }
-
-        guard let playerClosestBolt = getNearestBolt(from: cannonNode.position) else {
-            return
-        }
-
         cannon = Cannon(node: cannonNode)
-        player = Player(
-            id: playerId,
-            position: cannonNode.position,
-            imageName: playerImage,
-            closestBolt: playerClosestBolt
-        )
 
-        guard let player = player else {
-            return
-        }
-        addChild(player.node)
-
+        initialisePlayer(at: cannonNode.position)
         countdown(count: count)
     }
 
@@ -82,19 +66,31 @@ class GameScene: SKScene {
 
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-//        if isTouching {
-//            let moveAction = SKAction.moveBy(x: 10, y: 0, duration: 1)
-//            self.player?.run(moveAction)
-//        }
-//        calculateNearestBolt()
-
         updatePlayerClosestBolt()
         handlePlayerTetheringToClosestBolt()
+        handlePlayerAfterFinishingLine()
+    }
+
+    func setPowerLaunch(at power: Int) {
+        powerLaunch = power
+    }
+
+     // MARK: - Collision Detection
+
+    func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
+            handlePlayerAtFinishingLine()
+        }
+    }
+
+    // MARK: - Initialise contact delegate
+    private func initialiseContactDelegate() {
+        physicsWorld.contactDelegate = self
     }
 
     // MARK: - Initialise background
 
-    func initialiseBackground(with size: CGSize) {
+    private func initialiseBackground(with size: CGSize) {
         background = Background(in: size)
         guard let background = background else {
             return
@@ -104,7 +100,7 @@ class GameScene: SKScene {
 
      // MARK: - Initialise Camera
 
-    func initialiseCamera() {
+    private func initialiseCamera() {
         cam = SKCameraNode()
         self.camera = cam
         guard let cam = cam else {
@@ -119,16 +115,54 @@ class GameScene: SKScene {
 
      // MARK: - Initialise Grappling Hook button
 
-    func initialiseGrapplingHookButton() {
+    private func initialiseGrapplingHookButton() {
         guard let sceneFrame = self.scene?.frame else {
             return
         }
         grapplingHookButton = GrapplingHookButton(in: sceneFrame)
     }
 
+    // MARK: - Initialise Finishing Line Physics Body
+
+    private func initialiseFinishingLinePhysicsBody() {
+        let type = SpriteType.finishingLine
+
+        guard let finishingLine = self.childNode(withName: "//ending_line") as? SKSpriteNode else {
+            return
+        }
+
+        finishingLine.physicsBody = SKPhysicsBody(rectangleOf: finishingLine.size)
+        finishingLine.physicsBody?.isDynamic = type.isDynamic
+        finishingLine.physicsBody?.allowsRotation = type.isDynamic
+        finishingLine.physicsBody?.affectedByGravity = type.affectedByGravity
+        finishingLine.physicsBody?.categoryBitMask = type.bitMask
+
+        self.finishingLine = finishingLine
+    }
+
+    // MARK: - Initialise Player
+
+    private func initialisePlayer(at position: CGPoint) {
+        guard let playerClosestBolt = getNearestBolt(from: position) else {
+            return
+        }
+
+        self.player = Player(
+            id: playerId,
+            position: position,
+            imageName: playerImage,
+            closestBolt: playerClosestBolt
+        )
+
+        guard let player = player else {
+            return
+        }
+        addChild(player.node)
+    }
+
     // MARK: - Centering camera
 
-    func centerOnNode(node: SKNode) {
+    private func centerOnNode(node: SKNode) {
         let action = SKAction.move(to: CGPoint(x: node.position.x, y: 0), duration: 0.5)
         self.cam?.run(action)
         self.background?.run(action)
@@ -143,7 +177,7 @@ class GameScene: SKScene {
 
     // MARK: - Launch player
 
-    func launchPlayer() {
+    private func launchPlayer() {
         guard let player = player else {
             return
         }
@@ -152,17 +186,13 @@ class GameScene: SKScene {
         cannon?.node.removeFromParent()
     }
 
-    func setPowerLaunch(at power: Int) {
-        powerLaunch = power
-    }
-
     // MARK: - Count down to start game
 
-    func startCountdown() {
+    private func startCountdown() {
         disableGameButtons()
     }
 
-    func countdown(count: Int) {
+    private func countdown(count: Int) {
         startCountdown()
 
         countdownLabel = SKLabelNode()
@@ -181,12 +211,12 @@ class GameScene: SKScene {
 
     }
 
-    func countdownAction() {
+    private func countdownAction() {
         count -= 1
         countdownLabel?.text = "Launching player in \(count)..."
     }
 
-    func endCountdown() {
+    private func endCountdown() {
         enableGameButtons()
         countdownLabel?.removeFromParent()
         viewController.hidePowerSlider()
@@ -195,7 +225,7 @@ class GameScene: SKScene {
 
     // MARK: - Calculate nearest bolt
 
-    func getNearestBolt(from position: CGPoint) -> SKSpriteNode? {
+    private func getNearestBolt(from position: CGPoint) -> SKSpriteNode? {
         let allBolts = self["bolt"] // getting all the bolts within the scene.
         var closestBolt: SKSpriteNode?
         var closestDistance = Double.greatestFiniteMagnitude
@@ -222,6 +252,8 @@ class GameScene: SKScene {
 
         return CGVector(dx: dx, dy: dy)
     }
+
+    // MARK: - Game Buttons
 
     private func disableGameButtons() {
         guard let grapplingHookButton = grapplingHookButton else {
@@ -250,6 +282,8 @@ class GameScene: SKScene {
 
         player.closestBolt = playerClosestBolt
     }
+
+    // MARK: - Player tethering to hook
 
     private func handlePlayerTetheringToClosestBolt() {
         guard let grapplingHookButton = grapplingHookButton else {
@@ -323,5 +357,19 @@ class GameScene: SKScene {
         self.playerAttachedAnchor = nil
         self.anchorToPlayerLineJointPin = nil
         self.playerLineToPlayerPositionJointPin = nil
+    }
+
+    // MARK: - Handle player at finishing line
+    private func handlePlayerAtFinishingLine() {
+        hasPlayerFinishRace = true
+        disableGameButtons()
+    }
+
+    private func handlePlayerAfterFinishingLine() {
+        if !hasPlayerFinishRace {
+            return
+        }
+
+        player?.bringToStop()
     }
 }
