@@ -54,6 +54,7 @@
 		785B79E124237647001D7028 /* JoinGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79E024237647001D7028 /* JoinGameViewModel.swift */; };
 		785B79E324237659001D7028 /* JoinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79E224237659001D7028 /* JoinGameViewController.swift */; };
 		785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 785B79E424237AE4001D7028 /* JoinGameViewController.xib */; };
+		785B79E924249894001D7028 /* CostumeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79E824249894001D7028 /* CostumeType.swift */; };
 		788007222413F37100F43B71 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 788007212413F37100F43B71 /* Actions.sks */; };
 		788007292413F37100F43B71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788007272413F37100F43B71 /* Main.storyboard */; };
 		7880072B2413F37400F43B71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7880072A2413F37400F43B71 /* Assets.xcassets */; };
@@ -150,6 +151,7 @@
 		785B79E024237647001D7028 /* JoinGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewModel.swift; sourceTree = "<group>"; };
 		785B79E224237659001D7028 /* JoinGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewController.swift; sourceTree = "<group>"; };
 		785B79E424237AE4001D7028 /* JoinGameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JoinGameViewController.xib; sourceTree = "<group>"; };
+		785B79E824249894001D7028 /* CostumeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostumeType.swift; sourceTree = "<group>"; };
 		7880071A2413F37100F43B71 /* Hookies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hookies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		788007212413F37100F43B71 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		788007282413F37100F43B71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 			children = (
 				1127C5692415E4B400A78AA0 /* NavigatorTransitionType.swift */,
 				1107D05F2420DBA00058F590 /* AuthState.swift */,
+				785B79E824249894001D7028 /* CostumeType.swift */,
 			);
 			path = Enumerations;
 			sourceTree = "<group>";
@@ -783,6 +786,7 @@
 			files = (
 				D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */,
 				110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */,
+				785B79E924249894001D7028 /* CostumeType.swift in Sources */,
 				119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */,
 				1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */,
 				1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */,
