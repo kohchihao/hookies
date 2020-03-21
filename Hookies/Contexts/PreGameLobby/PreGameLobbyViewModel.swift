@@ -10,13 +10,12 @@ import FirebaseAuth
 import UIKit
 
 protocol PreGameLobbyViewModelRepresentable {
-    var selectedMap: MapType? { get set }
     var delegate: RoomStateViewModelDelegate? { get set }
     var lobby: Lobby { get set }
+    func updateSelectedMapType(selectedMapType: MapType)
 }
 
 class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
-    var selectedMap: MapType?
     weak var delegate: RoomStateViewModelDelegate?
     var lobby: Lobby
 
@@ -29,6 +28,10 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
 
     init(lobby: Lobby) {
         self.lobby = lobby
+    }
+
+    func updateSelectedMapType(selectedMapType: MapType) {
+        self.lobby.updateSelectedMapType(selectedMapType: selectedMapType)
     }
 }
 
