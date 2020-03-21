@@ -61,6 +61,7 @@ class Player {
 
     // MARK: - Functions
     func launch(with velocity: CGVector) {
+        self.node.physicsBody?.isDynamic = type.isDynamic
         self.node.physicsBody?.velocity = velocity
     }
 
@@ -207,10 +208,10 @@ class Player {
 
 extension Player: Hashable {
     public static func == (lhs: Player, rhs: Player) -> Bool {
-        return lhs.id == rhs.id
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
     }
 
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(ObjectIdentifier(self).hashValue)
     }
 }

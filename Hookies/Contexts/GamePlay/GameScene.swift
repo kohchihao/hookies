@@ -11,15 +11,11 @@ import GameplayKit
 import Dispatch
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    let playerIdDispatchGroup = DispatchGroup()
-    let playersInitialiserDispatchGroup = DispatchGroup()
-
     var gameplayId: String?
+    private var numberOfPlayers: Int?
     private var players = Set<Player>()
     private var playerId: String?
-    var player: Player? {
-        return players.first(where: { $0.id == playerId })
-    }
+    private var player: Player?
     private var cannon: Cannon?
     private var finishingLine: SKSpriteNode?
     private var cam: SKCameraNode?
@@ -28,7 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var grapplingHookButton: GrapplingHookButton?
     private var jumpButton: JumpButton?
     private var countdownLabel: SKLabelNode?
-    private var count = 2
+    private var count = 5
     private var hasPlayerFinishRace = false
 
     private var playerAttachedAnchor: SKNode?
@@ -40,7 +36,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var powerLaunch = 1_000
 
     override func didMove(to view: SKView) {
-        getCurrentPlayerId()
+        playerId = API.shared.user.currentUser?.uid
+
         initialiseContactDelegate()
         initialiseBackground(with: view.frame.size)
         initialiseGrapplingHookButton()
@@ -50,14 +47,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         initialiseCountdownMessage()
         initialiseFinishingLinePhysicsBody()
         initialiseCannon()
-        subscribeToGameState()
 
-        playerIdDispatchGroup.notify(queue: DispatchQueue.main) {
-            self.playersInitialiserDispatchGroup.notify(queue: DispatchQueue.main) {
-                self.subscribeToPlayerState()
-                self.pushManagedPlayer()
-            }
-        }
+        subscribeToGameState()
     }
 
     // MARK: - Update
@@ -81,21 +72,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
             handlePlayerAtFinishingLine()
-        }
-    }
-
-    // MARK: - Get current player id
-
-    private func getCurrentPlayerId() {
-        playerIdDispatchGroup.enter()
-
-        API.shared.user.currentUser { user, error in
-            if error != nil {
-                return
-            }
-
-            self.playerId = user?.uid
-            self.playerIdDispatchGroup.leave()
         }
     }
 
@@ -189,7 +165,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         for currPlayerId in playersId {
-            self.playersInitialiserDispatchGroup.enter()
             self.initialisePlayer(at: cannon.node.position, of: currPlayerId, and: gameplayId)
         }
     }
@@ -206,11 +181,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             currPlayerCostume = lobby?.costumesId[playerId]
 
             guard let currPlayerImageName = currPlayerCostume else {
-                    return
+                return
             }
 
             let player: Player
-            if self.playerId == playerId {
+            if playerId == self.playerId {
                 let playerClosestBolt = self.getNearestBolt(from: position)
 
                 player = Player(
@@ -219,17 +194,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     imageName: currPlayerImageName,
                     closestBolt: playerClosestBolt
                 )
+
+                self.player = player
+                self.players.insert(player)
+                self.pushManagedPlayer()
+
+                self.handleGameStart()
             } else {
                 player = Player(
                     id: playerId,
                     position: position,
                     imageName: currPlayerImageName
                 )
+
+                self.subscribeToPlayerState(playerId)
             }
 
-            self.players.insert(player)
             self.addChild(player.node)
-            self.playersInitialiserDispatchGroup.leave()
         })
     }
 
@@ -245,29 +226,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: - Subscribe to player state
 
-    private func subscribeToPlayerState() {
+    private func subscribeToPlayerState(_ playerId: String) {
         guard let gameplayId = self.gameplayId else {
             return
         }
 
-        for currPlayer in players {
-            API.shared.gameplay.subscribeToPlayerState(
-                gameId: gameplayId,
-                playerId: currPlayer.id,
-                listener: playerStateHandler(_:_:)
-            )
-        }
+        API.shared.gameplay.subscribeToPlayerState(
+            gameId: gameplayId,
+            playerId: playerId,
+            listener: playerStateHandler(_:_:)
+        )
     }
 
     // MARK: - Gameplay state handler
 
     private func gameplayStateHandler(_ gameplay: Gameplay?, _ error: Error?) {
+        if error != nil {
+            return
+        }
+
         guard let gameplay = gameplay else {
             return
         }
 
         switch gameplay.gameState {
         case .waiting:
+            self.numberOfPlayers = gameplay.playersId.count
             self.initialisePlayers(gameplay.playersId)
         case .start:
             self.startCountdown()
@@ -277,7 +261,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Player state handler
 
     private func playerStateHandler(_ playerGameState: PlayerGameState?, _ error: Error?) {
+        if error != nil {
+            return
+        }
 
+        guard let playerGameState = playerGameState else {
+            return
+        }
+
+        let isOtherPlayerReady = players.contains(where: { $0.id == playerGameState.playerId })
+
+        if !isOtherPlayerReady {
+            handleOtherPlayerIsReady(playerGameState)
+        }
     }
 
     // MARK: - Update managed player state to firebase
@@ -285,7 +281,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func pushManagedPlayer() {
         guard let gameplayId = gameplayId,
             let managedPlayer = player else {
-            return
+                print("push managed player: \(player)")
+                return
         }
 
         guard let managedPlayerState = createPlayerState(from: managedPlayer) else {
@@ -328,15 +325,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func countdown(count: Int) {
-//        countdownLabel = SKLabelNode()
-//        countdownLabel?.position = CGPoint(x: 0, y: 0)
-//        countdownLabel?.fontColor = .black
-//        countdownLabel?.fontSize = size.height / 30
-//        countdownLabel?.zPosition = 100
-//        countdownLabel?.text = "Launching player in \(count)..."
-//
-//        self.cam?.addChild(countdownLabel!)
-
         let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0),
                                                   SKAction.run(countdownAction)])
 
@@ -399,7 +387,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             playerId: player.id,
             position: position,
             velocity: velocity,
-            imageName: player.imageName.stringValue,
+            imageName: player.imageName,
             lastUpdateTime: Date(),
             powerup: player.powerup,
             attachedPosition: attachedBolt
@@ -424,6 +412,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private func enableGameButtons() {
         grapplingHookButton?.state = .ButtonNodeStateActive
+    }
+
+    private func handleGameStart() {
+        print("start game")
+        guard let gameplayId = gameplayId,
+            let numberOfPlayers = numberOfPlayers else {
+            return
+        }
+
+        let isAllPlayersLoaded = numberOfPlayers == players.count
+
+        if !isAllPlayersLoaded {
+            return
+        }
+
+        var playersId = [String]()
+        for player in players {
+            playersId.append(player.id)
+        }
+
+        print("set: \(players.count)")
+        print("total: \(numberOfPlayers)")
+
+        let gameplayStart = Gameplay(
+            gameId: gameplayId,
+            gameState: .start,
+            playersId: playersId
+        )
+
+        API.shared.gameplay.saveGameState(gameplay: gameplayStart)
     }
 
     private func updatePlayerClosestBolt() {
@@ -560,5 +578,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         player?.bringToStop()
+    }
+
+    private func handleOtherPlayerIsReady(_ playerGameState: PlayerGameState) {
+        let playerPosition = CGPoint(x: playerGameState.position.x, y: playerGameState.position.y)
+
+        let player = Player(id: playerGameState.playerId, position: playerPosition, imageName: playerGameState.imageName)
+
+        print("inserting other player: \(playerGameState.playerId)")
+        players.insert(player)
+
+        handleGameStart()
     }
 }
