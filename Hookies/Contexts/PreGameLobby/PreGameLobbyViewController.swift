@@ -18,11 +18,18 @@ protocol PreGameLobbyViewNavigationDelegate: class {
 class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
     private var viewModel: PreGameLobbyViewModelRepresentable
+    private var playersIdDispatchGroup = DispatchGroup()
+    private var players: [User] = []
+    private var playerViews: [LobbyPlayerView] = []
 
     @IBOutlet private var selectedMapLabel: UILabel!
     @IBOutlet private var gameSessionIdLabel: UILabel!
     @IBOutlet private var playersIdLabel: UILabel!
-
+    @IBOutlet private var player1View: LobbyPlayerView!
+    @IBOutlet private var player2View: LobbyPlayerView!
+    @IBOutlet private var player3View: LobbyPlayerView!
+    @IBOutlet private var player4View: LobbyPlayerView!
+    
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
@@ -39,6 +46,10 @@ class PreGameLobbyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
+        playerViews.append(player1View)
+        playerViews.append(player2View)
+        playerViews.append(player3View)
+        playerViews.append(player4View)
         updateView()
     }
 
@@ -81,16 +92,40 @@ class PreGameLobbyViewController: UIViewController {
 
     private func updateView() {
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
-        preparePlayers()
+        for playerId in viewModel.lobby.playersId {
+            getPlayer(playerId: playerId)
+        }
+        playersIdDispatchGroup.notify(queue: DispatchQueue.main) {
+            if self.players.count == self.viewModel.lobby.playersId.count {
+                self.updatePlayerViews()
+            }
+        }
     }
 
-    private func preparePlayers() {
-        playersIdLabel.text = viewModel.lobby.hostId
-//        playersIdLabel.text?.append(viewModel.lobby.hostId)
-//        for playerId in viewModel.lobby.playersId {
-//            playersIdLabel.text?.append(playerId)
-//            playersIdLabel.text?.append("\n")
-//        }
+    private func updatePlayerViews() {
+        for i in 0..<min(4, self.players.count) {
+            playerViews[i].updateUsernameLabel(username: players[i].username)
+            guard let costumeType = viewModel.lobby.costumesId[players[i].uid] else {
+                return
+            }
+            playerViews[i].addPlayerImage(costumeType: costumeType)
+        }
+    }
+
+    private func getPlayer(playerId: String) {
+        playersIdDispatchGroup.enter()
+        API.shared.user.get(withUid: playerId, completion: { user, error in
+            guard error == nil else {
+                return
+            }
+            guard let user = user else {
+                return
+            }
+            if !self.players.contains(user) {
+                self.players.append(user)
+            }
+            self.playersIdDispatchGroup.leave()
+        })
     }
 }
 

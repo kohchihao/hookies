@@ -19,16 +19,16 @@ struct Lobby {
         lobbyId = RandomIDGenerator.getRandomID(length: 6)
         self.hostId = hostId
         self.playersId = [hostId]
-        self.costumesId = [hostId: .Pink]
+        self.costumesId = [hostId: .Pink_Monster]
     }
 
     init(hostId: String, playersId: [String], costumesId: [String: CostumeType]) {
         self.init(hostId: hostId)
         for playerId in playersId {
-            addPlayerId(playerId: playerId)
+            addPlayer(playerId: playerId)
         }
         for (playerId, costumeType) in costumesId {
-            addCostumeId(playerId: playerId, costumeType: costumeType)
+            updateCostumeId(playerId: playerId, costumeType: costumeType)
         }
     }
 
@@ -41,14 +41,15 @@ struct Lobby {
         self.costumesId = costumesId
     }
 
-    mutating func addPlayerId(playerId: String) {
+    mutating func addPlayer(playerId: String) {
         guard !playersId.contains(playerId) && playerId != hostId else {
             return
         }
         playersId.append(playerId)
+        updateCostumeId(playerId: playerId, costumeType: .Pink_Monster)
     }
 
-    mutating func addCostumeId(playerId: String, costumeType: CostumeType) {
+    mutating func updateCostumeId(playerId: String, costumeType: CostumeType) {
         if playersId.contains(playerId) {
             self.costumesId[playerId] = costumeType
         }

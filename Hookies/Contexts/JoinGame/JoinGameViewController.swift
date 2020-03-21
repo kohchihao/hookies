@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
 
 protocol JoinGameViewNavigationDelegate: class {
     func didPressJoinLobbyButton(in: JoinGameViewController, withLobby: Lobby)
@@ -69,7 +70,6 @@ class JoinGameViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
-    // TODO: Retrieve lobby from firestore
     @IBAction private func submitButtonTapped(sender: UIButton) {
         guard let lobbyId = lobbyIdField.text else {
             return
@@ -79,9 +79,13 @@ class JoinGameViewController: UIViewController {
                 print(error.debugDescription)
                 return
             }
-            guard let lobby = lobby else {
+            guard var lobby = lobby else {
                 return
             }
+            guard let playerId = Auth.auth().currentUser?.uid else {
+                return
+            }
+            lobby.addPlayer(playerId: playerId)
             self.navigationDelegate?.didPressJoinLobbyButton(in: self, withLobby: lobby)
             self.dismiss(animated: false, completion: nil)
         })
