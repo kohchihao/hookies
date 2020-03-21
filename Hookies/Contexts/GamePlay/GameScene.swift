@@ -207,8 +207,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     imageName: currPlayerImageName
                 )
 
-                print("listening: \(playerId)")
-
                 self.subscribeToPlayerState(playerId)
             }
 
@@ -230,7 +228,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private func subscribeToPlayerState(_ playerId: String) {
         guard let gameplayId = self.gameplayId else {
-            print("sub player state: game play is nil: \(playerId)")
             return
         }
 
@@ -254,7 +251,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         switch gameplay.gameState {
         case .waiting:
-            print("game state is waiting")
             self.numberOfPlayers = gameplay.playersId.count
             self.initialisePlayers(gameplay.playersId)
         case .start:
@@ -265,20 +261,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Player state handler
 
     private func playerStateHandler(_ playerGameState: PlayerGameState?, _ error: Error?) {
-        print("player event")
         if error != nil {
             return
         }
 
         guard let playerGameState = playerGameState else {
-            print("player handler: no player state")
             return
         }
 
         let isOtherPlayerReady = players.contains(where: { $0.id == playerGameState.playerId })
-
-        print("playerid: \(playerGameState.playerId)")
-        print("isTrue: \(isOtherPlayerReady)")
 
         if !isOtherPlayerReady {
             handleOtherPlayerIsReady(playerGameState)
@@ -333,6 +324,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func countdown(count: Int) {
+        countdownLabel?.text = "Launching player in \(count)..."
+
         let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0),
                                                   SKAction.run(countdownAction)])
 
@@ -423,18 +416,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleGameStart() {
-        print("start game")
         guard let gameplayId = gameplayId,
             let numberOfPlayers = numberOfPlayers else {
-                print("nil: \(self.numberOfPlayers)")
             return
         }
 
         let isAllPlayersLoaded = numberOfPlayers == players.count
-
-        print("total count: \(numberOfPlayers)")
-        print("curr: \(players.count)")
-
 
         if !isAllPlayersLoaded {
             return
@@ -444,9 +431,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for player in players {
             playersId.append(player.id)
         }
-
-        print("set: \(players.count)")
-        print("total: \(numberOfPlayers)")
 
         let gameplayStart = Gameplay(
             gameId: gameplayId,
@@ -598,7 +582,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         let player = Player(id: playerGameState.playerId, position: playerPosition, imageName: playerGameState.imageName)
 
-        print("inserting other player: \(playerGameState.playerId)")
         players.insert(player)
 
         handleGameStart()
