@@ -218,7 +218,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Subscribe to game state
 
     private func subscribeToGameState() {
-        print("sub game play")
         guard let gameplayId = self.gameplayId else {
             return
         }
@@ -275,7 +274,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
+        print("player state event: \(playerGameState.playerId)")
+
         let isOtherPlayerReady = players.contains(where: { $0.id == playerGameState.playerId })
+
+        print("player state: \(isOtherPlayerReady)")
 
         if !isOtherPlayerReady {
             handleOtherPlayerIsReady(playerGameState)
@@ -287,16 +290,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Update managed player state to firebase
 
     private func pushManagedPlayer() {
+        print("push state")
         guard let gameplayId = gameplayId,
             let managedPlayer = player else {
                 return
         }
 
         guard let managedPlayerState = createPlayerState(from: managedPlayer) else {
+            print("player state nil")
             return
         }
 
         API.shared.gameplay.savePlayerState(gameId: gameplayId, playerState: managedPlayerState)
+        print("done pushing")
     }
 
     // MARK: - Centering camera
@@ -379,12 +385,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Create Player State
 
     private func createPlayerState(from player: Player) -> PlayerGameState? {
-        guard let playerPhysicsBody = player.node.physicsBody  else {
-            return nil
+        let position = Vector(x: Double(player.node.position.x), y: Double(player.node.position.y))
+
+        var velocity = Vector(x: 0, y: 0)
+        if let playerPhysicsBody = player.node.physicsBody {
+            velocity = Vector(x: Double(playerPhysicsBody.velocity.dx), y: Double(playerPhysicsBody.velocity.dy))
         }
 
-        let position = Vector(x: Double(player.node.position.x), y: Double(player.node.position.y))
-        let velocity = Vector(x: Double(playerPhysicsBody.velocity.dx), y: Double(playerPhysicsBody.velocity.dy))
         let attachedBolt: Vector?
         if let playerAttachedBolt = player.attachedBolt {
             attachedBolt = Vector(x: Double(playerAttachedBolt.position.x), y: Double(playerAttachedBolt.position.y))
@@ -589,6 +596,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleOtherPlayerIsReady(_ playerGameState: PlayerGameState) {
+        print("handle is other palyer ready")
         let playerPosition = CGPoint(x: playerGameState.position.x, y: playerGameState.position.y)
 
         let player = Player(id: playerGameState.playerId, position: playerPosition, imageName: playerGameState.imageName)
@@ -599,6 +607,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func renderPlayer(_ playerGameState: PlayerGameState) {
+        print("render player")
         guard let currPlayer = players.first(where: { $0.id == playerGameState.playerId }) else {
             return
         }
@@ -619,5 +628,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let currPlayerLine = currPlayer.line {
             addChild(currPlayerLine)
         }
+        print("render done")
     }
 }
