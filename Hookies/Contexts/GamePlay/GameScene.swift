@@ -278,6 +278,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         if !isOtherPlayerReady {
             handleOtherPlayerIsReady(playerGameState)
+        } else {
+            renderPlayer(playerGameState)
         }
     }
 
@@ -440,8 +442,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             playersId.append(player.id)
         }
 
-        print("updating game state")
-
         let gameplayStart = Gameplay(
             gameId: gameplay.gameId,
             gameState: .start,
@@ -595,5 +595,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         players.insert(player)
 
         handleGameStart()
+    }
+
+    private func renderPlayer(_ playerGameState: PlayerGameState) {
+        guard let currPlayer = players.first(where: { $0.id == playerGameState.playerId }) else {
+            return
+        }
+
+        if let currPlayerLine = currPlayer.line {
+            currPlayerLine.removeFromParent()
+        }
+
+        let newPosition = CGPoint(x: playerGameState.position.x, y: playerGameState.position.y)
+        var attachedBolt: CGPoint?
+
+        if let currPlayerAttachedBolt = playerGameState.attachedPosition {
+            attachedBolt = CGPoint(x: currPlayerAttachedBolt.x, y: currPlayerAttachedBolt.y)
+        }
+
+        currPlayer.renderNewFrame(from: newPosition, attachedBolt: attachedBolt)
+
+        if let currPlayerLine = currPlayer.line {
+            addChild(currPlayerLine)
+        }
     }
 }
