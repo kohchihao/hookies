@@ -36,22 +36,23 @@ class JoinGameViewController: UIViewController {
 
     @objc
     private func keyboardWillChangeFrame(_ notification: Notification) {
+        print(notification.name)
         guard let info = (notification as NSNotification).userInfo,
             let animationDuration = info[UIResponder.keyboardAnimationDurationUserInfoKey]
                 as? TimeInterval else {
                     return
         }
-
         var keyboardHeight: CGFloat = 0
         if notification.name == UIResponder.keyboardWillShowNotification {
             guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
                 return
             }
-
             keyboardHeight = keyboardFrame.cgRectValue.height
         }
 
         self.joinGameDialog.center = CGPoint(x: self.view.frame.width / 2, y: (self.view.frame.height - keyboardHeight) / 2)
+        print(self.view.frame)
+        print(joinGameDialog.center)
         UIView.animate(withDuration: animationDuration, animations: {
             self.view.layoutIfNeeded()
         })
@@ -64,6 +65,9 @@ class JoinGameViewController: UIViewController {
         joinGameDialog.backgroundColor = UIColor.clear
         joinGameDialog.isOpaque = false
         joinGameDialog.layer.cornerRadius = 15
+        joinGameDialog.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height / 2)
+        print(self.view.frame)
+        print(joinGameDialog.center)
     }
 
     @IBAction private func closeButtonTapped(sender: UIButton) {
