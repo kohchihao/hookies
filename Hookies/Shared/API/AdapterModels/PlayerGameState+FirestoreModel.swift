@@ -28,7 +28,7 @@ extension PlayerGameState: FirestoreModel {
                                                     isActivated: modelData.value(forKey: "isPowerupActivated"),
                                                     ownerId: modelData.optionalValue(forKey: "powerupOwnerId"))
             let imageType: String = try modelData.value(forKey: "imageName")
-            let lastUpdateTime: Timestamp = try modelData.value(forKey: "lastUpdateTime")
+            let lastUpdateTime: Timestamp = try modelData.value(forKey: "lastUpdatedTime")
             var attachedPosition: Vector?
             if let attachedToX: Double = modelData.optionalValue(forKey: "attachedPositionX"),
                 let attachedToY: Double = modelData.optionalValue(forKey: "attachedPositionY") {
