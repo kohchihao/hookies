@@ -47,11 +47,14 @@ struct Lobby {
     }
 
     mutating func addPlayer(playerId: String) {
-        guard !playersId.contains(playerId) && playerId != hostId else {
+        guard !playersId.contains(playerId) && playerId != hostId && lobbyState == .open else {
             return
         }
         playersId.append(playerId)
         updateCostumeId(playerId: playerId, costumeType: .Pink_Monster)
+        if playersId.count == 4 {
+            lobbyState = .full
+        }
     }
 
     mutating func updateCostumeId(playerId: String, costumeType: CostumeType) {
@@ -62,5 +65,23 @@ struct Lobby {
 
     mutating func updateSelectedMapType(selectedMapType: MapType) {
         self.selectedMapType = selectedMapType
+    }
+
+    mutating func updateLobbyState(lobbyState: LobbyState) {
+        switch lobbyState {
+        case .open:
+            guard playersId.count < 4 else {
+                return
+            }
+        case .full:
+            guard playersId.count == 4 else {
+                return
+            }
+        case .start:
+            guard playersId.count > 1 && playersId.count <= 4 else {
+                return
+            }
+        }
+        self.lobbyState = lobbyState
     }
 }

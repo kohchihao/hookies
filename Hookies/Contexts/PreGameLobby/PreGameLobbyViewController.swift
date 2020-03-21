@@ -12,7 +12,7 @@ import GameplayKit
 
 protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
-    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType)
+    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String)
 }
 
 class PreGameLobbyViewController: UIViewController {
@@ -23,6 +23,12 @@ class PreGameLobbyViewController: UIViewController {
     private var players: [User] = []
     private var playerViews: [LobbyPlayerView] = []
     private var currentUser: User?
+    private var startButtonEnabled: Bool {
+        guard let currentUser = self.currentUser else {
+            return false
+        }
+        return self.viewModel.lobby.hostId == currentUser.uid && viewModel.lobby.selectedMapType != nil
+    }
 
     @IBOutlet private var selectedMapLabel: UILabel!
     @IBOutlet private var gameSessionIdLabel: UILabel!
@@ -32,6 +38,7 @@ class PreGameLobbyViewController: UIViewController {
     @IBOutlet private var player3View: LobbyPlayerView!
     @IBOutlet private var player4View: LobbyPlayerView!
     @IBOutlet private var costumeIdLabel: UILabel!
+    @IBOutlet private var startGameButton: UIButton!
 
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
@@ -76,6 +83,9 @@ class PreGameLobbyViewController: UIViewController {
             }
             self.viewModel.lobby = updatedLobby
             self.updateView()
+            if self.viewModel.lobby.lobbyState == .start {
+                self.startGame()
+            }
         })
     }
 
@@ -88,13 +98,28 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     @IBAction private func onStartClicked(_ sender: UIButton) {
-        guard let selectedMap = viewModel.selectedMap else {
+        viewModel.lobby.updateLobbyState(lobbyState: .start)
+        startGame()
+    }
+
+    private func startGame() {
+        guard let selectedMapType = viewModel.lobby.selectedMapType else {
             return
         }
-        navigationDelegate?.didPressStartButton(in: self, withSelectedMapType: selectedMap)
+        guard viewModel.lobby.lobbyState == .start else {
+            return
+        }
+        createGameplaySession(with: viewModel.lobby)
+        navigationDelegate?.didPressStartButton(in: self, withSelectedMapType: selectedMapType, gameplayId: viewModel.lobby.lobbyId)
+    }
+
+    private func createGameplaySession(with lobby: Lobby) {
+        let gameplay = Gameplay(gameId: lobby.lobbyId, gameState: .waiting, playersId: lobby.playersId)
+        API.shared.gameplay.saveGameState(gameplay: gameplay)
     }
 
     private func updateView() {
+        startGameButton.isEnabled = startButtonEnabled
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
         for playerId in viewModel.lobby.playersId {
             getPlayer(playerId: playerId)
@@ -135,6 +160,7 @@ class PreGameLobbyViewController: UIViewController {
         }
         updateCostumeIdLabel()
         updatePlayerViews()
+        saveLobby(lobby: viewModel.lobby)
     }
 
     @IBAction private func prevCostume() {
@@ -154,6 +180,7 @@ class PreGameLobbyViewController: UIViewController {
         }
         updateCostumeIdLabel()
         updatePlayerViews()
+        saveLobby(lobby: viewModel.lobby)
     }
 
     private func updatePlayerViews() {
@@ -196,11 +223,13 @@ class PreGameLobbyViewController: UIViewController {
 
 extension PreGameLobbyViewController: RoomStateViewModelDelegate {
     func updateSelectedMap(mapType: MapType) {
-        viewModel.selectedMap = mapType
+        viewModel.updateSelectedMapType(selectedMapType: mapType)
         selectedMapLabel.text = mapType.rawValue
+        saveLobby(lobby: viewModel.lobby)
     }
 
     func updateLobbyViewModel(lobbyViewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = lobbyViewModel
+        saveLobby(lobby: viewModel.lobby)
     }
 }
