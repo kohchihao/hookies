@@ -21,6 +21,7 @@ class PreGameLobbyViewController: UIViewController {
     private var playersIdDispatchGroup = DispatchGroup()
     private var players: [User] = []
     private var playerViews: [LobbyPlayerView] = []
+    private var currentUser: User?
 
     @IBOutlet private var selectedMapLabel: UILabel!
     @IBOutlet private var gameSessionIdLabel: UILabel!
@@ -29,6 +30,7 @@ class PreGameLobbyViewController: UIViewController {
     @IBOutlet private var player2View: LobbyPlayerView!
     @IBOutlet private var player3View: LobbyPlayerView!
     @IBOutlet private var player4View: LobbyPlayerView!
+    @IBOutlet private var costumeIdLabel: UILabel!
     
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
@@ -92,6 +94,7 @@ class PreGameLobbyViewController: UIViewController {
 
     private func updateView() {
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
+        costumeIdLabel.text = viewModel.lobby.costumesId[currentUser.uid].map { $0.rawValue }
         for playerId in viewModel.lobby.playersId {
             getPlayer(playerId: playerId)
         }
@@ -124,6 +127,17 @@ class PreGameLobbyViewController: UIViewController {
             if !self.players.contains(user) {
                 self.players.append(user)
             }
+            self.playersIdDispatchGroup.leave()
+        })
+    }
+
+    private func getCurrentUser() {
+        playersIdDispatchGroup.enter()
+        API.shared.user.currentUser(completion: { user, error in
+            guard error == nil else {
+                return
+            }
+            self.currentUser = user
             self.playersIdDispatchGroup.leave()
         })
     }

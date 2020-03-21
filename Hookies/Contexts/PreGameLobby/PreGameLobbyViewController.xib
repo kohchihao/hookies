@@ -9,6 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PreGameLobbyViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
+                <outlet property="costumeIdLabel" destination="EhH-f1-AWI" id="Xqe-bs-hDT"/>
                 <outlet property="gameSessionIdLabel" destination="E5t-UX-zdb" id="UAr-gf-YAa"/>
                 <outlet property="player1View" destination="sI3-bs-cLm" id="6hG-f0-GFA"/>
                 <outlet property="player2View" destination="LuG-Ab-Xon" id="AzH-Kv-YXH"/>
@@ -65,6 +66,27 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ct4-FD-g13" userLabel="Left arrow">
+                    <rect key="frame" x="669" y="36" width="128" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="Arrow_Left"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L8c-8D-NHy" userLabel="Right arrow">
+                    <rect key="frame" x="896" y="36" width="128" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="Arrow_Right"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhH-f1-AWI" userLabel="Costume Id">
+                    <rect key="frame" x="783" y="42" width="130" height="47"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sI3-bs-cLm" userLabel="Player 1 View" customClass="LobbyPlayerView" customModule="Hookies" customModuleProvider="target">
+                    <rect key="frame" x="20" y="410" width="240" height="300"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </view>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LuG-Ab-Xon" userLabel="Player 2 View" customClass="LobbyPlayerView" customModule="Hookies" customModuleProvider="target">
                     <rect key="frame" x="268" y="410" width="240" height="300"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -77,10 +99,6 @@
                     <rect key="frame" x="764" y="410" width="240" height="300"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sI3-bs-cLm" userLabel="Player 1 View" customClass="LobbyPlayerView" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="20" y="410" width="240" height="300"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </view>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <viewLayoutGuide key="safeArea" id="Jre-8K-DKd"/>
@@ -88,6 +106,8 @@
         </view>
     </objects>
     <resources>
+        <image name="Arrow_Left" width="128" height="64"/>
+        <image name="Arrow_Right" width="128" height="64"/>
         <image name="home_background" width="1808" height="1129"/>
     </resources>
 </document>
