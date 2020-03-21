@@ -19,6 +19,7 @@ class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
     private var viewModel: PreGameLobbyViewModelRepresentable
     private var playersIdDispatchGroup = DispatchGroup()
+    private var currentUserDispatchGroup = DispatchGroup()
     private var players: [User] = []
     private var playerViews: [LobbyPlayerView] = []
     private var currentUser: User?
@@ -31,7 +32,7 @@ class PreGameLobbyViewController: UIViewController {
     @IBOutlet private var player3View: LobbyPlayerView!
     @IBOutlet private var player4View: LobbyPlayerView!
     @IBOutlet private var costumeIdLabel: UILabel!
-    
+
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
@@ -47,6 +48,7 @@ class PreGameLobbyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getCurrentUser()
         viewModel.delegate = self
         playerViews.append(player1View)
         playerViews.append(player2View)
@@ -94,7 +96,6 @@ class PreGameLobbyViewController: UIViewController {
 
     private func updateView() {
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
-        costumeIdLabel.text = viewModel.lobby.costumesId[currentUser.uid].map { $0.rawValue }
         for playerId in viewModel.lobby.playersId {
             getPlayer(playerId: playerId)
         }
@@ -103,6 +104,56 @@ class PreGameLobbyViewController: UIViewController {
                 self.updatePlayerViews()
             }
         }
+        currentUserDispatchGroup.notify(queue: DispatchQueue.main) {
+            if self.currentUser != nil {
+                self.updateCostumeIdLabel()
+            }
+        }
+    }
+
+    private func updateCostumeIdLabel() {
+        guard let userId = currentUser?.uid else {
+            return
+        }
+        costumeIdLabel.text = viewModel.lobby.costumesId[userId].map { $0.rawValue }
+    }
+
+    @IBAction private func nextCostume() {
+        guard let userId = currentUser?.uid else {
+            return
+        }
+        let currentCostume = viewModel.lobby.costumesId[userId]
+        switch currentCostume {
+        case .Pink_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Owlet_Monster)
+        case .Owlet_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Dude_Monster)
+        case .Dude_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Pink_Monster)
+        default:
+            return
+        }
+        updateCostumeIdLabel()
+        updatePlayerViews()
+    }
+
+    @IBAction private func prevCostume() {
+        guard let userId = currentUser?.uid else {
+            return
+        }
+        let currentCostume = viewModel.lobby.costumesId[userId]
+        switch currentCostume {
+        case .Pink_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Dude_Monster)
+        case .Owlet_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Pink_Monster)
+        case .Dude_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Owlet_Monster)
+        default:
+            return
+        }
+        updateCostumeIdLabel()
+        updatePlayerViews()
     }
 
     private func updatePlayerViews() {
@@ -132,13 +183,13 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func getCurrentUser() {
-        playersIdDispatchGroup.enter()
+        currentUserDispatchGroup.enter()
         API.shared.user.currentUser(completion: { user, error in
             guard error == nil else {
                 return
             }
             self.currentUser = user
-            self.playersIdDispatchGroup.leave()
+            self.currentUserDispatchGroup.leave()
         })
     }
 }

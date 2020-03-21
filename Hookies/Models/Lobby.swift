@@ -20,8 +20,9 @@ struct Lobby {
         lobbyId = RandomIDGenerator.getRandomID(length: 6)
         self.hostId = hostId
         self.playersId = [hostId]
-        self.costumesId = [hostId: .Pink]
+        self.costumesId = [hostId: .Pink_Monster]
         self.lobbyState = .open
+    }
 
     init(hostId: String, playersId: [String], costumesId: [String: CostumeType]) {
         self.init(hostId: hostId)
