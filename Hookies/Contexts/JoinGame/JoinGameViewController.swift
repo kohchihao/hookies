@@ -79,26 +79,25 @@ class JoinGameViewController: UIViewController {
                 print(error.debugDescription)
                 return
             }
-            guard let lobby = lobby else {
+            guard var lobby = lobby else {
                 return
             }
             guard let playerId = Auth.auth().currentUser?.uid else {
                 return
             }
-            if self.playerJoinedLobby(playerId: playerId, lobby: lobby) {
+            guard lobby.lobbyState == .open else {
+                return
+            }
+            lobby.addPlayer(playerId: playerId)
+            if lobby.playersId.contains(playerId) {
                 self.navigationDelegate?.didPressJoinLobbyButton(in: self, withLobby: lobby)
                 self.dismiss(animated: false, completion: nil)
             }
         })
     }
 
-    private func playerJoinedLobby(playerId: String, lobby: Lobby) -> Bool {
-        guard lobby.lobbyState == .open else {
-            return false
-        }
-        var lobby = lobby
-        lobby.addPlayer(playerId: playerId)
-        return lobby.playersId.contains(playerId)
+    private func playerJoinedLobby(playerId: String, lobby: Lobby) {
+
     }
 
     override func viewDidDisappear(_ animated: Bool) {
