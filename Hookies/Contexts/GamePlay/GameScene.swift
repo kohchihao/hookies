@@ -12,10 +12,14 @@ import Dispatch
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     let playerIdDispatchGroup = DispatchGroup()
+    let playersInitialiserDispatchGroup = DispatchGroup()
 
     var gameplayId: String?
-    private var currPlayerId: String?
-    private var player: Player?
+    private var players = Set<Player>()
+    private var playerId: String?
+    var player: Player? {
+        return players.first(where: { $0.id == playerId })
+    }
     private var cannon: Cannon?
     private var finishingLine: SKSpriteNode?
     private var cam: SKCameraNode?
@@ -41,19 +45,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         initialiseBackground(with: view.frame.size)
         initialiseGrapplingHookButton()
         initialiseJumpButton()
+        disableGameButtons()
         initialiseCamera()
+        initialiseCountdownMessage()
         initialiseFinishingLinePhysicsBody()
-
-        guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode else {
-            return
-        }
-        cannon = Cannon(node: cannonNode)
+        initialiseCannon()
+        subscribeToGameState()
 
         playerIdDispatchGroup.notify(queue: DispatchQueue.main) {
-            self.initialisePlayer(at: cannonNode.position)
+            self.playersInitialiserDispatchGroup.notify(queue: DispatchQueue.main) {
+                self.subscribeToPlayerState()
+                self.pushManagedPlayer()
+            }
         }
-
-        startCountdown()
     }
 
     // MARK: - Update
@@ -81,6 +85,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     // MARK: - Get current player id
+
     private func getCurrentPlayerId() {
         playerIdDispatchGroup.enter()
 
@@ -89,12 +94,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
 
-            self.currPlayerId = user?.uid
+            self.playerId = user?.uid
             self.playerIdDispatchGroup.leave()
         }
     }
 
     // MARK: - Initialise contact delegate
+
     private func initialiseContactDelegate() {
         physicsWorld.contactDelegate = self
     }
@@ -125,6 +131,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cam.addChild(jumpButton)
     }
 
+    // MARK: - Initialise Countdown message
+
+    private func initialiseCountdownMessage() {
+        countdownLabel = SKLabelNode()
+        countdownLabel?.position = CGPoint(x: 0, y: 0)
+        countdownLabel?.fontColor = .black
+        countdownLabel?.fontSize = size.height / 30
+        countdownLabel?.zPosition = 100
+        countdownLabel?.text = "Waiting for players..."
+
+        self.cam?.addChild(countdownLabel!)
+    }
+
      // MARK: - Initialise Grappling Hook button
 
     private func initialiseGrapplingHookButton() {
@@ -152,40 +171,128 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.finishingLine = finishingLine
     }
 
-    // MARK: - Initialise Player
+    // MARK: - Initialise Cannon
 
-    private func initialisePlayer(at position: CGPoint) {
-        guard let gameplayId = gameplayId,
-            let currPlayerId = currPlayerId else {
-                return
+    private func initialiseCannon() {
+        guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode else {
+            return
+        }
+        self.cannon = Cannon(node: cannonNode)
+    }
+
+    // MARK: - Initialise Players
+
+    private func initialisePlayers(_ playersId: [String]) {
+        guard let gameplayId = self.gameplayId,
+            let cannon = self.cannon else {
+            return
         }
 
-        var currPlayerCostume: String?
+        for currPlayerId in playersId {
+            self.playersInitialiserDispatchGroup.enter()
+            self.initialisePlayer(at: cannon.node.position, of: currPlayerId, and: gameplayId)
+        }
+    }
+
+    // MARK: - Initialise Individual Player
+
+    private func initialisePlayer(at position: CGPoint, of playerId: String, and gameplayId: String) {
+        var currPlayerCostume: CostumeType?
         API.shared.lobby.get(lobbyId: gameplayId, completion: { lobby, error in
             if error != nil {
                 return
             }
 
-            print(currPlayerId)
-            currPlayerCostume = lobby?.costumesId[currPlayerId]?.stringValue
+            currPlayerCostume = lobby?.costumesId[playerId]
 
-            guard let currPlayerImageName = currPlayerCostume,
-                let playerClosestBolt = self.getNearestBolt(from: position) else {
+            guard let currPlayerImageName = currPlayerCostume else {
                     return
             }
 
-            self.player = Player(
-                id: currPlayerId,
-                position: position,
-                imageName: currPlayerImageName,
-                closestBolt: playerClosestBolt
-            )
+            let player: Player
+            if self.playerId == playerId {
+                let playerClosestBolt = self.getNearestBolt(from: position)
 
-            guard let player = self.player else {
-                return
+                player = Player(
+                    id: playerId,
+                    position: position,
+                    imageName: currPlayerImageName,
+                    closestBolt: playerClosestBolt
+                )
+            } else {
+                player = Player(
+                    id: playerId,
+                    position: position,
+                    imageName: currPlayerImageName
+                )
             }
+
+            self.players.insert(player)
             self.addChild(player.node)
+            self.playersInitialiserDispatchGroup.leave()
         })
+    }
+
+    // MARK: - Subscribe to game state
+
+    private func subscribeToGameState() {
+        guard let gameplayId = self.gameplayId else {
+            return
+        }
+
+        API.shared.gameplay.subscribeToGameState(gameId: gameplayId, listener: gameplayStateHandler(_:_:))
+    }
+
+    // MARK: - Subscribe to player state
+
+    private func subscribeToPlayerState() {
+        guard let gameplayId = self.gameplayId else {
+            return
+        }
+
+        for currPlayer in players {
+            API.shared.gameplay.subscribeToPlayerState(
+                gameId: gameplayId,
+                playerId: currPlayer.id,
+                listener: playerStateHandler(_:_:)
+            )
+        }
+    }
+
+    // MARK: - Gameplay state handler
+
+    private func gameplayStateHandler(_ gameplay: Gameplay?, _ error: Error?) {
+        guard let gameplay = gameplay else {
+            return
+        }
+
+        switch gameplay.gameState {
+        case .waiting:
+            self.initialisePlayers(gameplay.playersId)
+        case .start:
+            self.startCountdown()
+        }
+    }
+
+    // MARK: - Player state handler
+
+    private func playerStateHandler(_ playerGameState: PlayerGameState?, _ error: Error?) {
+
+    }
+
+    // MARK: - Update managed player state to firebase
+
+    private func pushManagedPlayer() {
+        guard let gameplayId = gameplayId,
+            let managedPlayer = player else {
+            return
+        }
+
+        guard let managedPlayerState = createPlayerState(from: managedPlayer) else {
+            return
+        }
+
+        API.shared.gameplay.savePlayerState(gameId: gameplayId, playerState: managedPlayerState)
     }
 
     // MARK: - Centering camera
@@ -217,19 +324,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Count down to start game
 
     private func startCountdown() {
-        disableGameButtons()
         countdown(count: count)
     }
 
     func countdown(count: Int) {
-        countdownLabel = SKLabelNode()
-        countdownLabel?.position = CGPoint(x: 0, y: 0)
-        countdownLabel?.fontColor = .black
-        countdownLabel?.fontSize = size.height / 30
-        countdownLabel?.zPosition = 100
-        countdownLabel?.text = "Launching player in \(count)..."
-
-        self.cam?.addChild(countdownLabel!)
+//        countdownLabel = SKLabelNode()
+//        countdownLabel?.position = CGPoint(x: 0, y: 0)
+//        countdownLabel?.fontColor = .black
+//        countdownLabel?.fontSize = size.height / 30
+//        countdownLabel?.zPosition = 100
+//        countdownLabel?.text = "Launching player in \(count)..."
+//
+//        self.cam?.addChild(countdownLabel!)
 
         let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0),
                                                   SKAction.run(countdownAction)])
@@ -271,6 +377,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         return closestBolt
+    }
+
+    // MARK: - Create Player State
+
+    private func createPlayerState(from player: Player) -> PlayerGameState? {
+        guard let playerPhysicsBody = player.node.physicsBody  else {
+            return nil
+        }
+
+        let position = Vector(x: Double(player.node.position.x), y: Double(player.node.position.y))
+        let velocity = Vector(x: Double(playerPhysicsBody.velocity.dx), y: Double(playerPhysicsBody.velocity.dy))
+        let attachedBolt: Vector?
+        if let playerAttachedBolt = player.attachedBolt {
+            attachedBolt = Vector(x: Double(playerAttachedBolt.position.x), y: Double(playerAttachedBolt.position.y))
+        } else {
+            attachedBolt = nil
+        }
+
+        let playerGameState = PlayerGameState(
+            playerId: player.id,
+            position: position,
+            velocity: velocity,
+            imageName: player.imageName.stringValue,
+            lastUpdateTime: Date(),
+            powerup: player.powerup,
+            attachedPosition: attachedBolt
+        )
+
+        return playerGameState
     }
 
     private func getLaunchVelocity() -> CGVector {

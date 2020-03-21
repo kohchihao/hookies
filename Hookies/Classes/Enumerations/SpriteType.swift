@@ -63,6 +63,13 @@ extension SpriteType {
         }
     }
 
+    var initialIsDynamic: Bool {
+        switch self {
+        default:
+            return false
+        }
+    }
+
     var isDynamic: Bool {
         switch self {
         case .player, .line:

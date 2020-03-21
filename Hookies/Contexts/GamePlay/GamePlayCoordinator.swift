@@ -20,7 +20,7 @@ class GamePlayCoordinator: Coordinator {
     private let gameplayId: String
 
     // MARK: - INIT
-    init(with navigator: NavigatorRepresentable, mapType: MapType, and gameplayId: String) {
+    init(with navigator: NavigatorRepresentable, mapType: MapType, gameplayId: String) {
         self.navigator = navigator
         self.mapType = mapType
         self.gameplayId = gameplayId
