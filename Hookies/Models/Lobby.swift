@@ -17,10 +17,10 @@ struct Lobby {
     private(set) var costumesId: [String: CostumeType]
 
     init(hostId: String) {
-        lobbyId = UUID().uuidString
+        lobbyId = RandomIDGenerator.getRandomID(length: 6)
         self.hostId = hostId
         self.playersId = [hostId]
-        self.costumesId = [hostId: .Pink]
+        self.costumesId = [hostId: .Pink_Monster]
         self.lobbyState = .open
     }
 
@@ -28,10 +28,10 @@ struct Lobby {
         self.init(hostId: hostId)
         self.lobbyState = .open
         for playerId in playersId {
-            addPlayerId(playerId: playerId)
+            addPlayer(playerId: playerId)
         }
         for (playerId, costumeType) in costumesId {
-            addCostumeId(playerId: playerId, costumeType: costumeType)
+            updateCostumeId(playerId: playerId, costumeType: costumeType)
         }
     }
 
@@ -46,14 +46,18 @@ struct Lobby {
         self.costumesId = costumesId
     }
 
-    mutating func addPlayerId(playerId: String) {
-        guard !playersId.contains(playerId) && playerId != hostId else {
+    mutating func addPlayer(playerId: String) {
+        guard !playersId.contains(playerId) && playerId != hostId && lobbyState == .open else {
             return
         }
         playersId.append(playerId)
+        updateCostumeId(playerId: playerId, costumeType: .Pink_Monster)
+        if playersId.count == 4 {
+            lobbyState = .full
+        }
     }
 
-    mutating func addCostumeId(playerId: String, costumeType: CostumeType) {
+    mutating func updateCostumeId(playerId: String, costumeType: CostumeType) {
         if playersId.contains(playerId) {
             self.costumesId[playerId] = costumeType
         }
@@ -61,5 +65,23 @@ struct Lobby {
 
     mutating func updateSelectedMapType(selectedMapType: MapType) {
         self.selectedMapType = selectedMapType
+    }
+
+    mutating func updateLobbyState(lobbyState: LobbyState) {
+        switch lobbyState {
+        case .open:
+            guard playersId.count < 4 else {
+                return
+            }
+        case .full:
+            guard playersId.count == 4 else {
+                return
+            }
+        case .start:
+            guard playersId.count > 1 && playersId.count <= 4 else {
+                return
+            }
+        }
+        self.lobbyState = lobbyState
     }
 }

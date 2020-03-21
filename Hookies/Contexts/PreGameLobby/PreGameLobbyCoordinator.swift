@@ -46,6 +46,7 @@ class PreGameLobbyCoordinator: Coordinator {
 
 // MARK: - PreGameLobbyViewNavigationDelegate
 extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
+
     func didPressSelectMapButton(in: PreGameLobbyViewController) {
         let mapsCoordinator = MapsCoordinator(with: navigator)
         mapsCoordinator.coordinatorDelegate = self
@@ -53,9 +54,8 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
         mapsCoordinator.start()
     }
 
-    // TODO: Need to remove this and pass in a model that is required to start the game.
-    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType) {
-        let gamePlayCoordinator = GamePlayCoordinator(with: navigator, and: mapType)
+    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String) {
+        let gamePlayCoordinator = GamePlayCoordinator(with: navigator, mapType: mapType, gameplayId: gameplayId)
         gamePlayCoordinator.coordinatorDelegate = self
         gamePlayCoordinator.start()
     }
