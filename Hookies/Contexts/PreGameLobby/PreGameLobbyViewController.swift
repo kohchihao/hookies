@@ -109,6 +109,7 @@ class PreGameLobbyViewController: UIViewController {
         guard viewModel.lobby.lobbyState == .start else {
             return
         }
+        saveLobby(lobby: viewModel.lobby)
         createGameplaySession(with: viewModel.lobby)
         navigationDelegate?.didPressStartButton(in: self, withSelectedMapType: selectedMapType, gameplayId: viewModel.lobby.lobbyId)
     }
@@ -120,6 +121,7 @@ class PreGameLobbyViewController: UIViewController {
 
     private func updateView() {
         startGameButton.isEnabled = startButtonEnabled
+        selectedMapLabel.text = viewModel.lobby.selectedMapType.map { $0.rawValue }
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
         for playerId in viewModel.lobby.playersId {
             getPlayer(playerId: playerId)
