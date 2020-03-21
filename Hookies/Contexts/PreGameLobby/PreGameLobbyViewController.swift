@@ -17,20 +17,28 @@ protocol PreGameLobbyViewNavigationDelegate: class {
 
 class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
-    private var viewModel: PreGameLobbyViewModelRepresentable {
-        didSet {
-            updateView()
-        }
-    }
+    private var viewModel: PreGameLobbyViewModelRepresentable
+    private var playersIdDispatchGroup = DispatchGroup()
+    private var currentUserDispatchGroup = DispatchGroup()
+    private var players: [User] = []
+    private var playerViews: [LobbyPlayerView] = []
+    private var currentUser: User?
 
     @IBOutlet private var selectedMapLabel: UILabel!
     @IBOutlet private var gameSessionIdLabel: UILabel!
     @IBOutlet private var playersIdLabel: UILabel!
+    @IBOutlet private var player1View: LobbyPlayerView!
+    @IBOutlet private var player2View: LobbyPlayerView!
+    @IBOutlet private var player3View: LobbyPlayerView!
+    @IBOutlet private var player4View: LobbyPlayerView!
+    @IBOutlet private var costumeIdLabel: UILabel!
 
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: PreGameLobbyViewController.name, bundle: nil)
+        saveLobby(lobby: viewModel.lobby)
+        subscribeToLobby(lobby: viewModel.lobby)
     }
 
     @available(*, unavailable)
@@ -40,12 +48,39 @@ class PreGameLobbyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getCurrentUser()
         viewModel.delegate = self
+        playerViews.append(player1View)
+        playerViews.append(player2View)
+        playerViews.append(player3View)
+        playerViews.append(player4View)
         updateView()
     }
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+
+    func saveLobby(lobby: Lobby) {
+        API.shared.lobby.save(lobby: lobby)
+    }
+
+    func subscribeToLobby(lobby: Lobby) {
+        API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard let updatedLobby = lobby else {
+                return
+            }
+            self.viewModel.lobby = updatedLobby
+            self.updateView()
+        })
+    }
+
+    deinit {
+        API.shared.lobby.unsubscribeFromLobby()
     }
 
     @IBAction private func onSelectMapClicked(_ sender: UIButton) {
@@ -60,18 +95,102 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func updateView() {
-        print("refreshView")
-        print(viewModel.lobby.lobbyId)
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
-        preparePlayers()
+        for playerId in viewModel.lobby.playersId {
+            getPlayer(playerId: playerId)
+        }
+        playersIdDispatchGroup.notify(queue: DispatchQueue.main) {
+            if self.players.count == self.viewModel.lobby.playersId.count {
+                self.updatePlayerViews()
+            }
+        }
+        currentUserDispatchGroup.notify(queue: DispatchQueue.main) {
+            if self.currentUser != nil {
+                self.updateCostumeIdLabel()
+            }
+        }
     }
 
-    private func preparePlayers() {
-        playersIdLabel.text?.append(viewModel.lobby.hostId)
-        for playerId in viewModel.lobby.playersId {
-            playersIdLabel.text?.append(playerId)
-            playersIdLabel.text?.append("\n")
+    private func updateCostumeIdLabel() {
+        guard let userId = currentUser?.uid else {
+            return
         }
+        costumeIdLabel.text = viewModel.lobby.costumesId[userId].map { $0.rawValue }
+    }
+
+    @IBAction private func nextCostume() {
+        guard let userId = currentUser?.uid else {
+            return
+        }
+        let currentCostume = viewModel.lobby.costumesId[userId]
+        switch currentCostume {
+        case .Pink_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Owlet_Monster)
+        case .Owlet_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Dude_Monster)
+        case .Dude_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Pink_Monster)
+        default:
+            return
+        }
+        updateCostumeIdLabel()
+        updatePlayerViews()
+    }
+
+    @IBAction private func prevCostume() {
+        guard let userId = currentUser?.uid else {
+            return
+        }
+        let currentCostume = viewModel.lobby.costumesId[userId]
+        switch currentCostume {
+        case .Pink_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Dude_Monster)
+        case .Owlet_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Pink_Monster)
+        case .Dude_Monster:
+            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Owlet_Monster)
+        default:
+            return
+        }
+        updateCostumeIdLabel()
+        updatePlayerViews()
+    }
+
+    private func updatePlayerViews() {
+        for i in 0..<min(4, self.players.count) {
+            playerViews[i].updateUsernameLabel(username: players[i].username)
+            guard let costumeType = viewModel.lobby.costumesId[players[i].uid] else {
+                return
+            }
+            playerViews[i].addPlayerImage(costumeType: costumeType)
+        }
+    }
+
+    private func getPlayer(playerId: String) {
+        playersIdDispatchGroup.enter()
+        API.shared.user.get(withUid: playerId, completion: { user, error in
+            guard error == nil else {
+                return
+            }
+            guard let user = user else {
+                return
+            }
+            if !self.players.contains(user) {
+                self.players.append(user)
+            }
+            self.playersIdDispatchGroup.leave()
+        })
+    }
+
+    private func getCurrentUser() {
+        currentUserDispatchGroup.enter()
+        API.shared.user.currentUser(completion: { user, error in
+            guard error == nil else {
+                return
+            }
+            self.currentUser = user
+            self.currentUserDispatchGroup.leave()
+        })
     }
 }
 

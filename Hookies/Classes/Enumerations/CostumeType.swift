@@ -9,9 +9,9 @@
 import Foundation
 
 enum CostumeType: String, CaseIterable {
-    case Pink
-    case Owlet
-    case Dude
+    case Pink_Monster
+    case Owlet_Monster
+    case Dude_Monster
 }
 
 extension CostumeType: StringRepresentable {

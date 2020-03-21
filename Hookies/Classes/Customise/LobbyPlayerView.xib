@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LobbyPlayerView" customModule="Hookies" customModuleProvider="target">
+            <connections>
+                <outlet property="mainView" destination="pHI-vm-vIa" id="DyC-E5-NCE"/>
+                <outlet property="playerImageView" destination="RZA-gg-1nC" id="hke-bb-tpB"/>
+                <outlet property="playerPodium" destination="rV1-1S-ydK" id="lef-h3-dd6"/>
+                <outlet property="usernameLabel" destination="1YI-NR-rSa" id="Q1T-tt-ez8"/>
+                <outlet property="usernameLabelBg" destination="By5-PH-VQJ" id="xE7-dr-w8E"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pHI-vm-vIa" userLabel="LobbyPlayerView">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="311"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="grass_pad" translatesAutoresizingMaskIntoConstraints="NO" id="rV1-1S-ydK">
+                    <rect key="frame" x="0.0" y="183" width="200" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="name_bg" translatesAutoresizingMaskIntoConstraints="NO" id="By5-PH-VQJ">
+                    <rect key="frame" x="28" y="0.0" width="144" height="35"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1YI-NR-rSa">
+                    <rect key="frame" x="35" y="7" width="130" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RZA-gg-1nC" userLabel="Player Image">
+                    <rect key="frame" x="0.0" y="36" width="200" height="183"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="width" constant="200" id="LBH-cn-DeA"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="oya-BE-0KB"/>
+            <point key="canvasLocation" x="-223.18840579710147" y="670.64732142857144"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="grass_pad" width="860" height="302"/>
+        <image name="name_bg" width="320" height="102"/>
+    </resources>
+</document>

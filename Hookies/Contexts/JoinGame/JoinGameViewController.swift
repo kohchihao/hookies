@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
 
 protocol JoinGameViewNavigationDelegate: class {
     func didPressJoinLobbyButton(in: JoinGameViewController, withLobby: Lobby)
@@ -69,16 +70,25 @@ class JoinGameViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
-    // TODO: Retrieve lobby from firestore
     @IBAction private func submitButtonTapped(sender: UIButton) {
         guard let lobbyId = lobbyIdField.text else {
             return
         }
-        let lobby = Lobby(hostId: lobbyId)
-        print(lobby.hostId)
-        self.dismiss(animated: true, completion: nil)
-        navigationDelegate?.didPressJoinLobbyButton(in: self, withLobby: lobby)
-        self.dismiss(animated: true, completion: nil)
+        API.shared.lobby.get(lobbyId: lobbyId, completion: { lobby, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard var lobby = lobby else {
+                return
+            }
+            guard let playerId = Auth.auth().currentUser?.uid else {
+                return
+            }
+            lobby.addPlayer(playerId: playerId)
+            self.navigationDelegate?.didPressJoinLobbyButton(in: self, withLobby: lobby)
+            self.dismiss(animated: false, completion: nil)
+        })
     }
 
     override func viewDidDisappear(_ animated: Bool) {
