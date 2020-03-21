@@ -13,6 +13,7 @@ class UserStore {
 
     private let collection: CollectionReference
     private var authListener: AuthStateDidChangeListenerHandle?
+    private(set) var currentUser: User?
 
     init(userCollection: CollectionReference) {
         collection = userCollection
@@ -24,13 +25,16 @@ class UserStore {
     ///     - Has an existing record in the firestore users collection.
     func authStatus(completion: @escaping (_: AuthState) -> Void) {
         guard let user = Auth.auth().currentUser else {
+            currentUser = nil
             return completion(.notAuthenticated)
         }
 
         get(withUid: user.uid) { user, error in
             guard error == nil, user != nil else {
+                self.currentUser = nil
                 return completion(.missingUsername)
             }
+            self.currentUser = user
             return completion(.authenticated)
         }
     }
@@ -38,6 +42,7 @@ class UserStore {
     func subscribeToAuthStatus(listener: @escaping (_: AuthState) -> Void) {
         authListener = Auth.auth().addStateDidChangeListener({ auth, _  in
             guard auth.currentUser != nil else {
+                self.currentUser = nil
                 return listener(.notAuthenticated)
             }
             self.authStatus { state in

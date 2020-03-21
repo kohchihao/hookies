@@ -27,12 +27,15 @@ extension PlayerGameState: FirestoreModel {
             let powerup = try PowerupCreator.create(name: modelData.value(forKey: "powerupName"),
                                                     isActivated: modelData.value(forKey: "isPowerupActivated"),
                                                     ownerId: modelData.optionalValue(forKey: "powerupOwnerId"))
-            let imageName: String = try modelData.value(forKey: "imageName")
+            let imageType: String = try modelData.value(forKey: "imageName")
             let lastUpdateTime: Timestamp = try modelData.value(forKey: "lastUpdateTime")
             var attachedPosition: Vector?
             if let attachedToX: Double = modelData.optionalValue(forKey: "attachedPositionX"),
                 let attachedToY: Double = modelData.optionalValue(forKey: "attachedPositionY") {
                 attachedPosition = Vector(x: attachedToX, y: attachedToY)
+            }
+            guard let imageName = CostumeType(rawValue: imageType) else {
+                return nil
             }
 
             self.init(
