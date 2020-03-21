@@ -11,6 +11,7 @@ import Foundation
 struct Lobby {
     private(set) var lobbyId: String
     private(set) var hostId: String
+    private(set) var lobbyState: LobbyState
     private(set) var playersId: [String]
     private(set) var selectedMapType: MapType?
     private(set) var costumesId: [String: CostumeType]
@@ -20,10 +21,12 @@ struct Lobby {
         self.hostId = hostId
         self.playersId = [hostId]
         self.costumesId = [hostId: .Pink]
+        self.lobbyState = .open
     }
 
     init(hostId: String, playersId: [String], costumesId: [String: CostumeType]) {
         self.init(hostId: hostId)
+        self.lobbyState = .open
         for playerId in playersId {
             addPlayerId(playerId: playerId)
         }
@@ -32,10 +35,12 @@ struct Lobby {
         }
     }
 
-    init(lobbyId: String, hostId: String, selectedMapType: MapType?,
-         playersId: [String], costumesId: [String: CostumeType]) {
+    init(lobbyId: String, hostId: String, lobbyState: LobbyState,
+         selectedMapType: MapType?, playersId: [String],
+         costumesId: [String: CostumeType]) {
         self.lobbyId = lobbyId
         self.hostId = hostId
+        self.lobbyState = lobbyState
         self.selectedMapType = selectedMapType
         self.playersId = playersId
         self.costumesId = costumesId

@@ -23,11 +23,16 @@ extension Lobby: FirestoreModel {
             selectedMap = MapType(rawValue: mapString)
         }
         do {
+            guard let lobbyState = LobbyState(rawValue: try modelData.value(forKey: "lobbyState")) else {
+                return nil
+            }
             let costumesId: [String: String] = try modelData.value(forKey: "costumesId")
             let costumes = costumesId.compactMapValues({ CostumeType(rawValue: $0) })
+
             try self.init(
                 lobbyId: modelData.documentID,
                 hostId: modelData.value(forKey: "hostId"),
+                lobbyState: lobbyState,
                 selectedMapType: selectedMap,
                 playersId: modelData.value(forKey: "playersId"),
                 costumesId: costumes

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 extension PlayerGameState: FirestoreModel {
     var documentID: String {
@@ -27,9 +28,10 @@ extension PlayerGameState: FirestoreModel {
                                                     isActivated: modelData.value(forKey: "isPowerupActivated"),
                                                     ownerId: modelData.optionalValue(forKey: "powerupOwnerId"))
             let imageName: String = try modelData.value(forKey: "imageName")
+            let lastUpdateTime: Timestamp = try modelData.value(forKey: "lastUpdateTime")
             var attachedPosition: Vector?
-            if let attachedToX: Double = modelData.optionalValue(forKey: "attachedToX"),
-                let attachedToY: Double = modelData.optionalValue(forKey: "attachedToY") {
+            if let attachedToX: Double = modelData.optionalValue(forKey: "attachedPositionX"),
+                let attachedToY: Double = modelData.optionalValue(forKey: "attachedPositionY") {
                 attachedPosition = Vector(x: attachedToX, y: attachedToY)
             }
 
@@ -38,6 +40,7 @@ extension PlayerGameState: FirestoreModel {
                 position: position,
                 velocity: velocity,
                 imageName: imageName,
+                lastUpdateTime: lastUpdateTime.dateValue(),
                 powerup: powerup,
                 attachedPosition: attachedPosition
             )
