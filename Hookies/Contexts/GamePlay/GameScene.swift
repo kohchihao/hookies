@@ -61,6 +61,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         resolveDeadlock()
         handleJumpButton()
         handlePlayerAfterFinishingLine()
+        pushManagedPlayer()
     }
 
     func setPowerLaunch(at power: Int) {
