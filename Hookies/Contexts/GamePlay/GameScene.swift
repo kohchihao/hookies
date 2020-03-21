@@ -12,7 +12,7 @@ import Dispatch
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var gameplayId: String?
-    private var numberOfPlayers: Int?
+    private var gameplay: Gameplay?
     private var players = Set<Player>()
     private var playerId: String?
     private var player: Player?
@@ -217,6 +217,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Subscribe to game state
 
     private func subscribeToGameState() {
+        print("sub game play")
         guard let gameplayId = self.gameplayId else {
             return
         }
@@ -249,11 +250,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
+        print("gameplay event: \(gameplay.gameState)")
+
         switch gameplay.gameState {
         case .waiting:
-            self.numberOfPlayers = gameplay.playersId.count
+            self.gameplay = gameplay
             self.initialisePlayers(gameplay.playersId)
         case .start:
+            print("start start start")
+            self.gameplay = gameplay
             self.startCountdown()
         }
     }
@@ -416,12 +421,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleGameStart() {
-        guard let gameplayId = gameplayId,
-            let numberOfPlayers = numberOfPlayers else {
+        guard let gameplay = gameplay else {
             return
         }
 
-        let isAllPlayersLoaded = numberOfPlayers == players.count
+        if gameplay.gameState == .start {
+            return
+        }
+
+        let isAllPlayersLoaded = gameplay.playersId.count == players.count
 
         if !isAllPlayersLoaded {
             return
@@ -432,8 +440,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             playersId.append(player.id)
         }
 
+        print("updating game state")
+
         let gameplayStart = Gameplay(
-            gameId: gameplayId,
+            gameId: gameplay.gameId,
             gameState: .start,
             playersId: playersId
         )
