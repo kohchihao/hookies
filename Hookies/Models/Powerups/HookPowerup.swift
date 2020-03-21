@@ -9,8 +9,6 @@
 import Foundation
 
 struct HookPowerup: Powerup {
-    var name: String = "Hook Enemy"
-
     var ownerId: String?
     var isActivated: Bool
 
