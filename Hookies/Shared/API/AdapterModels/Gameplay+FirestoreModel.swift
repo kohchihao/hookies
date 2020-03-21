@@ -12,11 +12,7 @@ extension Gameplay: FirestoreModel {
     }
 
     var serialized: [String: Any?] {
-        return [
-            "gameId": documentID,
-            "playersId": playersId,
-            "gameState": gameState.rawValue
-        ]
+        return defaultSerializer()
     }
 
     init?(modelData: FirestoreDataModel) {

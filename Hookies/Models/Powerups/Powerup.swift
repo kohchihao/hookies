@@ -10,7 +10,6 @@ import Foundation
 
 protocol Powerup: Nameable, FirestoreRepresentable {
     var ownerId: String? { get }
-    var name: String { get }
     var isActivated: Bool { get }
 
     mutating func activate(by user: User)

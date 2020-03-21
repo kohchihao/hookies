@@ -12,3 +12,9 @@ enum GameState: String, CaseIterable {
     case waiting
     case start
 }
+
+extension GameState: StringRepresentable {
+    var stringValue: String {
+        return rawValue
+    }
+}

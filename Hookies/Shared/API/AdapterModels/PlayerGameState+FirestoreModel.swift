@@ -30,8 +30,8 @@ extension PlayerGameState: FirestoreModel {
             let imageName: String = try modelData.value(forKey: "imageName")
             let lastUpdateTime: Timestamp = try modelData.value(forKey: "lastUpdateTime")
             var attachedPosition: Vector?
-            if let attachedToX: Double = modelData.optionalValue(forKey: "attachedToX"),
-                let attachedToY: Double = modelData.optionalValue(forKey: "attachedToY") {
+            if let attachedToX: Double = modelData.optionalValue(forKey: "attachedPositionX"),
+                let attachedToY: Double = modelData.optionalValue(forKey: "attachedPositionY") {
                 attachedPosition = Vector(x: attachedToX, y: attachedToY)
             }
 
