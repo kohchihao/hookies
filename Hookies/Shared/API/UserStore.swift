@@ -68,6 +68,16 @@ class UserStore {
         }
     }
 
+    func currentUser(completion: @escaping (User?, Error?) -> Void) {
+        guard let currentUser = Auth.auth().currentUser else {
+            return completion(nil, nil)
+        }
+
+        get(withUid: currentUser.uid) { user, error in
+            completion(user, error)
+        }
+    }
+
     /// Attempt to create a user record with its username in firestore database.
     /// - Precondition:
     ///     - The user must be authenticated through firebase authentication
