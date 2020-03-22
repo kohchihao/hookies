@@ -170,6 +170,7 @@ class Player {
 
     func renderNewFrame(position: CGPoint, velocity: CGVector, attachedBolt: SKSpriteNode?) {
         node.position = position
+        node.physicsBody?.isDynamic = type.isDynamic
         node.physicsBody?.velocity = velocity
         self.attachedBolt = attachedBolt
 

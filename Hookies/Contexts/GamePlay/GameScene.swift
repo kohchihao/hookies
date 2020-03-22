@@ -213,6 +213,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
                 self.handleGameStart()
             } else {
+                print("init other player")
+                print("pb: \(player.node.physicsBody)")
                 self.subscribeToPlayerState(playerId)
             }
 
@@ -347,6 +349,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let velocity = getLaunchVelocity()
         cannon?.launch(player: player, with: velocity)
         cannon?.node.removeFromParent()
+        pushManagedPlayerState()
         hasPlayerLaunch = true
     }
 
@@ -540,6 +543,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let playerPhyscisBody = player.node.physicsBody
             else {
                 print("joinbolt: no physics body")
+                print("line: \(playerLine.physicsBody)")
+                print("player: \(player.node.physicsBody)")
+                print("anchor: \(anchor.physicsBody)")
                 return
         }
 
