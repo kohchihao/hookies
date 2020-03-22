@@ -55,6 +55,7 @@ class PreGameLobbyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        _ = self.view
         getCurrentUser()
         viewModel.delegate = self
         playerViews.append(player1View)

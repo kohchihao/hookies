@@ -78,7 +78,7 @@ struct Lobby {
                 return
             }
         case .start:
-            guard playersId.count > 1 && playersId.count <= 4 else {
+            guard !playersId.isEmpty && playersId.count <= 4 else {
                 return
             }
         }
