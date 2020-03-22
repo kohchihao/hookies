@@ -195,7 +195,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             var playerClosestBolt: SKSpriteNode?
             if playerId == self.playerId {
-                playerClosestBolt =  self.getNearestBolt(from: position)
+                playerClosestBolt = self.getNearestBolt(from: position)
             }
 
             let player = Player(
@@ -301,7 +301,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let hasGameStarted = gameplay.gameState == .start
         let isToUpdateFrame = framesRenderSinceUpdated < 30
 
-        if hasGameStarted || hasPlayerFinishRace {
+        if !hasGameStarted || hasPlayerFinishRace {
             print("game not start: \(hasGameStarted)")
             return
         }
@@ -314,6 +314,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         pushManagedPlayerState()
         framesRenderSinceUpdated = 0
+        print("updated frame to firestore")
     }
 
     // MARK: - Push managed player state
