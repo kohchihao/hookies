@@ -123,16 +123,20 @@ class Player {
     }
 
     private func makeLine(to bolt: SKSpriteNode) -> SKShapeNode {
+        return makeLine(to: bolt.position)
+    }
+
+    private func makeLine(to position: CGPoint) -> SKShapeNode {
         let type = SpriteType.line
 
-        let distanceX = self.node.position.x - bolt.position.x
-        let distanceY = self.node.position.y - bolt.position.y
+        let distanceX = self.node.position.x - position.x
+        let distanceY = self.node.position.y - position.y
         let distance = sqrt((distanceX * distanceX) + (distanceY * distanceY))
 
         let path = CGMutablePath()
         path.move(to: self.node.position)
-        path.addLine(to: bolt.position)
-        path.addLine(to: CGPoint(x: bolt.position.x + 1, y: bolt.position.y + 1))
+        path.addLine(to: position)
+        path.addLine(to: CGPoint(x: position.x + 1, y: position.y + 1))
         path.addLine(to: CGPoint(x: self.node.position.x - 1, y: self.node.position.y - 1))
         path.closeSubpath()
 
@@ -140,7 +144,7 @@ class Player {
         currLine.strokeColor = SKColor.white
         currLine.lineWidth = 1.0
 
-        currLine.physicsBody = SKPhysicsBody(circleOfRadius: distance, center: bolt.position)
+        currLine.physicsBody = SKPhysicsBody(circleOfRadius: distance, center: position)
         currLine.physicsBody?.affectedByGravity = type.affectedByGravity
         currLine.physicsBody?.categoryBitMask = type.bitMask
         currLine.physicsBody?.collisionBitMask = type.collisionBitMask
@@ -160,6 +164,17 @@ class Player {
 
         let boost = CGVector(dx: boostX, dy: boostY)
         node.physicsBody?.applyImpulse(boost)
+    }
+
+    // MARK: - Render new player frame
+
+    func renderNewFrame(position: CGPoint, attachedBolt: SKSpriteNode?) {
+        node.position = position
+        self.attachedBolt = attachedBolt
+
+        if let attachedBolt = attachedBolt {
+            line = makeLine(to: attachedBolt)
+        }
     }
 
     // MARK: - Checks for deadlock
