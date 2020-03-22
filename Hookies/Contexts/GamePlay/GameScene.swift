@@ -257,11 +257,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         switch gameplay.gameState {
         case .waiting:
-            self.gameplay = gameplay
             self.initialisePlayers(gameplay.playersId)
-        case .start:
             self.gameplay = gameplay
+        case .start:
+            guard let currGameState = self.gameplay?.gameState else {
+                return
+            }
+
+            if currGameState == .start {
+                return
+            }
+
+            print("start start start")
             self.startCountdown()
+            self.gameplay = gameplay
         }
     }
 
@@ -461,6 +470,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         )
 
         API.shared.gameplay.saveGameState(gameplay: gameplayStart)
+        print("updated game state to start")
     }
 
     private func updatePlayerClosestBolt() {
