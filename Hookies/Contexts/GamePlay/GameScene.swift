@@ -299,7 +299,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         let hasGameStarted = gameplay.gameState == .start
-        let isToUpdateFrame = framesRenderSinceUpdated < 30
+        let isToUpdateFrame = framesRenderSinceUpdated >= 30
 
         if !hasGameStarted || hasPlayerFinishRace {
             print("game not start: \(hasGameStarted)")
@@ -327,12 +327,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 return
         }
 
-        guard let managedPlayerState = createPlayerState(from: managedPlayer) else {
-            print("pushing: player state nil")
-            return
-        }
+        print("managed player: \(managedPlayer)")
+        print("self player: \(player)")
 
-        API.shared.gameplay.savePlayerState(gameId: gameplayId, playerState: managedPlayerState)
+        let managedPlayerState = createPlayerState(from: managedPlayer)
+
+
+//        API.shared.gameplay.savePlayerState(gameId: gameplayId, playerState: managedPlayerState)
         print("done pushing \(managedPlayerState)")
     }
 
@@ -408,7 +409,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: - Create Player State
 
-    private func createPlayerState(from player: Player) -> PlayerGameState? {
+    private func createPlayerState(from player: Player) -> PlayerGameState {
         let position = Vector(x: Double(player.node.position.x), y: Double(player.node.position.y))
 
         var velocity = Vector(x: 0, y: 0)
@@ -416,11 +417,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             velocity = Vector(x: Double(playerPhysicsBody.velocity.dx), y: Double(playerPhysicsBody.velocity.dy))
         }
 
-        let attachedBolt: Vector?
+        var attachedBolt: Vector?
         if let playerAttachedBolt = player.attachedBolt {
             attachedBolt = Vector(x: Double(playerAttachedBolt.position.x), y: Double(playerAttachedBolt.position.y))
-        } else {
-            attachedBolt = nil
         }
 
         let playerGameState = PlayerGameState(
