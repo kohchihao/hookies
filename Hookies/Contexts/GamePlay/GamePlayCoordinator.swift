@@ -17,11 +17,13 @@ class GamePlayCoordinator: Coordinator {
     // MARK: - PRIVATE PROPERTIES
     private let navigator: NavigatorRepresentable
     private let mapType: MapType
+    private let gameplayId: String
 
     // MARK: - INIT
     init(with navigator: NavigatorRepresentable, mapType: MapType, gameplayId: String) {
         self.navigator = navigator
         self.mapType = mapType
+        self.gameplayId = gameplayId
     }
 
     // MARK: - START
@@ -32,7 +34,7 @@ class GamePlayCoordinator: Coordinator {
 
     // MARK: - FUNCTIONS
     private func viewController() -> GamePlayViewController {
-        let viewModel = GamePlayViewModel(withSelectedMap: mapType)
+        let viewModel = GamePlayViewModel(withSelectedMap: mapType, and: gameplayId)
         let viewController = GamePlayViewController(with: viewModel)
         viewController.navigationDelegate = self
         return viewController

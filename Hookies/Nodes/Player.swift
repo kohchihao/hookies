@@ -13,10 +13,12 @@ class Player {
     private let type = SpriteType.player
     let id: String
     let node: SKSpriteNode
-    var closestBolt: SKSpriteNode
+    let imageName: CostumeType
+    var closestBolt: SKSpriteNode?
     private(set) var line: SKShapeNode?
     private(set) var attachedBolt: SKSpriteNode?
     private var previousAttachedBolt: SKSpriteNode?
+    private(set) var powerup: Powerup?
 
     var isAttachedToBolt: Bool {
         return attachedBolt != nil
@@ -26,17 +28,18 @@ class Player {
     var contactedPlatforms: [SKSpriteNode: Int] = [:]
 
     // MARK: - Init
-    init(id: String, position: CGPoint, imageName: String, closestBolt: SKSpriteNode) {
+    init(id: String, position: CGPoint, imageName: CostumeType, closestBolt: SKSpriteNode?) {
         self.closestBolt = closestBolt
 
         self.id = id
-        self.node = SKSpriteNode(imageNamed: imageName)
+        self.imageName = imageName
+        self.node = SKSpriteNode(imageNamed: imageName.stringValue)
         self.node.zPosition = type.zPosition
         self.node.position = position
         self.node.size = type.size
 
         self.node.physicsBody = SKPhysicsBody(rectangleOf: self.node.size)
-        self.node.physicsBody?.isDynamic = type.isDynamic
+        self.node.physicsBody?.isDynamic = type.initialIsDynamic
         self.node.physicsBody?.mass = type.mass
         self.node.physicsBody?.linearDamping = type.linearDamping
         self.node.physicsBody?.friction = type.friction
@@ -47,12 +50,26 @@ class Player {
         self.node.physicsBody?.contactTestBitMask = type.contactTestBitMask
     }
 
+    init(id: String, position: CGPoint, imageName: CostumeType) {
+        self.id = id
+        self.imageName = imageName
+        self.node = SKSpriteNode(imageNamed: imageName.stringValue)
+        self.node.zPosition = type.zPosition
+        self.node.position = position
+        self.node.size = type.size
+    }
+
     // MARK: - Functions
     func launch(with velocity: CGVector) {
+        self.node.physicsBody?.isDynamic = type.isDynamic
         self.node.physicsBody?.velocity = velocity
     }
 
     func tetherToClosestBolt() {
+        guard let closestBolt = closestBolt else {
+            return
+        }
+
         let isAttachingToSameBolt = closestBolt.position == previousAttachedBolt?.position
 
         if isAttachingToSameBolt {
@@ -186,5 +203,15 @@ class Player {
             }
         }
         return false
+    }
+}
+
+extension Player: Hashable {
+    public static func == (lhs: Player, rhs: Player) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self).hashValue)
     }
 }

@@ -41,13 +41,11 @@ class JoinGameViewController: UIViewController {
                 as? TimeInterval else {
                     return
         }
-
         var keyboardHeight: CGFloat = 0
         if notification.name == UIResponder.keyboardWillShowNotification {
             guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
                 return
             }
-
             keyboardHeight = keyboardFrame.cgRectValue.height
         }
 
@@ -64,6 +62,7 @@ class JoinGameViewController: UIViewController {
         joinGameDialog.backgroundColor = UIColor.clear
         joinGameDialog.isOpaque = false
         joinGameDialog.layer.cornerRadius = 15
+        joinGameDialog.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height / 2)
     }
 
     @IBAction private func closeButtonTapped(sender: UIButton) {
@@ -72,6 +71,9 @@ class JoinGameViewController: UIViewController {
 
     @IBAction private func submitButtonTapped(sender: UIButton) {
         guard let lobbyId = lobbyIdField.text else {
+            return
+        }
+        guard !lobbyId.isEmpty else {
             return
         }
         API.shared.lobby.get(lobbyId: lobbyId, completion: { lobby, error in

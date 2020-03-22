@@ -100,7 +100,7 @@ class PreGameLobbyViewController: UIViewController {
 
     @IBAction private func onStartClicked(_ sender: UIButton) {
         viewModel.lobby.updateLobbyState(lobbyState: .start)
-        startGame()
+        saveLobby(lobby: viewModel.lobby)
     }
 
     private func startGame() {
