@@ -168,10 +168,8 @@ class Player {
 
     // MARK: - Render new player frame
 
-    func renderNewFrame(position: CGPoint, velocity: CGVector, attachedBolt: SKSpriteNode?) {
+    func renderNewFrame(position: CGPoint, attachedBolt: SKSpriteNode?) {
         node.position = position
-        node.physicsBody?.isDynamic = type.isDynamic
-        node.physicsBody?.velocity = velocity
         self.attachedBolt = attachedBolt
 
         if let attachedBolt = attachedBolt {

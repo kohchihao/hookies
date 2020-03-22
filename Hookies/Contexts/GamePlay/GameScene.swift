@@ -194,27 +194,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
 
-            var playerClosestBolt: SKSpriteNode?
+            let player: Player
             if playerId == self.playerId {
-                playerClosestBolt = self.getNearestBolt(from: position)
-            }
+                let playerClosestBolt = self.getNearestBolt(from: position)
 
-            let player = Player(
-                id: playerId,
-                position: position,
-                imageName: currPlayerImageName,
-                closestBolt: playerClosestBolt
-            )
+                player = Player(
+                    id: playerId,
+                    position: position,
+                    imageName: currPlayerImageName,
+                    closestBolt: playerClosestBolt
+                )
 
-            if playerId == self.playerId {
                 self.player = player
                 self.players.insert(player)
                 self.pushManagedPlayerState()
 
                 self.handleGameStart()
             } else {
-                print("init other player")
-                print("pb: \(player.node.physicsBody)")
+                player = Player(id: playerId, position: position, imageName: currPlayerImageName)
+
                 self.subscribeToPlayerState(playerId)
             }
 
@@ -671,13 +669,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
+        currPlayer.node.removeFromParent()
         if let currPlayerLine = currPlayer.line {
             print("removing player line & bolt")
-            removeJointBolt(from: currPlayer)
+            currPlayerLine.removeFromParent()
         }
 
         let newPosition = CGPoint(x: playerGameState.position.x, y: playerGameState.position.y)
-        let newVelocity = CGVector(dx: playerGameState.velocity.x, dy: playerGameState.velocity.y)
         var attachedBolt: SKSpriteNode?
 
         if let currPlayerAttachedBolt = playerGameState.attachedPosition {
@@ -688,14 +686,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         print("before: \(currPlayer.node.position)")
-        print("before: \(currPlayer.node.physicsBody?.velocity)")
-        currPlayer.renderNewFrame(position: newPosition, velocity: newVelocity, attachedBolt: attachedBolt)
+        currPlayer.renderNewFrame(position: newPosition, attachedBolt: attachedBolt)
+        addChild(currPlayer.node)
         print("after: \(currPlayer.node.position)")
-        print("after: \(currPlayer.node.physicsBody?.velocity)")
 
         if let currPlayerLine = currPlayer.line {
             print("adding \(playerGameState.playerId) line")
-            joinBolt(to: currPlayer)
+            addChild(currPlayerLine)
         }
         print("render done")
     }
