@@ -25,6 +25,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var jumpButton: JumpButton?
     private var countdownLabel: SKLabelNode?
     private var count = 5
+    private var hasPlayerLaunch = false
     private var hasPlayerFinishRace = false
 
     private var playersAttachedAnchor: [String: SKNode] = [:]
@@ -294,14 +295,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Update managed player state
 
     private func updateManagedPlayerState() {
-        guard let gameplay = gameplay else {
-                return
-        }
-
-        let hasGameStarted = gameplay.gameState == .start
         let isToUpdateFrame = framesRenderSinceUpdated >= 30
 
-        if !hasGameStarted || hasPlayerFinishRace {
+        if hasPlayerLaunch || hasPlayerFinishRace {
             print("game not start: \(hasGameStarted)")
             return
         }
@@ -332,8 +328,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         let managedPlayerState = createPlayerState(from: managedPlayer)
 
-
-//        API.shared.gameplay.savePlayerState(gameId: gameplayId, playerState: managedPlayerState)
+        API.shared.gameplay.savePlayerState(gameId: gameplayId, playerState: managedPlayerState)
         print("done pushing \(managedPlayerState)")
     }
 
@@ -354,6 +349,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let velocity = getLaunchVelocity()
         cannon?.launch(player: player, with: velocity)
         cannon?.node.removeFromParent()
+        hasPlayerLaunch = true
     }
 
     // MARK: - Count down to start game
