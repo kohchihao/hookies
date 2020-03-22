@@ -297,17 +297,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func updateManagedPlayerState() {
         let isToUpdateFrame = framesRenderSinceUpdated >= 30
 
-        if hasPlayerLaunch || hasPlayerFinishRace {
-            print("game not start: \(hasGameStarted)")
+        if !hasPlayerLaunch || hasPlayerFinishRace {
+            print("player launch: \(hasPlayerLaunch)")
             return
         }
 
         if !isToUpdateFrame {
-            print("not time to update frame: \(framesRenderSinceUpdated)")
+//            print("not time to update frame: \(framesRenderSinceUpdated)")
             framesRenderSinceUpdated += 1
             return
         }
 
+        print("time to push: \(framesRenderSinceUpdated)")
         pushManagedPlayerState()
         framesRenderSinceUpdated = 0
         print("updated frame to firestore")
@@ -322,9 +323,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 print("pushing: some properties are nil")
                 return
         }
-
-        print("managed player: \(managedPlayer)")
-        print("self player: \(player)")
 
         let managedPlayerState = createPlayerState(from: managedPlayer)
 
@@ -503,7 +501,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         player.tetherToClosestBolt()
+        guard let playerInitialVelocity = player.node.physicsBody?.velocity else {
+            return
+        }
         joinBolt(to: player)
+        player.node.physicsBody?.applyImpulse(playerInitialVelocity)
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
@@ -515,10 +517,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func joinBolt(to player: Player) {
-        guard let playerInitialVelocity = player.node.physicsBody?.velocity,
-            let playerLine = player.line,
+        print("join bolt")
+        guard let playerLine = player.line,
             let playerAttachedBolt = player.attachedBolt
             else {
+                print("joinbolt: no player attribute")
+                print("line: \(player.line)")
+                print("attachedBolt: \(player.attachedBolt)")
                 return
         }
 
@@ -534,6 +539,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let linePhysicsBody = playerLine.physicsBody,
             let playerPhyscisBody = player.node.physicsBody
             else {
+                print("joinbolt: no physics body")
                 return
         }
 
@@ -550,11 +556,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             anchor: player.node.position
         )
         self.physicsWorld.add(lineToPlayer)
-        self.player?.node.physicsBody?.applyImpulse(playerInitialVelocity)
 
         self.playersAttachedAnchor[player.id] = anchor
         self.playersAnchorLineJointPin[player.id] = boltToLine
         self.playersPositionLineJointPin[player.id] = lineToPlayer
+
+        print(self.playersAttachedAnchor)
     }
 
     private func removeJointBolt(from player: Player) {
@@ -563,6 +570,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let playerAnchorLineJointPin = playersAnchorLineJointPin[player.id],
             let playerPositionLineJointPin = playersPositionLineJointPin[player.id]
             else {
+                print("remove bolt: no drawn property")
+                print("line: \(player.line)")
+                print("anchor: \(playersAttachedAnchor[player.id])")
+                print("bolttoline: \(playersAnchorLineJointPin[player.id])")
+                print("linetoposition: \(playersPositionLineJointPin[player.id])")
                 return
         }
 
@@ -670,13 +682,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         print("before: \(currPlayer.node.position)")
+        print("before: \(currPlayer.node.physicsBody?.velocity)")
         currPlayer.renderNewFrame(position: newPosition, velocity: newVelocity, attachedBolt: attachedBolt)
         print("after: \(currPlayer.node.position)")
-        joinBolt(to: currPlayer)
+        print("after: \(currPlayer.node.physicsBody?.velocity)")
 
         if let currPlayerLine = currPlayer.line {
             print("adding \(playerGameState.playerId) line")
-            addChild(currPlayerLine)
+            joinBolt(to: currPlayer)
         }
         print("render done")
     }
