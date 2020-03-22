@@ -295,7 +295,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Update managed player state
 
     private func updateManagedPlayerState() {
-        let isToUpdateFrame = framesRenderSinceUpdated >= 30
+        let isToUpdateFrame = framesRenderSinceUpdated >= 10
 
         if !hasPlayerLaunch || hasPlayerFinishRace {
             print("player launch: \(hasPlayerLaunch)")
