@@ -22,7 +22,6 @@ class API {
         let settings = FirestoreSettings()
         settings.isPersistenceEnabled = false
         db.settings = settings
-        
         user = UserStore(userCollection: db.collection("users"))
         gameplay = GameplayStore(gameplayCollection: db.collection("gameplays"))
         lobby = LobbyStore(lobbyCollection: db.collection("lobbies"))
