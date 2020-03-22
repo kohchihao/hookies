@@ -257,11 +257,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         switch gameplay.gameState {
         case .waiting:
-            self.gameplay = gameplay
             self.initialisePlayers(gameplay.playersId)
-        case .start:
             self.gameplay = gameplay
+        case .start:
+            guard let currGameState = self.gameplay?.gameState else {
+                return
+            }
+
+            if currGameState == .start {
+                return
+            }
+
             self.startCountdown()
+            self.gameplay = gameplay
         }
     }
 
