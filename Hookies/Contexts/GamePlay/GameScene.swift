@@ -268,7 +268,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
 
-            print("start start start")
             self.startCountdown()
             self.gameplay = gameplay
         }
@@ -470,7 +469,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         )
 
         API.shared.gameplay.saveGameState(gameplay: gameplayStart)
-        print("updated game state to start")
     }
 
     private func updatePlayerClosestBolt() {
