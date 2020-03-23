@@ -327,7 +327,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Centering camera
 
     private func centerOnNode(node: SKNode) {
-        let action = SKAction.move(to: CGPoint(x: node.position.x, y: 0), duration: 0.5)
+        let action = SKAction.move(to: CGPoint(x: node.position.x, y: node.position.y), duration: 0.5)
         self.cam?.run(action)
         self.background?.run(action)
     }
