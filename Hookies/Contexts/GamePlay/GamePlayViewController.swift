@@ -41,7 +41,7 @@ class GamePlayViewController: UIViewController {
                 scene.gameplayId = viewModel.gameplayId
 
                 // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
+                scene.scaleMode = .resizeFill
 
                 // Present the scene
                 view.presentScene(scene)
