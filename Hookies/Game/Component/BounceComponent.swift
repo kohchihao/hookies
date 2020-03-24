@@ -1,5 +1,5 @@
 //
-//  Rotate.swift
+//  Bounce.swift
 //  Hookies
 //
 //  Created by Marcus Koh on 24/3/20.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-class Rotate: Component {
+class BounceComponent: Component {
     private(set) var parent: Entity
-    var omega: Double = 0.0
+    var restitution = 0.0
 
     init(parent: Entity) {
         self.parent = parent

@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class Sprite: Component {
+class SpriteComponent: Component {
     private(set) var parent: Entity
     var node = SKSpriteNode()
 

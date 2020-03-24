@@ -77,15 +77,17 @@
 		D908770224299C4C00B73D0E /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770124299C4C00B73D0E /* Component.swift */; };
 		D908770424299D8D00B73D0E /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770324299D8D00B73D0E /* System.swift */; };
 		D908770624299DC200B73D0E /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770524299DC200B73D0E /* GameEngine.swift */; };
-		D908770E2429A7FE00B73D0E /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770D2429A7FE00B73D0E /* Platform.swift */; };
-		D90877102429A87500B73D0E /* Bolt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770F2429A87500B73D0E /* Bolt.swift */; };
-		D90877122429A88200B73D0E /* FinishingLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877112429A88200B73D0E /* FinishingLine.swift */; };
-		D90877162429A9DB00B73D0E /* Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877152429A9DB00B73D0E /* Rotate.swift */; };
-		D90877182429AB3600B73D0E /* NonPhysicsTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877172429AB3600B73D0E /* NonPhysicsTranslate.swift */; };
-		D908771A2429AD3F00B73D0E /* Bounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877192429AD3F00B73D0E /* Bounce.swift */; };
-		D908771C2429AD8400B73D0E /* Hook.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908771B2429AD8400B73D0E /* Hook.swift */; };
-		D908771E2429AE1000B73D0E /* Life.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908771D2429AE1000B73D0E /* Life.swift */; };
-		D90877202429AE4400B73D0E /* Sprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908771F2429AE4400B73D0E /* Sprite.swift */; };
+		D908770E2429A7FE00B73D0E /* PlatformEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770D2429A7FE00B73D0E /* PlatformEntity.swift */; };
+		D90877102429A87500B73D0E /* BoltEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770F2429A87500B73D0E /* BoltEntity.swift */; };
+		D90877122429A88200B73D0E /* FinishingLineEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877112429A88200B73D0E /* FinishingLineEntity.swift */; };
+		D90877162429A9DB00B73D0E /* RotateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877152429A9DB00B73D0E /* RotateComponent.swift */; };
+		D90877182429AB3600B73D0E /* NonPhysicsTranslateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877172429AB3600B73D0E /* NonPhysicsTranslateComponent.swift */; };
+		D908771A2429AD3F00B73D0E /* BounceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877192429AD3F00B73D0E /* BounceComponent.swift */; };
+		D908771C2429AD8400B73D0E /* HookComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908771B2429AD8400B73D0E /* HookComponent.swift */; };
+		D908771E2429AE1000B73D0E /* LifeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908771D2429AE1000B73D0E /* LifeComponent.swift */; };
+		D90877202429AE4400B73D0E /* SpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908771F2429AE4400B73D0E /* SpriteComponent.swift */; };
+		D90877222429AF2E00B73D0E /* PlayerEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877212429AF2E00B73D0E /* PlayerEntity.swift */; };
+		D90877242429B03B00B73D0E /* CollectableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877232429B03B00B73D0E /* CollectableEntity.swift */; };
 		D923C134241A1610004AB20A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C133241A1610004AB20A /* Background.swift */; };
 		D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */; };
 		D923C138241A23B1004AB20A /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C137241A23B1004AB20A /* ButtonNode.swift */; };
@@ -204,15 +206,17 @@
 		D908770124299C4C00B73D0E /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		D908770324299D8D00B73D0E /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		D908770524299DC200B73D0E /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
-		D908770D2429A7FE00B73D0E /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
-		D908770F2429A87500B73D0E /* Bolt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bolt.swift; sourceTree = "<group>"; };
-		D90877112429A88200B73D0E /* FinishingLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishingLine.swift; sourceTree = "<group>"; };
-		D90877152429A9DB00B73D0E /* Rotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotate.swift; sourceTree = "<group>"; };
-		D90877172429AB3600B73D0E /* NonPhysicsTranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPhysicsTranslate.swift; sourceTree = "<group>"; };
-		D90877192429AD3F00B73D0E /* Bounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bounce.swift; sourceTree = "<group>"; };
-		D908771B2429AD8400B73D0E /* Hook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hook.swift; sourceTree = "<group>"; };
-		D908771D2429AE1000B73D0E /* Life.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Life.swift; sourceTree = "<group>"; };
-		D908771F2429AE4400B73D0E /* Sprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sprite.swift; sourceTree = "<group>"; };
+		D908770D2429A7FE00B73D0E /* PlatformEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformEntity.swift; sourceTree = "<group>"; };
+		D908770F2429A87500B73D0E /* BoltEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoltEntity.swift; sourceTree = "<group>"; };
+		D90877112429A88200B73D0E /* FinishingLineEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishingLineEntity.swift; sourceTree = "<group>"; };
+		D90877152429A9DB00B73D0E /* RotateComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateComponent.swift; sourceTree = "<group>"; };
+		D90877172429AB3600B73D0E /* NonPhysicsTranslateComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPhysicsTranslateComponent.swift; sourceTree = "<group>"; };
+		D90877192429AD3F00B73D0E /* BounceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceComponent.swift; sourceTree = "<group>"; };
+		D908771B2429AD8400B73D0E /* HookComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookComponent.swift; sourceTree = "<group>"; };
+		D908771D2429AE1000B73D0E /* LifeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeComponent.swift; sourceTree = "<group>"; };
+		D908771F2429AE4400B73D0E /* SpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteComponent.swift; sourceTree = "<group>"; };
+		D90877212429AF2E00B73D0E /* PlayerEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerEntity.swift; sourceTree = "<group>"; };
+		D90877232429B03B00B73D0E /* CollectableEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectableEntity.swift; sourceTree = "<group>"; };
 		D923C133241A1610004AB20A /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrapplingHookButton.swift; sourceTree = "<group>"; };
 		D923C137241A23B1004AB20A /* ButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
@@ -572,9 +576,11 @@
 			isa = PBXGroup;
 			children = (
 				D90876FF24299C0100B73D0E /* Entity.swift */,
-				D908770D2429A7FE00B73D0E /* Platform.swift */,
-				D908770F2429A87500B73D0E /* Bolt.swift */,
-				D90877112429A88200B73D0E /* FinishingLine.swift */,
+				D908770D2429A7FE00B73D0E /* PlatformEntity.swift */,
+				D908770F2429A87500B73D0E /* BoltEntity.swift */,
+				D90877112429A88200B73D0E /* FinishingLineEntity.swift */,
+				D90877212429AF2E00B73D0E /* PlayerEntity.swift */,
+				D90877232429B03B00B73D0E /* CollectableEntity.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -583,12 +589,12 @@
 			isa = PBXGroup;
 			children = (
 				D908770124299C4C00B73D0E /* Component.swift */,
-				D90877152429A9DB00B73D0E /* Rotate.swift */,
-				D90877172429AB3600B73D0E /* NonPhysicsTranslate.swift */,
-				D90877192429AD3F00B73D0E /* Bounce.swift */,
-				D908771B2429AD8400B73D0E /* Hook.swift */,
-				D908771D2429AE1000B73D0E /* Life.swift */,
-				D908771F2429AE4400B73D0E /* Sprite.swift */,
+				D90877152429A9DB00B73D0E /* RotateComponent.swift */,
+				D90877172429AB3600B73D0E /* NonPhysicsTranslateComponent.swift */,
+				D90877192429AD3F00B73D0E /* BounceComponent.swift */,
+				D908771B2429AD8400B73D0E /* HookComponent.swift */,
+				D908771D2429AE1000B73D0E /* LifeComponent.swift */,
+				D908771F2429AE4400B73D0E /* SpriteComponent.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -909,14 +915,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */,
+				D90877242429B03B00B73D0E /* CollectableEntity.swift in Sources */,
 				110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */,
 				785B79E924249894001D7028 /* CostumeType.swift in Sources */,
 				119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */,
 				1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */,
-				D908771C2429AD8400B73D0E /* Hook.swift in Sources */,
+				D908771C2429AD8400B73D0E /* HookComponent.swift in Sources */,
 				1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */,
 				110B3CF624207AAA00840C4E /* PowerupCreator.swift in Sources */,
-				D90877202429AE4400B73D0E /* Sprite.swift in Sources */,
+				D90877202429AE4400B73D0E /* SpriteComponent.swift in Sources */,
 				785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */,
 				D9A123D3241E6EC500A6DB7F /* RoundButton.swift in Sources */,
 				118A4A752424885E005B7188 /* LobbyStore.swift in Sources */,
@@ -926,9 +933,9 @@
 				110B3CF42420759700840C4E /* HookPowerup.swift in Sources */,
 				119C5423241691EF00F27D87 /* Query.swift in Sources */,
 				1137270A242504BC00AB4B79 /* LobbyState.swift in Sources */,
-				D90877182429AB3600B73D0E /* NonPhysicsTranslate.swift in Sources */,
+				D90877182429AB3600B73D0E /* NonPhysicsTranslateComponent.swift in Sources */,
 				D908770024299C0100B73D0E /* Entity.swift in Sources */,
-				D90877122429A88200B73D0E /* FinishingLine.swift in Sources */,
+				D90877122429A88200B73D0E /* FinishingLineEntity.swift in Sources */,
 				110B3CF124206C4A00840C4E /* PlayerGameState.swift in Sources */,
 				1127C5822415FBBD00A78AA0 /* AuthCoordinator.swift in Sources */,
 				2B6D6974241D153A0057F1B5 /* SpriteType.swift in Sources */,
@@ -940,6 +947,7 @@
 				D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */,
 				1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */,
 				D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */,
+				D90877222429AF2E00B73D0E /* PlayerEntity.swift in Sources */,
 				118A4A7324248663005B7188 /* UserStore.swift in Sources */,
 				D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */,
 				D9FF1A7F241E325900E7965F /* GamePlayCoordinator.swift in Sources */,
@@ -950,7 +958,7 @@
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
 				D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */,
 				119C541A2416654900F27D87 /* API.swift in Sources */,
-				D908771A2429AD3F00B73D0E /* Bounce.swift in Sources */,
+				D908771A2429AD3F00B73D0E /* BounceComponent.swift in Sources */,
 				1107D0602420DBA00058F590 /* AuthState.swift in Sources */,
 				110B3CEB241F655500840C4E /* PlayerGameState+FirestoreModel.swift in Sources */,
 				785B79DC24236B6D001D7028 /* Lobby.swift in Sources */,
@@ -969,7 +977,7 @@
 				D908770424299D8D00B73D0E /* System.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
 				110B3CED2420605600840C4E /* FirestoreRepresentable.swift in Sources */,
-				D90877162429A9DB00B73D0E /* Rotate.swift in Sources */,
+				D90877162429A9DB00B73D0E /* RotateComponent.swift in Sources */,
 				785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */,
 				110B3CDF241F3DAE00840C4E /* Vector.swift in Sources */,
 				110B3CEF242062C300840C4E /* Powerup+FirestoreRepresentable.swift in Sources */,
@@ -978,12 +986,12 @@
 				D908770224299C4C00B73D0E /* Component.swift in Sources */,
 				D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
-				D908771E2429AE1000B73D0E /* Life.swift in Sources */,
-				D908770E2429A7FE00B73D0E /* Platform.swift in Sources */,
+				D908771E2429AE1000B73D0E /* LifeComponent.swift in Sources */,
+				D908770E2429A7FE00B73D0E /* PlatformEntity.swift in Sources */,
 				D9617E6B2423A99F000A2AD8 /* JumpButton.swift in Sources */,
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
-				D90877102429A87500B73D0E /* Bolt.swift in Sources */,
+				D90877102429A87500B73D0E /* BoltEntity.swift in Sources */,
 				2B6D6972241D0EB40057F1B5 /* Cannon.swift in Sources */,
 				110B3CE5241F431700840C4E /* Gameplay+FirestoreModel.swift in Sources */,
 				113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */,

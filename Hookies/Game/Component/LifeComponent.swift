@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Life: Component {
+class LifeComponent: Component {
     private(set) var parent: Entity
     var isDead = false
 

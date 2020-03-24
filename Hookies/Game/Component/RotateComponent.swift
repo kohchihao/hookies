@@ -1,5 +1,5 @@
 //
-//  NonPhysicsTranslate.swift
+//  Rotate.swift
 //  Hookies
 //
 //  Created by Marcus Koh on 24/3/20.
@@ -7,11 +7,10 @@
 //
 
 import Foundation
-import CoreGraphics
 
-class NonPhysicsTranslate: Component {
+class RotateComponent: Component {
     private(set) var parent: Entity
-    var path = CGMutablePath()
+    var omega: Double = 0.0
 
     init(parent: Entity) {
         self.parent = parent

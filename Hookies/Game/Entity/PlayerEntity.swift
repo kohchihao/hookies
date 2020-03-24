@@ -1,5 +1,5 @@
 //
-//  Bolt.swift
+//  PlayerEntity.swift
 //  Hookies
 //
 //  Created by Marcus Koh on 24/3/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Bolt: Entity {
+class PlayerEntity: Entity {
     var components: [Component]
 
     init(components: [Component]) {

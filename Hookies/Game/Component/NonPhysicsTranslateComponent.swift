@@ -1,5 +1,5 @@
 //
-//  Bounce.swift
+//  NonPhysicsTranslate.swift
 //  Hookies
 //
 //  Created by Marcus Koh on 24/3/20.
@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import CoreGraphics
 
-class Bounce: Component {
+class NonPhysicsTranslateComponent: Component {
     private(set) var parent: Entity
-    var restitution = 0.0
+    var path = CGMutablePath()
 
     init(parent: Entity) {
         self.parent = parent

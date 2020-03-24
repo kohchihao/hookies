@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Hook: Component {
+class HookComponent: Component {
     private(set) var parent: Entity
     var hookTo: Entity?
 

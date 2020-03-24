@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Platform: Entity {
+class PlatformEntity: Entity {
     var components: [Component]
 
     init(components: [Component]) {

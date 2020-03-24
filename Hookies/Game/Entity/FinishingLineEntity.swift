@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FinishingLine: Entity {
+class FinishingLineEntity: Entity {
     var components: [Component]
 
     init(components: [Component]) {
