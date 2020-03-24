@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol Component {
+protocol Component: class {
     var parent: Entity { get }
 }

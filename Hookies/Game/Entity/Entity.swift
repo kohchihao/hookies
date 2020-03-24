@@ -8,7 +8,12 @@
 
 import Foundation
 
-protocol Entity {
+protocol Entity: class {
     var components: [Component] { get set }
-    func addComponent(_ component: Component)
+}
+
+extension Entity {
+    func addComponent(_ component: Component) {
+        components.append(component)
+    }
 }
