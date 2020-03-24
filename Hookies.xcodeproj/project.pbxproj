@@ -77,6 +77,9 @@
 		D908770224299C4C00B73D0E /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770124299C4C00B73D0E /* Component.swift */; };
 		D908770424299D8D00B73D0E /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770324299D8D00B73D0E /* System.swift */; };
 		D908770624299DC200B73D0E /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770524299DC200B73D0E /* GameEngine.swift */; };
+		D908770E2429A7FE00B73D0E /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770D2429A7FE00B73D0E /* Platform.swift */; };
+		D90877102429A87500B73D0E /* Bolt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770F2429A87500B73D0E /* Bolt.swift */; };
+		D90877122429A88200B73D0E /* FinishingLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877112429A88200B73D0E /* FinishingLine.swift */; };
 		D923C134241A1610004AB20A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C133241A1610004AB20A /* Background.swift */; };
 		D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */; };
 		D923C138241A23B1004AB20A /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C137241A23B1004AB20A /* ButtonNode.swift */; };
@@ -195,6 +198,9 @@
 		D908770124299C4C00B73D0E /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		D908770324299D8D00B73D0E /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		D908770524299DC200B73D0E /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
+		D908770D2429A7FE00B73D0E /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
+		D908770F2429A87500B73D0E /* Bolt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bolt.swift; sourceTree = "<group>"; };
+		D90877112429A88200B73D0E /* FinishingLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishingLine.swift; sourceTree = "<group>"; };
 		D923C133241A1610004AB20A /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrapplingHookButton.swift; sourceTree = "<group>"; };
 		D923C137241A23B1004AB20A /* ButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
@@ -554,6 +560,9 @@
 			isa = PBXGroup;
 			children = (
 				D90876FF24299C0100B73D0E /* Entity.swift */,
+				D908770D2429A7FE00B73D0E /* Platform.swift */,
+				D908770F2429A87500B73D0E /* Bolt.swift */,
+				D90877112429A88200B73D0E /* FinishingLine.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -898,6 +907,7 @@
 				119C5423241691EF00F27D87 /* Query.swift in Sources */,
 				1137270A242504BC00AB4B79 /* LobbyState.swift in Sources */,
 				D908770024299C0100B73D0E /* Entity.swift in Sources */,
+				D90877122429A88200B73D0E /* FinishingLine.swift in Sources */,
 				110B3CF124206C4A00840C4E /* PlayerGameState.swift in Sources */,
 				1127C5822415FBBD00A78AA0 /* AuthCoordinator.swift in Sources */,
 				2B6D6974241D153A0057F1B5 /* SpriteType.swift in Sources */,
@@ -945,9 +955,11 @@
 				D908770224299C4C00B73D0E /* Component.swift in Sources */,
 				D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
+				D908770E2429A7FE00B73D0E /* Platform.swift in Sources */,
 				D9617E6B2423A99F000A2AD8 /* JumpButton.swift in Sources */,
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
+				D90877102429A87500B73D0E /* Bolt.swift in Sources */,
 				2B6D6972241D0EB40057F1B5 /* Cannon.swift in Sources */,
 				110B3CE5241F431700840C4E /* Gameplay+FirestoreModel.swift in Sources */,
 				113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */,
