@@ -73,6 +73,10 @@
 		788007392413F37500F43B71 /* HookiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788007382413F37500F43B71 /* HookiesTests.swift */; };
 		788007442413F37500F43B71 /* HookiesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788007432413F37500F43B71 /* HookiesUITests.swift */; };
 		CD817413E9AB49E1D795364C /* Pods_Hookies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE378AB9F0B25C43E7E22CB7 /* Pods_Hookies.framework */; };
+		D908770024299C0100B73D0E /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90876FF24299C0100B73D0E /* Entity.swift */; };
+		D908770224299C4C00B73D0E /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770124299C4C00B73D0E /* Component.swift */; };
+		D908770424299D8D00B73D0E /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770324299D8D00B73D0E /* System.swift */; };
+		D908770624299DC200B73D0E /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908770524299DC200B73D0E /* GameEngine.swift */; };
 		D923C134241A1610004AB20A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C133241A1610004AB20A /* Background.swift */; };
 		D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */; };
 		D923C138241A23B1004AB20A /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C137241A23B1004AB20A /* ButtonNode.swift */; };
@@ -187,6 +191,10 @@
 		788007432413F37500F43B71 /* HookiesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookiesUITests.swift; sourceTree = "<group>"; };
 		788007452413F37500F43B71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hookies.release.xcconfig"; path = "Target Support Files/Pods-Hookies/Pods-Hookies.release.xcconfig"; sourceTree = "<group>"; };
+		D90876FF24299C0100B73D0E /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		D908770124299C4C00B73D0E /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		D908770324299D8D00B73D0E /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
+		D908770524299DC200B73D0E /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		D923C133241A1610004AB20A /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrapplingHookButton.swift; sourceTree = "<group>"; };
 		D923C137241A23B1004AB20A /* ButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
@@ -495,6 +503,7 @@
 		7880071C2413F37100F43B71 /* Hookies */ = {
 			isa = PBXGroup;
 			children = (
+				D90876FA24299BC700B73D0E /* Game */,
 				D923C13A241A2CD7004AB20A /* Maps */,
 				D923C132241A15F7004AB20A /* Nodes */,
 				1127C5572415DAA900A78AA0 /* Shared */,
@@ -528,6 +537,49 @@
 				788007452413F37500F43B71 /* Info.plist */,
 			);
 			path = HookiesUITests;
+			sourceTree = "<group>";
+		};
+		D90876FA24299BC700B73D0E /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				D90876FE24299BE400B73D0E /* Engine */,
+				D90876FD24299BDD00B73D0E /* System */,
+				D90876FC24299BD800B73D0E /* Component */,
+				D90876FB24299BD200B73D0E /* Entity */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		D90876FB24299BD200B73D0E /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				D90876FF24299C0100B73D0E /* Entity.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		D90876FC24299BD800B73D0E /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				D908770124299C4C00B73D0E /* Component.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		D90876FD24299BDD00B73D0E /* System */ = {
+			isa = PBXGroup;
+			children = (
+				D908770324299D8D00B73D0E /* System.swift */,
+			);
+			path = System;
+			sourceTree = "<group>";
+		};
+		D90876FE24299BE400B73D0E /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				D908770524299DC200B73D0E /* GameEngine.swift */,
+			);
+			path = Engine;
 			sourceTree = "<group>";
 		};
 		D923C132241A15F7004AB20A /* Nodes */ = {
@@ -845,6 +897,7 @@
 				110B3CF42420759700840C4E /* HookPowerup.swift in Sources */,
 				119C5423241691EF00F27D87 /* Query.swift in Sources */,
 				1137270A242504BC00AB4B79 /* LobbyState.swift in Sources */,
+				D908770024299C0100B73D0E /* Entity.swift in Sources */,
 				110B3CF124206C4A00840C4E /* PlayerGameState.swift in Sources */,
 				1127C5822415FBBD00A78AA0 /* AuthCoordinator.swift in Sources */,
 				2B6D6974241D153A0057F1B5 /* SpriteType.swift in Sources */,
@@ -879,7 +932,9 @@
 				785B79E124237647001D7028 /* JoinGameViewModel.swift in Sources */,
 				D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */,
 				785B79EC242527C5001D7028 /* RandomIDGenerator.swift in Sources */,
+				D908770624299DC200B73D0E /* GameEngine.swift in Sources */,
 				110B3CE7241F45D900840C4E /* GameplayStore.swift in Sources */,
+				D908770424299D8D00B73D0E /* System.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
 				110B3CED2420605600840C4E /* FirestoreRepresentable.swift in Sources */,
 				785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */,
@@ -887,6 +942,7 @@
 				110B3CEF242062C300840C4E /* Powerup+FirestoreRepresentable.swift in Sources */,
 				119C541C2416704800F27D87 /* FirestoreModel.swift in Sources */,
 				D9FF1A81241E325900E7965F /* GameScene.swift in Sources */,
+				D908770224299C4C00B73D0E /* Component.swift in Sources */,
 				D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
 				D9617E6B2423A99F000A2AD8 /* JumpButton.swift in Sources */,
