@@ -38,7 +38,7 @@ class GameplayStore {
 
     /// Will broadcast to other players your entrance into the game room, if you are not connect will do nothing.
     /// So remember to call `connectToGame(gameId: String)`.
-    /// In return, the completion handler to return to you the uids of other players.
+    /// In return, the completion handler will return to you the uids of other players that are currently in the game.
     func broadcastEntrance(completion: @escaping ([String]) -> Void) {
         socket.once(clientEvent: .connect) { _, _ in
             guard let currentUser = API.shared.user.currentUser,
