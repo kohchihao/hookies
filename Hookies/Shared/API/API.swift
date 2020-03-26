@@ -8,11 +8,13 @@
 
 import Foundation
 import Firebase
+import SocketIO
 
 class API {
     static let shared = API()
 
     private let db: Firestore
+    private let socketManager = SocketManager(socketURL: Config.socketURL)
     let user: UserStore
     let gameplay: GameplayStore
     let lobby: LobbyStore
@@ -23,7 +25,8 @@ class API {
         settings.isPersistenceEnabled = false
         db.settings = settings
         user = UserStore(userCollection: db.collection("users"))
-        gameplay = GameplayStore(gameplayCollection: db.collection("gameplays"))
+        gameplay = GameplayStore(gameplayCollection: db.collection("gameplays"),
+                                 socketRef: socketManager.socket(forNamespace: "/games"))
         lobby = LobbyStore(lobbyCollection: db.collection("lobbies"))
     }
 }
