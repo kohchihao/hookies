@@ -1,7 +1,7 @@
 {
   "name": "hookies-socket",
   "version": "0.0.1",
-  "description": "my first socket.io app",
+  "description": "Websocket for Hookies.",
   "dependencies": {
     "express": "^4.15.2",
     "socket.io": "^2.3.0"
