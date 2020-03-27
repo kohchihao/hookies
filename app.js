@@ -21,12 +21,11 @@ games.on('connection', socket => {
 	});
 
 	socket.on('powerupActivated', (data) => {
-		console.log(data);
-		socket.emit("powerupActivated", data);
+		socket.to(currentGameId).emit("powerupActivated", data);
 	});
 
 	socket.on('hookActionChanged', (data) => {
-		socket.emit("hookActionChanged", data);
+		socket.to(currentGameId).emit("hookActionChanged", data);
 	});
 
 	socket.on('disconnect', () => {
