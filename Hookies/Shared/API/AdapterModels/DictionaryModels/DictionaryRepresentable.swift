@@ -1,5 +1,5 @@
 //
-//  FirestoreRepresentable.swift
+//  DictionaryRepresentable.swift
 //  Hookies
 //
 //  Created by Jun Wei Koh on 17/3/20.
@@ -9,6 +9,6 @@
 import Foundation
 
 /// A protocol that will enforce a class/struct to be convertible to Firebase key value pairs representation.
-protocol FirestoreRepresentable {
-    var representation: [String: Any?] { get }
+protocol DictionaryRepresentable {
+    var representation: [String: Any] { get }
 }
