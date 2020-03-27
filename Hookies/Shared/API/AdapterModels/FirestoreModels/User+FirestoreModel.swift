@@ -11,8 +11,8 @@ extension User: FirestoreModel {
         return uid
     }
 
-    var serialized: [String: Any?] {
-        return defaultSerializer()
+    var encoding: [String: Any] {
+        return defaultEncoding()
     }
 
     init?(modelData: FirestoreDataModel) {

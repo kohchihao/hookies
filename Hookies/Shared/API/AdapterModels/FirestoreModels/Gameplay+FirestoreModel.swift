@@ -11,8 +11,8 @@ extension Gameplay: FirestoreModel {
         return gameId
     }
 
-    var serialized: [String: Any?] {
-        return defaultSerializer()
+    var encoding: [String: Any] {
+        return defaultEncoding()
     }
 
     init?(modelData: FirestoreDataModel) {

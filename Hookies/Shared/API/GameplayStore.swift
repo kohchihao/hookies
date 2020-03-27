@@ -31,15 +31,11 @@ class GameplayStore {
     }
 
     /// Connect the current user to the defined game id.
-    func connectToGame(gameId: String) {
+    /// In the completion handler, it will return you an array of String representing uids of other players
+    /// that are currently in the game.
+    func connectToGame(gameId: String, completion: @escaping ([String]) -> Void) {
         self.gameId = gameId
         socket.connect()
-    }
-
-    /// Will broadcast to other players your entrance into the game room, if you are not connect will do nothing.
-    /// So remember to call `connectToGame(gameId: String)`.
-    /// In return, the completion handler will return to you an array String representing uids of other players that are currently in the game.
-    func broadcastEntrance(completion: @escaping ([String]) -> Void) {
         socket.once(clientEvent: .connect) { _, _ in
             guard let currentUser = API.shared.user.currentUser,
                 let gameId = self.gameId else {
@@ -79,6 +75,38 @@ class GameplayStore {
         }
         socket.on(clientEvent: .disconnect) { _, _ in
             listener(.disconnected)
+        }
+    }
+
+    func broadcastPowerupAction(powerupAction: PowerupActionData) {
+        socket.emit("powerupActivated", powerupAction)
+    }
+
+    func broadcastHookAction(hookAction: HookActionData) {
+        socket.emit("hookActionChanged", hookAction)
+    }
+
+    func subscribeToPowerupAction(listener: @escaping (PowerupActionData) -> Void) {
+        socket.on("powerupActivated") { data, _ in
+            guard !data.isEmpty, let powerupData = data[0] as? [String: Any] else {
+                return
+            }
+            let model = DictionaryModel(data: powerupData)
+            if let result = PowerupActionData(data: model) {
+                listener(result)
+            }
+        }
+    }
+
+    func subscribeToHookAction(listener: @escaping (HookActionData) -> Void) {
+        socket.on("hookActionChanged") { data, _ in
+            guard !data.isEmpty, let hookData = data[0] as? [String: Any] else {
+                return
+            }
+            let model = DictionaryModel(data: hookData)
+            if let result = HookActionData(data: model) {
+                listener(result)
+            }
         }
     }
 

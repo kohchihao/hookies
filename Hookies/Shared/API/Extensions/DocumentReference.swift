@@ -16,7 +16,7 @@ extension DocumentReference {
     func setDataModel(_ model: FirestoreModel) {
         var documentData = [String: Any]()
 
-        for (key, value) in model.serialized {
+        for (key, value) in model.encoding {
             if key == "documentID" {
                 continue
             }

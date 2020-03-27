@@ -14,8 +14,8 @@ extension PlayerGameState: FirestoreModel {
         return playerId
     }
 
-    var serialized: [String: Any?] {
-        return defaultSerializer()
+    var encoding: [String: Any] {
+        return defaultEncoding()
     }
 
     init?(modelData: FirestoreDataModel) {
