@@ -6,7 +6,7 @@ module.exports = class Game {
      */
     constructor(gameId) {
         this.userIds = new Set();
-        this.gameId = gameId;
+        this.id = gameId;
     }
 
     /**

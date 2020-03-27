@@ -14,9 +14,12 @@ module.exports = class GameManager {
      * @param gameId - The String representing the id associated to the game.
      */
     addGameSessionIfDoesNotExist(gameId) {
+        console.log(gameId);
+        console.log(this.games);
         if (this.games[gameId] === undefined) {
             const newGame = new Game(gameId);
-            return this.addGame(newGame);
+            this.addGame(newGame);
+            return newGame;
         } else {
             return this.getGame(gameId);
         }

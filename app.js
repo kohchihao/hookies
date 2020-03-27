@@ -16,18 +16,26 @@ games.on('connection', socket => {
 		const currentGame = gameManager.addGameSessionIfDoesNotExist(currentGameId);
 		currentGame.addUser(currentUserId);
 		socket.join(currentGameId);
-		ack(Array.from(gameUsers[currentGameId]));
+		ack(Array.from(currentGame.userIds));
 		socket.to(currentGameId).emit("joinedGame", data.user)
 	});
 
+	socket.on('powerupActivated', (data) => {
+		console.log(data);
+		socket.emit("powerupActivated", data);
+	});
+
+	socket.on('hookActionChanged', (data) => {
+		socket.emit("hookActionChanged", data);
+	});
+
 	socket.on('disconnect', () => {
-		// removeClientFromGame(socket.id);
 		gameManager.removeUserFromGame(currentUserId, currentGameId);
-		socket.to(currentGameId).emit("leftGame", getUser(socket.id))
+		socket.to(currentGameId).emit("leftGame", currentUserId)
 	});
 });
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 http.listen(port, function() {
 	console.log(`listening on *:${port}`);
 });
