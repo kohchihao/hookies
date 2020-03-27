@@ -11,7 +11,7 @@ extension Powerup where Self: DictionaryRepresentable {
         return [
             "isPowerupActivated": isActivated,
             "powerupName": Self.name,
-            "powerupOwnerId": ownerId
+            "powerupOwnerId": ownerId ?? ""
         ]
     }
 }

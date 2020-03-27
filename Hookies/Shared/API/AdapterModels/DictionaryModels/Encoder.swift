@@ -28,32 +28,39 @@ extension Encoder {
                 return
             }
 
-            switch property.value {
-            case is NSNull:
-                break
-            case let rep as DictionaryRepresentable:
-                data.merge(rep.representation) { _, new in new }
-            case let stringRep as StringRepresentable:
-                data[property.label] = stringRep.stringValue
-            case let dictionary as [String: Any]:
-                data[property.label] = convertDictionary(dictionary)
-            case let vector as CGPoint:
-                data[property.label + "X"] = vector.x
-                data[property.label + "Y"] = vector.y
-            case let vector as Vector:
-                data[property.label + "X"] = vector.x
-                data[property.label + "Y"] = vector.y
-            case let vector as CGVector:
-                data[property.label + "X"] = vector.dx
-                data[property.label + "Y"] = vector.dy
-            default:
-                data[property.label] = property.value
-            }
+            data = self.encodeProperty(property: property, into: data)
         }
         return data
     }
 
-    func convertDictionary(_ dictionary: [String: Any]) -> [String: Any] {
+    private func encodeProperty(property: Property,
+                                into data: [String: Any]) -> [String: Any] {
+        var data = data
+        switch property.value {
+        case is NSNull:
+            break
+        case let rep as DictionaryRepresentable:
+            data.merge(rep.representation) { _, new in new }
+        case let stringRep as StringRepresentable:
+            data[property.label] = stringRep.stringValue
+        case let dictionary as [String: Any]:
+            data[property.label] = convertDictionary(dictionary)
+        case let vector as CGPoint:
+            data[property.label + "X"] = vector.x
+            data[property.label + "Y"] = vector.y
+        case let vector as Vector:
+            data[property.label + "X"] = vector.x
+            data[property.label + "Y"] = vector.y
+        case let vector as CGVector:
+            data[property.label + "X"] = vector.dx
+            data[property.label + "Y"] = vector.dy
+        default:
+            data[property.label] = property.value
+        }
+        return data
+    }
+
+    private func convertDictionary(_ dictionary: [String: Any]) -> [String: Any] {
         return dictionary.mapValues({ value in
             switch value {
             case let dict as [String: Any]:
@@ -69,7 +76,7 @@ extension Encoder {
     /// Unwrap Optionals from Any.
     /// If Any is not an Optional, return its original value.
     /// If Any is Optional and is Nil, return NSNull()
-    func unwrap(any: Any) -> Any {
+    private func unwrap(any: Any) -> Any {
         let mirror = Mirror(reflecting: any)
         if mirror.displayStyle != .optional {
             return any
