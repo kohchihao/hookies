@@ -4,8 +4,8 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
 const gameManager = new GameManager();
-
 const games = io.of('/games');
+
 games.on('connection', socket => {
 	let currentGameId;
 	let currentUserId;
