@@ -88,6 +88,7 @@
 		D90877202429AE4400B73D0E /* SpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D908771F2429AE4400B73D0E /* SpriteComponent.swift */; };
 		D90877222429AF2E00B73D0E /* PlayerEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877212429AF2E00B73D0E /* PlayerEntity.swift */; };
 		D90877242429B03B00B73D0E /* CollectableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877232429B03B00B73D0E /* CollectableEntity.swift */; };
+		D90877262429B77300B73D0E /* GameObjectMovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90877252429B77300B73D0E /* GameObjectMovement.swift */; };
 		D923C134241A1610004AB20A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C133241A1610004AB20A /* Background.swift */; };
 		D923C136241A1DC0004AB20A /* GrapplingHookButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */; };
 		D923C138241A23B1004AB20A /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C137241A23B1004AB20A /* ButtonNode.swift */; };
@@ -217,6 +218,7 @@
 		D908771F2429AE4400B73D0E /* SpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteComponent.swift; sourceTree = "<group>"; };
 		D90877212429AF2E00B73D0E /* PlayerEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerEntity.swift; sourceTree = "<group>"; };
 		D90877232429B03B00B73D0E /* CollectableEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectableEntity.swift; sourceTree = "<group>"; };
+		D90877252429B77300B73D0E /* GameObjectMovement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectMovement.swift; sourceTree = "<group>"; };
 		D923C133241A1610004AB20A /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		D923C135241A1DC0004AB20A /* GrapplingHookButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrapplingHookButton.swift; sourceTree = "<group>"; };
 		D923C137241A23B1004AB20A /* ButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
@@ -603,6 +605,7 @@
 			isa = PBXGroup;
 			children = (
 				D908770324299D8D00B73D0E /* System.swift */,
+				D90877252429B77300B73D0E /* GameObjectMovement.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -963,6 +966,7 @@
 				110B3CEB241F655500840C4E /* PlayerGameState+FirestoreModel.swift in Sources */,
 				785B79DC24236B6D001D7028 /* Lobby.swift in Sources */,
 				1137270C242517AF00AB4B79 /* GameState.swift in Sources */,
+				D90877262429B77300B73D0E /* GameObjectMovement.swift in Sources */,
 				1127C5702415E5C400A78AA0 /* HomeViewController.swift in Sources */,
 				D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */,
 				111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */,
