@@ -16,3 +16,14 @@ class LifeComponent: Component {
         self.parent = parent
     }
 }
+
+// MARK: - Hashable
+extension LifeComponent: Hashable {
+    static func == (lhs: LifeComponent, rhs: LifeComponent) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self).hashValue)
+    }
+}

@@ -16,3 +16,14 @@ class RotateComponent: Component {
         self.parent = parent
     }
 }
+
+// MARK: - Hashable
+extension RotateComponent: Hashable {
+    static func == (lhs: RotateComponent, rhs: RotateComponent) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self).hashValue)
+    }
+}
