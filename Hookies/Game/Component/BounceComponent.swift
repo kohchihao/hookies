@@ -16,3 +16,14 @@ class BounceComponent: Component {
         self.parent = parent
     }
 }
+
+// MARK: - Hashable
+extension BounceComponent: Hashable {
+    static func == (lhs: BounceComponent, rhs: BounceComponent) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self).hashValue)
+    }
+}
