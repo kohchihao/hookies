@@ -17,3 +17,14 @@ class NonPhysicsTranslateComponent: Component {
         self.parent = parent
     }
 }
+
+// MARK: - Hashable
+extension NonPhysicsTranslateComponent: Hashable {
+    static func == (lhs: NonPhysicsTranslateComponent, rhs: NonPhysicsTranslateComponent) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self).hashValue)
+    }
+}

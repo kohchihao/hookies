@@ -16,3 +16,14 @@ class HookComponent: Component {
         self.parent = parent
     }
 }
+
+// MARK: - Hashable
+extension HookComponent: Hashable {
+    static func == (lhs: HookComponent, rhs: HookComponent) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self).hashValue)
+    }
+}

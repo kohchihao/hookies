@@ -17,3 +17,14 @@ class SpriteComponent: Component {
         self.parent = parent
     }
 }
+
+// MARK: - Hashable
+extension SpriteComponent: Hashable {
+    static func == (lhs: SpriteComponent, rhs: SpriteComponent) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self).hashValue)
+    }
+}
