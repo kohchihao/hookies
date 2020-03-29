@@ -10,7 +10,8 @@ import Foundation
 
 class RotateComponent: Component {
     private(set) var parent: Entity
-    var omega: Double = 0.0
+    var duration: TimeInterval = 0.0
+    var radianAngle: Double = 0.0
 
     init(parent: Entity) {
         self.parent = parent
