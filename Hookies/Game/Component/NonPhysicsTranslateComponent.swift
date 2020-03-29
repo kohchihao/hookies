@@ -12,6 +12,8 @@ import CoreGraphics
 class NonPhysicsTranslateComponent: Component {
     private(set) var parent: Entity
     var path = CGMutablePath()
+    var moveInfinitely = false
+    var duration = 0.0
 
     init(parent: Entity) {
         self.parent = parent
