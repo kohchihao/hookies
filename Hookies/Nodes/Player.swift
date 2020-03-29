@@ -10,7 +10,7 @@ import SpriteKit
 
 class Player {
     // MARK: - Properties
-    private let type = SpriteType.player
+    private let type = SpriteType.player1
     let id: String
     let node: SKSpriteNode
     let imageName: CostumeType
