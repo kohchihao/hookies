@@ -31,11 +31,7 @@ protocol SpriteSystemProtocol {
     ) -> SpriteComponent
 }
 
-enum SpriteSystemError: Error {
-    case spriteTypeDoesNotExist
-}
-
-class SpriteSystem: SpriteSystemProtocol {
+class SpriteSystem: System, gSpriteSystemProtocol {
     private var sprites: [SpriteComponent: Int]
 
     init() {
