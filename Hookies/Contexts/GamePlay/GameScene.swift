@@ -270,6 +270,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             self.startCountdown()
             self.gameplay = gameplay
+        case .finish:
+            print("Transition to End Game Lobby")
         }
     }
 
