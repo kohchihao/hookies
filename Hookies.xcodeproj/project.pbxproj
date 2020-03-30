@@ -116,6 +116,8 @@
 		D9A123D3241E6EC500A6DB7F /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D2241E6EC500A6DB7F /* RoundButton.swift */; };
 		D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D5241E71C000A6DB7F /* MapType.swift */; };
 		D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */; };
+		D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */; };
+		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
 		D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */; };
 		D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */; };
 		D9FF1A6A241E0DE600E7965F /* PreGameLobbyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */; };
@@ -259,6 +261,8 @@
 		D9A123D2241E6EC500A6DB7F /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		D9A123D5241E71C000A6DB7F /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDelegate.swift; sourceTree = "<group>"; };
+		D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystem.swift; sourceTree = "<group>"; };
+		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
 		D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyCoordinator.swift; sourceTree = "<group>"; };
 		D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewController.swift; sourceTree = "<group>"; };
 		D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreGameLobbyViewController.xib; sourceTree = "<group>"; };
@@ -441,6 +445,7 @@
 		1127C5752415EA9300A78AA0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D9F180622431B912009D7A52 /* CGVector */,
 				117BA3222418EC08001089D1 /* UILabel */,
 				117BA3212418EBF7001089D1 /* UIViewController */,
 			);
@@ -677,6 +682,7 @@
 				D91F75DA2430770600211C54 /* SpriteSystem.swift */,
 				D90877252429B77300B73D0E /* GameObjectMovementSystem.swift */,
 				D980A6C32430D73300B55452 /* DeadlockSystem.swift */,
+				D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -740,6 +746,14 @@
 				D9A123D5241E71C000A6DB7F /* MapType.swift */,
 			);
 			path = Enumerations;
+			sourceTree = "<group>";
+		};
+		D9F180622431B912009D7A52 /* CGVector */ = {
+			isa = PBXGroup;
+			children = (
+				D9F180632431B923009D7A52 /* CGVector+Extension.swift */,
+			);
+			path = CGVector;
 			sourceTree = "<group>";
 		};
 		D9FF1A62241E0D5800E7965F /* PreGameLobby */ = {
@@ -1022,7 +1036,9 @@
 				2B6D6970241CC9390057F1B5 /* Player.swift in Sources */,
 				117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */,
 				118A4A7124248641005B7188 /* FirestoreDataModel.swift in Sources */,
+				D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */,
 				110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */,
+				D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */,
 				D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */,
 				1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */,
 				D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */,
