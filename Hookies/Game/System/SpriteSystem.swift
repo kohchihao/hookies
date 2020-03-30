@@ -31,7 +31,7 @@ protocol SpriteSystemProtocol {
     ) -> SpriteComponent
 }
 
-class SpriteSystem: System, gSpriteSystemProtocol {
+class SpriteSystem: System, SpriteSystemProtocol {
     private var sprites: [SpriteComponent: Int]
 
     init() {
