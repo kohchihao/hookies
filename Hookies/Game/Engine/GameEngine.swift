@@ -38,7 +38,7 @@ class GameEngine {
         bolts = [BoltEntity]()
     }
 
-    // MARK: - PlayerEntities
+    // MARK: - Players
 
     func setCurrentPlayer(id: String, position: CGPoint, image: String) {
         let player = PlayerEntity()
@@ -54,6 +54,8 @@ class GameEngine {
         currentPlayer = player
 
         // TODO: Init Deadlock System?
+
+        addPlayerToFinishingLine(with: sprite)
     }
 
     func addOtherPlayers(position: CGPoint, image: String) {
@@ -68,7 +70,24 @@ class GameEngine {
         addCommonPlayerComponents(to: otherPlayer)
 
         otherPlayers.append(otherPlayer)
+
+        addPlayerToFinishingLine(with: sprite)
     }
+
+    // MARK: - Finishing Line
+    func setFinishingLine(node: SKSpriteNode) {
+        let finishingLine = FinishingLineEntity()
+
+        let sprite = SpriteComponent(parent: finishingLine)
+        _ = spriteSystem.set(sprite: sprite, to: node)
+        _ = spriteSystem.setPhysicsBody(to: sprite, of: .finishingLine, rectangleOf: sprite.node.size)
+
+        self.finishingLine = finishingLine
+
+        initialiseFinishingLineSystem(with: sprite)
+    }
+
+    // MARK: - Player helper methods
 
     private func addCommonPlayerComponents(to player: PlayerEntity) {
         let hook = HookComponent(parent: player)
@@ -81,5 +100,51 @@ class GameEngine {
         let typeIndex = numOtherPlayers + 1
 
         return SpriteType.otherPlayers[typeIndex]
+    }
+
+    // MARK: - Finishing line helper methods
+
+    private func initialiseFinishingLineSystem(with sprite: SpriteComponent) {
+        if let currentPlayer = self.currentPlayer {
+            // Assumption that all players are set before finishing line
+
+            var playersSprite = Set<SpriteComponent>()
+
+            guard let currentPlayerSprite = getSpriteComponent(from: currentPlayer) else {
+                return
+            }
+            playersSprite.insert(currentPlayerSprite)
+
+            for otherPlayer in otherPlayers {
+                guard let otherPlayerSprite = getSpriteComponent(from: otherPlayer) else {
+                    return
+                }
+                playersSprite.insert(otherPlayerSprite)
+            }
+
+            finishingLineSystem = FinishingLineSystem(finishingLine: sprite, players: playersSprite)
+        } else {
+            finishingLineSystem = FinishingLineSystem(finishingLine: sprite)
+        }
+    }
+
+    private func addPlayerToFinishingLine(with sprite: SpriteComponent) {
+        guard let finishingLineSystem = self.finishingLineSystem else {
+            return
+        }
+
+        finishingLineSystem.add(player: sprite)
+    }
+
+    // MARK: - General helper methods
+
+    private func getSpriteComponent(from entity: Entity) -> SpriteComponent? {
+        for component in entity.components {
+            if let sprite = component as? SpriteComponent {
+                return sprite
+            }
+        }
+
+        return nil
     }
 }
