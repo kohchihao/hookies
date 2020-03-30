@@ -51,9 +51,11 @@ class HookSystem: System, HookSystemProtocol {
             throw HookSystemError.closestHookToEntityDoesNotExist
         }
 
-        let isAttachingToSameBolt = hook.prevHookTo?.node.position == closestBolt.node.position
-        if isAttachingToSameBolt {
-            attachToSameBolt(sprite: parentSprite, bolt: closestBolt)
+        if let prevAttachedBolt = hook.prevHookTo {
+            let isAttachingToSameBolt = prevAttachedBolt.node.position == closestBolt.node.position
+            if isAttachingToSameBolt {
+                attachToSameBolt(sprite: parentSprite, bolt: closestBolt)
+            }
         }
 
         let anchor = makeAnchor(from: closestBolt)
