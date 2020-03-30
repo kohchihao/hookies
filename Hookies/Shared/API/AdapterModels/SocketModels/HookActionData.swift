@@ -10,7 +10,7 @@ import Foundation
 import SocketIO
 
 struct HookActionData: SocketData, Encoder {
-    var encoding: [String : Any] {
+    var encoding: [String: Any] {
         return defaultEncoding()
     }
 
@@ -23,6 +23,13 @@ struct HookActionData: SocketData, Encoder {
         self.playerId = player.id
         self.position = player.node.position
         self.velocity = player.node.physicsBody?.velocity
+        self.actionType = type
+    }
+
+    init(playerId: String, position: CGPoint, velocity: CGVector?, type: HookActionType) {
+        self.playerId = playerId
+        self.position = position
+        self.velocity = velocity
         self.actionType = type
     }
 

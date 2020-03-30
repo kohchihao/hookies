@@ -6,11 +6,16 @@
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
-import Foundation
+import SpriteKit
 
 class HookComponent: Component {
     private(set) var parent: Entity
-    var hookTo: Entity?
+    var hookTo: SpriteComponent?
+    var prevHookTo: SpriteComponent?
+    var anchor: SKNode?
+    var line: SKShapeNode?
+    var anchorLineJointPin: SKPhysicsJointPin?
+    var parentLineJointPin: SKPhysicsJointPin?
 
     init(parent: Entity) {
         self.parent = parent
