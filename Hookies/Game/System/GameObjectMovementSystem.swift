@@ -10,6 +10,8 @@ import Foundation
 import CoreGraphics
 import SpriteKit
 
+/// Moves all the game object within the world.
+
 protocol GameObjectMovementSystemProtocol {
     func remove(rotate: RotateComponent) -> RotateComponent?
     func remove(translate: NonPhysicsTranslateComponent) -> NonPhysicsTranslateComponent?
