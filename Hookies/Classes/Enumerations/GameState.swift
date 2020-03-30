@@ -11,6 +11,7 @@ import Foundation
 enum GameState: String, CaseIterable {
     case waiting
     case start
+    case finish
 }
 
 extension GameState: StringRepresentable {

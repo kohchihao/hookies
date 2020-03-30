@@ -65,7 +65,7 @@
 		2B6D6970241CC9390057F1B5 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D696F241CC9390057F1B5 /* Player.swift */; };
 		2B6D6972241D0EB40057F1B5 /* Cannon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D6971241D0EB40057F1B5 /* Cannon.swift */; };
 		2B6D6974241D153A0057F1B5 /* SpriteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D6973241D153A0057F1B5 /* SpriteType.swift */; };
-		2B992587242EF0BC00795B90 /* SpriteSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B992586242EF0BC00795B90 /* SpriteSystem.swift */; };
+		2B8476B62431D13D00882F30 /* FinishingLineSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8476B52431D13D00882F30 /* FinishingLineSystem.swift */; };
 		2B99258B242FA50200795B90 /* HookSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B99258A242FA50200795B90 /* HookSystem.swift */; };
 		785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */; };
 		785B79DA2423581B001D7028 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785B79D92423581B001D7028 /* GameKit.framework */; };
@@ -206,6 +206,7 @@
 		2B6D696F241CC9390057F1B5 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2B6D6971241D0EB40057F1B5 /* Cannon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cannon.swift; sourceTree = "<group>"; };
 		2B6D6973241D153A0057F1B5 /* SpriteType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteType.swift; sourceTree = "<group>"; };
+		2B8476B52431D13D00882F30 /* FinishingLineSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishingLineSystem.swift; sourceTree = "<group>"; };
 		2B992586242EF0BC00795B90 /* SpriteSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystem.swift; sourceTree = "<group>"; };
 		2B99258A242FA50200795B90 /* HookSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSystem.swift; sourceTree = "<group>"; };
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
@@ -689,6 +690,7 @@
 				2B992586242EF0BC00795B90 /* SpriteSystem.swift */,
 				2B99258A242FA50200795B90 /* HookSystem.swift */,
 				D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */,
+				2B8476B52431D13D00882F30 /* FinishingLineSystem.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1086,6 +1088,7 @@
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
 				110B3CED2420605600840C4E /* DictionaryRepresentable.swift in Sources */,
 				D90877162429A9DB00B73D0E /* RotateComponent.swift in Sources */,
+				2B8476B62431D13D00882F30 /* FinishingLineSystem.swift in Sources */,
 				785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */,
 				119A3E48242C9C080064B034 /* UserConnectionState.swift in Sources */,
 				119A3E4C242CD6A10064B034 /* HookActionData.swift in Sources */,
