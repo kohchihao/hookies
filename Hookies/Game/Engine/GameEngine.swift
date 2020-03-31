@@ -14,9 +14,10 @@ class GameEngine {
 
     // MARK: - System
     let spriteSystem: SpriteSystem
-    private var hookSystem: HookSystem?
+    private var gameObjectMovementSystem: GameObjectMovementSystem
+    private var hookSystem: HookSystem
+    private var closestBoltSystem: ClosestBoltSystem
     private var deadLockSystem: DeadlockSystem?
-    private var gameObjectMovementSystem: GameObjectMovementSystem?
     private var finishingLineSystem: FinishingLineSystem?
 
     // MARK: - Entity
@@ -27,15 +28,32 @@ class GameEngine {
     private var bolts: [BoltEntity]
     private var finishingLine: FinishingLineEntity?
 
-    init(gameId: String) {
+    init(gameId: String, bolts: [SKSpriteNode]) {
         self.gameId = gameId
 
-        spriteSystem = SpriteSystem()
+        self.otherPlayers = [PlayerEntity]()
+        self.platforms = [PlatformEntity]()
+        self.collectables = [CollectableEntity]()
+        self.bolts = [BoltEntity]()
 
-        otherPlayers = [PlayerEntity]()
-        platforms = [PlatformEntity]()
-        collectables = [CollectableEntity]()
-        bolts = [BoltEntity]()
+        self.spriteSystem = SpriteSystem()
+        self.gameObjectMovementSystem = GameObjectMovementSystem()
+
+        var boltsSprite = [SpriteComponent]()
+        for bolt in bolts {
+            let boltEntity = BoltEntity()
+
+            let boltSprite = SpriteComponent(parent: boltEntity)
+            _ = spriteSystem.set(sprite: boltSprite, to: bolt)
+
+            boltEntity.addComponent(boltSprite)
+
+            boltsSprite.append(boltSprite)
+            self.bolts.append(boltEntity)
+        }
+
+        self.hookSystem = HookSystem(bolts: boltsSprite)
+        self.closestBoltSystem = ClosestBoltSystem(bolts: boltsSprite)
     }
 
     // MARK: - Players
@@ -93,6 +111,7 @@ class GameEngine {
         let hook = HookComponent(parent: player)
 
         player.addComponent(hook)
+        _ = hookSystem.add(hook: hook)
     }
 
     private func getOtherPlayerSpriteType() -> SpriteType {
