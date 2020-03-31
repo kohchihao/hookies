@@ -10,13 +10,9 @@ import Foundation
 import CoreGraphics
 
 extension CGPoint {
-    /// Distance between 2 points.
-    /// - Parameters
-    ///    - point2 : The second point
-    func distance(to point2: CGPoint) -> CGFloat {
-        let xDiff = x - point2.x
-        let yDiff = y - point2.y
-        return sqrt(xDiff * xDiff + yDiff * yDiff)
-    }
 
+    init(vector: Vector) {
+        self.x = CGFloat(vector.x)
+        self.y = CGFloat(vector.y)
+    }
 }

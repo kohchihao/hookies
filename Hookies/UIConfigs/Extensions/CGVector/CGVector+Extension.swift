@@ -11,41 +11,8 @@ import CoreGraphics
 
 extension CGVector {
 
-    /// Get the magnitude of the vector.
-    var magnitude: CGFloat {
-        return sqrt(dx * dx + dy * dy)
+    init(vector: Vector) {
+        self.dx = CGFloat(vector.x)
+        self.dy = CGFloat(vector.y)
     }
-
-    /// Distance between 2 vectors.
-    /// - Parameters
-    ///    - vector2: The second vector
-    func distance(to vector2: CGVector) -> CGFloat {
-        let xDiff = dx - vector2.dx
-        let yDiff = dy - vector2.dy
-        return sqrt(xDiff * xDiff + yDiff * yDiff)
-    }
-
-    /// The dot product between 2 vectors.
-    /// - Parameters
-    ///    - vector2: The second vector
-    func dot(with vector2: CGVector) -> CGFloat {
-        return dx * vector2.dx + dy * vector2.dy
-    }
-
-    /// The unit vector.
-    func unit() -> CGVector {
-        guard magnitude > 0 else {
-            return self
-        }
-        return CGVector(dx: dx / magnitude, dy: dy / magnitude)
-    }
-
-    static func + (lhs: CGVector, rhs: CGVector) -> CGVector {
-        return CGVector(dx: lhs.dx + rhs.dx, dy: lhs.dy + rhs.dy)
-    }
-
-     static func - (lhs: CGVector, rhs: CGVector) -> CGVector {
-        return CGVector(dx: lhs.dx - rhs.dx, dy: lhs.dy - rhs.dy)
-    }
-
 }
