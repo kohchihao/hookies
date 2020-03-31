@@ -67,6 +67,7 @@
 		2B6D6974241D153A0057F1B5 /* SpriteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D6973241D153A0057F1B5 /* SpriteType.swift */; };
 		2B8476B62431D13D00882F30 /* FinishingLineSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8476B52431D13D00882F30 /* FinishingLineSystem.swift */; };
 		2B8476BB2433170F00882F30 /* CannonSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8476BA2433170F00882F30 /* CannonSystem.swift */; };
+		2B8476BD24331AD000882F30 /* CannonEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8476BC24331AD000882F30 /* CannonEntity.swift */; };
 		2B99258B242FA50200795B90 /* HookSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B99258A242FA50200795B90 /* HookSystem.swift */; };
 		785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */; };
 		785B79DA2423581B001D7028 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785B79D92423581B001D7028 /* GameKit.framework */; };
@@ -209,6 +210,7 @@
 		2B6D6973241D153A0057F1B5 /* SpriteType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteType.swift; sourceTree = "<group>"; };
 		2B8476B52431D13D00882F30 /* FinishingLineSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishingLineSystem.swift; sourceTree = "<group>"; };
 		2B8476BA2433170F00882F30 /* CannonSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonSystem.swift; sourceTree = "<group>"; };
+		2B8476BC24331AD000882F30 /* CannonEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonEntity.swift; sourceTree = "<group>"; };
 		2B992586242EF0BC00795B90 /* SpriteSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystem.swift; sourceTree = "<group>"; };
 		2B99258A242FA50200795B90 /* HookSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSystem.swift; sourceTree = "<group>"; };
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
@@ -658,6 +660,7 @@
 				D90877112429A88200B73D0E /* FinishingLineEntity.swift */,
 				D90877212429AF2E00B73D0E /* PlayerEntity.swift */,
 				D90877232429B03B00B73D0E /* CollectableEntity.swift */,
+				2B8476BC24331AD000882F30 /* CannonEntity.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -1084,6 +1087,7 @@
 				1137270C242517AF00AB4B79 /* GameState.swift in Sources */,
 				D90877262429B77300B73D0E /* GameObjectMovementSystem.swift in Sources */,
 				1127C5702415E5C400A78AA0 /* HomeViewController.swift in Sources */,
+				2B8476BD24331AD000882F30 /* CannonEntity.swift in Sources */,
 				D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */,
 				111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */,
 				116AD64E242DC2C30070F00B /* DictionaryModel.swift in Sources */,
