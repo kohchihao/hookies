@@ -71,8 +71,7 @@ class GameEngine {
         currentPlayerId = id
         currentPlayer = player
 
-        // TODO: Init Deadlock System?
-
+        deadLockSystem = DeadlockSystem(sprite: sprite)
         addPlayerToFinishingLine(with: sprite)
     }
 
