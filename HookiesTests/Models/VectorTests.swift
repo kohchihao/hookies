@@ -8,7 +8,6 @@
 
 import XCTest
 
-import Firebase
 @testable import Hookies
 
 class VectorTests: XCTestCase {

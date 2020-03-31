@@ -138,6 +138,7 @@
 		D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */; };
 		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
 		D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806924338278009D7A52 /* VectorTests.swift */; };
+		D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806B24338F27009D7A52 /* UserTests.swift */; };
 		D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */; };
 		D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */; };
 		D9FF1A6A241E0DE600E7965F /* PreGameLobbyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */; };
@@ -306,6 +307,7 @@
 		D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystem.swift; sourceTree = "<group>"; };
 		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
 		D9F1806924338278009D7A52 /* VectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
+		D9F1806B24338F27009D7A52 /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
 		D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyCoordinator.swift; sourceTree = "<group>"; };
 		D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewController.swift; sourceTree = "<group>"; };
 		D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreGameLobbyViewController.xib; sourceTree = "<group>"; };
@@ -851,6 +853,7 @@
 			isa = PBXGroup;
 			children = (
 				D9F1806924338278009D7A52 /* VectorTests.swift */,
+				D9F1806B24338F27009D7A52 /* UserTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1249,6 +1252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
 				788007392413F37500F43B71 /* HookiesTests.swift in Sources */,
 			);
