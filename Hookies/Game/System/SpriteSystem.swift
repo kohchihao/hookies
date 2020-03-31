@@ -32,12 +32,6 @@ protocol SpriteSystemProtocol {
 }
 
 class SpriteSystem: System, SpriteSystemProtocol {
-    private var sprites: [SpriteComponent: Int]
-
-    init() {
-        sprites = [SpriteComponent: Int]()
-    }
-
     func set(sprite: SpriteComponent,
              of type: SpriteType,
              with imageName: String,
@@ -47,6 +41,12 @@ class SpriteSystem: System, SpriteSystemProtocol {
         sprite.node.position = position
         sprite.node.zPosition = type.zPosition
         sprite.node.size = type.size
+
+        return sprite
+    }
+
+    func set(sprite: SpriteComponent, to node: SKSpriteNode) -> SpriteComponent {
+        sprite.node = node
 
         return sprite
     }

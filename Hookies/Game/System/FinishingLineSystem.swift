@@ -18,13 +18,23 @@ enum FinishingLineSystemError: Error {
 
 class FinishingLineSystem: System, FinishingLineSystemProtocol {
     private let finishingLine: SpriteComponent
-    private let players: Set<SpriteComponent>
+    private var players: Set<SpriteComponent>
     private var finishedPlayers: Int
 
     init(finishingLine: SpriteComponent, players: Set<SpriteComponent>) {
         self.finishingLine = finishingLine
         self.players = players
         self.finishedPlayers = 0
+    }
+
+    init(finishingLine: SpriteComponent) {
+        self.finishingLine = finishingLine
+        self.players = Set<SpriteComponent>()
+        self.finishedPlayers = 0
+    }
+
+    func add(player: SpriteComponent) {
+        players.insert(player)
     }
 
     func stop(player: SpriteComponent) throws {
