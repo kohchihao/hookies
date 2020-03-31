@@ -42,6 +42,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         disableGameButtons()
         initialiseCamera()
         initialiseCountdownMessage()
+        initialiseGameEngine()
     }
 
     // MARK: - Update
@@ -122,6 +123,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         grapplingHookButton = GrapplingHookButton(in: sceneFrame)
+    }
+
+    // MARK: - Initialise Game Engine
+
+    private func initialiseGameEngine() {
+        guard let gameplayId = gameplayId else {
+            return
+        }
+
+        guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode,
+            let finishingLineNode = self.childNode(withName: "//ending_line") as? SKSpriteNode
+            else {
+            return
+        }
+
+        var boltsNode = [SKSpriteNode]()
+        let bolts = getGameObject(of: GameObjectType.bolt)
+        let boltsMovable = getGameObject(of: GameObjectType.boltMovable)
+        boltsNode.append(contentsOf: bolts)
+        boltsNode.append(contentsOf: boltsMovable)
+
+        gameEngine = GameEngine(
+            gameId: gameplayId,g
+            cannon: cannonNode,
+            finishingLine: finishingLineNode,
+            bolts: boltsNode
+        )
+
+        self.cannon = cannonNode
+        self.finishingLine = finishingLineNode
+    }
+
+    private func getGameObject(of type: GameObjectType) -> [SKSpriteNode] {
+        var objects = [SKSpriteNode]()
+
+        for object in self[type.rawValue] {
+            guard let objectNode = object as? SKSpriteNode else {
+                return objects
+            }
+
+            objects.append(objectNode)
+        }
+
+        return objects
     }
 
     // MARK: - Centering camera
