@@ -12,8 +12,6 @@ class PowerupComponent: Component {
     private(set) var parent: Entity
     var isActivated: Bool
     var activatedTime: Date?
-    var powerupType: PowerupType?
-    var affectedEntities: [Entity] = []
 
     init(parent: Entity) {
         self.parent = parent
@@ -30,8 +28,4 @@ extension PowerupComponent: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(ObjectIdentifier(self).hashValue)
     }
-}
-
-enum PowerupType: String, CaseIterable {
-    case playerHook, netTrap, cutRope, steal, sheild
 }

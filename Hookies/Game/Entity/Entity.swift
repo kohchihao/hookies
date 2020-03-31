@@ -16,8 +16,4 @@ extension Entity {
     func addComponent(_ component: Component) {
         components.append(component)
     }
-
-    func removeComponent(at index: Int) {
-        components.remove(at: index)
-    }
 }
