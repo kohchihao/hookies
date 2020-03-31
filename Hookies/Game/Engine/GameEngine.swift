@@ -11,6 +11,7 @@ import SpriteKit
 class GameEngine {
     private let gameId: String
     private var currentPlayerId: String?
+    private var totalNumberOfPlayers = 0
 
     // MARK: - System
 
@@ -25,9 +26,8 @@ class GameEngine {
     // MARK: - Entity
 
     private var currentPlayer: PlayerEntity?
-    private var otherPlayers = [PlayerEntity]()
+    private var otherPlayers = [String: PlayerEntity]()
     private var platforms = [PlatformEntity]()
-    private var collectables = [CollectableEntity]()
     private var bolts = [BoltEntity]()
     private var cannon = CannonEntity()
     private var finishingLine = FinishingLineEntity()
@@ -50,6 +50,8 @@ class GameEngine {
 
         let finishingLineSprite = createFinishingLineSprite(from: finishingLine)
         self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
+
+        setupMultiplayer()
     }
 
     // MARK: - Players
@@ -71,7 +73,7 @@ class GameEngine {
         finishingLineSystem.add(player: sprite)
     }
 
-    func addOtherPlayers(position: CGPoint, image: String) {
+    func addOtherPlayers(id: String, position: CGPoint, image: String) {
         let otherPlayer = PlayerEntity()
 
         let sprite = SpriteComponent(parent: otherPlayer)
@@ -82,7 +84,7 @@ class GameEngine {
 
         addCommonPlayerComponents(to: otherPlayer)
 
-        otherPlayers.append(otherPlayer)
+        otherPlayers[id] = otherPlayer
 
         finishingLineSystem.add(player: sprite)
     }
@@ -148,12 +150,131 @@ class GameEngine {
         return SpriteType.otherPlayers[typeIndex]
     }
 
+    private func playerHookAction(player: PlayerEntity) {
+        guard let hook = getHookComponent(from: player) else {
+            return
+        }
+
+        do {
+            try hookSystem?.hookTo(hook: hook)
+        } catch {
+            return
+        }
+    }
+
+    // MARK: - Multiplayer
+
+    private func setupMultiplayer() {
+        setupTotalPlayers()
+        connectToGame()
+        subscribeToOtherPlayersState()
+        subscribeToHookAction()
+        subscribeToPowerupAction()
+    }
+
+    private func setupTotalPlayers() {
+        API.shared.lobby.get(lobbyId: self.gameId, completion: { lobby, error in
+            if error != nil {
+                return
+            }
+
+            guard let lobby = lobby else {
+                return
+            }
+
+            self.totalNumberOfPlayers = lobby.playersId.count
+        })
+    }
+
+    private func connectToGame() {
+        API.shared.gameplay.connectToGame(gameId: gameId, completion: { otherPlayersId in
+            for otherPlayerId in otherPlayersId {
+                self.setupPlayer(of: otherPlayerId)
+            }
+
+            self.startGame()
+        })
+    }
+
+    private func subscribeToOtherPlayersState() {
+        API.shared.gameplay.subscribeToPlayersConnection(listener: { userConnection in
+            if userConnection.state == .connected {
+                self.setupPlayer(of: userConnection.uid)
+                self.startGame()
+            }
+
+            // TODO: Setup Disconnected
+        })
+    }
+
+    private func setupPlayer(of id: String) {
+        API.shared.lobby.get(lobbyId: self.gameId, completion: { lobby, error in
+            if error != nil {
+                return
+            }
+
+            guard let costume = lobby?.costumesId[id] else {
+                return
+            }
+
+            guard let initialPosition = self.getSpriteComponent(from: self.cannon)?.node.position else {
+                return
+            }
+
+            self.addOtherPlayers(id: id, position: initialPosition, image: costume.stringValue)
+        })
+    }
+
+    private func subscribeToHookAction() {
+        API.shared.gameplay.subscribeToHookAction(listener: { hookActionData in
+            guard let player = self.otherPlayers[hookActionData.playerId] else {
+                return
+            }
+
+            switch hookActionData.actionType {
+            case .activate:
+                self.playerHookAction(player: player)
+            case .deactivate:
+                do {
+                    try self.hookSystem?.unhookFrom(entity: player)
+                } catch {
+                    return
+                }
+            }
+        })
+    }
+
+    private func subscribeToPowerupAction() {
+        API.shared.gameplay.subscribeToPowerupAction(listener: { powerupAction in
+            // TODO: Add implementation
+        })
+    }
+
+    private func startGame() {
+        let isAllPlayerInGame = totalNumberOfPlayers != 0 && totalNumberOfPlayers == otherPlayers.count + 1
+
+        if isAllPlayerInGame {
+            // TOOD: Delegate to Game Scene
+            print("start game")
+        }
+    }
+
     // MARK: - General helper methods
 
     private func getSpriteComponent(from entity: Entity) -> SpriteComponent? {
         for component in entity.components {
             if let sprite = component as? SpriteComponent {
                 return sprite
+            }
+        }
+
+        return nil
+    }
+
+    private func getHookComponent(from entity: Entity) -> HookComponent? {
+        for component in entity.components {
+            if let hook = component as? HookComponent {
+                return hook
             }
         }
 
