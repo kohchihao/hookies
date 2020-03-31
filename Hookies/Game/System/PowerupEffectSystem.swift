@@ -69,11 +69,11 @@ class PowerupEffectSystem: System {
 
     private func findClosestPlayerInFront(from position: CGPoint) -> SpriteComponent? {
         var closestPlayerInFront: SpriteComponent?
-        var closestDistance = CGFloat.greatestFiniteMagnitude
-
+        var closestDistance = Double.greatestFiniteMagnitude
+        let positionVector = Vector(point: position)
         for player in players {
-            let playerPosition = player.node.position
-            let distance = position.distance(to: playerPosition)
+            let playerPositionVector = Vector(point: player.node.position)
+            let distance = positionVector.distance(to: playerPositionVector)
             if distance > 0 && distance < closestDistance {
                 closestDistance = distance
                 closestPlayerInFront = player
