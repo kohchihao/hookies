@@ -35,6 +35,32 @@ class UserTests: XCTestCase {
         XCTAssertEqual(user.email, "")
     }
 
+    func testInitializationWithEmptyString() {
+        user = User(uid: "", username: "", email: "")
+        XCTAssertEqual(user.uid, "")
+        XCTAssertEqual(user.username, "")
+        XCTAssertEqual(user.email, "")
+    }
 
+    func testEqualityEqual() {
+        user = User(uid: "123", username: "123", email: "example@gmail.com")
+        user2 = User(uid: "123", username: "1235", email: "example1@gmail.com")
+        XCTAssertEqual(user, user2)
+    }
 
+    func testEqualityNotEqual() {
+        user = User(uid: "1233", username: "123", email: "example@gmail.com")
+        user2 = User(uid: "123", username: "123", email: "example@gmail.com")
+        XCTAssertNotEqual(user, user2)
+    }
+
+    func testHash() {
+        user = User(uid: "123", username: "123", email: "example@gmail.com")
+        var set = Set<User>()
+        set.insert(user)
+        XCTAssertEqual(set.count, 1)
+
+        set.remove(user)
+        XCTAssertEqual(set.count, 0)
+    }
 }
