@@ -9,51 +9,47 @@
 import SpriteKit
 
 class GameEngine {
-    let gameId: String
+    private let gameId: String
     private var currentPlayerId: String?
 
     // MARK: - System
-    let spriteSystem: SpriteSystem
-    private var gameObjectMovementSystem: GameObjectMovementSystem
-    private var hookSystem: HookSystem
-    private var closestBoltSystem: ClosestBoltSystem
+
+    private let spriteSystem = SpriteSystem()
+    private var gameObjectMovementSystem = GameObjectMovementSystem()
+    private var cannonSystem: CannonSystem!
+    private var finishingLineSystem: FinishingLineSystem!
+    private var hookSystem: HookSystem?
+    private var closestBoltSystem: ClosestBoltSystem?
     private var deadLockSystem: DeadlockSystem?
-    private var finishingLineSystem: FinishingLineSystem?
 
     // MARK: - Entity
-    private var currentPlayer: PlayerEntity?
-    private var otherPlayers: [PlayerEntity]
-    private var platforms: [PlatformEntity]
-    private var collectables: [CollectableEntity]
-    private var bolts: [BoltEntity]
-    private var finishingLine: FinishingLineEntity?
 
-    init(gameId: String, bolts: [SKSpriteNode]) {
+    private var currentPlayer: PlayerEntity?
+    private var otherPlayers = [PlayerEntity]()
+    private var platforms = [PlatformEntity]()
+    private var collectables = [CollectableEntity]()
+    private var bolts = [BoltEntity]()
+    private var cannon = CannonEntity()
+    private var finishingLine = FinishingLineEntity()
+
+    init(
+        gameId: String,
+        cannon: SKSpriteNode,
+        finishingLine: SKSpriteNode,
+        bolts: [SKSpriteNode]
+    ) {
         self.gameId = gameId
 
-        self.otherPlayers = [PlayerEntity]()
-        self.platforms = [PlatformEntity]()
-        self.collectables = [CollectableEntity]()
-        self.bolts = [BoltEntity]()
-
-        self.spriteSystem = SpriteSystem()
-        self.gameObjectMovementSystem = GameObjectMovementSystem()
-
-        var boltsSprite = [SpriteComponent]()
-        for bolt in bolts {
-            let boltEntity = BoltEntity()
-
-            let boltSprite = SpriteComponent(parent: boltEntity)
-            _ = spriteSystem.set(sprite: boltSprite, to: bolt)
-
-            boltEntity.addComponent(boltSprite)
-
-            boltsSprite.append(boltSprite)
-            self.bolts.append(boltEntity)
-        }
+        let boltsSprite = initialiseBolts(bolts)
 
         self.hookSystem = HookSystem(bolts: boltsSprite)
         self.closestBoltSystem = ClosestBoltSystem(bolts: boltsSprite)
+
+        let cannonSprite = createCannonSprite(from: cannon)
+        self.cannonSystem = CannonSystem(cannon: cannonSprite)
+
+        let finishingLineSprite = createFinishingLineSprite(from: finishingLine)
+        self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
     }
 
     // MARK: - Players
@@ -72,7 +68,7 @@ class GameEngine {
         currentPlayer = player
 
         deadLockSystem = DeadlockSystem(sprite: sprite)
-        addPlayerToFinishingLine(with: sprite)
+        finishingLineSystem.add(player: sprite)
     }
 
     func addOtherPlayers(position: CGPoint, image: String) {
@@ -88,20 +84,52 @@ class GameEngine {
 
         otherPlayers.append(otherPlayer)
 
-        addPlayerToFinishingLine(with: sprite)
+        finishingLineSystem.add(player: sprite)
+    }
+
+    // MARK: - Bolts
+
+    private func initialiseBolts(_ bolts: [SKSpriteNode]) -> [SpriteComponent] {
+        var boltsSprite = [SpriteComponent]()
+
+        for bolt in bolts {
+            let boltEntity = BoltEntity()
+
+            let boltSprite = SpriteComponent(parent: boltEntity)
+            _ = spriteSystem.set(sprite: boltSprite, to: bolt)
+
+            // TODO: Check for moving and rotating bolt
+
+            boltEntity.addComponent(boltSprite)
+
+            boltsSprite.append(boltSprite)
+            self.bolts.append(boltEntity)
+        }
+
+        return boltsSprite
+    }
+
+    // MARK: - Cannon
+
+    private func createCannonSprite(from node: SKSpriteNode) -> SpriteComponent {
+        let sprite = SpriteComponent(parent: cannon)
+        _ = spriteSystem.set(sprite: sprite, to: node)
+
+        cannon.addComponent(sprite)
+
+        return sprite
     }
 
     // MARK: - Finishing Line
-    func setFinishingLine(node: SKSpriteNode) {
-        let finishingLine = FinishingLineEntity()
 
+    private func createFinishingLineSprite(from node: SKSpriteNode) -> SpriteComponent {
         let sprite = SpriteComponent(parent: finishingLine)
         _ = spriteSystem.set(sprite: sprite, to: node)
         _ = spriteSystem.setPhysicsBody(to: sprite, of: .finishingLine, rectangleOf: sprite.node.size)
 
-        self.finishingLine = finishingLine
+        self.finishingLine.addComponent(sprite)
 
-        initialiseFinishingLineSystem(with: sprite)
+        return sprite
     }
 
     // MARK: - Player helper methods
@@ -110,7 +138,7 @@ class GameEngine {
         let hook = HookComponent(parent: player)
 
         player.addComponent(hook)
-        _ = hookSystem.add(hook: hook)
+        _ = hookSystem?.add(hook: hook)
     }
 
     private func getOtherPlayerSpriteType() -> SpriteType {
@@ -118,40 +146,6 @@ class GameEngine {
         let typeIndex = numOtherPlayers + 1
 
         return SpriteType.otherPlayers[typeIndex]
-    }
-
-    // MARK: - Finishing line helper methods
-
-    private func initialiseFinishingLineSystem(with sprite: SpriteComponent) {
-        if let currentPlayer = self.currentPlayer {
-            // Assumption that all players are set before finishing line
-
-            var playersSprite = Set<SpriteComponent>()
-
-            guard let currentPlayerSprite = getSpriteComponent(from: currentPlayer) else {
-                return
-            }
-            playersSprite.insert(currentPlayerSprite)
-
-            for otherPlayer in otherPlayers {
-                guard let otherPlayerSprite = getSpriteComponent(from: otherPlayer) else {
-                    return
-                }
-                playersSprite.insert(otherPlayerSprite)
-            }
-
-            finishingLineSystem = FinishingLineSystem(finishingLine: sprite, players: playersSprite)
-        } else {
-            finishingLineSystem = FinishingLineSystem(finishingLine: sprite)
-        }
-    }
-
-    private func addPlayerToFinishingLine(with sprite: SpriteComponent) {
-        guard let finishingLineSystem = self.finishingLineSystem else {
-            return
-        }
-
-        finishingLineSystem.add(player: sprite)
     }
 
     // MARK: - General helper methods
