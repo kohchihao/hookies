@@ -32,7 +32,8 @@ extension SpriteComponent: Hashable {
 extension SpriteComponent {
     func makeLine(to sprite2: SpriteComponent) -> SKShapeNode {
         let type = SpriteType.line
-        let distance = node.position.distance(to: sprite2.node.position)
+
+        let distance = Vector(point: node.position).distance(to: Vector(point: sprite2.node.position))
 
         let path = CGMutablePath()
         path.move(to: node.position)
@@ -45,7 +46,7 @@ extension SpriteComponent {
         currLine.strokeColor = SKColor.white
         currLine.lineWidth = 1.0
 
-        currLine.physicsBody = SKPhysicsBody(circleOfRadius: distance, center: sprite2.node.position)
+        currLine.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(distance), center: sprite2.node.position)
         currLine.physicsBody?.affectedByGravity = type.affectedByGravity
         currLine.physicsBody?.categoryBitMask = type.bitMask
         currLine.physicsBody?.collisionBitMask = type.collisionBitMask

@@ -111,10 +111,10 @@ class HookSystem: System, HookSystemProtocol {
     private func findClosestBolt(from position: CGPoint) -> SpriteComponent? {
         var closestBolt: SpriteComponent?
         var closestDistance = Double.greatestFiniteMagnitude
-
+        let positionVector = Vector(point: position)
         for bolt in bolts {
-            let boltPosition = bolt.node.position
-            let distance = position.distance(to: boltPosition)
+            let boltVectorPosition = Vector(point: bolt.node.position)
+            let distance = positionVector.distance(to: boltVectorPosition)
             closestDistance = min(Double(distance), closestDistance)
             if closestDistance == Double(distance) {
                 closestBolt = bolt
