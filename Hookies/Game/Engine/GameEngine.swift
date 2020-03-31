@@ -64,7 +64,7 @@ class GameEngine {
         _ = spriteSystem.setPhysicsBody(to: sprite, of: .player1, rectangleOf: sprite.node.size)
         player.addComponent(sprite)
 
-        addCommonPlayerComponents(to: player)
+        addPlayerComponents(to: player)
 
         currentPlayerId = id
         currentPlayer = player
@@ -82,7 +82,7 @@ class GameEngine {
         _ = spriteSystem.setPhysicsBody(to: sprite, of: spriteType, rectangleOf: sprite.node.size)
         otherPlayer.addComponent(sprite)
 
-        addCommonPlayerComponents(to: otherPlayer)
+        addPlayerComponents(to: otherPlayer)
 
         otherPlayers[id] = otherPlayer
 
@@ -136,7 +136,7 @@ class GameEngine {
 
     // MARK: - Player helper methods
 
-    private func addCommonPlayerComponents(to player: PlayerEntity) {
+    private func addPlayerComponents(to player: PlayerEntity) {
         let hook = HookComponent(parent: player)
 
         player.addComponent(hook)
@@ -157,7 +157,20 @@ class GameEngine {
 
         do {
             try hookSystem?.hookTo(hook: hook)
+        } catch HookSystemError.hookComponentDoesNotExist {
+            print(HookSystemError.hookComponentDoesNotExist)
+            return
+        } catch HookSystemError.spriteComponentDoesNotExist {
+            print(HookSystemError.spriteComponentDoesNotExist)
+            return
+        } catch HookSystemError.closestHookToEntityDoesNotExist {
+            print(HookSystemError.closestHookToEntityDoesNotExist)
+            return
+        } catch HookSystemError.physicsBodyDoesNotExist {
+            print(HookSystemError.physicsBodyDoesNotExist)
+            return
         } catch {
+            print("Unexpected error: \(error)")
             return
         }
     }
@@ -237,7 +250,11 @@ class GameEngine {
             case .deactivate:
                 do {
                     try self.hookSystem?.unhookFrom(entity: player)
+                } catch HookSystemError.hookComponentDoesNotExist {
+                    print(HookSystemError.hookComponentDoesNotExist)
+                    return
                 } catch {
+                    print("Unexpected error: \(error)")
                     return
                 }
             }
