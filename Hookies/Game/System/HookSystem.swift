@@ -56,8 +56,8 @@ class HookSystem: System, HookSystemProtocol {
             attachToSameBolt(sprite: parentSprite, bolt: closestBolt)
         }
 
-        let anchor = makeAnchor(from: closestBolt)
-        let line = makeLine(from: parentSprite, to: closestBolt)
+        let anchor = parentSprite.makeAnchor(from: closestBolt)
+        let line = parentSprite.makeLine(to: closestBolt)
 
         guard let anchorLineJointPin = makeJointPinToLine(from: anchor, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: parentSprite.node, toLine: line) else {
@@ -114,9 +114,7 @@ class HookSystem: System, HookSystemProtocol {
 
         for bolt in bolts {
             let boltPosition = bolt.node.position
-            let distanceX = boltPosition.x - position.x
-            let distanceY = boltPosition.y - position.y
-            let distance = sqrt(distanceX * distanceX + distanceY * distanceY)
+            let distance = position.distance(to: boltPosition)
             closestDistance = min(Double(distance), closestDistance)
             if closestDistance == Double(distance) {
                 closestBolt = bolt
@@ -124,41 +122,6 @@ class HookSystem: System, HookSystemProtocol {
         }
 
         return closestBolt
-    }
-
-    private func makeAnchor(from bolt: SpriteComponent) -> SKNode {
-        let anchor = SKNode()
-        anchor.position = bolt.node.position
-        anchor.physicsBody = SKPhysicsBody()
-        anchor.physicsBody?.isDynamic = false
-
-        return anchor
-    }
-
-    private func makeLine(from parent: SpriteComponent, to bolt: SpriteComponent) -> SKShapeNode {
-        let type = SpriteType.line
-
-        let distanceX = parent.node.position.x - bolt.node.position.x
-        let distanceY = parent.node.position.y - bolt.node.position.y
-        let distance = sqrt((distanceX * distanceX) + (distanceY * distanceY))
-
-        let path = CGMutablePath()
-        path.move(to: parent.node.position)
-        path.addLine(to: bolt.node.position)
-        path.addLine(to: CGPoint(x: bolt.node.position.x + 1, y: bolt.node.position.y + 1))
-        path.addLine(to: CGPoint(x: parent.node.position.x - 1, y: parent.node.position.y - 1))
-        path.closeSubpath()
-
-        let currLine = SKShapeNode(path: path)
-        currLine.strokeColor = SKColor.white
-        currLine.lineWidth = 1.0
-
-        currLine.physicsBody = SKPhysicsBody(circleOfRadius: distance, center: bolt.node.position)
-        currLine.physicsBody?.affectedByGravity = type.affectedByGravity
-        currLine.physicsBody?.categoryBitMask = type.bitMask
-        currLine.physicsBody?.collisionBitMask = type.collisionBitMask
-
-        return currLine
     }
 
     private func makeJointPinToLine(from node: SKNode, toLine line: SKShapeNode) -> SKPhysicsJointPin? {
