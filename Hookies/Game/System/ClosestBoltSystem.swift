@@ -31,9 +31,9 @@ class ClosestBoltSystem: System, ClosestBoltSystemProtocol {
     func findClosestBolt(to position: CGPoint) -> (PreviousClosestBoltSprite?, CurrentClosestBoltSprite?) {
         previousClosestBoltSprite = currentClosestBoltSprite
         var closestDistance = Double.greatestFiniteMagnitude
-        let otherEntityPosition = CGVector(dx: position.x, dy: position.y)
+        let otherEntityPosition = Vector(point: position)
         for bolt in boltSpriteComponents {
-            let boltPositionVector = CGVector(dx: bolt.node.position.x, dy: bolt.node.position.y)
+            let boltPositionVector = Vector(point: bolt.node.position)
             let distance = (boltPositionVector - otherEntityPosition).magnitude
             closestDistance = min(Double(distance), closestDistance)
             if closestDistance == Double(distance) {
