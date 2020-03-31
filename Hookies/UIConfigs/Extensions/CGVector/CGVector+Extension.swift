@@ -12,7 +12,6 @@ import CoreGraphics
 extension CGVector {
 
     init(vector: Vector) {
-        self.dx = CGFloat(vector.x)
-        self.dy = CGFloat(vector.y)
+        self.init(dx: CGFloat(vector.x), dy: CGFloat(vector.y))
     }
 }

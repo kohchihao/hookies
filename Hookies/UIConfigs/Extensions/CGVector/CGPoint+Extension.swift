@@ -12,7 +12,6 @@ import CoreGraphics
 extension CGPoint {
 
     init(vector: Vector) {
-        self.x = CGFloat(vector.x)
-        self.y = CGFloat(vector.y)
+        self.init(x: CGFloat(vector.x), y: CGFloat(vector.y))
     }
 }
