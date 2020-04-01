@@ -11,41 +11,32 @@ import CoreGraphics
 import SocketIO
 
 struct PowerupActionData: SocketData, Encoder {
-    let playerId: String
     let powerup: Powerup
-    let position: CGPoint
-    var velocity: CGVector?
+    let playerData: PlayerData
 
     var encoding: [String: Any] {
-        return defaultEncoding()
+        var defaultEncoding = powerup.representation
+        defaultEncoding.merge(playerData.encoding) { _, new in new }
+        return defaultEncoding
     }
 
-    init(player: Player, powerup: Powerup) {
-        self.playerId = player.id
+    init(playerId: String, position: CGPoint, velocity: CGVector?, powerup: Powerup) {
         self.powerup = powerup
-        self.position = player.node.position
-        self.velocity = player.node.physicsBody?.velocity
+        self.playerData = PlayerData(playerId: playerId, position: position, velocity: velocity)
     }
 
     init?(data: DictionaryModel) {
-        do {
-            self.playerId = try data.value(forKey: "playerId")
-            guard let powerName: String = data.optionalValue(forKey: "powerupName"),
-                let isPowerupActivated: Bool = data.optionalValue(forKey: "isPowerupActivated"),
-                let powerup = PowerupCreator.create(name: powerName, isActivated: isPowerupActivated,
-                                                    ownerId: data.optionalValue(forKey: "powerupOwnerId")) else {
-                return nil
-            }
-            self.powerup = powerup
-            self.position = CGPoint(x: try data.value(forKey: "positionX") as Double,
-                                    y: try data.value(forKey: "positionY") as Double)
-            if let velocityX: Double = data.optionalValue(forKey: "velocityX"),
-                let velocityY: Double = data.optionalValue(forKey: "velocityY") {
-                    self.velocity = CGVector(dx: velocityX, dy: velocityY)
-            }
-        } catch {
+        guard let powerName: String = data.optionalValue(forKey: "powerupName"),
+            let isPowerupActivated: Bool = data.optionalValue(forKey: "isPowerupActivated") else {
             return nil
         }
+        guard let powerup = PowerupCreator.create(name: powerName, isActivated: isPowerupActivated,
+                                                  ownerId: data.optionalValue(forKey: "powerupOwnerId")),
+            let playerData = PlayerData(data: data) else {
+                return nil
+        }
+        self.powerup = powerup
+        self.playerData = playerData
     }
 
     func socketRepresentation() -> SocketData {
