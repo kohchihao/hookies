@@ -15,10 +15,10 @@ struct PlayerData: SocketData, Encoder {
     }
 
     let playerId: String
-    let position: CGPoint
-    var velocity: CGVector?
+    let position: Vector
+    var velocity: Vector?
 
-    init(playerId: String, position: CGPoint, velocity: CGVector?) {
+    init(playerId: String, position: Vector, velocity: Vector?) {
         self.playerId = playerId
         self.position = position
         self.velocity = velocity
@@ -27,11 +27,11 @@ struct PlayerData: SocketData, Encoder {
     init?(data: DictionaryModel) {
         do {
             self.playerId = try data.value(forKey: "playerId")
-            self.position = CGPoint(x: try data.value(forKey: "positionX") as Double,
-                                    y: try data.value(forKey: "positionY") as Double)
+            self.position = Vector(x: try data.value(forKey: "positionX") as Double,
+                                   y: try data.value(forKey: "positionY") as Double)
             if let velocityX: Double = data.optionalValue(forKey: "velocityX"),
                 let velocityY: Double = data.optionalValue(forKey: "velocityY") {
-                    self.velocity = CGVector(dx: velocityX, dy: velocityY)
+                    self.velocity = Vector(x: velocityX, y: velocityY)
             }
         } catch {
             return nil

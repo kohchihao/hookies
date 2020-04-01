@@ -13,8 +13,7 @@ extension User: SocketData {
     func socketRepresentation() -> SocketData {
         [
             "uid": uid,
-            "username": username,
-            "email": email
+            "username": username
         ]
     }
 }

@@ -15,7 +15,7 @@ struct FinishLineEventData: SocketData, Encoder {
         return playerData.encoding
     }
 
-    init(playerId: String, position: CGPoint, velocity: CGVector?) {
+    init(playerId: String, position: Vector, velocity: Vector?) {
         self.playerData = PlayerData(playerId: playerId, position: position, velocity: velocity)
     }
 

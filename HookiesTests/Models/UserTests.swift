@@ -21,41 +21,36 @@ class UserTests: XCTestCase {
         super.tearDown()
     }
 
-    func testInitializationWithValidValues() {
-        user = User(uid: "123", username: "123", email: "example@gmail.com")
+    func testInitializationWithValidValues() throws {
+        user = try User(uid: "123", username: "1234")
         XCTAssertEqual(user.uid, "123")
-        XCTAssertEqual(user.username, "123")
-        XCTAssertEqual(user.email, "example@gmail.com")
+        XCTAssertEqual(user.username, "1234")
     }
 
-    func testInitializationWithEmptyEmail() {
-        user = User(uid: "123", username: "123", email: nil)
-        XCTAssertEqual(user.uid, "123")
-        XCTAssertEqual(user.username, "123")
-        XCTAssertEqual(user.email, "")
-    }
-
-    func testInitializationWithEmptyString() {
-        user = User(uid: "", username: "", email: "")
-        XCTAssertEqual(user.uid, "")
-        XCTAssertEqual(user.username, "")
-        XCTAssertEqual(user.email, "")
-    }
-
-    func testEqualityEqual() {
-        user = User(uid: "123", username: "123", email: "example@gmail.com")
-        user2 = User(uid: "123", username: "1235", email: "example1@gmail.com")
+    func testEqualityEqual() throws {
+        user = try User(uid: "123", username: "1234")
+        user2 = try User(uid: "123", username: "1235")
         XCTAssertEqual(user, user2)
     }
 
-    func testEqualityNotEqual() {
-        user = User(uid: "1233", username: "123", email: "example@gmail.com")
-        user2 = User(uid: "123", username: "123", email: "example@gmail.com")
+    func testEqualityNotEqual() throws {
+        user = try User(uid: "1233", username: "1234")
+        user2 = try User(uid: "123", username: "1234")
         XCTAssertNotEqual(user, user2)
     }
 
-    func testHash() {
-        user = User(uid: "123", username: "123", email: "example@gmail.com")
+    func testUsernameTooShort() throws {
+        let shortUsername = String(repeating: "a", count: User.minNameLen - 1)
+        XCTAssertThrowsError(try User(uid: "12345", username: shortUsername))
+    }
+
+    func testUsernameTooLong() throws {
+        let longUsername = String(repeating: "a", count: User.maxNameLen + 1)
+        XCTAssertThrowsError(try User(uid: "12345", username: longUsername))
+    }
+
+    func testHash() throws {
+        user = try User(uid: "1234", username: "1234")
         var set = Set<User>()
         set.insert(user)
         XCTAssertEqual(set.count, 1)

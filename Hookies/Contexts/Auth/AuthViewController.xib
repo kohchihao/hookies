@@ -53,19 +53,24 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="meh-K2-Hk4" userLabel="Dialog">
                             <rect key="frame" x="205" y="230.5" width="614" height="307"/>
                             <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dialog_bg" translatesAutoresizingMaskIntoConstraints="NO" id="Ox6-ak-Nzi">
+                                    <rect key="frame" x="0.0" y="0.0" width="614" height="307"/>
+                                </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your username:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GY6-9G-DWd">
-                                    <rect key="frame" x="0.0" y="84" width="614" height="30"/>
+                                    <rect key="frame" x="184" y="84" width="246" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                    <nil key="textColor"/>
+                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xUw-bD-YjL" userLabel="usernameField">
-                                    <rect key="frame" x="184" y="136.5" width="246" height="34"/>
+                                    <rect key="frame" x="215" y="136.5" width="184" height="34"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JIQ-Gd-uYY" userLabel="submit" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                                    <rect key="frame" x="193" y="195.5" width="228" height="30"/>
+                                    <rect key="frame" x="199.5" y="195.5" width="215" height="30"/>
                                     <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <state key="normal" title="Submit">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -80,17 +85,20 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="Ox6-ak-Nzi" firstAttribute="top" secondItem="meh-K2-Hk4" secondAttribute="top" id="3jr-gg-hmg"/>
                                 <constraint firstItem="JIQ-Gd-uYY" firstAttribute="centerX" secondItem="meh-K2-Hk4" secondAttribute="centerX" id="6Vh-Md-C6x"/>
                                 <constraint firstItem="xUw-bD-YjL" firstAttribute="centerY" secondItem="meh-K2-Hk4" secondAttribute="centerY" id="8yQ-dv-xty"/>
-                                <constraint firstItem="GY6-9G-DWd" firstAttribute="width" secondItem="meh-K2-Hk4" secondAttribute="width" id="BLs-ep-pcm"/>
+                                <constraint firstAttribute="trailing" secondItem="Ox6-ak-Nzi" secondAttribute="trailing" id="Asq-0o-dqv"/>
+                                <constraint firstItem="GY6-9G-DWd" firstAttribute="width" secondItem="meh-K2-Hk4" secondAttribute="width" multiplier="0.4" id="BLs-ep-pcm"/>
+                                <constraint firstAttribute="bottom" secondItem="Ox6-ak-Nzi" secondAttribute="bottom" id="J7u-ze-YuJ"/>
                                 <constraint firstItem="xUw-bD-YjL" firstAttribute="top" secondItem="GY6-9G-DWd" secondAttribute="bottom" constant="22.5" id="QcL-SE-iKr"/>
                                 <constraint firstItem="GY6-9G-DWd" firstAttribute="centerX" secondItem="meh-K2-Hk4" secondAttribute="centerX" id="ZyF-SC-BVg"/>
                                 <constraint firstItem="JIQ-Gd-uYY" firstAttribute="top" secondItem="xUw-bD-YjL" secondAttribute="bottom" constant="25" id="k28-xb-eER"/>
-                                <constraint firstAttribute="trailing" secondItem="JIQ-Gd-uYY" secondAttribute="trailing" constant="193" id="mcJ-a0-hZL"/>
-                                <constraint firstItem="xUw-bD-YjL" firstAttribute="width" secondItem="meh-K2-Hk4" secondAttribute="width" multiplier="0.4" id="tod-1w-1gX"/>
+                                <constraint firstItem="xUw-bD-YjL" firstAttribute="width" secondItem="meh-K2-Hk4" secondAttribute="width" multiplier="0.3" id="tod-1w-1gX"/>
                                 <constraint firstItem="xUw-bD-YjL" firstAttribute="centerX" secondItem="meh-K2-Hk4" secondAttribute="centerX" id="wl9-aD-gr2"/>
+                                <constraint firstItem="JIQ-Gd-uYY" firstAttribute="width" secondItem="Ox6-ak-Nzi" secondAttribute="width" multiplier="0.35" id="ySk-wh-dwb"/>
+                                <constraint firstItem="Ox6-ak-Nzi" firstAttribute="leading" secondItem="meh-K2-Hk4" secondAttribute="leading" id="yaa-kR-FDM"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -123,6 +131,7 @@
         </view>
     </objects>
     <resources>
+        <image name="dialog_bg" width="1102" height="1100"/>
         <image name="home_background" width="1808" height="1129"/>
         <image name="hookies" width="752" height="364"/>
     </resources>

@@ -20,7 +20,7 @@ struct PowerupActionData: SocketData, Encoder {
         return defaultEncoding
     }
 
-    init(playerId: String, position: CGPoint, velocity: CGVector?, powerup: Powerup) {
+    init(playerId: String, position: Vector, velocity: Vector?, powerup: Powerup) {
         self.powerup = powerup
         self.playerData = PlayerData(playerId: playerId, position: position, velocity: velocity)
     }
