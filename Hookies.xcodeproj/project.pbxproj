@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		085CFA2C7C3D713DC56EB872 /* Pods_HookiesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */; };
 		1107D0602420DBA00058F590 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107D05F2420DBA00058F590 /* AuthState.swift */; };
 		110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CDC241F3CD200840C4E /* Gameplay.swift */; };
 		110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CE0241F3EC000840C4E /* Powerup.swift */; };
@@ -139,6 +140,9 @@
 		D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */; };
 		D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */; };
 		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
+		D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806924338278009D7A52 /* VectorTests.swift */; };
+		D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806B24338F27009D7A52 /* UserTests.swift */; };
+		D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806D243394F1009D7A52 /* LobbyTests.swift */; };
 		D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */; };
 		D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */; };
 		D9FF1A6A241E0DE600E7965F /* PreGameLobbyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */; };
@@ -248,6 +252,7 @@
 		2B8476BC24331AD000882F30 /* CannonEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonEntity.swift; sourceTree = "<group>"; };
 		2B992586242EF0BC00795B90 /* SpriteSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystem.swift; sourceTree = "<group>"; };
 		2B99258A242FA50200795B90 /* HookSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSystem.swift; sourceTree = "<group>"; };
+		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785B79D92423581B001D7028 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		785B79DB24236B6D001D7028 /* Lobby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lobby.swift; sourceTree = "<group>"; };
@@ -271,7 +276,9 @@
 		7880073F2413F37500F43B71 /* HookiesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HookiesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		788007432413F37500F43B71 /* HookiesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookiesUITests.swift; sourceTree = "<group>"; };
 		788007452413F37500F43B71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HookiesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hookies.release.xcconfig"; path = "Target Support Files/Pods-Hookies/Pods-Hookies.release.xcconfig"; sourceTree = "<group>"; };
+		D592BFC58479DAD307FE828E /* Pods-HookiesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.release.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.release.xcconfig"; sourceTree = "<group>"; };
 		D90876FF24299C0100B73D0E /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		D908770124299C4C00B73D0E /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		D908770324299D8D00B73D0E /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
@@ -306,6 +313,9 @@
 		D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDelegate.swift; sourceTree = "<group>"; };
 		D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystem.swift; sourceTree = "<group>"; };
 		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
+		D9F1806924338278009D7A52 /* VectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
+		D9F1806B24338F27009D7A52 /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
+		D9F1806D243394F1009D7A52 /* LobbyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyTests.swift; sourceTree = "<group>"; };
 		D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyCoordinator.swift; sourceTree = "<group>"; };
 		D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewController.swift; sourceTree = "<group>"; };
 		D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreGameLobbyViewController.xib; sourceTree = "<group>"; };
@@ -332,6 +342,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				085CFA2C7C3D713DC56EB872 /* Pods_HookiesTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +361,7 @@
 			children = (
 				785B79D92423581B001D7028 /* GameKit.framework */,
 				EE378AB9F0B25C43E7E22CB7 /* Pods_Hookies.framework */,
+				84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -615,6 +627,8 @@
 			children = (
 				E4BD33A3262713B50F5A8AF8 /* Pods-Hookies.debug.xcconfig */,
 				C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */,
+				4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */,
+				D592BFC58479DAD307FE828E /* Pods-HookiesTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -685,6 +699,7 @@
 		788007372413F37500F43B71 /* HookiesTests */ = {
 			isa = PBXGroup;
 			children = (
+				D9F18066243381F3009D7A52 /* Models */,
 				788007382413F37500F43B71 /* HookiesTests.swift */,
 				7880073A2413F37500F43B71 /* Info.plist */,
 			);
@@ -845,6 +860,16 @@
 			path = Enumerations;
 			sourceTree = "<group>";
 		};
+		D9F18066243381F3009D7A52 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D9F1806924338278009D7A52 /* VectorTests.swift */,
+				D9F1806B24338F27009D7A52 /* UserTests.swift */,
+				D9F1806D243394F1009D7A52 /* LobbyTests.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		D9FF1A62241E0D5800E7965F /* PreGameLobby */ = {
 			isa = PBXGroup;
 			children = (
@@ -896,6 +921,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7880074B2413F37500F43B71 /* Build configuration list for PBXNativeTarget "HookiesTests" */;
 			buildPhases = (
+				B09D061BA6B78C08B2F78E59 /* [CP] Check Pods Manifest.lock */,
 				788007302413F37500F43B71 /* Sources */,
 				788007312413F37500F43B71 /* Frameworks */,
 				788007322413F37500F43B71 /* Resources */,
@@ -1084,6 +1110,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Hookies/Pods-Hookies-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B09D061BA6B78C08B2F78E59 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HookiesTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1219,6 +1267,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
+				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
+				D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */,
 				788007392413F37500F43B71 /* HookiesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1422,6 +1473,7 @@
 		};
 		7880074C2413F37500F43B71 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1444,6 +1496,7 @@
 		};
 		7880074D2413F37500F43B71 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D592BFC58479DAD307FE828E /* Pods-HookiesTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
