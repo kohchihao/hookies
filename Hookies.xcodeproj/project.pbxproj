@@ -36,6 +36,8 @@
 		1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* AuthViewController.xib */; };
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
+		11280F4224340BA6004CFAC8 /* PlayerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11280F4124340BA6004CFAC8 /* PlayerData.swift */; };
+		11280F442434203A004CFAC8 /* FinishLineEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11280F432434203A004CFAC8 /* FinishLineEventData.swift */; };
 		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
 		1137270A242504BC00AB4B79 /* LobbyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11372709242504BC00AB4B79 /* LobbyState.swift */; };
 		1137270C242517AF00AB4B79 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1137270B242517AF00AB4B79 /* GameState.swift */; };
@@ -194,6 +196,8 @@
 		1127C585241606CD00A78AA0 /* AuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
+		11280F4124340BA6004CFAC8 /* PlayerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerData.swift; sourceTree = "<group>"; };
+		11280F432434203A004CFAC8 /* FinishLineEventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishLineEventData.swift; sourceTree = "<group>"; };
 		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
 		11372709242504BC00AB4B79 /* LobbyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyState.swift; sourceTree = "<group>"; };
 		1137270B242517AF00AB4B79 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
@@ -556,6 +560,8 @@
 				119A3E47242C9C080064B034 /* UserConnectionState.swift */,
 				119A3E49242CD6970064B034 /* PowerupActionData.swift */,
 				119A3E4B242CD6A10064B034 /* HookActionData.swift */,
+				11280F4124340BA6004CFAC8 /* PlayerData.swift */,
+				11280F432434203A004CFAC8 /* FinishLineEventData.swift */,
 			);
 			path = SocketModels;
 			sourceTree = "<group>";
@@ -714,7 +720,6 @@
 				D908770F2429A87500B73D0E /* BoltEntity.swift */,
 				D90877112429A88200B73D0E /* FinishingLineEntity.swift */,
 				D90877212429AF2E00B73D0E /* PlayerEntity.swift */,
-				D90877232429B03B00B73D0E /* CollectableEntity.swift */,
 				2B8476BC24331AD000882F30 /* CannonEntity.swift */,
 			);
 			path = Entity;
@@ -1122,6 +1127,7 @@
 				118A4A7724248876005B7188 /* Lobby+FirestoreModel.swift in Sources */,
 				2B6D6970241CC9390057F1B5 /* Player.swift in Sources */,
 				117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */,
+				11280F4224340BA6004CFAC8 /* PlayerData.swift in Sources */,
 				118A4A7124248641005B7188 /* FirestoreDataModel.swift in Sources */,
 				D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */,
 				110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */,
@@ -1169,6 +1175,7 @@
 				D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */,
 				785B79EC242527C5001D7028 /* RandomIDGenerator.swift in Sources */,
 				D908770624299DC200B73D0E /* GameEngine.swift in Sources */,
+				11280F442434203A004CFAC8 /* FinishLineEventData.swift in Sources */,
 				110B3CE7241F45D900840C4E /* GameplayStore.swift in Sources */,
 				D908770424299D8D00B73D0E /* System.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,

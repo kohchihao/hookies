@@ -9,43 +9,29 @@
 import Foundation
 import SocketIO
 
-struct HookActionData: SocketData, Encoder {
-    var encoding: [String: Any] {
-        return defaultEncoding()
-    }
-
-    let playerId: String
-    let position: CGPoint
-    var velocity: CGVector?
+class HookActionData: SocketData, Encoder {
     let actionType: HookActionType
+    let playerData: PlayerData
 
-    init(player: Player, type: HookActionType) {
-        self.playerId = player.id
-        self.position = player.node.position
-        self.velocity = player.node.physicsBody?.velocity
-        self.actionType = type
+    var encoding: [String: Any] {
+        var defaultEncoding: [String: Any] = ["actionType": actionType.rawValue]
+        defaultEncoding.merge(playerData.encoding) { _, new in new }
+        return defaultEncoding
     }
 
     init(playerId: String, position: CGPoint, velocity: CGVector?, type: HookActionType) {
-        self.playerId = playerId
-        self.position = position
-        self.velocity = velocity
         self.actionType = type
+        self.playerData = PlayerData(playerId: playerId, position: position, velocity: velocity)
     }
 
     init?(data: DictionaryModel) {
         do {
-            self.playerId = try data.value(forKey: "playerId")
-            guard let actionType = HookActionType(rawValue: try data.value(forKey: "actionType")) else {
+            guard let actionType = HookActionType(rawValue: try data.value(forKey: "actionType")),
+                let playerData = PlayerData(data: data) else {
                 return nil
             }
             self.actionType = actionType
-            self.position = CGPoint(x: try data.value(forKey: "positionX") as Double,
-                                    y: try data.value(forKey: "positionY") as Double)
-            if let velocityX: Double = data.optionalValue(forKey: "velocityX"),
-                let velocityY: Double = data.optionalValue(forKey: "velocityY") {
-                    self.velocity = CGVector(dx: velocityX, dy: velocityY)
-            }
+            self.playerData = playerData
         } catch {
             return nil
         }

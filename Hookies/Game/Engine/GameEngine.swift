@@ -240,7 +240,7 @@ class GameEngine {
 
     private func subscribeToHookAction() {
         API.shared.gameplay.subscribeToHookAction(listener: { hookActionData in
-            guard let player = self.otherPlayers[hookActionData.playerId] else {
+            guard let player = self.otherPlayers[hookActionData.playerData.playerId] else {
                 return
             }
 
