@@ -21,12 +21,19 @@ games.on('connection', socket => {
 	});
 
 	socket.on('powerupActivated', (data) => {
+		console.log("here", data);
 		socket.to(currentGameId).emit("powerupActivated", data);
 	});
 
 	socket.on('hookActionChanged', (data) => {
+		console.log("hookActionChange", data);
 		socket.to(currentGameId).emit("hookActionChanged", data);
 	});
+
+	socket.on('finishLineEventDetected', (data) => {
+		console.log(data);
+		socket.to(currentGameId).emit('finishLineEventDetected', data)
+	})
 
 	socket.on('disconnect', () => {
 		gameManager.removeUserFromGame(currentUserId, currentGameId);
