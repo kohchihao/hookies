@@ -19,7 +19,7 @@ class HookActionData: SocketData, Encoder {
         return defaultEncoding
     }
 
-    init(playerId: String, position: CGPoint, velocity: CGVector?, type: HookActionType) {
+    init(playerId: String, position: Vector, velocity: Vector?, type: HookActionType) {
         self.actionType = type
         self.playerData = PlayerData(playerId: playerId, position: position, velocity: velocity)
     }

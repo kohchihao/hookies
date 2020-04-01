@@ -45,15 +45,9 @@ extension Encoder {
             data[property.label] = stringRep.stringValue
         case let dictionary as [String: Any]:
             data[property.label] = convertDictionary(dictionary)
-        case let vector as CGPoint:
-            data[property.label + "X"] = vector.x
-            data[property.label + "Y"] = vector.y
         case let vector as Vector:
             data[property.label + "X"] = vector.x
             data[property.label + "Y"] = vector.y
-        case let vector as CGVector:
-            data[property.label + "X"] = vector.dx
-            data[property.label + "Y"] = vector.dy
         default:
             data[property.label] = property.value
         }

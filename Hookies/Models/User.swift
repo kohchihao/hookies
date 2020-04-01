@@ -9,14 +9,22 @@
 import Foundation
 
 struct User {
+    static let minNameLen = 4
+    static let maxNameLen = 15
+
     private(set) var uid: String
     private(set) var username: String
-    private(set) var email: String
 
-    init(uid: String, username: String, email: String?) {
+    init(uid: String, username: String) throws {
+        if username.count < User.minNameLen {
+            throw UserModelError.nameTooShort(minLen: User.minNameLen)
+        }
+        if username.count > User.maxNameLen {
+            throw UserModelError.nameTooLong(maxLen: User.maxNameLen)
+        }
+
         self.uid = uid
         self.username = username
-        self.email = email ?? ""
     }
 }
 

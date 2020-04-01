@@ -68,6 +68,9 @@
 		118A4A7324248663005B7188 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7224248663005B7188 /* UserStore.swift */; };
 		118A4A752424885E005B7188 /* LobbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A742424885E005B7188 /* LobbyStore.swift */; };
 		118A4A7724248876005B7188 /* Lobby+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */; };
+		1198221D2434E2B10035AFC1 /* UserModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198221C2434E2B10035AFC1 /* UserModelError.swift */; };
+		119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198221F2434ED770035AFC1 /* DecoderModelTests.swift */; };
+		119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119822212434F26C0035AFC1 /* EncoderModelTests.swift */; };
 		119A3E3C242C72C70064B034 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119A3E3B242C72C70064B034 /* Config.swift */; };
 		119A3E3E242C73230064B034 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119A3E3D242C73230064B034 /* Constants.swift */; };
 		119A3E42242C7D9E0064B034 /* User+SocketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119A3E41242C7D9E0064B034 /* User+SocketData.swift */; };
@@ -231,6 +234,9 @@
 		118A4A7224248663005B7188 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		118A4A742424885E005B7188 /* LobbyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyStore.swift; sourceTree = "<group>"; };
 		118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lobby+FirestoreModel.swift"; sourceTree = "<group>"; };
+		1198221C2434E2B10035AFC1 /* UserModelError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModelError.swift; sourceTree = "<group>"; };
+		1198221F2434ED770035AFC1 /* DecoderModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderModelTests.swift; sourceTree = "<group>"; };
+		119822212434F26C0035AFC1 /* EncoderModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncoderModelTests.swift; sourceTree = "<group>"; };
 		119A3E3B242C72C70064B034 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		119A3E3D242C73230064B034 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		119A3E41242C7D9E0064B034 /* User+SocketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+SocketData.swift"; sourceTree = "<group>"; };
@@ -504,6 +510,7 @@
 		1127C5832415FFAA00A78AA0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1198221B2434E2950035AFC1 /* Exceptions */,
 				110B3CF22420756600840C4E /* Powerups */,
 				119C540F24164AFE00F27D87 /* User.swift */,
 				110B3CDC241F3CD200840C4E /* Gameplay.swift */,
@@ -554,6 +561,31 @@
 				1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */,
 			);
 			path = UILabel;
+			sourceTree = "<group>";
+		};
+		119822172434D8A20035AFC1 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				119822182434D8A80035AFC1 /* API */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		119822182434D8A80035AFC1 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				1198221F2434ED770035AFC1 /* DecoderModelTests.swift */,
+				119822212434F26C0035AFC1 /* EncoderModelTests.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		1198221B2434E2950035AFC1 /* Exceptions */ = {
+			isa = PBXGroup;
+			children = (
+				1198221C2434E2B10035AFC1 /* UserModelError.swift */,
+			);
+			path = Exceptions;
 			sourceTree = "<group>";
 		};
 		119A3E3A242C72B90064B034 /* Config */ = {
@@ -699,6 +731,7 @@
 		788007372413F37500F43B71 /* HookiesTests */ = {
 			isa = PBXGroup;
 			children = (
+				119822172434D8A20035AFC1 /* Shared */,
 				D9F18066243381F3009D7A52 /* Models */,
 				788007382413F37500F43B71 /* HookiesTests.swift */,
 				7880073A2413F37500F43B71 /* Info.plist */,
@@ -1164,6 +1197,7 @@
 				119C5423241691EF00F27D87 /* Query.swift in Sources */,
 				1137270A242504BC00AB4B79 /* LobbyState.swift in Sources */,
 				D90877182429AB3600B73D0E /* NonPhysicsTranslateComponent.swift in Sources */,
+				1198221D2434E2B10035AFC1 /* UserModelError.swift in Sources */,
 				D908770024299C0100B73D0E /* Entity.swift in Sources */,
 				11593D6B24319BA300462BE6 /* PlayerHookPowerupEntity.swift in Sources */,
 				D90877122429A88200B73D0E /* FinishingLineEntity.swift in Sources */,
@@ -1268,8 +1302,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
+				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
 				D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */,
+				119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */,
 				788007392413F37500F43B71 /* HookiesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

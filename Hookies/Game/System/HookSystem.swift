@@ -182,8 +182,8 @@ extension HookSystem {
 
         let hookActionData = HookActionData(
             playerId: playerId,
-            position: sprite.node.position,
-            velocity: sprite.node.physicsBody?.velocity,
+            position: Vector(point: sprite.node.position),
+            velocity: Vector(vector: sprite.node.physicsBody?.velocity),
             type: type
         )
 
