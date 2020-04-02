@@ -111,9 +111,11 @@ class SocialViewController: UIViewController {
             return
         }
         guard !toUserId.isEmpty else {
+            print("user Id field cannot be empty")
             return
         }
         guard let fromUserId = API.shared.user.currentUser?.uid else {
+            print("user is not logged in")
             return
         }
         API.shared.user.get(withUid: toUserId, completion: { user, error in
@@ -122,22 +124,60 @@ class SocialViewController: UIViewController {
                 return
             }
             guard user != nil else {
+                print("Recipient of request not found")
                 return
             }
             let request = Request(fromUserId: fromUserId, toUserId: toUserId)
-            API.shared.request.save(request: request)
-            self.viewModel.social.addRequest(requestId: request.requestId)
-            self.saveSocial(social: self.viewModel.social)
             API.shared.social.get(userId: toUserId, completion: { social, error in
                 guard error == nil else {
                     print(error.debugDescription)
                     return
                 }
                 guard var social = social else {
+                    print("Recipient of request does not have social")
                     return
                 }
+                API.shared.request.save(request: request)
+                self.viewModel.social.addRequest(requestId: request.requestId)
+                self.saveSocial(social: self.viewModel.social)
                 social.addRequest(requestId: request.requestId)
                 self.saveSocial(social: social)
+            })
+        })
+    }
+
+    func acceptRequest(requestId: String) {
+        guard let currentUser = API.shared.user.currentUser else {
+            return
+        }
+        API.shared.request.get(requestId: requestId, completion: { request, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard let request = request else {
+                print("request not found")
+                return
+            }
+            guard request.fromUserId != currentUser.uid && request.toUserId == currentUser.uid else {
+                print("request is invalid")
+                return
+            }
+            API.shared.social.get(userId: request.fromUserId, completion: { social, error in
+                guard error == nil else {
+                    print(error.debugDescription)
+                    return
+                }
+                guard var social = social else {
+                    print("Sender of request not found")
+                    return
+                }
+                social.addFriend(userId: request.toUserId)
+                social.removeRequest(requestId: requestId)
+                self.saveSocial(social: social)
+                self.viewModel.social.addFriend(userId: request.fromUserId)
+                self.viewModel.social.removeRequest(requestId: requestId)
+                self.saveSocial(social: self.viewModel.social)
             })
         })
     }
@@ -190,7 +230,7 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
         case self.socialTableView:
             print(self.viewModel.social.friends[indexPath.row])
         case self.requestTableView:
-            print(self.viewModel.social.requests[indexPath.row])
+            acceptRequest(requestId: self.viewModel.social.requests[indexPath.row])
         case self.inviteTableView:
             print(self.viewModel.social.invites[indexPath.row])
         default:

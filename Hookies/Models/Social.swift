@@ -26,6 +26,18 @@ struct Social {
     }
 
     mutating func addRequest(requestId: String) {
-        self.requests.append(requestId)
+        if !self.requests.contains(requestId) {
+            self.requests.append(requestId)
+        }
+    }
+
+    mutating func removeRequest(requestId: String) {
+        self.requests = self.requests.filter({ $0 != requestId })
+    }
+
+    mutating func addFriend(userId: String) {
+        if !self.friends.contains(userId) {
+            self.friends.append(userId)
+        }
     }
 }
