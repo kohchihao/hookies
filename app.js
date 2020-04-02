@@ -30,9 +30,9 @@ games.on('connection', socket => {
 		socket.to(currentGameId).emit("hookActionChanged", data);
 	});
 
-	socket.on('finishLineEventDetected', (data) => {
+	socket.on('genericPlayerEventDetected', (data) => {
 		console.log(data);
-		socket.to(currentGameId).emit('finishLineEventDetected', data)
+		socket.to(currentGameId).emit('genericPlayerEventDetected', data)
 	})
 
 	socket.on('disconnect', () => {
