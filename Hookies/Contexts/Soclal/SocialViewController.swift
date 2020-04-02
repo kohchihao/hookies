@@ -118,6 +118,27 @@ class SocialViewController: UIViewController {
             print("user is not logged in")
             return
         }
+        guard !self.viewModel.social.friends.contains(toUserId) else {
+            print("Recipient is already in friend list")
+            return
+        }
+        sendRequest(fromUserId: fromUserId, toUserId: toUserId)
+    }
+
+    func checkUserExists(toUserId, completion: @escaping Bool -> Void) {
+        API.shared.user.get(withUid: toUserId, completion: { user, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return completion(false)
+            }
+            guard user != nil else {
+                print("Recipient of request not found")
+                return completion(true)
+            }
+        })
+    }
+
+    func sendRequest(fromUserId: String, toUserId: String) {
         API.shared.user.get(withUid: toUserId, completion: { user, error in
             guard error == nil else {
                 print(error.debugDescription)
@@ -137,13 +158,55 @@ class SocialViewController: UIViewController {
                     print("Recipient of request does not have social")
                     return
                 }
-                API.shared.request.save(request: request)
-                self.viewModel.social.addRequest(requestId: request.requestId)
-                self.saveSocial(social: self.viewModel.social)
-                social.addRequest(requestId: request.requestId)
-                self.saveSocial(social: social)
+                self.getRequests(requestIds: self.viewModel.social.requests, completion: { requests in
+                    guard !requests.map({ $0.toUserId }).contains(toUserId) else {
+                        print("request already exists")
+                        return
+                    }
+                    guard !requests.map({ $0.fromUserId }).contains(toUserId) else {
+                        print("request already exists")
+                        return
+                    }
+                    self.getRequests(requestIds: social.requests, completion: { recipientRequests in
+                        guard !recipientRequests.map({ $0.fromUserId }).contains(fromUserId) else {
+                            print("request already exists")
+                            return
+                        }
+                        guard !recipientRequests.map({ $0.toUserId }).contains(fromUserId) else {
+                            print("request already exists")
+                            return
+                        }
+                        API.shared.request.save(request: request)
+                        self.viewModel.social.addRequest(requestId: request.requestId)
+                        self.saveSocial(social: self.viewModel.social)
+                        social.addRequest(requestId: request.requestId)
+                        self.saveSocial(social: social)
+                    })
+                })
             })
         })
+    }
+
+    func getRequests(requestIds: [String], completion: @escaping ([Request]) -> Void) {
+        var requests: [Request] = []
+        let dispatch = DispatchGroup()
+        for requestId in requestIds {
+            dispatch.enter()
+            API.shared.request.get(requestId: requestId, completion: { request, error in
+                guard error == nil else {
+                    print(error.debugDescription)
+                    return
+                }
+                guard let request = request else {
+                    return
+                }
+                requests.append(request)
+                dispatch.leave()
+            })
+        }
+        dispatch.notify(queue: DispatchQueue.main) {
+            completion(requests)
+        }
     }
 
     func acceptRequest(requestId: String) {
