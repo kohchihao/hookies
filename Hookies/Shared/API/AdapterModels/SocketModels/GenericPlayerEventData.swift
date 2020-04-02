@@ -13,7 +13,9 @@ struct GenericPlayerEventData: SocketData, Encoder {
     let type: GenericPlayerEvent
 
     var encoding: [String: Any] {
-        return playerData.encoding
+        var defaultEncoding: [String: Any] = ["type": type.rawValue]
+        defaultEncoding.merge(playerData.encoding) { _, new in new }
+        return defaultEncoding
     }
 
     init(playerId: String, position: Vector, velocity: Vector?, type: GenericPlayerEvent) {
