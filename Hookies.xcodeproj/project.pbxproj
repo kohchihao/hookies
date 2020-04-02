@@ -145,6 +145,7 @@
 		D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */; };
 		D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */; };
 		D9BC4AAF24359D4E00BD35DF /* SpriteSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */; };
+		D9BC4AB12436332600BD35DF /* HealthSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC4AB02436332600BD35DF /* HealthSystem.swift */; };
 		D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */; };
 		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
 		D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806924338278009D7A52 /* VectorTests.swift */; };
@@ -325,6 +326,7 @@
 		D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDelegate.swift; sourceTree = "<group>"; };
 		D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloatingLandMap.sks; sourceTree = "<group>"; };
 		D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystemTests.swift; sourceTree = "<group>"; };
+		D9BC4AB02436332600BD35DF /* HealthSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSystem.swift; sourceTree = "<group>"; };
 		D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystem.swift; sourceTree = "<group>"; };
 		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
 		D9F1806924338278009D7A52 /* VectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
@@ -824,6 +826,7 @@
 				11593D832432C7EE00462BE6 /* CollectableSystem.swift */,
 				11593D8724330A4B00462BE6 /* PowerupEffectSystem.swift */,
 				2B8476BA2433170F00882F30 /* CannonSystem.swift */,
+				D9BC4AB02436332600BD35DF /* HealthSystem.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1214,6 +1217,7 @@
 				116AD648242DB7CD0070F00B /* Encoder.swift in Sources */,
 				116AD64A242DBA510070F00B /* Vector.swift in Sources */,
 				110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */,
+				D9BC4AB12436332600BD35DF /* HealthSystem.swift in Sources */,
 				785B79E924249894001D7028 /* CostumeType.swift in Sources */,
 				11593D66243177F200462BE6 /* PowerupComponent.swift in Sources */,
 				119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */,
