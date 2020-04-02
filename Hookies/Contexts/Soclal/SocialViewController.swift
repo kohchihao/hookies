@@ -39,14 +39,15 @@ class SocialViewController: UIViewController {
         super.viewDidLoad()
         socialTableView.dataSource = self
         socialTableView.delegate = self
-        
-       let friendTableViewCell = UINib(nibName: "FriendTableViewCell", bundle: nil)
+        let friendTableViewCell = UINib(nibName: "FriendTableViewCell", bundle: nil)
         socialTableView.register(friendTableViewCell, forCellReuseIdentifier: "FriendTableViewCell")
         socialTableView.allowsSelection = false
 
         requestTableView.dataSource = self
         requestTableView.delegate = self
-        requestTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LabelCell")
+        let requestTableViewCell = UINib(nibName: "RequestTableViewCell", bundle: nil)
+        requestTableView.register(requestTableViewCell, forCellReuseIdentifier: "RequestTableViewCell")
+        requestTableView.allowsSelection = false
 
         inviteTableView.dataSource = self
         inviteTableView.delegate = self
@@ -271,11 +272,43 @@ class SocialViewController: UIViewController {
                 self.viewModel.social.addFriend(userId: request.fromUserId)
                 self.viewModel.social.removeRequest(requestId: requestId)
                 self.saveSocial(social: self.viewModel.social)
+                API.shared.request.delete(request: request)
             })
         })
     }
 
-    func getRecipientName(requestId: String, cell: UITableViewCell) {
+    func rejectRequest(requestId: String) {
+        guard let currentUser = API.shared.user.currentUser else {
+            return
+        }
+        API.shared.request.get(requestId: requestId, completion: { request, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard let request = request else {
+                print("request not found")
+                return
+            }
+            API.shared.social.get(userId: request.fromUserId, completion: { social, error in
+                guard error == nil else {
+                    print(error.debugDescription)
+                    return
+                }
+                guard var social = social else {
+                    print("Sender of request not found")
+                    return
+                }
+                social.removeRequest(requestId: requestId)
+                self.saveSocial(social: social)
+                self.viewModel.social.removeRequest(requestId: requestId)
+                self.saveSocial(social: self.viewModel.social)
+                API.shared.request.delete(request: request)
+            })
+        })
+    }
+
+    func getRecipientName(requestId: String, cell: RequestTableViewCell) {
         API.shared.request.get(requestId: requestId, completion: { request, error in
             guard error == nil else {
                 print(error.debugDescription)
@@ -284,6 +317,7 @@ class SocialViewController: UIViewController {
             guard let request = request else {
                 return
             }
+            cell.request = request
             self.getUsername(userId: request.toUserId, cell: cell)
         })
     }
@@ -344,7 +378,10 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
             getUsername(userId: self.viewModel.social.friends[indexPath.row], cell: cell)
             return cell
         case self.requestTableView:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "RequestTableViewCell", for: indexPath) as? RequestTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.delegate = self
             getRecipientName(requestId: self.viewModel.social.requests[indexPath.row], cell: cell)
             return cell
         case self.inviteTableView:
@@ -357,19 +394,19 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch tableView {
-        case self.socialTableView:
-            print(self.viewModel.social.friends[indexPath.row])
-        case self.requestTableView:
-            acceptRequest(requestId: self.viewModel.social.requests[indexPath.row])
-        case self.inviteTableView:
-            print(self.viewModel.social.invites[indexPath.row])
-        default:
-            break
-        }
-        self.dismiss(animated: false, completion: nil)
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        switch tableView {
+//        case self.socialTableView:
+//            print(self.viewModel.social.friends[indexPath.row])
+//        case self.requestTableView:
+//            acceptRequest(requestId: self.viewModel.social.requests[indexPath.row])
+//        case self.inviteTableView:
+//            print(self.viewModel.social.invites[indexPath.row])
+//        default:
+//            break
+//        }
+//        self.dismiss(animated: false, completion: nil)
+//    }
 }
 
 extension SocialViewController: FriendTableViewCellDelegate {
@@ -384,5 +421,15 @@ extension SocialViewController: FriendTableViewCellDelegate {
             }
             self.removeFriend(user: user)
         })
+    }
+}
+
+extension SocialViewController: RequestTableViewCellDelegate {
+    func acceptButtonPressed(requestId: String) {
+        acceptRequest(requestId: requestId)
+    }
+
+    func rejectButtonPressed(requestId: String) {
+        rejectRequest(requestId: requestId)
     }
 }

@@ -27,7 +27,7 @@ class FriendTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    @IBAction private func deleteButtonPressed(_ sender: RoundButton) {
+    @IBAction private func deleteButtonPressed(_ sender: UIButton) {
         guard let username = self.textLabel?.text else {
             return
         }
