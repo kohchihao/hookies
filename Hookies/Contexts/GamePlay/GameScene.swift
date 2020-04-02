@@ -152,6 +152,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bolts: boltsNode
         )
 
+        gameEngine?.delegate = self
+
         self.cannon = cannonNode
         self.finishingLine = finishingLineNode
     }
@@ -239,7 +241,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enableGameButtons()
         countdownLabel?.removeFromParent()
         viewController.hidePowerSlider()
-        launchPlayer()
+        launchCurrentPlayer()
     }
 
     private func getLaunchVelocity() -> CGVector {
@@ -251,8 +253,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: - Launch player
 
-    private func launchPlayer() {
-        // TODO: Game Engine
+    private func launchCurrentPlayer() {
+        let velocity = getLaunchVelocity()
+        gameEngine?.launchCurrentPlayer(with: velocity)
+
+        cannon?.removeFromParent()
     }
 
     // MARK: - Game Buttons
@@ -299,5 +304,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private func handleJumpButtonTouchEnd() {
         jumpButton?.state = .ButtonNodeStateHidden
+    }
+}
+
+// MARK: - GameEngineDelegate
+
+extension GameScene: GameEngineDelegate {
+    func didStartCountdown() {
+        startCountdown()
     }
 }

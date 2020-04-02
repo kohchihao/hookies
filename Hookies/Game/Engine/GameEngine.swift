@@ -13,6 +13,8 @@ class GameEngine {
     private var currentPlayerId: String?
     private var totalNumberOfPlayers = 0
 
+    var delegate: GameEngineDelegate?
+
     // MARK: - System
 
     private let spriteSystem = SpriteSystem()
@@ -72,6 +74,8 @@ class GameEngine {
         deadLockSystem = DeadlockSystem(sprite: sprite)
         finishingLineSystem.add(player: sprite)
 
+        startCountdown()
+
         return sprite.node
     }
 
@@ -91,6 +95,20 @@ class GameEngine {
         finishingLineSystem.add(player: sprite)
 
         return sprite.node
+    }
+
+    func launchCurrentPlayer(with velocity: CGVector) {
+        guard let currentPlayer = currentPlayer else {
+            return
+        }
+
+        guard let sprite = getSpriteComponent(from: currentPlayer) else {
+            return
+        }
+
+        cannonSystem.launch(player: sprite, with: velocity)
+
+        // TODO: Push state
     }
 
     // MARK: - Bolts
@@ -274,11 +292,14 @@ class GameEngine {
     }
 
     private func startCountdown() {
+        if currentPlayer == nil {
+            return
+        }
+
         let isAllPlayerInGame = totalNumberOfPlayers != 0 && totalNumberOfPlayers == otherPlayers.count + 1
 
         if isAllPlayerInGame {
-            // TOOD: Delegate to Game Scene
-            print("start game")
+            delegate?.didStartCountdown()
         }
     }
 

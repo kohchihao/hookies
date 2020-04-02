@@ -78,6 +78,7 @@
 		119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5420241691DF00F27D87 /* DocumentReference.swift */; };
 		119C5423241691EF00F27D87 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5422241691EF00F27D87 /* Query.swift */; };
 		119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54282418768A00F27D87 /* User+FirestoreModel.swift */; };
+		2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */; };
 		2B6D6970241CC9390057F1B5 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D696F241CC9390057F1B5 /* Player.swift */; };
 		2B6D6972241D0EB40057F1B5 /* Cannon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D6971241D0EB40057F1B5 /* Cannon.swift */; };
 		2B6D6974241D153A0057F1B5 /* SpriteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D6973241D153A0057F1B5 /* SpriteType.swift */; };
@@ -236,6 +237,7 @@
 		119C5420241691DF00F27D87 /* DocumentReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
 		119C5422241691EF00F27D87 /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		119C54282418768A00F27D87 /* User+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+FirestoreModel.swift"; sourceTree = "<group>"; };
+		2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngineDelegate.swift; sourceTree = "<group>"; };
 		2B6D696F241CC9390057F1B5 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2B6D6971241D0EB40057F1B5 /* Cannon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cannon.swift; sourceTree = "<group>"; };
 		2B6D6973241D153A0057F1B5 /* SpriteType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteType.swift; sourceTree = "<group>"; };
@@ -714,7 +716,6 @@
 				D908770F2429A87500B73D0E /* BoltEntity.swift */,
 				D90877112429A88200B73D0E /* FinishingLineEntity.swift */,
 				D90877212429AF2E00B73D0E /* PlayerEntity.swift */,
-				D90877232429B03B00B73D0E /* CollectableEntity.swift */,
 				2B8476BC24331AD000882F30 /* CannonEntity.swift */,
 			);
 			path = Entity;
@@ -760,6 +761,7 @@
 			isa = PBXGroup;
 			children = (
 				D908770524299DC200B73D0E /* GameEngine.swift */,
+				2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -1116,6 +1118,7 @@
 				D90877122429A88200B73D0E /* FinishingLineEntity.swift in Sources */,
 				110B3CF124206C4A00840C4E /* PlayerGameState.swift in Sources */,
 				119A3E3C242C72C70064B034 /* Config.swift in Sources */,
+				2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */,
 				1127C5822415FBBD00A78AA0 /* AuthCoordinator.swift in Sources */,
 				2B8476BB2433170F00882F30 /* CannonSystem.swift in Sources */,
 				2B6D6974241D153A0057F1B5 /* SpriteType.swift in Sources */,
