@@ -27,28 +27,8 @@ class CannonSystem: System, CannonSystemProtocol {
 
 // MARK: - Broadcast Update
 
-extension CannonSystem {
+extension CannonSystem: GenericPlayerEventBroadcast {
     func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
-        guard let genericPlayerEventData = createPlayerEventData(from: playerId, and: player) else {
-            return
-        }
-
-        API.shared.gameplay.boardcastGenericPlayerEvent(playerEvent: genericPlayerEventData)
-    }
-
-    private func createPlayerEventData(from playerId: String, and player: PlayerEntity) -> GenericPlayerEventData? {
-        guard let sprite = player.getSpriteComponent() else {
-            return nil
-        }
-
-        let position = Vector(point: sprite.node.position)
-        let velocity = Vector(vector: sprite.node.physicsBody?.velocity)
-
-        return GenericPlayerEventData(
-            playerId: playerId,
-            position: position,
-            velocity: velocity,
-            type: .shotFromCannon
-        )
+        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .shotFromCannon)
     }
 }

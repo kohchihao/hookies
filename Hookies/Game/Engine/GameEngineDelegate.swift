@@ -11,4 +11,5 @@ protocol GameEngineDelegate: AnyObject {
     func playerDidHook(to hook: HookDelegateModel)
     func playerDidUnhook(from hook: HookDelegateModel)
     func playerIsStuck()
+    func playerHasFinishRace()
 }

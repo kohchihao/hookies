@@ -10,31 +10,42 @@ import SpriteKit
 
 protocol FinishingLineSystemProtocol {
     func stop(player: SpriteComponent) throws
+    func bringPlayersToStop()
 }
 
 enum FinishingLineSystemError: Error {
     case spriteDoesNotExist
 }
 
+enum PlayerState {
+    case moving
+    case stopping
+    case stopped
+}
+
 class FinishingLineSystem: System, FinishingLineSystemProtocol {
     private let finishingLine: SpriteComponent
     private var players: Set<SpriteComponent>
+    private var playersState: [SpriteComponent: PlayerState]
     private var finishedPlayers: Int
 
     init(finishingLine: SpriteComponent, players: Set<SpriteComponent>) {
         self.finishingLine = finishingLine
         self.players = players
         self.finishedPlayers = 0
+        self.playersState = [SpriteComponent: PlayerState]()
     }
 
     init(finishingLine: SpriteComponent) {
         self.finishingLine = finishingLine
         self.players = Set<SpriteComponent>()
         self.finishedPlayers = 0
+        self.playersState = [SpriteComponent: PlayerState]()
     }
 
     func add(player: SpriteComponent) {
         players.insert(player)
+        playersState[player] = .moving
     }
 
     func stop(player: SpriteComponent) throws {
@@ -42,37 +53,53 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
             throw FinishingLineSystemError.spriteDoesNotExist
         }
 
-        bringToStop(sprite: systemPlayer)
+        playersState[systemPlayer] = .stopping
         finishedPlayers += 1
     }
 
-    private func bringToStop(sprite: SpriteComponent) {
-        guard let velocity = sprite.node.physicsBody?.velocity else {
-            return
+    func bringPlayersToStop() {
+        for (sprite, state) in playersState where state == .stopping {
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+
+            let hasPlayerStop = velocity.dx <= 0.5 && velocity.dy <= 0.5
+
+            if !hasPlayerStop {
+                let oppositeForce = CGVector(dx: -velocity.dx, dy: -velocity.dy)
+                sprite.node.physicsBody?.applyForce(oppositeForce)
+            } else {
+                sprite.node.physicsBody?.velocity = CGVector.zero
+                sprite.node.physicsBody?.restitution = 0
+
+                playersState[sprite] = .stopped
+            }
+        }
+    }
+
+    func hasPlayerFinish(player: SpriteComponent) -> Bool {
+        guard let state = playersState[player] else {
+            return false
         }
 
-        let hasPlayerStop = velocity.dx <= 0.5 && velocity.dy <= 0.5
+        return state != .moving
+    }
 
-        if !hasPlayerStop {
-            let oppositeForce = CGVector(dx: -velocity.dx, dy: -velocity.dy)
-            sprite.node.physicsBody?.applyForce(oppositeForce)
-            bringToStop(sprite: sprite)
-        } else {
-            sprite.node.physicsBody?.velocity = CGVector.zero
-            sprite.node.physicsBody?.restitution = 0
+    func hasAllPlayersReachedFinishingLine() -> Bool {
+        let isAllPlayersFinished = !players.isEmpty && players.count == finishedPlayers
+
+        if isAllPlayersFinished {
+            return true
         }
+
+        return false
     }
 }
 
-extension FinishingLineSystem {
-    func broadcastEndGameState(gameId: String, playersId: [String]) {
-        let isAllPlayersFinished = players.count == finishedPlayers
+// MARK: - Broadcast Update
 
-        if isAllPlayersFinished {
-            let gameplayEnd = Gameplay(gameId: gameId, gameState: .finish, playersId: playersId)
-
-            API.shared.gameplay.saveGameState(gameplay: gameplayEnd)
-            API.shared.gameplay.closeGameSession()
-        }
+extension FinishingLineSystem: GenericPlayerEventBroadcast {
+    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
+        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .reachedFinishedLine)
     }
 }

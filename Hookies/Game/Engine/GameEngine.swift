@@ -140,11 +140,26 @@ class GameEngine {
         deadLockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
     }
 
+    // MARK: - Current Player Finsh Race
+
+    func currentPlayerFinishRace() {
+        guard let currentPlayerId = currentPlayerId,
+            let currentPlayer = currentPlayer else {
+            return
+        }
+
+        playerFinishRace(player: currentPlayer)
+        delegate?.playerHasFinishRace()
+        finishingLineSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+    }
+
     // MARK: - Update
 
     func update(time: TimeInterval) {
         startCountdown()
         checkDeadlock()
+        finishingLineSystem.bringPlayersToStop()
+        checkGameEnd()
     }
 
     // MARK: - Bolts
@@ -278,6 +293,22 @@ class GameEngine {
         }
     }
 
+    private func playerFinishRace(player: PlayerEntity) {
+        guard let sprite = player.getSpriteComponent() else {
+            return
+        }
+
+        do {
+            try finishingLineSystem.stop(player: sprite)
+        } catch FinishingLineSystemError.spriteDoesNotExist {
+            print(FinishingLineSystemError.spriteDoesNotExist)
+            return
+        } catch {
+            print("Unexpected error: \(error)")
+            return
+        }
+    }
+
     private func createHookDelegateModel(from hook: HookComponent) -> HookDelegateModel? {
         guard let anchor = hook.anchor,
             let line = hook.line,
@@ -302,12 +333,18 @@ class GameEngine {
             return
         }
 
-        if gameState == .start && deadlockSystem.checkIfStuck() {
+        guard let currentPlayerSprite = currentPlayer?.getSpriteComponent() else {
+            return
+        }
+
+        let hasPlayerFinishRace = finishingLineSystem.hasPlayerFinish(player: currentPlayerSprite)
+
+        if gameState == .start && !hasPlayerFinishRace && deadlockSystem.checkIfStuck() {
             delegate?.playerIsStuck()
         }
     }
 
-    // MARK: - Game Setup
+    // MARK: - General Game
 
     private func setupTotalPlayers() {
         API.shared.lobby.get(lobbyId: self.gameId, completion: { lobby, error in
@@ -329,6 +366,24 @@ class GameEngine {
                 self.setupPlayer(of: otherPlayerId)
             }
         })
+    }
+
+    private func checkGameEnd() {
+        guard let finishingLineSystem = finishingLineSystem else {
+            return
+        }
+
+        guard gameState != .finish else {
+            return
+        }
+
+        if finishingLineSystem.hasAllPlayersReachedFinishingLine() {
+            API.shared.gameplay.closeGameSession()
+            gameState = .finish
+
+            // TODO: Transition to Post Game Lobby
+            print("Transition to post game lobby")
+        }
     }
 
     // MARK: - General Game Methods

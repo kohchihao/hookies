@@ -70,7 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
-            // TODO: Game Engine
+            gameEngine?.currentPlayerFinishRace()
         }
     }
 
@@ -330,5 +330,9 @@ extension GameScene: GameEngineDelegate {
 
     func playerIsStuck() {
         jumpButton?.state = .ButtonNodeStateActive
+    }
+
+    func playerHasFinishRace() {
+        disableGameButtons()
     }
 }

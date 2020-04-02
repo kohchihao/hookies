@@ -88,6 +88,7 @@
 		119C54292418768A00F27D87 /* User+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C54282418768A00F27D87 /* User+FirestoreModel.swift */; };
 		2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */; };
 		2B4CCD442435AC4F0086DEC6 /* HookDelegateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */; };
+		2B4CCD47243632F90086DEC6 /* GenericPlayerEventBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */; };
 		2B6D6970241CC9390057F1B5 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D696F241CC9390057F1B5 /* Player.swift */; };
 		2B6D6972241D0EB40057F1B5 /* Cannon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D6971241D0EB40057F1B5 /* Cannon.swift */; };
 		2B6D6974241D153A0057F1B5 /* SpriteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6D6973241D153A0057F1B5 /* SpriteType.swift */; };
@@ -260,6 +261,7 @@
 		119C54282418768A00F27D87 /* User+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+FirestoreModel.swift"; sourceTree = "<group>"; };
 		2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngineDelegate.swift; sourceTree = "<group>"; };
 		2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookDelegateModel.swift; sourceTree = "<group>"; };
+		2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEventBroadcast.swift; sourceTree = "<group>"; };
 		2B6D696F241CC9390057F1B5 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2B6D6971241D0EB40057F1B5 /* Cannon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cannon.swift; sourceTree = "<group>"; };
 		2B6D6973241D153A0057F1B5 /* SpriteType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteType.swift; sourceTree = "<group>"; };
@@ -684,6 +686,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		2B4CCD45243632C50086DEC6 /* Broadcast */ = {
+			isa = PBXGroup;
+			children = (
+				2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */,
+			);
+			path = Broadcast;
+			sourceTree = "<group>";
+		};
 		74506FEAC88EC4570C7397CB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -782,6 +792,7 @@
 		D90876FA24299BC700B73D0E /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				2B4CCD45243632C50086DEC6 /* Broadcast */,
 				2B4CCD422435AC1B0086DEC6 /* Model */,
 				D90876FE24299BE400B73D0E /* Engine */,
 				D90876FD24299BDD00B73D0E /* System */,
@@ -1224,6 +1235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1191BD6C24359F8500189DB8 /* GenericPlayerEventData.swift in Sources */,
+				2B4CCD47243632F90086DEC6 /* GenericPlayerEventBroadcast.swift in Sources */,
 				D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */,
 				116AD648242DB7CD0070F00B /* Encoder.swift in Sources */,
 				116AD64A242DBA510070F00B /* Vector.swift in Sources */,
