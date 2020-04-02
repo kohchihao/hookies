@@ -101,17 +101,17 @@ class GameEngine {
     }
 
     func launchCurrentPlayer(with velocity: CGVector) {
-        guard let currentPlayer = currentPlayer else {
+        guard let currentPlayerId = currentPlayerId,
+            let currentPlayer = currentPlayer else {
             return
         }
 
-        guard let sprite = getSpriteComponent(from: currentPlayer) else {
+        guard let sprite = currentPlayer.getSpriteComponent() else {
             return
         }
 
         cannonSystem.launch(player: sprite, with: velocity)
-
-        // TODO: Push state
+        cannonSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
     }
 
     func currentPlayerHookAction() {
@@ -196,7 +196,7 @@ class GameEngine {
     }
 
     private func playerHookAction(player: PlayerEntity) {
-        guard let hook = getHookComponent(from: player) else {
+        guard let hook = player.getHookComponent() else {
             return
         }
 
@@ -227,7 +227,7 @@ class GameEngine {
     }
 
     private func playerUnhookAction(player: PlayerEntity) {
-        guard let hook = getHookComponent(from: player) else {
+        guard let hook = player.getHookComponent() else {
             return
         }
 
@@ -317,7 +317,7 @@ class GameEngine {
                 return
             }
 
-            guard let initialPosition = self.getSpriteComponent(from: self.cannon)?.node.position else {
+            guard let initialPosition = self.cannon.getSpriteComponent()?.node.position else {
                 return
             }
 
@@ -363,27 +363,5 @@ class GameEngine {
             delegate?.didStartCountdown()
             gameState = .start
         }
-    }
-
-    // MARK: - General helper methods
-
-    private func getSpriteComponent(from entity: Entity) -> SpriteComponent? {
-        for component in entity.components {
-            if let sprite = component as? SpriteComponent {
-                return sprite
-            }
-        }
-
-        return nil
-    }
-
-    private func getHookComponent(from entity: Entity) -> HookComponent? {
-        for component in entity.components {
-            if let hook = component as? HookComponent {
-                return hook
-            }
-        }
-
-        return nil
     }
 }

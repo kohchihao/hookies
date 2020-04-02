@@ -16,4 +16,24 @@ extension Entity {
     func addComponent(_ component: Component) {
         components.append(component)
     }
+
+    func getSpriteComponent() -> SpriteComponent? {
+        for component in components {
+            if let sprite = component as? SpriteComponent {
+                return sprite
+            }
+        }
+
+        return nil
+    }
+
+    func getHookComponent() -> HookComponent? {
+        for component in components {
+            if let hook = component as? HookComponent {
+                return hook
+            }
+        }
+
+        return nil
+    }
 }
