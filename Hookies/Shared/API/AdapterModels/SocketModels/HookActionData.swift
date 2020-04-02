@@ -41,11 +41,3 @@ class HookActionData: SocketData, Encoder {
         return encoding
     }
 }
-
-enum HookActionType: String, CaseIterable, StringRepresentable {
-    case activate, deactivate
-
-    var stringValue: String {
-        return self.rawValue
-    }
-}
