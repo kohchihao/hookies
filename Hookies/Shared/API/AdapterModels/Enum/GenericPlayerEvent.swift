@@ -7,7 +7,7 @@
 //
 
 enum GenericPlayerEvent: String, CaseIterable, StringRepresentable {
-    case reachedFinishedLine, shotFromCannon
+    case reachedFinishedLine, shotFromCannon, jumpAction
 
     var stringValue: String {
         return self.rawValue

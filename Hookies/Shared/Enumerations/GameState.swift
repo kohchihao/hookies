@@ -10,6 +10,7 @@ import Foundation
 
 enum GameState: String, CaseIterable {
     case waiting
+    case launching
     case start
     case finish
 }

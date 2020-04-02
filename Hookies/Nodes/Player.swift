@@ -39,7 +39,7 @@ class Player {
         self.node.size = type.size
 
         self.node.physicsBody = SKPhysicsBody(rectangleOf: self.node.size)
-        self.node.physicsBody?.isDynamic = type.initialIsDynamic
+        self.node.physicsBody?.isDynamic = type.isDynamic
         self.node.physicsBody?.mass = type.mass
         self.node.physicsBody?.linearDamping = type.linearDamping
         self.node.physicsBody?.friction = type.friction
