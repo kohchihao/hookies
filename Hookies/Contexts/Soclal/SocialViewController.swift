@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol SocialViewNavigationDelegate: class {
-    
+
 }
 
 class SocialViewController: UIViewController {
@@ -22,7 +22,7 @@ class SocialViewController: UIViewController {
     @IBOutlet private var requestTableView: UITableView!
     @IBOutlet private var inviteTableView: UITableView!
     @IBOutlet private var requestTextField: UITextField!
-    
+
     init(with viewModel: SocialViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: SocialViewController.name, bundle: nil)
@@ -107,22 +107,32 @@ class SocialViewController: UIViewController {
     }
 
     @IBAction private func sendRequestButtonClicked(_ sender: UIButton) {
-        guard let toUserId = requestTextField.text else {
+        guard let username = requestTextField.text else {
             return
         }
-        guard !toUserId.isEmpty else {
-            print("user Id field cannot be empty")
+        guard !username.isEmpty else {
+            print("username field cannot be empty")
             return
         }
         guard let fromUserId = API.shared.user.currentUser?.uid else {
             print("user is not logged in")
             return
         }
-        guard !self.viewModel.social.friends.contains(toUserId) else {
-            print("Recipient is already in friend list")
-            return
-        }
-        sendRequest(fromUserId: fromUserId, toUserId: toUserId)
+        API.shared.user.get(withUsername: username, completion: { user, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard let toUserId = user?.uid else {
+                print("user does not exists")
+                return
+            }
+            guard !self.viewModel.social.friends.contains(toUserId) else {
+                print("Recipient is already in friend list")
+                return
+            }
+            self.sendRequest(fromUserId: fromUserId, toUserId: toUserId)
+        })
     }
 
     func checkRecipientExists(toUserId: String, completion: @escaping (Bool) -> Void) {
