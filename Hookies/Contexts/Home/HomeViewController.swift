@@ -15,6 +15,7 @@ protocol HomeViewNavigationDelegate: class {
     func didPressLogoutButton(in: HomeViewController) throws
     func didPressHostMatchButton(in: HomeViewController)
     func didPressJoinMatchButton(in: HomeViewController)
+    func didPressFriendButton(in: HomeViewController)
 }
 
 class HomeViewController: UIViewController {
@@ -66,5 +67,9 @@ class HomeViewController: UIViewController {
 
     @IBAction private func onJoinMatchClicked(_ sender: UIButton) {
         navigationDelegate?.didPressJoinMatchButton(in: self)
+    }
+
+    @IBAction private func onFriendButtonClicked(_ sender: UIButton) {
+        navigationDelegate?.didPressFriendButton(in: self)
     }
 }
