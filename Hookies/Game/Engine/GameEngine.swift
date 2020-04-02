@@ -13,7 +13,7 @@ class GameEngine {
     private var currentPlayerId: String?
     private var totalNumberOfPlayers = 0
 
-    var delegate: GameEngineDelegate?
+    weak var delegate: GameEngineDelegate?
 
     // MARK: - System
 
@@ -53,6 +53,8 @@ class GameEngine {
         let finishingLineSprite = createFinishingLineSprite(from: finishingLine)
         self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
 
+        setupTotalPlayers()
+        connectToGame()
         setupMultiplayer()
     }
 
@@ -109,6 +111,16 @@ class GameEngine {
         cannonSystem.launch(player: sprite, with: velocity)
 
         // TODO: Push state
+    }
+
+    func currentPlayerHookAction() {
+        guard let currentPlayerId = currentPlayerId,
+            let currentPlayer = currentPlayer else {
+            return
+        }
+
+        playerHookAction(player: currentPlayer)
+        hookSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .activate)
     }
 
     // MARK: - Bolts
@@ -179,6 +191,12 @@ class GameEngine {
 
         do {
             try hookSystem?.hookTo(hook: hook)
+
+            guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+                return
+            }
+
+            delegate?.didPlayerHook(hook: hookDelegateModel)
         } catch HookSystemError.hookComponentDoesNotExist {
             print(HookSystemError.hookComponentDoesNotExist)
             return
@@ -197,14 +215,29 @@ class GameEngine {
         }
     }
 
+    private func createHookDelegateModel(from hook: HookComponent) -> HookDelegateModel? {
+        guard let anchor = hook.anchor,
+            let line = hook.line,
+            let anchorLineJointPin = hook.anchorLineJointPin,
+            let playerLineJointPin = hook.parentLineJointPin
+            else {
+                return nil
+        }
+
+        return HookDelegateModel(
+            anchor: anchor,
+            line: line,
+            anchorLineJointPin: anchorLineJointPin,
+            playerLineJointPin: playerLineJointPin
+        )
+    }
+
     // MARK: - Multiplayer
 
     private func setupMultiplayer() {
-        setupTotalPlayers()
-        connectToGame()
-        subscribeToOtherPlayersState()
-        subscribeToHookAction()
-        subscribeToPowerupAction()
+//        subscribeToOtherPlayersState()
+//        subscribeToHookAction()
+//        subscribeToPowerupAction()
     }
 
     private func setupTotalPlayers() {

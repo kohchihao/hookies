@@ -50,6 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        handleCurrentPlayerTetheringToClosestBolt()
 //        handleJumpButton()
     }
 
@@ -271,15 +272,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         grapplingHookButton?.state = .ButtonNodeStateActive
     }
 
-    // MARK: - Player tethering to hook
+    // MARK: - Current player tethering to hook
 
-    private func handlePlayerTetheringToClosestBolt() {
+    private func handleCurrentPlayerTetheringToClosestBolt() {
         grapplingHookButton?.touchBeganHandler = handleGrapplingHookBtnTouchBegan
         grapplingHookButton?.touchEndHandler = handleGrapplingHookBtnTouchEnd
     }
 
     private func handleGrapplingHookBtnTouchBegan() {
-        // TODO: Game Engine
+        gameEngine?.currentPlayerHookAction()
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
@@ -312,5 +313,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 extension GameScene: GameEngineDelegate {
     func didStartCountdown() {
         startCountdown()
+    }
+
+    func didPlayerHook(hook: HookDelegateModel) {
+        addChild(hook.anchor)
+        addChild(hook.line)
+        physicsWorld.add(hook.anchorLineJointPin)
+        physicsWorld.add(hook.playerLineJointPin)
     }
 }

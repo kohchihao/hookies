@@ -6,6 +6,7 @@
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
-protocol GameEngineDelegate {
+protocol GameEngineDelegate: AnyObject {
     func didStartCountdown()
+    func didPlayerHook(hook: HookDelegateModel)
 }
