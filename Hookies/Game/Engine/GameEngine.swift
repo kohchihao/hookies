@@ -59,7 +59,7 @@ class GameEngine {
         setupMultiplayer()
     }
 
-    // MARK: - Players
+    // MARK: - Initialise Players
 
     func setCurrentPlayer(id: String, position: CGPoint, image: String) -> SKSpriteNode {
         let player = PlayerEntity()
@@ -80,23 +80,7 @@ class GameEngine {
         return sprite.node
     }
 
-    func addOtherPlayers(id: String, position: CGPoint, image: String) -> SKSpriteNode {
-        let otherPlayer = PlayerEntity()
-
-        let sprite = SpriteComponent(parent: otherPlayer)
-        let spriteType = getOtherPlayerSpriteType()
-        _ = spriteSystem.set(sprite: sprite, of: spriteType, with: image, at: position)
-        _ = spriteSystem.setPhysicsBody(to: sprite, of: spriteType, rectangleOf: sprite.node.size)
-        otherPlayer.addComponent(sprite)
-
-        addPlayerComponents(to: otherPlayer)
-
-        otherPlayers[id] = otherPlayer
-
-        finishingLineSystem.add(player: sprite)
-
-        return sprite.node
-    }
+    // MARK: - Launch Current Player
 
     func launchCurrentPlayer(with velocity: CGVector) {
         guard let currentPlayerId = currentPlayerId,
@@ -111,6 +95,14 @@ class GameEngine {
         cannonSystem.launch(player: sprite, with: velocity)
         cannonSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
     }
+
+    // MARK: - Start Game
+
+    func startGame() {
+        gameState = .start
+    }
+
+    // MARK: - Current Player Hook Action
 
     func currentPlayerHookAction() {
         guard let currentPlayerId = currentPlayerId,
@@ -132,10 +124,27 @@ class GameEngine {
         hookSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .deactivate)
     }
 
+    // MARK: - Current Player Jump Action
+
+    func currentPlayerJumpAction() {
+        guard let currentPlayerId = currentPlayerId,
+            let currentPlayer = currentPlayer else {
+            return
+        }
+
+        guard let sprite = currentPlayer.getSpriteComponent() else {
+            return
+        }
+
+        sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
+        deadLockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+    }
+
     // MARK: - Update
 
     func update(time: TimeInterval) {
         startCountdown()
+        checkDeadlock()
     }
 
     // MARK: - Bolts
@@ -184,6 +193,24 @@ class GameEngine {
     }
 
     // MARK: - Player helper methods
+
+    func addOtherPlayers(id: String, position: CGPoint, image: String) -> SKSpriteNode {
+        let otherPlayer = PlayerEntity()
+
+        let sprite = SpriteComponent(parent: otherPlayer)
+        let spriteType = getOtherPlayerSpriteType()
+        _ = spriteSystem.set(sprite: sprite, of: spriteType, with: image, at: position)
+        _ = spriteSystem.setPhysicsBody(to: sprite, of: spriteType, rectangleOf: sprite.node.size)
+        otherPlayer.addComponent(sprite)
+
+        addPlayerComponents(to: otherPlayer)
+
+        otherPlayers[id] = otherPlayer
+
+        finishingLineSystem.add(player: sprite)
+
+        return sprite.node
+    }
 
     private func addPlayerComponents(to player: PlayerEntity) {
         let hook = HookComponent(parent: player)
@@ -268,6 +295,18 @@ class GameEngine {
         )
     }
 
+    // MARK: - Deadlock Detection
+
+    private func checkDeadlock() {
+        guard let deadlockSystem = deadLockSystem else {
+            return
+        }
+
+        if gameState == .start && deadlockSystem.checkIfStuck() {
+            delegate?.playerIsStuck()
+        }
+    }
+
     // MARK: - Game Setup
 
     private func setupTotalPlayers() {
@@ -290,6 +329,25 @@ class GameEngine {
                 self.setupPlayer(of: otherPlayerId)
             }
         })
+    }
+
+    // MARK: - General Game Methods
+
+    private func startCountdown() {
+        guard currentPlayer != nil else {
+            return
+        }
+
+        if gameState != .waiting {
+            return
+        }
+
+        let isAllPlayerInGame = totalNumberOfPlayers != 0 && totalNumberOfPlayers == otherPlayers.count + 1
+
+        if isAllPlayerInGame {
+            delegate?.startCountdown()
+            gameState = .launching
+        }
     }
 
     // MARK: - Multiplayer
@@ -349,22 +407,5 @@ class GameEngine {
         API.shared.gameplay.subscribeToPowerupAction(listener: { powerupAction in
             // TODO: Add implementation
         })
-    }
-
-    private func startCountdown() {
-        guard currentPlayer != nil else {
-            return
-        }
-
-        if gameState != .waiting {
-            return
-        }
-
-        let isAllPlayerInGame = totalNumberOfPlayers != 0 && totalNumberOfPlayers == otherPlayers.count + 1
-
-        if isAllPlayerInGame {
-            delegate?.startCountdown()
-            gameState = .start
-        }
     }
 }

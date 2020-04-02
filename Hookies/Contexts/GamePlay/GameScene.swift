@@ -52,7 +52,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Called before each frame is rendered
         gameEngine?.update(time: currentTime)
         handleCurrentPlayerTetheringToClosestBolt()
-//        handleJumpButton()
+        handleJumpButton()
     }
 
     override func didFinishUpdate() {
@@ -239,6 +239,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         countdownLabel?.removeFromParent()
         viewController.hidePowerSlider()
         launchCurrentPlayer()
+        gameEngine?.startGame()
     }
 
     private func getLaunchVelocity() -> CGVector {
@@ -283,6 +284,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameEngine?.currentPlayerUnhookAction()
     }
 
+    // MARK: - Resolve deadlock
+
     private func initialiseJumpButton() {
         guard let sceneFrame = self.scene?.frame else {
             return
@@ -296,7 +299,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleJumpButtonTouched() {
-        currentPlayer?.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
+        gameEngine?.currentPlayerJumpAction()
     }
 
     private func handleJumpButtonTouchEnd() {
@@ -323,5 +326,9 @@ extension GameScene: GameEngineDelegate {
         hook.line.removeFromParent()
         physicsWorld.remove(hook.anchorLineJointPin)
         physicsWorld.remove(hook.playerLineJointPin)
+    }
+
+    func playerIsStuck() {
+        jumpButton?.state = .ButtonNodeStateActive
     }
 }

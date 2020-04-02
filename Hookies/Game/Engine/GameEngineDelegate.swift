@@ -10,4 +10,5 @@ protocol GameEngineDelegate: AnyObject {
     func startCountdown()
     func playerDidHook(to hook: HookDelegateModel)
     func playerDidUnhook(from hook: HookDelegateModel)
+    func playerIsStuck()
 }
