@@ -86,6 +86,10 @@ class GameplayStore {
         socket.emit("hookActionChanged", hookAction)
     }
 
+    func boardcastGenericPlayerEvent(playerEvent: GenericPlayerEventData) {
+        socket.emit("genericPlayerEventDetected", playerEvent)
+    }
+
     func subscribeToPowerupAction(listener: @escaping (PowerupActionData) -> Void) {
         socket.on("powerupActivated") { data, _ in
             guard !data.isEmpty, let powerupData = data[0] as? [String: Any] else {
@@ -105,6 +109,18 @@ class GameplayStore {
             }
             let model = DictionaryModel(data: hookData)
             if let result = HookActionData(data: model) {
+                listener(result)
+            }
+        }
+    }
+
+    func subscribeToGenericPlayerEvent(listener: @escaping (GenericPlayerEventData) -> Void) {
+        socket.on("genericPlayerEventDetected") { data, _ in
+            guard !data.isEmpty, let hookData = data[0] as? [String: Any] else {
+                return
+            }
+            let model = DictionaryModel(data: hookData)
+            if let result = GenericPlayerEventData(data: model) {
                 listener(result)
             }
         }

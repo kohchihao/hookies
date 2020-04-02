@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		085CFA2C7C3D713DC56EB872 /* Pods_HookiesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */; };
 		1107D0602420DBA00058F590 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107D05F2420DBA00058F590 /* AuthState.swift */; };
 		110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CDC241F3CD200840C4E /* Gameplay.swift */; };
 		110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CE0241F3EC000840C4E /* Powerup.swift */; };
@@ -36,6 +37,7 @@
 		1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* AuthViewController.xib */; };
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
+		11280F4224340BA6004CFAC8 /* PlayerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11280F4124340BA6004CFAC8 /* PlayerData.swift */; };
 		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
 		1137270A242504BC00AB4B79 /* LobbyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11372709242504BC00AB4B79 /* LobbyState.swift */; };
 		1137270C242517AF00AB4B79 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1137270B242517AF00AB4B79 /* GameState.swift */; };
@@ -65,6 +67,12 @@
 		118A4A7324248663005B7188 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7224248663005B7188 /* UserStore.swift */; };
 		118A4A752424885E005B7188 /* LobbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A742424885E005B7188 /* LobbyStore.swift */; };
 		118A4A7724248876005B7188 /* Lobby+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */; };
+		1191BD6C24359F8500189DB8 /* GenericPlayerEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1191BD6B24359F8500189DB8 /* GenericPlayerEventData.swift */; };
+		1191BD6F2435AD9A00189DB8 /* HookActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1191BD6E2435AD9A00189DB8 /* HookActionType.swift */; };
+		1191BD712435ADAD00189DB8 /* GenericPlayerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1191BD702435ADAD00189DB8 /* GenericPlayerEvent.swift */; };
+		1198221D2434E2B10035AFC1 /* UserModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198221C2434E2B10035AFC1 /* UserModelError.swift */; };
+		119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198221F2434ED770035AFC1 /* DecoderModelTests.swift */; };
+		119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119822212434F26C0035AFC1 /* EncoderModelTests.swift */; };
 		119A3E3C242C72C70064B034 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119A3E3B242C72C70064B034 /* Config.swift */; };
 		119A3E3E242C73230064B034 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119A3E3D242C73230064B034 /* Constants.swift */; };
 		119A3E42242C7D9E0064B034 /* User+SocketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119A3E41242C7D9E0064B034 /* User+SocketData.swift */; };
@@ -137,8 +145,13 @@
 		D9A123D3241E6EC500A6DB7F /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D2241E6EC500A6DB7F /* RoundButton.swift */; };
 		D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D5241E71C000A6DB7F /* MapType.swift */; };
 		D9A123DC241E7F0200A6DB7F /* MapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */; };
+		D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */; };
+		D9BC4AAF24359D4E00BD35DF /* SpriteSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */; };
 		D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */; };
 		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
+		D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806924338278009D7A52 /* VectorTests.swift */; };
+		D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806B24338F27009D7A52 /* UserTests.swift */; };
+		D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806D243394F1009D7A52 /* LobbyTests.swift */; };
 		D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */; };
 		D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */; };
 		D9FF1A6A241E0DE600E7965F /* PreGameLobbyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */; };
@@ -196,6 +209,7 @@
 		1127C585241606CD00A78AA0 /* AuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
+		11280F4124340BA6004CFAC8 /* PlayerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerData.swift; sourceTree = "<group>"; };
 		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
 		11372709242504BC00AB4B79 /* LobbyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyState.swift; sourceTree = "<group>"; };
 		1137270B242517AF00AB4B79 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
@@ -225,6 +239,12 @@
 		118A4A7224248663005B7188 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		118A4A742424885E005B7188 /* LobbyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyStore.swift; sourceTree = "<group>"; };
 		118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lobby+FirestoreModel.swift"; sourceTree = "<group>"; };
+		1191BD6B24359F8500189DB8 /* GenericPlayerEventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEventData.swift; sourceTree = "<group>"; };
+		1191BD6E2435AD9A00189DB8 /* HookActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookActionType.swift; sourceTree = "<group>"; };
+		1191BD702435ADAD00189DB8 /* GenericPlayerEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEvent.swift; sourceTree = "<group>"; };
+		1198221C2434E2B10035AFC1 /* UserModelError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModelError.swift; sourceTree = "<group>"; };
+		1198221F2434ED770035AFC1 /* DecoderModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderModelTests.swift; sourceTree = "<group>"; };
+		119822212434F26C0035AFC1 /* EncoderModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncoderModelTests.swift; sourceTree = "<group>"; };
 		119A3E3B242C72C70064B034 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		119A3E3D242C73230064B034 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		119A3E41242C7D9E0064B034 /* User+SocketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+SocketData.swift"; sourceTree = "<group>"; };
@@ -248,6 +268,7 @@
 		2B8476BC24331AD000882F30 /* CannonEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonEntity.swift; sourceTree = "<group>"; };
 		2B992586242EF0BC00795B90 /* SpriteSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystem.swift; sourceTree = "<group>"; };
 		2B99258A242FA50200795B90 /* HookSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSystem.swift; sourceTree = "<group>"; };
+		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785B79D92423581B001D7028 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		785B79DB24236B6D001D7028 /* Lobby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lobby.swift; sourceTree = "<group>"; };
@@ -271,7 +292,9 @@
 		7880073F2413F37500F43B71 /* HookiesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HookiesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		788007432413F37500F43B71 /* HookiesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookiesUITests.swift; sourceTree = "<group>"; };
 		788007452413F37500F43B71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HookiesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hookies.release.xcconfig"; path = "Target Support Files/Pods-Hookies/Pods-Hookies.release.xcconfig"; sourceTree = "<group>"; };
+		D592BFC58479DAD307FE828E /* Pods-HookiesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.release.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.release.xcconfig"; sourceTree = "<group>"; };
 		D90876FF24299C0100B73D0E /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		D908770124299C4C00B73D0E /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		D908770324299D8D00B73D0E /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
@@ -304,8 +327,13 @@
 		D9A123D2241E6EC500A6DB7F /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		D9A123D5241E71C000A6DB7F /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		D9A123DB241E7F0200A6DB7F /* MapDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDelegate.swift; sourceTree = "<group>"; };
+		D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloatingLandMap.sks; sourceTree = "<group>"; };
+		D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystemTests.swift; sourceTree = "<group>"; };
 		D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystem.swift; sourceTree = "<group>"; };
 		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
+		D9F1806924338278009D7A52 /* VectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
+		D9F1806B24338F27009D7A52 /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
+		D9F1806D243394F1009D7A52 /* LobbyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyTests.swift; sourceTree = "<group>"; };
 		D9FF1A63241E0D8500E7965F /* PreGameLobbyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyCoordinator.swift; sourceTree = "<group>"; };
 		D9FF1A67241E0DC000E7965F /* PreGameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewController.swift; sourceTree = "<group>"; };
 		D9FF1A69241E0DE600E7965F /* PreGameLobbyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreGameLobbyViewController.xib; sourceTree = "<group>"; };
@@ -332,6 +360,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				085CFA2C7C3D713DC56EB872 /* Pods_HookiesTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +379,7 @@
 			children = (
 				785B79D92423581B001D7028 /* GameKit.framework */,
 				EE378AB9F0B25C43E7E22CB7 /* Pods_Hookies.framework */,
+				84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -492,6 +522,7 @@
 		1127C5832415FFAA00A78AA0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1198221B2434E2950035AFC1 /* Exceptions */,
 				110B3CF22420756600840C4E /* Powerups */,
 				119C540F24164AFE00F27D87 /* User.swift */,
 				110B3CDC241F3CD200840C4E /* Gameplay.swift */,
@@ -544,6 +575,40 @@
 			path = UILabel;
 			sourceTree = "<group>";
 		};
+		1191BD6D2435AD8E00189DB8 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				1191BD6E2435AD9A00189DB8 /* HookActionType.swift */,
+				1191BD702435ADAD00189DB8 /* GenericPlayerEvent.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
+		119822172434D8A20035AFC1 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				119822182434D8A80035AFC1 /* API */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		119822182434D8A80035AFC1 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				1198221F2434ED770035AFC1 /* DecoderModelTests.swift */,
+				119822212434F26C0035AFC1 /* EncoderModelTests.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		1198221B2434E2950035AFC1 /* Exceptions */ = {
+			isa = PBXGroup;
+			children = (
+				1198221C2434E2B10035AFC1 /* UserModelError.swift */,
+			);
+			path = Exceptions;
+			sourceTree = "<group>";
+		};
 		119A3E3A242C72B90064B034 /* Config */ = {
 			isa = PBXGroup;
 			children = (
@@ -560,6 +625,8 @@
 				119A3E47242C9C080064B034 /* UserConnectionState.swift */,
 				119A3E49242CD6970064B034 /* PowerupActionData.swift */,
 				119A3E4B242CD6A10064B034 /* HookActionData.swift */,
+				11280F4124340BA6004CFAC8 /* PlayerData.swift */,
+				1191BD6B24359F8500189DB8 /* GenericPlayerEventData.swift */,
 			);
 			path = SocketModels;
 			sourceTree = "<group>";
@@ -592,6 +659,7 @@
 		119C541F24168C9D00F27D87 /* AdapterModels */ = {
 			isa = PBXGroup;
 			children = (
+				1191BD6D2435AD8E00189DB8 /* Enum */,
 				119A3E4D242CDADB0064B034 /* DictionaryModels */,
 				119A3E40242C7D690064B034 /* FirestoreModels */,
 				119A3E3F242C7D580064B034 /* SocketModels */,
@@ -621,6 +689,8 @@
 			children = (
 				E4BD33A3262713B50F5A8AF8 /* Pods-Hookies.debug.xcconfig */,
 				C364F01FF1FB9428E5874C6B /* Pods-Hookies.release.xcconfig */,
+				4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */,
+				D592BFC58479DAD307FE828E /* Pods-HookiesTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -691,6 +761,9 @@
 		788007372413F37500F43B71 /* HookiesTests */ = {
 			isa = PBXGroup;
 			children = (
+				D9BC4AAC24359D2900BD35DF /* Game */,
+				119822172434D8A20035AFC1 /* Shared */,
+				D9F18066243381F3009D7A52 /* Models */,
 				788007382413F37500F43B71 /* HookiesTests.swift */,
 				7880073A2413F37500F43B71 /* Info.plist */,
 			);
@@ -796,6 +869,7 @@
 				D9A123D4241E719C00A6DB7F /* Enumerations */,
 				D92F9404241D2E890021DBE4 /* DeadlockMap.sks */,
 				D923C13B241A42B5004AB20A /* CannotDieMap.sks */,
+				D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -830,6 +904,22 @@
 			path = Enumerations;
 			sourceTree = "<group>";
 		};
+		D9BC4AAC24359D2900BD35DF /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				D9BC4AAD24359D3200BD35DF /* System */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		D9BC4AAD24359D3200BD35DF /* System */ = {
+			isa = PBXGroup;
+			children = (
+				D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */,
+			);
+			path = System;
+			sourceTree = "<group>";
+		};
 		D9F180622431B912009D7A52 /* CGVector */ = {
 			isa = PBXGroup;
 			children = (
@@ -851,6 +941,16 @@
 				D980A6C52430F3C500B55452 /* GameObjectType.swift */,
 			);
 			path = Enumerations;
+			sourceTree = "<group>";
+		};
+		D9F18066243381F3009D7A52 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D9F1806924338278009D7A52 /* VectorTests.swift */,
+				D9F1806B24338F27009D7A52 /* UserTests.swift */,
+				D9F1806D243394F1009D7A52 /* LobbyTests.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D9FF1A62241E0D5800E7965F /* PreGameLobby */ = {
@@ -904,6 +1004,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7880074B2413F37500F43B71 /* Build configuration list for PBXNativeTarget "HookiesTests" */;
 			buildPhases = (
+				B09D061BA6B78C08B2F78E59 /* [CP] Check Pods Manifest.lock */,
 				788007302413F37500F43B71 /* Sources */,
 				788007312413F37500F43B71 /* Frameworks */,
 				788007322413F37500F43B71 /* Resources */,
@@ -987,6 +1088,7 @@
 				788007292413F37100F43B71 /* Main.storyboard in Resources */,
 				7880072B2413F37400F43B71 /* Assets.xcassets in Resources */,
 				D9A123D0241E6BB200A6DB7F /* MapsViewController.xib in Resources */,
+				D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */,
 				1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */,
 				7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */,
 				788007222413F37100F43B71 /* Actions.sks in Resources */,
@@ -1092,6 +1194,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Hookies/Pods-Hookies-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B09D061BA6B78C08B2F78E59 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HookiesTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1099,6 +1223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1191BD6C24359F8500189DB8 /* GenericPlayerEventData.swift in Sources */,
 				D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */,
 				116AD648242DB7CD0070F00B /* Encoder.swift in Sources */,
 				116AD64A242DBA510070F00B /* Vector.swift in Sources */,
@@ -1124,6 +1249,7 @@
 				119C5423241691EF00F27D87 /* Query.swift in Sources */,
 				1137270A242504BC00AB4B79 /* LobbyState.swift in Sources */,
 				D90877182429AB3600B73D0E /* NonPhysicsTranslateComponent.swift in Sources */,
+				1198221D2434E2B10035AFC1 /* UserModelError.swift in Sources */,
 				D908770024299C0100B73D0E /* Entity.swift in Sources */,
 				11593D6B24319BA300462BE6 /* PlayerHookPowerupEntity.swift in Sources */,
 				D90877122429A88200B73D0E /* FinishingLineEntity.swift in Sources */,
@@ -1136,6 +1262,7 @@
 				118A4A7724248876005B7188 /* Lobby+FirestoreModel.swift in Sources */,
 				2B6D6970241CC9390057F1B5 /* Player.swift in Sources */,
 				117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */,
+				11280F4224340BA6004CFAC8 /* PlayerData.swift in Sources */,
 				118A4A7124248641005B7188 /* FirestoreDataModel.swift in Sources */,
 				D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */,
 				110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */,
@@ -1159,6 +1286,7 @@
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
 				D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */,
+				1191BD712435ADAD00189DB8 /* GenericPlayerEvent.swift in Sources */,
 				119A3E4A242CD6970064B034 /* PowerupActionData.swift in Sources */,
 				119C541A2416654900F27D87 /* API.swift in Sources */,
 				D908771A2429AD3F00B73D0E /* BounceComponent.swift in Sources */,
@@ -1177,6 +1305,7 @@
 				D9FF1A7E241E325900E7965F /* GamePlayViewController.swift in Sources */,
 				11593D862432C8DD00462BE6 /* CollectableComponent.swift in Sources */,
 				D9FF1A82241E325900E7965F /* GamePlayViewModel.swift in Sources */,
+				1191BD6F2435AD9A00189DB8 /* HookActionType.swift in Sources */,
 				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
 				785B79E124237647001D7028 /* JoinGameViewModel.swift in Sources */,
 				2B99258B242FA50200795B90 /* HookSystem.swift in Sources */,
@@ -1227,6 +1356,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
+				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
+				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
+				D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */,
+				119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */,
+				D9BC4AAF24359D4E00BD35DF /* SpriteSystemTests.swift in Sources */,
 				788007392413F37500F43B71 /* HookiesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1430,6 +1565,7 @@
 		};
 		7880074C2413F37500F43B71 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1452,6 +1588,7 @@
 		};
 		7880074D2413F37500F43B71 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D592BFC58479DAD307FE828E /* Pods-HookiesTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

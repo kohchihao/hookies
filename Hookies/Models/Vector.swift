@@ -28,6 +28,14 @@ struct Vector {
         self.y = Double(vector.dy)
     }
 
+    init?(vector: CGVector?) {
+        guard let vector = vector else {
+            return nil
+        }
+        self.x = Double(vector.dx)
+        self.y = Double(vector.dy)
+    }
+
     /// Get the magnitude of the vector.
     var magnitude: Double {
         return sqrt(x * x + y * y)
