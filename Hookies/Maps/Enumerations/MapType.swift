@@ -11,6 +11,7 @@ import Foundation
 enum MapType: String, CaseIterable {
     case DeadlockMap
     case CannotDieMap
+    case FloatingLandMap
 }
 
 extension MapType: StringRepresentable {
