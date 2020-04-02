@@ -10,14 +10,22 @@ protocol GenericPlayerEventBroadcast {}
 
 extension GenericPlayerEventBroadcast {
     func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity, eventType: GenericPlayerEvent) {
-        guard let genericPlayerEventData = createPlayerEventData(from: playerId, and: player, eventType: eventType) else {
-            return
+        guard let genericPlayerEventData = createPlayerEventData(
+            from: playerId,
+            and: player,
+            eventType: eventType
+            ) else {
+                return
         }
 
         API.shared.gameplay.boardcastGenericPlayerEvent(playerEvent: genericPlayerEventData)
     }
 
-    private func createPlayerEventData(from playerId: String, and player: PlayerEntity, eventType: GenericPlayerEvent) -> GenericPlayerEventData? {
+    private func createPlayerEventData(
+        from playerId: String,
+        and player: PlayerEntity,
+        eventType: GenericPlayerEvent
+    ) -> GenericPlayerEventData? {
         guard let sprite = player.getSpriteComponent() else {
             return nil
         }
