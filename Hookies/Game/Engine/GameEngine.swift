@@ -157,6 +157,7 @@ class GameEngine {
 
     func update(time: TimeInterval) {
         startCountdown()
+        updateClosestBolt()
         checkDeadlock()
         finishingLineSystem.bringPlayersToStop()
         checkGameEnd()
@@ -366,6 +367,14 @@ class GameEngine {
                 self.setupPlayer(of: otherPlayerId)
             }
         })
+    }
+
+    private func updateClosestBolt() {
+        guard let currentPlayerPosition = currentPlayer?.getSpriteComponent()?.node.position else {
+            return
+        }
+
+        _ = closestBoltSystem?.findClosestBolt(to: currentPlayerPosition)
     }
 
     private func checkGameEnd() {
