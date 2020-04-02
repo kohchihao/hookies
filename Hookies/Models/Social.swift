@@ -40,4 +40,8 @@ struct Social {
             self.friends.append(userId)
         }
     }
+
+    mutating func removeFriend(userId: String) {
+        self.friends = self.friends.filter({ $0 != userId })
+    }
 }

@@ -39,7 +39,10 @@ class SocialViewController: UIViewController {
         super.viewDidLoad()
         socialTableView.dataSource = self
         socialTableView.delegate = self
-        socialTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LabelCell")
+        
+       let friendTableViewCell = UINib(nibName: "FriendTableViewCell", bundle: nil)
+        socialTableView.register(friendTableViewCell, forCellReuseIdentifier: "FriendTableViewCell")
+        socialTableView.allowsSelection = false
 
         requestTableView.dataSource = self
         requestTableView.delegate = self
@@ -285,6 +288,25 @@ class SocialViewController: UIViewController {
         })
     }
 
+    func removeFriend(user: User) {
+        API.shared.social.get(userId: user.uid, completion: { social, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard var social = social else {
+                return
+            }
+            guard let currentUser = API.shared.user.currentUser else {
+                return
+            }
+            self.viewModel.social.removeFriend(userId: user.uid)
+            self.saveSocial(social: self.viewModel.social)
+            social.removeFriend(userId: currentUser.uid)
+            self.saveSocial(social: social)
+        })
+    }
+
     func updateView() {
         self.socialLabel.text = self.viewModel.social.userId
         self.socialTableView.reloadData()
@@ -313,22 +335,29 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
         switch tableView {
         case self.socialTableView:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendTableViewCell", for: indexPath) as? FriendTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.delegate = self
             getUsername(userId: self.viewModel.social.friends[indexPath.row], cell: cell)
+            return cell
         case self.requestTableView:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
             getRecipientName(requestId: self.viewModel.social.requests[indexPath.row], cell: cell)
+            return cell
         case self.inviteTableView:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
             cell.textLabel?.text = self.viewModel.social.invites[indexPath.row]
+            return cell
         default:
+            let cell = UITableViewCell()
             return cell
         }
-        return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        mapDelegate?.onSelected(for: )
         switch tableView {
         case self.socialTableView:
             print(self.viewModel.social.friends[indexPath.row])
@@ -340,4 +369,20 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
             break
         }
         self.dismiss(animated: false, completion: nil)
-    }}
+    }
+}
+
+extension SocialViewController: FriendTableViewCellDelegate {
+    func deleteButtonPressed(username: String) {
+        API.shared.user.get(withUsername: username, completion: { user, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard let user = user else {
+                return
+            }
+            self.removeFriend(user: user)
+        })
+    }
+}
