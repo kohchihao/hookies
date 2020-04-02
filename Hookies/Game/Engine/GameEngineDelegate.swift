@@ -9,4 +9,5 @@
 protocol GameEngineDelegate: AnyObject {
     func didStartCountdown()
     func didPlayerHook(hook: HookDelegateModel)
+    func didPlayerUnhook(hook: HookDelegateModel)
 }

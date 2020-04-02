@@ -146,6 +146,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         boltsNode.append(contentsOf: bolts)
         boltsNode.append(contentsOf: boltsMovable)
 
+        // TODO: Platform
+
         gameEngine = GameEngine(
             gameId: gameplayId,
             cannon: cannonNode,
@@ -284,7 +286,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
-        // TODO: Game Engine
+        gameEngine?.currentPlayerUnhookAction()
     }
 
     private func initialiseJumpButton() {
@@ -320,5 +322,12 @@ extension GameScene: GameEngineDelegate {
         addChild(hook.line)
         physicsWorld.add(hook.anchorLineJointPin)
         physicsWorld.add(hook.playerLineJointPin)
+    }
+
+    func didPlayerUnhook(hook: HookDelegateModel) {
+        hook.anchor.removeFromParent()
+        hook.line.removeFromParent()
+        physicsWorld.remove(hook.anchorLineJointPin)
+        physicsWorld.remove(hook.playerLineJointPin)
     }
 }

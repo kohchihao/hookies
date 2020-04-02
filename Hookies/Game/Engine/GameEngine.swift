@@ -123,6 +123,16 @@ class GameEngine {
         hookSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .activate)
     }
 
+    func currentPlayerUnhookAction() {
+        guard let currentPlayerId = currentPlayerId,
+            let currentPlayer = currentPlayer else {
+            return
+        }
+
+        playerUnhookAction(player: currentPlayer)
+        hookSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .deactivate)
+    }
+
     // MARK: - Bolts
 
     private func initialiseBolts(_ bolts: [SKSpriteNode]) -> [SpriteComponent] {
@@ -208,6 +218,27 @@ class GameEngine {
             return
         } catch HookSystemError.physicsBodyDoesNotExist {
             print(HookSystemError.physicsBodyDoesNotExist)
+            return
+        } catch {
+            print("Unexpected error: \(error)")
+            return
+        }
+    }
+
+    private func playerUnhookAction(player: PlayerEntity) {
+        guard let hook = getHookComponent(from: player) else {
+            return
+        }
+
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+
+        do {
+            try hookSystem?.unhookFrom(entity: player)
+            delegate?.didPlayerUnhook(hook: hookDelegateModel)
+        } catch HookSystemError.hookComponentDoesNotExist {
+            print(HookSystemError.hookComponentDoesNotExist)
             return
         } catch {
             print("Unexpected error: \(error)")
@@ -305,15 +336,7 @@ class GameEngine {
             case .activate:
                 self.playerHookAction(player: player)
             case .deactivate:
-                do {
-                    try self.hookSystem?.unhookFrom(entity: player)
-                } catch HookSystemError.hookComponentDoesNotExist {
-                    print(HookSystemError.hookComponentDoesNotExist)
-                    return
-                } catch {
-                    print("Unexpected error: \(error)")
-                    return
-                }
+                self.playerUnhookAction(player: player)
             }
         })
     }
