@@ -10,6 +10,7 @@ import SpriteKit
 
 class GameEngine {
     private let gameId: String
+    private var gameState: GameState = .waiting
     private var currentPlayerId: String?
     private var totalNumberOfPlayers = 0
 
@@ -348,7 +349,11 @@ class GameEngine {
     }
 
     private func startCountdown() {
-        if currentPlayer == nil {
+        guard currentPlayer != nil else {
+            return
+        }
+
+        if gameState != .waiting {
             return
         }
 
@@ -356,6 +361,7 @@ class GameEngine {
 
         if isAllPlayerInGame {
             delegate?.didStartCountdown()
+            gameState = .start
         }
     }
 
