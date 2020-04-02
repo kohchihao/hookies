@@ -38,7 +38,6 @@
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
 		11280F4224340BA6004CFAC8 /* PlayerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11280F4124340BA6004CFAC8 /* PlayerData.swift */; };
-		11280F442434203A004CFAC8 /* FinishLineEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11280F432434203A004CFAC8 /* FinishLineEventData.swift */; };
 		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
 		1137270A242504BC00AB4B79 /* LobbyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11372709242504BC00AB4B79 /* LobbyState.swift */; };
 		1137270C242517AF00AB4B79 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1137270B242517AF00AB4B79 /* GameState.swift */; };
@@ -68,6 +67,9 @@
 		118A4A7324248663005B7188 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7224248663005B7188 /* UserStore.swift */; };
 		118A4A752424885E005B7188 /* LobbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A742424885E005B7188 /* LobbyStore.swift */; };
 		118A4A7724248876005B7188 /* Lobby+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */; };
+		1191BD6C24359F8500189DB8 /* GenericPlayerEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1191BD6B24359F8500189DB8 /* GenericPlayerEventData.swift */; };
+		1191BD6F2435AD9A00189DB8 /* HookActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1191BD6E2435AD9A00189DB8 /* HookActionType.swift */; };
+		1191BD712435ADAD00189DB8 /* GenericPlayerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1191BD702435ADAD00189DB8 /* GenericPlayerEvent.swift */; };
 		1198221D2434E2B10035AFC1 /* UserModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198221C2434E2B10035AFC1 /* UserModelError.swift */; };
 		119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198221F2434ED770035AFC1 /* DecoderModelTests.swift */; };
 		119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119822212434F26C0035AFC1 /* EncoderModelTests.swift */; };
@@ -204,7 +206,6 @@
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
 		11280F4124340BA6004CFAC8 /* PlayerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerData.swift; sourceTree = "<group>"; };
-		11280F432434203A004CFAC8 /* FinishLineEventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishLineEventData.swift; sourceTree = "<group>"; };
 		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
 		11372709242504BC00AB4B79 /* LobbyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyState.swift; sourceTree = "<group>"; };
 		1137270B242517AF00AB4B79 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
@@ -234,6 +235,9 @@
 		118A4A7224248663005B7188 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		118A4A742424885E005B7188 /* LobbyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyStore.swift; sourceTree = "<group>"; };
 		118A4A7624248876005B7188 /* Lobby+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lobby+FirestoreModel.swift"; sourceTree = "<group>"; };
+		1191BD6B24359F8500189DB8 /* GenericPlayerEventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEventData.swift; sourceTree = "<group>"; };
+		1191BD6E2435AD9A00189DB8 /* HookActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookActionType.swift; sourceTree = "<group>"; };
+		1191BD702435ADAD00189DB8 /* GenericPlayerEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEvent.swift; sourceTree = "<group>"; };
 		1198221C2434E2B10035AFC1 /* UserModelError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModelError.swift; sourceTree = "<group>"; };
 		1198221F2434ED770035AFC1 /* DecoderModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderModelTests.swift; sourceTree = "<group>"; };
 		119822212434F26C0035AFC1 /* EncoderModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncoderModelTests.swift; sourceTree = "<group>"; };
@@ -563,6 +567,15 @@
 			path = UILabel;
 			sourceTree = "<group>";
 		};
+		1191BD6D2435AD8E00189DB8 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				1191BD6E2435AD9A00189DB8 /* HookActionType.swift */,
+				1191BD702435ADAD00189DB8 /* GenericPlayerEvent.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
 		119822172434D8A20035AFC1 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -605,7 +618,7 @@
 				119A3E49242CD6970064B034 /* PowerupActionData.swift */,
 				119A3E4B242CD6A10064B034 /* HookActionData.swift */,
 				11280F4124340BA6004CFAC8 /* PlayerData.swift */,
-				11280F432434203A004CFAC8 /* FinishLineEventData.swift */,
+				1191BD6B24359F8500189DB8 /* GenericPlayerEventData.swift */,
 			);
 			path = SocketModels;
 			sourceTree = "<group>";
@@ -638,6 +651,7 @@
 		119C541F24168C9D00F27D87 /* AdapterModels */ = {
 			isa = PBXGroup;
 			children = (
+				1191BD6D2435AD8E00189DB8 /* Enum */,
 				119A3E4D242CDADB0064B034 /* DictionaryModels */,
 				119A3E40242C7D690064B034 /* FirestoreModels */,
 				119A3E3F242C7D580064B034 /* SocketModels */,
@@ -1172,6 +1186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1191BD6C24359F8500189DB8 /* GenericPlayerEventData.swift in Sources */,
 				D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */,
 				116AD648242DB7CD0070F00B /* Encoder.swift in Sources */,
 				116AD64A242DBA510070F00B /* Vector.swift in Sources */,
@@ -1233,6 +1248,7 @@
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
 				D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */,
+				1191BD712435ADAD00189DB8 /* GenericPlayerEvent.swift in Sources */,
 				119A3E4A242CD6970064B034 /* PowerupActionData.swift in Sources */,
 				119C541A2416654900F27D87 /* API.swift in Sources */,
 				D908771A2429AD3F00B73D0E /* BounceComponent.swift in Sources */,
@@ -1251,13 +1267,13 @@
 				D9FF1A7E241E325900E7965F /* GamePlayViewController.swift in Sources */,
 				11593D862432C8DD00462BE6 /* CollectableComponent.swift in Sources */,
 				D9FF1A82241E325900E7965F /* GamePlayViewModel.swift in Sources */,
+				1191BD6F2435AD9A00189DB8 /* HookActionType.swift in Sources */,
 				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
 				785B79E124237647001D7028 /* JoinGameViewModel.swift in Sources */,
 				2B99258B242FA50200795B90 /* HookSystem.swift in Sources */,
 				D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */,
 				785B79EC242527C5001D7028 /* RandomIDGenerator.swift in Sources */,
 				D908770624299DC200B73D0E /* GameEngine.swift in Sources */,
-				11280F442434203A004CFAC8 /* FinishLineEventData.swift in Sources */,
 				110B3CE7241F45D900840C4E /* GameplayStore.swift in Sources */,
 				D908770424299D8D00B73D0E /* System.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,

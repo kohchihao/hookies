@@ -8,22 +8,30 @@
 
 import SocketIO
 
-struct FinishLineEventData: SocketData, Encoder {
+struct GenericPlayerEventData: SocketData, Encoder {
     let playerData: PlayerData
+    let type: GenericPlayerEvent
 
     var encoding: [String: Any] {
         return playerData.encoding
     }
 
-    init(playerId: String, position: Vector, velocity: Vector?) {
+    init(playerId: String, position: Vector, velocity: Vector?, type: GenericPlayerEvent) {
         self.playerData = PlayerData(playerId: playerId, position: position, velocity: velocity)
+        self.type = type
     }
 
     init?(data: DictionaryModel) {
-        guard let playerData = PlayerData(data: data) else {
+        do {
+            guard let playerData = PlayerData(data: data),
+                let type = try GenericPlayerEvent(rawValue: data.value(forKey: "type")) else {
+                    return nil
+            }
+            self.playerData = playerData
+            self.type = type
+        } catch {
             return nil
         }
-        self.playerData = playerData
     }
 
     func socketRepresentation() -> SocketData {
