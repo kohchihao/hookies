@@ -77,8 +77,6 @@ class GameEngine {
         deadLockSystem = DeadlockSystem(sprite: sprite)
         finishingLineSystem.add(player: sprite)
 
-        startCountdown()
-
         return sprite.node
     }
 
@@ -132,6 +130,12 @@ class GameEngine {
 
         playerUnhookAction(player: currentPlayer)
         hookSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .deactivate)
+    }
+
+    // MARK: - Update
+
+    func update(time: TimeInterval) {
+        startCountdown()
     }
 
     // MARK: - Bolts
@@ -264,17 +268,11 @@ class GameEngine {
         )
     }
 
-    // MARK: - Multiplayer
-
-    private func setupMultiplayer() {
-//        subscribeToOtherPlayersState()
-//        subscribeToHookAction()
-//        subscribeToPowerupAction()
-    }
+    // MARK: - Game Setup
 
     private func setupTotalPlayers() {
         API.shared.lobby.get(lobbyId: self.gameId, completion: { lobby, error in
-            if error != nil {
+            guard error == nil else {
                 return
             }
 
@@ -291,16 +289,21 @@ class GameEngine {
             for otherPlayerId in otherPlayersId {
                 self.setupPlayer(of: otherPlayerId)
             }
-
-            self.startCountdown()
         })
+    }
+
+    // MARK: - Multiplayer
+
+    private func setupMultiplayer() {
+//        subscribeToOtherPlayersState()
+//        subscribeToHookAction()
+//        subscribeToPowerupAction()
     }
 
     private func subscribeToOtherPlayersState() {
         API.shared.gameplay.subscribeToPlayersConnection(listener: { userConnection in
             if userConnection.state == .connected {
                 self.setupPlayer(of: userConnection.uid)
-                self.startCountdown()
             }
 
             // TODO: Setup Disconnected
@@ -309,7 +312,7 @@ class GameEngine {
 
     private func setupPlayer(of id: String) {
         API.shared.lobby.get(lobbyId: self.gameId, completion: { lobby, error in
-            if error != nil {
+            guard error == nil else {
                 return
             }
 

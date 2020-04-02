@@ -50,6 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        gameEngine?.update(time: currentTime)
         handleCurrentPlayerTetheringToClosestBolt()
 //        handleJumpButton()
     }
@@ -140,13 +141,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
-        var boltsNode = [SKSpriteNode]()
-        let bolts = getGameObject(of: GameObjectType.bolt)
-        let boltsMovable = getGameObject(of: GameObjectType.boltMovable)
-        boltsNode.append(contentsOf: bolts)
-        boltsNode.append(contentsOf: boltsMovable)
+        let boltsNode = getGameObject(of: GameObjectType.bolt)
 
-        // TODO: Platform
+        // TODO: Platform to GameEngine
+        let platformsNode = getGameObject(of: GameObjectType.platform)
 
         gameEngine = GameEngine(
             gameId: gameplayId,
@@ -164,7 +162,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func getGameObject(of type: GameObjectType) -> [SKSpriteNode] {
         var objects = [SKSpriteNode]()
 
-        for object in self[type.rawValue] {
+        for object in self["//" + type.rawValue + "*"] {
             guard let objectNode = object as? SKSpriteNode else {
                 return objects
             }
@@ -184,7 +182,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         // Getting costume
         API.shared.lobby.get(lobbyId: gameplayId, completion: { lobby, error in
-            if error != nil {
+            guard error == nil else {
                 return
             }
 

@@ -104,6 +104,8 @@ extension SpriteType {
 
     var isDynamic: Bool {
         switch self {
+        case .line:
+            return true
         default:
             return false
         }
