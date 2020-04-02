@@ -12,8 +12,8 @@ import Dispatch
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var gameplayId: String?
-    private var playerId: String?
-    private var player: Player?
+    private var currentPlayerId: String?
+    private var currentPlayer: SKSpriteNode?
 
     private var cam: SKCameraNode?
     private var background: Background?
@@ -33,7 +33,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var powerLaunch = 1_000
 
     override func didMove(to view: SKView) {
-        playerId = API.shared.user.currentUser?.uid
+        currentPlayerId = API.shared.user.currentUser?.uid
 
         initialiseContactDelegate()
         initialiseBackground(with: view.frame.size)
@@ -43,6 +43,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         initialiseCamera()
         initialiseCountdownMessage()
         initialiseGameEngine()
+        initialiseCurrentPlayer()
     }
 
     // MARK: - Update
@@ -53,10 +54,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     override func didFinishUpdate() {
-        guard let player = player else {
+        guard let currentPlayer = currentPlayer else {
             return
         }
-        centerOnNode(node: player.node)
+        centerOnNode(node: currentPlayer)
     }
 
     func setPowerLaunch(at power: Int) {
@@ -145,7 +146,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         boltsNode.append(contentsOf: boltsMovable)
 
         gameEngine = GameEngine(
-            gameId: gameplayId,g
+            gameId: gameplayId,
             cannon: cannonNode,
             finishingLine: finishingLineNode,
             bolts: boltsNode
@@ -167,6 +168,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         return objects
+    }
+
+    // MARK: - Initialise current player
+
+    private func initialiseCurrentPlayer() {
+        guard let gameplayId = gameplayId else {
+            return
+        }
+
+        // Getting costume
+        API.shared.lobby.get(lobbyId: gameplayId, completion: { lobby, error in
+            if error != nil {
+                return
+            }
+
+            guard let currentPlayerId = self.currentPlayerId,
+                let cannon = self.cannon
+                else {
+                return
+            }
+
+            guard let costume = lobby?.costumesId[currentPlayerId] else {
+                return
+            }
+
+            guard let currentPlayer = self.gameEngine?.setCurrentPlayer(
+                id: currentPlayerId,
+                position: cannon.position,
+                image: costume.stringValue
+                ) else {
+                    return
+            }
+
+            self.currentPlayer = currentPlayer
+            self.addChild(currentPlayer)
+        })
     }
 
     // MARK: - Centering camera
@@ -237,11 +274,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleGrapplingHookBtnTouchBegan() {
-//        guard let playerInitialVelocity = player.node.physicsBody?.velocity else {
-//            return
-//        }
-//        player.node.physicsBody?.applyImpulse(playerInitialVelocity)
-
         // TODO: Game Engine
     }
 
@@ -262,7 +294,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleJumpButtonTouched() {
-        player?.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
+        currentPlayer?.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
     }
 
     private func handleJumpButtonTouchEnd() {

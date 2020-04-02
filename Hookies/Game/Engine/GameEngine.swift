@@ -56,7 +56,7 @@ class GameEngine {
 
     // MARK: - Players
 
-    func setCurrentPlayer(id: String, position: CGPoint, image: String) {
+    func setCurrentPlayer(id: String, position: CGPoint, image: String) -> SKSpriteNode {
         let player = PlayerEntity()
 
         let sprite = SpriteComponent(parent: player)
@@ -71,9 +71,11 @@ class GameEngine {
 
         deadLockSystem = DeadlockSystem(sprite: sprite)
         finishingLineSystem.add(player: sprite)
+
+        return sprite.node
     }
 
-    func addOtherPlayers(id: String, position: CGPoint, image: String) {
+    func addOtherPlayers(id: String, position: CGPoint, image: String) -> SKSpriteNode {
         let otherPlayer = PlayerEntity()
 
         let sprite = SpriteComponent(parent: otherPlayer)
@@ -87,6 +89,8 @@ class GameEngine {
         otherPlayers[id] = otherPlayer
 
         finishingLineSystem.add(player: sprite)
+
+        return sprite.node
     }
 
     // MARK: - Bolts
@@ -205,7 +209,7 @@ class GameEngine {
                 self.setupPlayer(of: otherPlayerId)
             }
 
-            self.startGame()
+            self.startCountdown()
         })
     }
 
@@ -213,7 +217,7 @@ class GameEngine {
         API.shared.gameplay.subscribeToPlayersConnection(listener: { userConnection in
             if userConnection.state == .connected {
                 self.setupPlayer(of: userConnection.uid)
-                self.startGame()
+                self.startCountdown()
             }
 
             // TODO: Setup Disconnected
@@ -234,7 +238,9 @@ class GameEngine {
                 return
             }
 
-            self.addOtherPlayers(id: id, position: initialPosition, image: costume.stringValue)
+            let node = self.addOtherPlayers(id: id, position: initialPosition, image: costume.stringValue)
+
+            // Delegate to GameScene
         })
     }
 
@@ -267,7 +273,7 @@ class GameEngine {
         })
     }
 
-    private func startGame() {
+    private func startCountdown() {
         let isAllPlayerInGame = totalNumberOfPlayers != 0 && totalNumberOfPlayers == otherPlayers.count + 1
 
         if isAllPlayerInGame {

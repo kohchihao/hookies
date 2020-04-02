@@ -47,6 +47,10 @@ class HookSystem: System, HookSystemProtocol {
             throw HookSystemError.spriteComponentDoesNotExist
         }
 
+        guard let parentSpriteInitialVelocity = parentSprite.node.physicsBody?.velocity else {
+            return
+        }
+
         guard let closestBolt = findClosestBolt(from: parentSprite.node.position) else {
             throw HookSystemError.closestHookToEntityDoesNotExist
         }
@@ -65,6 +69,8 @@ class HookSystem: System, HookSystemProtocol {
             let spriteLineJointPin = makeJointPinToLine(from: parentSprite.node, toLine: line) else {
                 throw HookSystemError.physicsBodyDoesNotExist
         }
+
+        parentSprite.node.physicsBody?.applyImpulse(parentSpriteInitialVelocity)
 
         systemHook.hookTo = closestBolt
         systemHook.anchor = anchor
