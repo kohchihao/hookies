@@ -272,6 +272,19 @@ class SocialViewController: UIViewController {
         })
     }
 
+    func getRecipientName(requestId: String, cell: UITableViewCell) {
+        API.shared.request.get(requestId: requestId, completion: { request, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard let request = request else {
+                return
+            }
+            self.getUsername(userId: request.toUserId, cell: cell)
+        })
+    }
+
     func updateView() {
         self.socialLabel.text = self.viewModel.social.userId
         self.socialTableView.reloadData()
@@ -305,7 +318,7 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
         case self.socialTableView:
             getUsername(userId: self.viewModel.social.friends[indexPath.row], cell: cell)
         case self.requestTableView:
-            cell.textLabel?.text = self.viewModel.social.requests[indexPath.row]
+            getRecipientName(requestId: self.viewModel.social.requests[indexPath.row], cell: cell)
         case self.inviteTableView:
             cell.textLabel?.text = self.viewModel.social.invites[indexPath.row]
         default:
