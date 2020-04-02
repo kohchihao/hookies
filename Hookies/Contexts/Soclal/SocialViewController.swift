@@ -125,7 +125,7 @@ class SocialViewController: UIViewController {
         sendRequest(fromUserId: fromUserId, toUserId: toUserId)
     }
 
-    func checkUserExists(toUserId, completion: @escaping Bool -> Void) {
+    func checkRecipientExists(toUserId: String, completion: @escaping (Bool) -> Void) {
         API.shared.user.get(withUid: toUserId, completion: { user, error in
             guard error == nil else {
                 print(error.debugDescription)
@@ -133,55 +133,72 @@ class SocialViewController: UIViewController {
             }
             guard user != nil else {
                 print("Recipient of request not found")
-                return completion(true)
+                return completion(false)
             }
+            return completion(true)
+        })
+    }
+
+    func checkRecipientSocialExists(toUserId: String, completion: @escaping (Bool, Social?) -> Void) {
+        API.shared.social.get(userId: toUserId, completion: { social, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return completion(false, nil)
+            }
+            guard let social = social else {
+                print("Recipient of request does not have social")
+                return completion(false, nil)
+            }
+            return completion(true, social)
+        })
+    }
+
+    func checkRequestIsNotRepeated(request: Request, recipientSocial: Social, completion: @escaping (Bool) -> Void) {
+        self.getRequests(requestIds: self.viewModel.social.requests, completion: { requests in
+            guard !requests.map({ $0.toUserId }).contains(request.toUserId) else {
+                print("request already exists")
+                return completion(false)
+            }
+            guard !requests.map({ $0.fromUserId }).contains(request.toUserId) else {
+                print("request already exists")
+                return completion(false)
+            }
+            self.getRequests(requestIds: recipientSocial.requests, completion: { recipientRequests in
+                guard !recipientRequests.map({ $0.fromUserId }).contains(request.fromUserId) else {
+                    print("request already exists")
+                    return completion(false)
+                }
+                guard !recipientRequests.map({ $0.toUserId }).contains(request.fromUserId) else {
+                    print("request already exists")
+                    return completion(false)
+                }
+                return completion(true)
+            })
         })
     }
 
     func sendRequest(fromUserId: String, toUserId: String) {
-        API.shared.user.get(withUid: toUserId, completion: { user, error in
-            guard error == nil else {
-                print(error.debugDescription)
-                return
-            }
-            guard user != nil else {
-                print("Recipient of request not found")
+        self.checkRecipientExists(toUserId: toUserId, completion: { recipientExists in
+            guard recipientExists else {
                 return
             }
             let request = Request(fromUserId: fromUserId, toUserId: toUserId)
-            API.shared.social.get(userId: toUserId, completion: { social, error in
-                guard error == nil else {
-                    print(error.debugDescription)
+            self.checkRecipientSocialExists(toUserId: toUserId, completion: { recipientSocialExists, social in
+                guard recipientSocialExists else {
                     return
                 }
                 guard var social = social else {
-                    print("Recipient of request does not have social")
                     return
                 }
-                self.getRequests(requestIds: self.viewModel.social.requests, completion: { requests in
-                    guard !requests.map({ $0.toUserId }).contains(toUserId) else {
-                        print("request already exists")
+                self.checkRequestIsNotRepeated(request: request, recipientSocial: social, completion: { requestIsNotRepeated in
+                    guard requestIsNotRepeated else {
                         return
                     }
-                    guard !requests.map({ $0.fromUserId }).contains(toUserId) else {
-                        print("request already exists")
-                        return
-                    }
-                    self.getRequests(requestIds: social.requests, completion: { recipientRequests in
-                        guard !recipientRequests.map({ $0.fromUserId }).contains(fromUserId) else {
-                            print("request already exists")
-                            return
-                        }
-                        guard !recipientRequests.map({ $0.toUserId }).contains(fromUserId) else {
-                            print("request already exists")
-                            return
-                        }
-                        API.shared.request.save(request: request)
-                        self.viewModel.social.addRequest(requestId: request.requestId)
-                        self.saveSocial(social: self.viewModel.social)
-                        social.addRequest(requestId: request.requestId)
-                        self.saveSocial(social: social)
-                    })
+                    API.shared.request.save(request: request)
+                    self.viewModel.social.addRequest(requestId: request.requestId)
+                    self.saveSocial(social: self.viewModel.social)
+                    social.addRequest(requestId: request.requestId)
+                    self.saveSocial(social: social)
                 })
             })
         })
