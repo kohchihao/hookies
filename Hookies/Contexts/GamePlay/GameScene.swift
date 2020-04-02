@@ -219,10 +219,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: - Count down to start game
 
-    private func startCountdown() {
-        countdown(count: count)
-    }
-
     func countdown(count: Int) {
         countdownLabel?.text = "Launching player in \(count)..."
 
@@ -311,18 +307,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 // MARK: - GameEngineDelegate
 
 extension GameScene: GameEngineDelegate {
-    func didStartCountdown() {
-        startCountdown()
+    func startCountdown() {
+        countdown(count: count)
     }
 
-    func didPlayerHook(hook: HookDelegateModel) {
+    func playerDidHook(to hook: HookDelegateModel) {
         addChild(hook.anchor)
         addChild(hook.line)
         physicsWorld.add(hook.anchorLineJointPin)
         physicsWorld.add(hook.playerLineJointPin)
     }
 
-    func didPlayerUnhook(hook: HookDelegateModel) {
+    func playerDidUnhook(from hook: HookDelegateModel) {
         hook.anchor.removeFromParent()
         hook.line.removeFromParent()
         physicsWorld.remove(hook.anchorLineJointPin)

@@ -7,7 +7,7 @@
 //
 
 protocol GameEngineDelegate: AnyObject {
-    func didStartCountdown()
-    func didPlayerHook(hook: HookDelegateModel)
-    func didPlayerUnhook(hook: HookDelegateModel)
+    func startCountdown()
+    func playerDidHook(to hook: HookDelegateModel)
+    func playerDidUnhook(from hook: HookDelegateModel)
 }

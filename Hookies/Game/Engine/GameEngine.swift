@@ -211,7 +211,7 @@ class GameEngine {
                 return
             }
 
-            delegate?.didPlayerHook(hook: hookDelegateModel)
+            delegate?.playerDidHook(to: hookDelegateModel)
         } catch HookSystemError.hookComponentDoesNotExist {
             print(HookSystemError.hookComponentDoesNotExist)
             return
@@ -241,7 +241,7 @@ class GameEngine {
 
         do {
             try hookSystem?.unhookFrom(entity: player)
-            delegate?.didPlayerUnhook(hook: hookDelegateModel)
+            delegate?.playerDidUnhook(from: hookDelegateModel)
         } catch HookSystemError.hookComponentDoesNotExist {
             print(HookSystemError.hookComponentDoesNotExist)
             return
@@ -363,7 +363,7 @@ class GameEngine {
         let isAllPlayerInGame = totalNumberOfPlayers != 0 && totalNumberOfPlayers == otherPlayers.count + 1
 
         if isAllPlayerInGame {
-            delegate?.didStartCountdown()
+            delegate?.startCountdown()
             gameState = .start
         }
     }
