@@ -70,8 +70,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
-            print("=========== FINISH ============")
-            gameEngine?.stopCurrentPlayer()
+            if contact.bodyA.node == currentPlayer || contact.bodyB.node == currentPlayer {
+                 gameEngine?.stopCurrentPlayer()
+            }
         }
     }
 

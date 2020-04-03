@@ -203,6 +203,8 @@ class GameEngine {
             return
         }
 
+        finishingLineSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
+
         let hasStop = finishingLineSystem.stop(player: sprite)
 
         if !hasStop {
@@ -210,7 +212,6 @@ class GameEngine {
         }
 
         delegate?.playerHasFinishRace()
-        finishingLineSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
     }
 
     // MARK: - Update
@@ -299,7 +300,7 @@ class GameEngine {
         }
 
         if !healthSystem.isPlayerAlive(for: sprite) {
-            guard let currentPlayerId = currentPlayerId, let currentPlayer = currentPlayer else {
+            guard let currentPlayerId = currentPlayerId else {
                 return
             }
             healthSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
