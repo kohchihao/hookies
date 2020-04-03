@@ -170,8 +170,8 @@ class GameEngine {
             return
         }
 
-        deadlockSystem?.resolveDeadlock()
         deadlockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+        deadlockSystem?.resolveDeadlock()
     }
 
     // MARK: - Current Player Finsh Race
@@ -337,8 +337,6 @@ class GameEngine {
     }
 
     private func connectToGame() {
-        print("GameId: \(gameId)")
-
         API.shared.gameplay.connectToGame(gameId: gameId, completion: { otherPlayersId in
             for otherPlayerId in otherPlayersId {
                 self.setupPlayer(of: otherPlayerId)
