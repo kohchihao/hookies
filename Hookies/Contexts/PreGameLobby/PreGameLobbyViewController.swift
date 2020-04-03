@@ -107,7 +107,10 @@ class PreGameLobbyViewController: UIViewController {
         }
         saveLobby(lobby: viewModel.lobby)
         createGameplaySession(with: viewModel.lobby)
-        navigationDelegate?.didPressStartButton(in: self, withSelectedMapType: selectedMapType, gameplayId: viewModel.lobby.lobbyId)
+        navigationDelegate?.didPressStartButton(
+            in: self,
+            withSelectedMapType: selectedMapType,
+            gameplayId: viewModel.lobby.lobbyId)
     }
 
     private func createGameplaySession(with lobby: Lobby) {

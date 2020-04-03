@@ -10,7 +10,7 @@ import SpriteKit
 
 class Player {
     // MARK: - Properties
-    private let type = SpriteType.player
+    private let type = SpriteType.player1
     let id: String
     let node: SKSpriteNode
     let imageName: CostumeType
@@ -39,7 +39,7 @@ class Player {
         self.node.size = type.size
 
         self.node.physicsBody = SKPhysicsBody(rectangleOf: self.node.size)
-        self.node.physicsBody?.isDynamic = type.initialIsDynamic
+        self.node.physicsBody?.isDynamic = type.isDynamic
         self.node.physicsBody?.mass = type.mass
         self.node.physicsBody?.linearDamping = type.linearDamping
         self.node.physicsBody?.friction = type.friction
@@ -168,8 +168,9 @@ class Player {
 
     // MARK: - Render new player frame
 
-    func renderNewFrame(from position: CGPoint, attachedBolt: CGPoint?) {
+    func renderNewFrame(position: CGPoint, attachedBolt: SKSpriteNode?) {
         node.position = position
+        self.attachedBolt = attachedBolt
 
         if let attachedBolt = attachedBolt {
             line = makeLine(to: attachedBolt)

@@ -12,31 +12,28 @@ import Dispatch
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var gameplayId: String?
-    private var gameplay: Gameplay?
-    private var players = Set<Player>()
-    private var playerId: String?
-    private var player: Player?
-    private var cannon: Cannon?
-    private var finishingLine: SKSpriteNode?
-    private var cam: SKCameraNode?
+    private var currentPlayerId: String?
+    private var currentPlayer: SKSpriteNode?
 
+    private var cam: SKCameraNode?
     private var background: Background?
+    private var cannon: SKSpriteNode?
+    private var finishingLine: SKSpriteNode?
+
     private var grapplingHookButton: GrapplingHookButton?
     private var jumpButton: JumpButton?
+
     private var countdownLabel: SKLabelNode?
     private var count = 5
-    private var hasPlayerFinishRace = false
 
-    private var playerAttachedAnchor: SKNode?
-    private var anchorToPlayerLineJointPin: SKPhysicsJointPin?
-    private var playerLineToPlayerPositionJointPin: SKPhysicsJointPin?
+    private var gameEngine: GameEngine?
 
     weak var viewController: GamePlayViewController!
 
     private var powerLaunch = 1_000
 
     override func didMove(to view: SKView) {
-        playerId = API.shared.user.currentUser?.uid
+        currentPlayerId = API.shared.user.currentUser?.uid
 
         initialiseContactDelegate()
         initialiseBackground(with: view.frame.size)
@@ -45,23 +42,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         disableGameButtons()
         initialiseCamera()
         initialiseCountdownMessage()
-        initialiseFinishingLinePhysicsBody()
-        initialiseCannon()
-
-        subscribeToGameState()
+        initialiseGameEngine()
+        initialiseCurrentPlayer()
     }
 
     // MARK: - Update
 
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        updatePlayerClosestBolt()
-        handlePlayerTetheringToClosestBolt()
-        player?.checkIfStuck()
-        resolveDeadlock()
+        gameEngine?.update(time: currentTime)
+        handleCurrentPlayerTetheringToClosestBolt()
         handleJumpButton()
-        handlePlayerAfterFinishingLine()
-        pushManagedPlayer()
+    }
+
+    override func didFinishUpdate() {
+        guard let currentPlayer = currentPlayer else {
+            return
+        }
+        centerOnNode(node: currentPlayer)
     }
 
     func setPowerLaunch(at power: Int) {
@@ -72,7 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
-            handlePlayerAtFinishingLine()
+            gameEngine?.currentPlayerFinishRace()
         }
     }
 
@@ -130,173 +128,84 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         grapplingHookButton = GrapplingHookButton(in: sceneFrame)
     }
 
-    // MARK: - Initialise Finishing Line Physics Body
+    // MARK: - Initialise Game Engine
 
-    private func initialiseFinishingLinePhysicsBody() {
-        let type = SpriteType.finishingLine
-
-        guard let finishingLine = self.childNode(withName: "//ending_line") as? SKSpriteNode else {
+    private func initialiseGameEngine() {
+        guard let gameplayId = gameplayId else {
             return
         }
 
-        finishingLine.physicsBody = SKPhysicsBody(rectangleOf: finishingLine.size)
-        finishingLine.physicsBody?.isDynamic = type.isDynamic
-        finishingLine.physicsBody?.allowsRotation = type.isDynamic
-        finishingLine.physicsBody?.affectedByGravity = type.affectedByGravity
-        finishingLine.physicsBody?.categoryBitMask = type.bitMask
-
-        self.finishingLine = finishingLine
-    }
-
-    // MARK: - Initialise Cannon
-
-    private func initialiseCannon() {
-        guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode else {
-            return
-        }
-        self.cannon = Cannon(node: cannonNode)
-    }
-
-    // MARK: - Initialise Players
-
-    private func initialisePlayers(_ playersId: [String]) {
-        guard let gameplayId = self.gameplayId,
-            let cannon = self.cannon else {
+        guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode,
+            let finishingLineNode = self.childNode(withName: "//ending_line") as? SKSpriteNode
+            else {
             return
         }
 
-        for currPlayerId in playersId {
-            self.initialisePlayer(at: cannon.node.position, of: currPlayerId, and: gameplayId)
-        }
-    }
+        let boltsNode = getGameObject(of: GameObjectType.bolt)
+        let platformsNode = getGameObject(of: GameObjectType.platform)
 
-    // MARK: - Initialise Individual Player
-
-    private func initialisePlayer(at position: CGPoint, of playerId: String, and gameplayId: String) {
-        var currPlayerCostume: CostumeType?
-        API.shared.lobby.get(lobbyId: gameplayId, completion: { lobby, error in
-            if error != nil {
-                return
-            }
-
-            currPlayerCostume = lobby?.costumesId[playerId]
-
-            guard let currPlayerImageName = currPlayerCostume else {
-                return
-            }
-
-            let player: Player
-            if playerId == self.playerId {
-                let playerClosestBolt = self.getNearestBolt(from: position)
-
-                player = Player(
-                    id: playerId,
-                    position: position,
-                    imageName: currPlayerImageName,
-                    closestBolt: playerClosestBolt
-                )
-
-                self.player = player
-                self.players.insert(player)
-                self.pushManagedPlayer()
-
-                self.handleGameStart()
-            } else {
-                player = Player(
-                    id: playerId,
-                    position: position,
-                    imageName: currPlayerImageName
-                )
-
-                self.subscribeToPlayerState(playerId)
-            }
-
-            self.addChild(player.node)
-        })
-    }
-
-    // MARK: - Subscribe to game state
-
-    private func subscribeToGameState() {
-        print("sub game play")
-        guard let gameplayId = self.gameplayId else {
-            return
-        }
-
-        API.shared.gameplay.subscribeToGameState(gameId: gameplayId, listener: gameplayStateHandler(_:_:))
-    }
-
-    // MARK: - Subscribe to player state
-
-    private func subscribeToPlayerState(_ playerId: String) {
-        guard let gameplayId = self.gameplayId else {
-            return
-        }
-
-        API.shared.gameplay.subscribeToPlayerState(
+        gameEngine = GameEngine(
             gameId: gameplayId,
-            playerId: playerId,
-            listener: playerStateHandler(_:_:)
+            cannon: cannonNode,
+            finishingLine: finishingLineNode,
+            bolts: boltsNode,
+            platforms: platformsNode
         )
+
+        gameEngine?.delegate = self
+
+        self.cannon = cannonNode
+        self.finishingLine = finishingLineNode
     }
 
-    // MARK: - Gameplay state handler
+    private func getGameObject(of type: GameObjectType) -> [SKSpriteNode] {
+        var objects = [SKSpriteNode]()
 
-    private func gameplayStateHandler(_ gameplay: Gameplay?, _ error: Error?) {
-        if error != nil {
-            return
+        for object in self["//" + type.rawValue + "*"] {
+            guard let objectNode = object as? SKSpriteNode else {
+                return objects
+            }
+
+            objects.append(objectNode)
         }
 
-        guard let gameplay = gameplay else {
-            return
-        }
-
-        print("gameplay event: \(gameplay.gameState)")
-
-        switch gameplay.gameState {
-        case .waiting:
-            self.gameplay = gameplay
-            self.initialisePlayers(gameplay.playersId)
-        case .start:
-            print("start start start")
-            self.gameplay = gameplay
-            self.startCountdown()
-        }
+        return objects
     }
 
-    // MARK: - Player state handler
+    // MARK: - Initialise current player
 
-    private func playerStateHandler(_ playerGameState: PlayerGameState?, _ error: Error?) {
-        if error != nil {
+    private func initialiseCurrentPlayer() {
+        guard let gameplayId = gameplayId else {
             return
         }
 
-        guard let playerGameState = playerGameState else {
-            return
-        }
-
-        let isOtherPlayerReady = players.contains(where: { $0.id == playerGameState.playerId })
-
-        if !isOtherPlayerReady {
-            handleOtherPlayerIsReady(playerGameState)
-        } else {
-            renderPlayer(playerGameState)
-        }
-    }
-
-    // MARK: - Update managed player state to firebase
-
-    private func pushManagedPlayer() {
-        guard let gameplayId = gameplayId,
-            let managedPlayer = player else {
+        // Getting costume
+        API.shared.lobby.get(lobbyId: gameplayId, completion: { lobby, error in
+            guard error == nil else {
                 return
-        }
+            }
 
-        guard let managedPlayerState = createPlayerState(from: managedPlayer) else {
-            return
-        }
+            guard let currentPlayerId = self.currentPlayerId,
+                let cannon = self.cannon
+                else {
+                return
+            }
 
-        API.shared.gameplay.savePlayerState(gameId: gameplayId, playerState: managedPlayerState)
+            guard let costume = lobby?.costumesId[currentPlayerId] else {
+                return
+            }
+
+            guard let currentPlayer = self.gameEngine?.setCurrentPlayer(
+                id: currentPlayerId,
+                position: cannon.position,
+                image: costume.stringValue
+                ) else {
+                    return
+            }
+
+            self.currentPlayer = currentPlayer
+            self.addChild(currentPlayer)
+        })
     }
 
     // MARK: - Centering camera
@@ -307,29 +216,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.background?.run(action)
     }
 
-    override func didFinishUpdate() {
-        guard let player = player else {
-            return
-        }
-        centerOnNode(node: player.node)
-    }
-
-    // MARK: - Launch player
-
-    private func launchPlayer() {
-        guard let player = player else {
-            return
-        }
-        let velocity = getLaunchVelocity()
-        cannon?.launch(player: player, with: velocity)
-        cannon?.node.removeFromParent()
-    }
-
     // MARK: - Count down to start game
-
-    private func startCountdown() {
-        countdown(count: count)
-    }
 
     func countdown(count: Int) {
         countdownLabel?.text = "Launching player in \(count)..."
@@ -350,59 +237,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enableGameButtons()
         countdownLabel?.removeFromParent()
         viewController.hidePowerSlider()
-        launchPlayer()
-    }
-
-    // MARK: - Calculate nearest bolt
-
-    private func getNearestBolt(from position: CGPoint) -> SKSpriteNode? {
-        let allBolts = self["bolt"] // getting all the bolts within the scene.
-        var closestBolt: SKSpriteNode?
-        var closestDistance = Double.greatestFiniteMagnitude
-        for bolt in allBolts {
-            let boltPosition = bolt.position
-            let distanceX = boltPosition.x - position.x
-            let distanceY = boltPosition.y - position.y
-            let distance = sqrt(distanceX * distanceX + distanceY * distanceY)
-            closestDistance = min(Double(distance), closestDistance)
-            if closestDistance == Double(distance) {
-                closestBolt = bolt as? SKSpriteNode
-            }
-        }
-        enumerateChildNodes(withName: "bolt") { node, _ in
-            node.isHidden = false
-        }
-
-        return closestBolt
-    }
-
-    // MARK: - Create Player State
-
-    private func createPlayerState(from player: Player) -> PlayerGameState? {
-        guard let playerPhysicsBody = player.node.physicsBody  else {
-            return nil
-        }
-
-        let position = Vector(x: Double(player.node.position.x), y: Double(player.node.position.y))
-        let velocity = Vector(x: Double(playerPhysicsBody.velocity.dx), y: Double(playerPhysicsBody.velocity.dy))
-        let attachedBolt: Vector?
-        if let playerAttachedBolt = player.attachedBolt {
-            attachedBolt = Vector(x: Double(playerAttachedBolt.position.x), y: Double(playerAttachedBolt.position.y))
-        } else {
-            attachedBolt = nil
-        }
-
-        let playerGameState = PlayerGameState(
-            playerId: player.id,
-            position: position,
-            velocity: velocity,
-            imageName: player.imageName,
-            lastUpdateTime: Date(),
-            powerup: player.powerup,
-            attachedPosition: attachedBolt
-        )
-
-        return playerGameState
+        launchCurrentPlayer()
+        gameEngine?.startGame()
     }
 
     private func getLaunchVelocity() -> CGVector {
@@ -410,6 +246,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let dy = CGFloat(powerLaunch)
 
         return CGVector(dx: dx, dy: dy)
+    }
+
+    // MARK: - Launch player
+
+    private func launchCurrentPlayer() {
+        let velocity = getLaunchVelocity()
+        gameEngine?.launchCurrentPlayer(with: velocity)
+
+        cannon?.removeFromParent()
     }
 
     // MARK: - Game Buttons
@@ -423,119 +268,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         grapplingHookButton?.state = .ButtonNodeStateActive
     }
 
-    private func handleGameStart() {
-        guard let gameplay = gameplay else {
-            return
-        }
+    // MARK: - Current player tethering to hook
 
-        if gameplay.gameState == .start {
-            return
-        }
-
-        let isAllPlayersLoaded = gameplay.playersId.count == players.count
-
-        if !isAllPlayersLoaded {
-            return
-        }
-
-        var playersId = [String]()
-        for player in players {
-            playersId.append(player.id)
-        }
-
-        let gameplayStart = Gameplay(
-            gameId: gameplay.gameId,
-            gameState: .start,
-            playersId: playersId
-        )
-
-        API.shared.gameplay.saveGameState(gameplay: gameplayStart)
-    }
-
-    private func updatePlayerClosestBolt() {
-        guard let player = player else {
-            return
-        }
-
-        guard let playerClosestBolt = getNearestBolt(from: player.node.position) else {
-            return
-        }
-
-        player.closestBolt = playerClosestBolt
-    }
-
-    // MARK: - Player tethering to hook
-
-    private func handlePlayerTetheringToClosestBolt() {
+    private func handleCurrentPlayerTetheringToClosestBolt() {
         grapplingHookButton?.touchBeganHandler = handleGrapplingHookBtnTouchBegan
         grapplingHookButton?.touchEndHandler = handleGrapplingHookBtnTouchEnd
     }
 
     private func handleGrapplingHookBtnTouchBegan() {
-        self.player?.tetherToClosestBolt()
-        joinPlayerToBolt()
-    }
-
-    private func joinPlayerToBolt() {
-        let playerInitialVelocity = self.player?.node.physicsBody?.velocity
-        guard let playerPosition = self.player?.node.position,
-            let playerLine = self.player?.line,
-            let playerAttachedBolt = self.player?.attachedBolt
-            else {
-                return
-        }
-
-        let anchor = SKNode()
-        anchor.position = playerAttachedBolt.position
-        anchor.physicsBody = SKPhysicsBody()
-        anchor.physicsBody?.isDynamic = SpriteType.bolt.isDynamic
-
-        self.addChild(anchor)
-        self.addChild(playerLine)
-        playerAttachedAnchor = anchor
-
-        guard let anchorPhysicsBody = anchor.physicsBody,
-            let linePhysicsBody = playerLine.physicsBody,
-            let playerPhyscisBody = self.player?.node.physicsBody
-            else {
-                return
-        }
-
-        let boltToLine = SKPhysicsJointPin.joint(
-            withBodyA: anchorPhysicsBody,
-            bodyB: linePhysicsBody,
-            anchor: anchor.position
-        )
-        self.physicsWorld.add(boltToLine)
-        self.anchorToPlayerLineJointPin = boltToLine
-
-        let lineToPlayer = SKPhysicsJointPin.joint(
-            withBodyA: playerPhyscisBody,
-            bodyB: linePhysicsBody,
-            anchor: playerPosition
-        )
-        self.physicsWorld.add(lineToPlayer)
-        self.playerLineToPlayerPositionJointPin = lineToPlayer
-        self.player?.node.physicsBody?.applyImpulse(playerInitialVelocity!)
+        gameEngine?.currentPlayerHookAction()
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
-        guard let playerLine = self.player?.line,
-            let playerAttachedAnchor = self.playerAttachedAnchor,
-            let anchorToPlayerLineJointPin = self.anchorToPlayerLineJointPin,
-            let playerLineToPlayerPositionJointPin = self.playerLineToPlayerPositionJointPin else {
-            return
-        }
-
-        self.player?.releaseFromBolt()
-        playerLine.removeFromParent()
-
-        playerAttachedAnchor.removeFromParent()
-        self.physicsWorld.remove(anchorToPlayerLineJointPin)
-        self.physicsWorld.remove(playerLineToPlayerPositionJointPin)
-        self.playerAttachedAnchor = nil
-        self.anchorToPlayerLineJointPin = nil
-        self.playerLineToPlayerPositionJointPin = nil
+        gameEngine?.currentPlayerUnhookAction()
     }
 
     // MARK: - Resolve deadlock
@@ -553,71 +298,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleJumpButtonTouched() {
-        player?.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
+        gameEngine?.currentPlayerJumpAction()
     }
 
     private func handleJumpButtonTouchEnd() {
         jumpButton?.state = .ButtonNodeStateHidden
     }
+}
 
-    private func resolveDeadlock() {
-        guard grapplingHookButton?.state != .ButtonNodeStateDisabled else {
-            return
-        }
-        guard let player = player, !player.isAttachedToBolt else {
-            return
-        }
+// MARK: - GameEngineDelegate
 
-        if player.isStuck {
-            jumpButton?.state = .ButtonNodeStateActive
-        }
+extension GameScene: GameEngineDelegate {
+    func startCountdown() {
+        countdown(count: count)
     }
 
-    // MARK: - Handle player at finishing line
+    func playerDidHook(to hook: HookDelegateModel) {
+        addChild(hook.anchor)
+        addChild(hook.line)
+        physicsWorld.add(hook.anchorLineJointPin)
+        physicsWorld.add(hook.playerLineJointPin)
+    }
 
-    private func handlePlayerAtFinishingLine() {
-        hasPlayerFinishRace = true
+    func playerDidUnhook(from hook: HookDelegateModel) {
+        hook.anchor.removeFromParent()
+        hook.line.removeFromParent()
+        physicsWorld.remove(hook.anchorLineJointPin)
+        physicsWorld.remove(hook.playerLineJointPin)
+    }
+
+    func playerIsStuck() {
+        jumpButton?.state = .ButtonNodeStateActive
+    }
+
+    func playerHasFinishRace() {
         disableGameButtons()
-    }
-
-    private func handlePlayerAfterFinishingLine() {
-        if !hasPlayerFinishRace {
-            return
-        }
-
-        player?.bringToStop()
-    }
-
-    private func handleOtherPlayerIsReady(_ playerGameState: PlayerGameState) {
-        let playerPosition = CGPoint(x: playerGameState.position.x, y: playerGameState.position.y)
-
-        let player = Player(id: playerGameState.playerId, position: playerPosition, imageName: playerGameState.imageName)
-
-        players.insert(player)
-
-        handleGameStart()
-    }
-
-    private func renderPlayer(_ playerGameState: PlayerGameState) {
-        guard let currPlayer = players.first(where: { $0.id == playerGameState.playerId }) else {
-            return
-        }
-
-        if let currPlayerLine = currPlayer.line {
-            currPlayerLine.removeFromParent()
-        }
-
-        let newPosition = CGPoint(x: playerGameState.position.x, y: playerGameState.position.y)
-        var attachedBolt: CGPoint?
-
-        if let currPlayerAttachedBolt = playerGameState.attachedPosition {
-            attachedBolt = CGPoint(x: currPlayerAttachedBolt.x, y: currPlayerAttachedBolt.y)
-        }
-
-        currPlayer.renderNewFrame(from: newPosition, attachedBolt: attachedBolt)
-
-        if let currPlayerLine = currPlayer.line {
-            addChild(currPlayerLine)
-        }
     }
 }
