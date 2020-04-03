@@ -25,6 +25,7 @@ class GameEngine {
     private var hookSystem: HookSystem?
     private var closestBoltSystem: ClosestBoltSystem?
     private var deadLockSystem: DeadlockSystem?
+    private var healthSystem = HealthSystem()
 
     // MARK: - Entity
 
@@ -157,6 +158,7 @@ class GameEngine {
 
     func update(time: TimeInterval) {
         startCountdown()
+        checkCurrentPlayerHealth()
         updateClosestBolt()
         checkDeadlock()
         finishingLineSystem.bringPlayersToStop()
@@ -206,6 +208,22 @@ class GameEngine {
         self.finishingLine.addComponent(sprite)
 
         return sprite
+    }
+
+    // MARK: - Health
+
+    private func checkCurrentPlayerHealth() {
+        guard let sprite = currentPlayer?.getSpriteComponent() else {
+            return
+        }
+
+        if !healthSystem.isPlayerAlive(for: sprite) {
+            guard let currentPlayerId = currentPlayerId, let currentPlayer = currentPlayer else {
+                return
+            }
+            healthSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+            _ = healthSystem.respawnPlayer(for: sprite)
+        }
     }
 
     // MARK: - Player helper methods

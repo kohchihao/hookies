@@ -18,18 +18,19 @@ protocol HealthSystemProtocol {
 
 class HealthSystem: System, HealthSystemProtocol {
 
-    private let deathHorizontalLine = CGFloat(-1_000)
-    private let spawnHorizontalLine = CGFloat(500)
+    private let deathHorizontalLine = CGFloat(-500)
+    private let spawnHorizontalLine = CGFloat(200)
 
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool {
         if sprite.node.position.y <= deathHorizontalLine {
-            return true
+            return false
         }
-        return false
+        return true
     }
 
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent {
         sprite.node.position = CGPoint(x: sprite.node.position.x, y: spawnHorizontalLine)
+        sprite.node.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
         return sprite
     }
 }
