@@ -32,16 +32,23 @@ class ClosestBoltSystem: System, ClosestBoltSystemProtocol {
         previousClosestBoltSprite = currentClosestBoltSprite
         var closestDistance = Double.greatestFiniteMagnitude
         let otherEntityPosition = Vector(point: position)
+        let normalBoltTexture = SKTexture(imageNamed: "bubble_1")
+        let closestBoltTexture = SKTexture(imageNamed: "bubble_3")
+
         for bolt in boltSpriteComponents {
             let boltPositionVector = Vector(point: bolt.node.position)
             let distance = (boltPositionVector - otherEntityPosition).magnitude
             closestDistance = min(Double(distance), closestDistance)
             if closestDistance == Double(distance) {
                 currentClosestBoltSprite = bolt
+                previousClosestBoltSprite?.node.texture = normalBoltTexture
+                currentClosestBoltSprite?.node.texture = closestBoltTexture
                 return (previousClosestBoltSprite, currentClosestBoltSprite)
             }
         }
 
+        previousClosestBoltSprite?.node.texture = normalBoltTexture
+        currentClosestBoltSprite?.node.texture = closestBoltTexture
         return (previousClosestBoltSprite, currentClosestBoltSprite)
     }
 }
