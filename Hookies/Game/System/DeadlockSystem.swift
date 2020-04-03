@@ -39,6 +39,17 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
        return isVelocityNearlyZero || isInfiniteBouncing
     }
 
+    func resolveDeadlock() {
+        sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
+    }
+
+    func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
+        sprite.node.position = position
+        sprite.node.physicsBody?.velocity = velocity
+
+        sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
+    }
+
     /// Checks for velocity is nearly 0.
     private func isVelocityNearlyZeroDeadlock(_ physicsBody: SKPhysicsBody) -> Bool {
         let playerHorizontalVelocity = physicsBody.velocity.dx

@@ -9,7 +9,8 @@
 import SpriteKit
 
 protocol FinishingLineSystemProtocol {
-    func stop(player: SpriteComponent) throws
+    func stop(player: SpriteComponent) -> Bool
+    func stop(player: SpriteComponent, at position: CGPoint) -> Bool
     func bringPlayersToStop()
 }
 
@@ -48,13 +49,28 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         playersState[player] = .moving
     }
 
-    func stop(player: SpriteComponent) throws {
+    func stop(player: SpriteComponent) -> Bool {
         guard let systemPlayer = players.first(where: { $0 == player }) else {
-            throw FinishingLineSystemError.spriteDoesNotExist
+            return false
         }
 
         playersState[systemPlayer] = .stopping
         finishedPlayers += 1
+
+        return true
+    }
+
+    func stop(player: SpriteComponent, at position: CGPoint) -> Bool {
+        guard let systemPlayer = players.first(where: { $0 == player }) else {
+            return false
+        }
+
+        systemPlayer.node.position = position
+
+        playersState[systemPlayer] = .stopping
+        finishedPlayers += 1
+
+        return true
     }
 
     func bringPlayersToStop() {

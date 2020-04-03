@@ -12,8 +12,8 @@ import SpriteKit
 
 protocol HookSystemProtocol {
     func add(hook: HookComponent) -> HookComponent
-    func hookTo(hook: HookComponent) throws
-    func unhookFrom(entity: Entity) throws
+    func hookTo(hook: HookComponent) -> Bool
+    func unhookFrom(entity: Entity) -> Bool
 }
 
 enum HookSystemError: Error {
@@ -38,21 +38,21 @@ class HookSystem: System, HookSystemProtocol {
         return element
     }
 
-    func hookTo(hook: HookComponent) throws {
+    func hookTo(hook: HookComponent) -> Bool {
         guard let systemHook = hooks.first(where: { $0 == hook }) else {
-            throw HookSystemError.hookComponentDoesNotExist
+            return false
         }
 
         guard let parentSprite = getParentSprite(of: systemHook) else {
-            throw HookSystemError.spriteComponentDoesNotExist
+            return false
         }
 
         guard let parentSpriteInitialVelocity = parentSprite.node.physicsBody?.velocity else {
-            return
+            return false
         }
 
         guard let closestBolt = findClosestBolt(from: parentSprite.node.position) else {
-            throw HookSystemError.closestHookToEntityDoesNotExist
+            return false
         }
 
         if let prevAttachedBolt = hook.prevHookTo {
@@ -67,7 +67,7 @@ class HookSystem: System, HookSystemProtocol {
 
         guard let anchorLineJointPin = makeJointPinToLine(from: anchor, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: parentSprite.node, toLine: line) else {
-                throw HookSystemError.physicsBodyDoesNotExist
+                return false
         }
 
         parentSprite.node.physicsBody?.applyImpulse(parentSpriteInitialVelocity)
@@ -77,11 +77,13 @@ class HookSystem: System, HookSystemProtocol {
         systemHook.line = line
         systemHook.anchorLineJointPin = anchorLineJointPin
         systemHook.parentLineJointPin = spriteLineJointPin
+
+        return true
     }
 
-    func unhookFrom(entity: Entity) throws {
+    func unhookFrom(entity: Entity) -> Bool {
         guard let hook = entity.getHookComponent() else {
-            throw HookSystemError.hookComponentDoesNotExist
+            return false
         }
 
         hook.prevHookTo = hook.hookTo
@@ -90,6 +92,8 @@ class HookSystem: System, HookSystemProtocol {
         hook.line = nil
         hook.anchorLineJointPin = nil
         hook.parentLineJointPin = nil
+
+        return true
     }
 
     private func getParentSprite(of hook: HookComponent) -> SpriteComponent? {

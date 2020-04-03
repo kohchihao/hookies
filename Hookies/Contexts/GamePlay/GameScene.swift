@@ -70,7 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
-            gameEngine?.currentPlayerFinishRace()
+            gameEngine?.stopCurrentPlayer()
         }
     }
 
@@ -277,11 +277,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleGrapplingHookBtnTouchBegan() {
-        gameEngine?.currentPlayerHookAction()
+        gameEngine?.applyHookActionToCurrentPlayer()
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
-        gameEngine?.currentPlayerUnhookAction()
+        gameEngine?.applyUnhookActionToCurrentPlayer()
     }
 
     // MARK: - Resolve deadlock
@@ -334,5 +334,9 @@ extension GameScene: GameEngineDelegate {
 
     func playerHasFinishRace() {
         disableGameButtons()
+    }
+
+    func otherPlayerIsConnected(otherPlayer: SKSpriteNode) {
+        addChild(otherPlayer)
     }
 }
