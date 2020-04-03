@@ -17,7 +17,6 @@ class SocialViewController: UIViewController {
     weak var navigationDelegate: SocialViewNavigationDelegate?
     private var viewModel: SocialViewModelRepresentable
 
-    @IBOutlet private var socialLabel: UILabel!
     @IBOutlet private var socialTableView: UITableView!
     @IBOutlet private var incomingRequestTableView: UITableView!
     @IBOutlet private var outgoingRequestTableView: UITableView!
@@ -187,7 +186,6 @@ class SocialViewController: UIViewController {
     }
 
     func updateView() {
-        self.socialLabel.text = self.viewModel.social.userId
         self.socialTableView.reloadData()
         self.incomingRequestTableView.reloadData()
         self.outgoingRequestTableView.reloadData()
