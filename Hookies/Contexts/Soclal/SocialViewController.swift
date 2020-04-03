@@ -93,10 +93,6 @@ class SocialViewController: UIViewController {
         return true
     }
 
-    func saveSocial(social: Social) {
-        API.shared.social.save(social: social)
-    }
-
     func subscribeToSocial(social: Social) {
         guard let currentUser = API.shared.user.currentUser else {
             return
@@ -147,10 +143,6 @@ class SocialViewController: UIViewController {
                 print("user does not exists")
                 return
             }
-            guard !self.viewModel.social.friends.contains(toUserId) else {
-                print("Recipient is already in friend list")
-                return
-            }
             RequestManager.sendRequest(fromUserId: fromUserId, toUserId: toUserId)
         })
     }
@@ -188,9 +180,9 @@ class SocialViewController: UIViewController {
                 return
             }
             self.viewModel.social.removeFriend(userId: user.uid)
-            self.saveSocial(social: self.viewModel.social)
+            API.shared.social.save(social: self.viewModel.social)
             social.removeFriend(userId: currentUser.uid)
-            self.saveSocial(social: social)
+            API.shared.social.save(social: social)
         })
     }
 
