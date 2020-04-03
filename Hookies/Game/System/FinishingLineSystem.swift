@@ -50,14 +50,7 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
     }
 
     func stop(player: SpriteComponent) -> Bool {
-        guard let systemPlayer = players.first(where: { $0 == player }) else {
-            return false
-        }
-
-        playersState[systemPlayer] = .stopping
-        finishedPlayers += 1
-
-        return true
+        return stop(player: player, at: player.node.position)
     }
 
     func stop(player: SpriteComponent, at position: CGPoint) -> Bool {

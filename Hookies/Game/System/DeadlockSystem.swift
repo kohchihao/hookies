@@ -40,7 +40,11 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
     }
 
     func resolveDeadlock() {
-        sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
+        guard let velocity = sprite.node.physicsBody?.velocity else {
+            return
+        }
+
+        return resolveDeadlock(for: sprite, at: sprite.node.position, with: velocity)
     }
 
     func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {

@@ -47,6 +47,25 @@ class HookSystem: System, HookSystemProtocol {
             return false
         }
 
+        guard let velocity = parentSprite.node.physicsBody?.velocity else {
+            return false
+        }
+
+        return hookTo(hook: systemHook, at: parentSprite.node.position, with: velocity)
+    }
+
+    func hookTo(hook: HookComponent, at position: CGPoint, with velocity: CGVector) -> Bool {
+        guard let systemHook = hooks.first(where: { $0 == hook }) else {
+            return false
+        }
+
+        guard let parentSprite = getParentSprite(of: systemHook) else {
+            return false
+        }
+
+        parentSprite.node.position = position
+        parentSprite.node.physicsBody?.velocity = velocity
+
         guard let parentSpriteInitialVelocity = parentSprite.node.physicsBody?.velocity else {
             return false
         }
@@ -82,9 +101,28 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     func unhookFrom(entity: Entity) -> Bool {
+        guard let sprite = entity.getSpriteComponent() else {
+            return false
+        }
+
+        guard let velocity = sprite.node.physicsBody?.velocity else {
+            return false
+        }
+
+        return unhookFrom(entity: entity, at: sprite.node.position, with: velocity)
+    }
+
+    func unhookFrom(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
         guard let hook = entity.getHookComponent() else {
             return false
         }
+
+        guard let sprite = entity.getSpriteComponent() else {
+            return false
+        }
+
+        sprite.node.position = position
+        sprite.node.physicsBody?.velocity = velocity
 
         hook.prevHookTo = hook.hookTo
         hook.hookTo = nil

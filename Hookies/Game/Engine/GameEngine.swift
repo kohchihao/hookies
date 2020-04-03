@@ -337,6 +337,8 @@ class GameEngine {
     }
 
     private func connectToGame() {
+        print("GameId: \(gameId)")
+
         API.shared.gameplay.connectToGame(gameId: gameId, completion: { otherPlayersId in
             for otherPlayerId in otherPlayersId {
                 self.setupPlayer(of: otherPlayerId)
@@ -394,7 +396,7 @@ class GameEngine {
     private func setupMultiplayer() {
         subscribeToOtherPlayersState()
         subscribeToGenericPlayerEvent()
-//        subscribeToHookAction()
+        subscribeToHookAction()
 //        subscribeToPowerupAction()
     }
 
@@ -510,10 +512,62 @@ class GameEngine {
     }
 
     private func applyHookAction(on hook: HookActionData) {
+        guard let otherPlayer = otherPlayers[hook.playerData.playerId] else {
+            return
+        }
 
+        guard let hookComponent = otherPlayer.getHookComponent() else {
+            return
+        }
+
+        guard let velocity = hook.playerData.velocity else {
+            return
+        }
+
+        guard let hookSystem = hookSystem else {
+            return
+        }
+
+        let hasHook = hookSystem.hookTo(
+            hook: hookComponent,
+            at: CGPoint(vector: hook.playerData.position),
+            with: CGVector(vector: velocity)
+        )
+
+        if !hasHook {
+            return
+        }
+
+        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
+            return
+        }
+
+        delegate?.playerDidHook(to: hookDelegateModel)
     }
 
     private func applyUnhookAction(on hook: HookActionData) {
+        guard let otherPlayer = otherPlayers[hook.playerData.playerId] else {
+            return
+        }
 
+        guard let hookComponent = otherPlayer.getHookComponent() else {
+            return
+        }
+
+        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
+            return
+        }
+
+        guard let hookSystem = hookSystem else {
+            return
+        }
+
+        let hasUnhook = hookSystem.unhookFrom(entity: otherPlayer)
+
+        if !hasUnhook {
+            return
+        }
+
+        delegate?.playerDidUnhook(from: hookDelegateModel)
     }
 }
