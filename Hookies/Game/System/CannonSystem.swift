@@ -24,3 +24,11 @@ class CannonSystem: System, CannonSystemProtocol {
         player.node.physicsBody?.applyImpulse(velocity)
     }
 }
+
+// MARK: - Broadcast Update
+
+extension CannonSystem: GenericPlayerEventBroadcast {
+    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
+        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .shotFromCannon)
+    }
+}

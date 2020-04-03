@@ -47,6 +47,10 @@ class HookSystem: System, HookSystemProtocol {
             throw HookSystemError.spriteComponentDoesNotExist
         }
 
+        guard let parentSpriteInitialVelocity = parentSprite.node.physicsBody?.velocity else {
+            return
+        }
+
         guard let closestBolt = findClosestBolt(from: parentSprite.node.position) else {
             throw HookSystemError.closestHookToEntityDoesNotExist
         }
@@ -66,6 +70,8 @@ class HookSystem: System, HookSystemProtocol {
                 throw HookSystemError.physicsBodyDoesNotExist
         }
 
+        parentSprite.node.physicsBody?.applyImpulse(parentSpriteInitialVelocity)
+
         systemHook.hookTo = closestBolt
         systemHook.anchor = anchor
         systemHook.line = line
@@ -74,7 +80,7 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     func unhookFrom(entity: Entity) throws {
-        guard let hook = getHook(from: entity) else {
+        guard let hook = entity.getHookComponent() else {
             throw HookSystemError.hookComponentDoesNotExist
         }
 
@@ -87,27 +93,7 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     private func getParentSprite(of hook: HookComponent) -> SpriteComponent? {
-        return getSprite(from: hook.parent)
-    }
-
-    private func getSprite(from entity: Entity) -> SpriteComponent? {
-        for component in entity.components {
-            if let sprite = component as? SpriteComponent {
-                return sprite
-            }
-        }
-
-        return nil
-    }
-
-    private func getHook(from entity: Entity) -> HookComponent? {
-        for component in entity.components {
-            if let hook = component as? HookComponent {
-                return hook
-            }
-        }
-
-        return nil
+        return hook.parent.getSpriteComponent()
     }
 
     private func findClosestBolt(from position: CGPoint) -> SpriteComponent? {
@@ -176,7 +162,7 @@ extension HookSystem {
         and player: PlayerEntity,
         of type: HookActionType
     ) -> HookActionData? {
-        guard let sprite = getSprite(from: player) else {
+        guard let sprite = player.getSpriteComponent() else {
             return nil
         }
 
