@@ -11,28 +11,39 @@ import Foundation
 struct Social {
     private(set) var userId: String
     private(set) var friends: [String] = []
-    private(set) var requests: [String] = []
-    private(set) var invites: [String] = []
+    private(set) var incomingRequests: [String] = []
+    private(set) var outgoingRequests: [String] = []
+    private(set) var incomingInvites: [String] = []
+    private(set) var outgoingInvites: [String] = []
 
     init(userId: String) {
         self.userId = userId
     }
 
-    init(userId: String, friends: [String], requests: [String], invites: [String]) {
+    init(userId: String, friends: [String], inRequests: [String], outRequests: [String], inInvites: [String], outInvites: [String]) {
         self.userId = userId
         self.friends = friends
-        self.requests = requests
-        self.invites = invites
+        self.incomingRequests = inRequests
+        self.outgoingRequests = outRequests
+        self.incomingInvites = inInvites
+        self.outgoingInvites = outInvites
     }
 
-    mutating func addRequest(requestId: String) {
-        if !self.requests.contains(requestId) {
-            self.requests.append(requestId)
+    mutating func addIncomingRequest(requestId: String) {
+        if !self.incomingRequests.contains(requestId) {
+            self.incomingRequests.append(requestId)
+        }
+    }
+
+    mutating func addOutgoingRequest(requestId: String) {
+        if !self.outgoingRequests.contains(requestId) {
+            self.outgoingRequests.append(requestId)
         }
     }
 
     mutating func removeRequest(requestId: String) {
-        self.requests = self.requests.filter({ $0 != requestId })
+        self.incomingRequests = self.incomingRequests.filter({ $0 != requestId })
+        self.outgoingRequests = self.outgoingRequests.filter({ $0 != requestId })
     }
 
     mutating func addFriend(userId: String) {

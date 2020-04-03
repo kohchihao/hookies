@@ -13,7 +13,7 @@ extension Social: FirestoreModel {
         return userId
     }
 
-    var encoding: [String : Any] {
+    var encoding: [String: Any] {
         return defaultEncoding()
     }
 
@@ -21,8 +21,10 @@ extension Social: FirestoreModel {
         try? self.init(
             userId: modelData.documentID,
             friends: modelData.value(forKey: "friends"),
-            requests: modelData.value(forKey: "requests"),
-            invites: modelData.value(forKey: "invites")
+            inRequests: modelData.value(forKey: "incomingRequests"),
+            outRequests: modelData.value(forKey: "outgoingRequests"),
+            inInvites: modelData.value(forKey: "incomingInvites"),
+            outInvites: modelData.value(forKey: "outgoingInvites")
         )
     }
 }

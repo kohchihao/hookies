@@ -9,8 +9,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SocialViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
-                <outlet property="inviteTableView" destination="eyb-BS-tdM" id="86d-VP-LgR"/>
-                <outlet property="requestTableView" destination="9Kk-Dc-GDK" id="hPq-ub-MwA"/>
+                <outlet property="incomingInviteTableView" destination="eyb-BS-tdM" id="86d-VP-LgR"/>
+                <outlet property="incomingRequestTableView" destination="9Kk-Dc-GDK" id="hPq-ub-MwA"/>
+                <outlet property="outgoingInviteTableView" destination="vhn-Bj-9OM" id="Ufc-x5-zto"/>
+                <outlet property="outgoingRequestTableView" destination="gXx-pK-FqQ" id="7po-A4-Iz0"/>
                 <outlet property="requestTextField" destination="bUn-f0-Xbc" id="srS-aC-m1f"/>
                 <outlet property="socialLabel" destination="RDe-oN-U4E" id="aTM-VK-GzN"/>
                 <outlet property="socialTableView" destination="y1B-t6-gwq" id="1m4-3o-qhL"/>
@@ -30,17 +32,22 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="y1B-t6-gwq">
-                    <rect key="frame" x="20" y="60" width="321" height="532"/>
+                    <rect key="frame" x="20" y="60" width="321" height="564"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </tableView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9Kk-Dc-GDK">
-                    <rect key="frame" x="349" y="60" width="326" height="532"/>
+                    <rect key="frame" x="349" y="60" width="326" height="278"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gXx-pK-FqQ">
+                    <rect key="frame" x="349" y="346" width="326" height="278"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </tableView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eyb-BS-tdM">
-                    <rect key="frame" x="683" y="60" width="326" height="532"/>
+                    <rect key="frame" x="683" y="60" width="326" height="278"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </tableView>
@@ -58,6 +65,11 @@
                         <action selector="sendRequestButtonClicked:" destination="-1" eventType="touchUpInside" id="zVb-Un-IEP"/>
                     </connections>
                 </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vhn-Bj-9OM">
+                    <rect key="frame" x="683" y="346" width="326" height="278"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

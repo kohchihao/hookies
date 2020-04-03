@@ -19,8 +19,10 @@ class SocialViewController: UIViewController {
 
     @IBOutlet private var socialLabel: UILabel!
     @IBOutlet private var socialTableView: UITableView!
-    @IBOutlet private var requestTableView: UITableView!
-    @IBOutlet private var inviteTableView: UITableView!
+    @IBOutlet private var incomingRequestTableView: UITableView!
+    @IBOutlet private var outgoingRequestTableView: UITableView!
+    @IBOutlet private var incomingInviteTableView: UITableView!
+    @IBOutlet private var outgoingInviteTableView: UITableView!
     @IBOutlet private var requestTextField: UITextField!
 
     init(with viewModel: SocialViewModelRepresentable) {
@@ -43,15 +45,25 @@ class SocialViewController: UIViewController {
         socialTableView.register(friendTableViewCell, forCellReuseIdentifier: "FriendTableViewCell")
         socialTableView.allowsSelection = false
 
-        requestTableView.dataSource = self
-        requestTableView.delegate = self
+        incomingRequestTableView.dataSource = self
+        incomingRequestTableView.delegate = self
         let requestTableViewCell = UINib(nibName: "RequestTableViewCell", bundle: nil)
-        requestTableView.register(requestTableViewCell, forCellReuseIdentifier: "RequestTableViewCell")
-        requestTableView.allowsSelection = false
+        incomingRequestTableView.register(requestTableViewCell, forCellReuseIdentifier: "RequestTableViewCell")
+        incomingRequestTableView.allowsSelection = false
 
-        inviteTableView.dataSource = self
-        inviteTableView.delegate = self
-        inviteTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LabelCell")
+        outgoingRequestTableView.dataSource = self
+        outgoingRequestTableView.delegate = self
+        outgoingRequestTableView.register(requestTableViewCell, forCellReuseIdentifier: "RequestTableViewCell")
+        outgoingRequestTableView.allowsSelection = false
+
+        incomingInviteTableView.dataSource = self
+        incomingInviteTableView.delegate = self
+        incomingInviteTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LabelCell")
+
+        outgoingInviteTableView.dataSource = self
+        outgoingInviteTableView.delegate = self
+        outgoingInviteTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LabelCell")
+
         updateView()
     }
 
@@ -135,109 +147,8 @@ class SocialViewController: UIViewController {
                 print("Recipient is already in friend list")
                 return
             }
-            self.sendRequest(fromUserId: fromUserId, toUserId: toUserId)
+            RequestManager.sendRequest(fromUserId: fromUserId, toUserId: toUserId)
         })
-    }
-
-    func checkRecipientExists(toUserId: String, completion: @escaping (Bool) -> Void) {
-        API.shared.user.get(withUid: toUserId, completion: { user, error in
-            guard error == nil else {
-                print(error.debugDescription)
-                return completion(false)
-            }
-            guard user != nil else {
-                print("Recipient of request not found")
-                return completion(false)
-            }
-            return completion(true)
-        })
-    }
-
-    func checkRecipientSocialExists(toUserId: String, completion: @escaping (Bool, Social?) -> Void) {
-        API.shared.social.get(userId: toUserId, completion: { social, error in
-            guard error == nil else {
-                print(error.debugDescription)
-                return completion(false, nil)
-            }
-            guard let social = social else {
-                print("Recipient of request does not have social")
-                return completion(false, nil)
-            }
-            return completion(true, social)
-        })
-    }
-
-    func checkRequestIsNotRepeated(request: Request, recipientSocial: Social, completion: @escaping (Bool) -> Void) {
-        self.getRequests(requestIds: self.viewModel.social.requests, completion: { requests in
-            guard !requests.map({ $0.toUserId }).contains(request.toUserId) else {
-                print("request already exists")
-                return completion(false)
-            }
-            guard !requests.map({ $0.fromUserId }).contains(request.toUserId) else {
-                print("request already exists")
-                return completion(false)
-            }
-            self.getRequests(requestIds: recipientSocial.requests, completion: { recipientRequests in
-                guard !recipientRequests.map({ $0.fromUserId }).contains(request.fromUserId) else {
-                    print("request already exists")
-                    return completion(false)
-                }
-                guard !recipientRequests.map({ $0.toUserId }).contains(request.fromUserId) else {
-                    print("request already exists")
-                    return completion(false)
-                }
-                return completion(true)
-            })
-        })
-    }
-
-    func sendRequest(fromUserId: String, toUserId: String) {
-        self.checkRecipientExists(toUserId: toUserId, completion: { recipientExists in
-            guard recipientExists else {
-                return
-            }
-            let request = Request(fromUserId: fromUserId, toUserId: toUserId)
-            self.checkRecipientSocialExists(toUserId: toUserId, completion: { recipientSocialExists, social in
-                guard recipientSocialExists else {
-                    return
-                }
-                guard var social = social else {
-                    return
-                }
-                self.checkRequestIsNotRepeated(request: request, recipientSocial: social, completion: { requestIsNotRepeated in
-                    guard requestIsNotRepeated else {
-                        return
-                    }
-                    API.shared.request.save(request: request)
-                    self.viewModel.social.addRequest(requestId: request.requestId)
-                    self.saveSocial(social: self.viewModel.social)
-                    social.addRequest(requestId: request.requestId)
-                    self.saveSocial(social: social)
-                })
-            })
-        })
-    }
-
-    func getRequests(requestIds: [String], completion: @escaping ([Request]) -> Void) {
-        var requests: [Request] = []
-        let dispatch = DispatchGroup()
-        for requestId in requestIds {
-            dispatch.enter()
-            API.shared.request.get(requestId: requestId, completion: { request, error in
-                guard error == nil else {
-                    print(error.debugDescription)
-                    return
-                }
-                guard let request = request else {
-                    return
-                }
-                requests.append(request)
-                dispatch.leave()
-            })
-        }
-        dispatch.notify(queue: DispatchQueue.main) {
-            completion(requests)
-        }
     }
 
     func acceptRequest(requestId: String) {
@@ -278,9 +189,6 @@ class SocialViewController: UIViewController {
     }
 
     func rejectRequest(requestId: String) {
-        guard let currentUser = API.shared.user.currentUser else {
-            return
-        }
         API.shared.request.get(requestId: requestId, completion: { request, error in
             guard error == nil else {
                 print(error.debugDescription)
@@ -344,8 +252,10 @@ class SocialViewController: UIViewController {
     func updateView() {
         self.socialLabel.text = self.viewModel.social.userId
         self.socialTableView.reloadData()
-        self.requestTableView.reloadData()
-        self.inviteTableView.reloadData()
+        self.incomingRequestTableView.reloadData()
+        self.outgoingRequestTableView.reloadData()
+        self.incomingInviteTableView.reloadData()
+        self.outgoingInviteTableView.reloadData()
     }
 
     deinit {
@@ -359,10 +269,14 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
         switch tableView {
         case self.socialTableView:
             return self.viewModel.social.friends.count
-        case self.requestTableView:
-            return self.viewModel.social.requests.count
-        case self.inviteTableView:
-            return self.viewModel.social.invites.count
+        case self.incomingRequestTableView:
+            return self.viewModel.social.incomingRequests.count
+        case self.outgoingRequestTableView:
+            return self.viewModel.social.outgoingRequests.count
+        case self.incomingInviteTableView:
+            return self.viewModel.social.incomingInvites.count
+        case self.outgoingInviteTableView:
+            return self.viewModel.social.outgoingInvites.count
         default:
             return 0
         }
@@ -377,16 +291,27 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
             cell.delegate = self
             getUsername(userId: self.viewModel.social.friends[indexPath.row], cell: cell)
             return cell
-        case self.requestTableView:
+        case self.incomingRequestTableView:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "RequestTableViewCell", for: indexPath) as? RequestTableViewCell else {
                 return UITableViewCell()
             }
             cell.delegate = self
-            getRecipientName(requestId: self.viewModel.social.requests[indexPath.row], cell: cell)
+            getRecipientName(requestId: self.viewModel.social.incomingRequests[indexPath.row], cell: cell)
             return cell
-        case self.inviteTableView:
+        case self.outgoingRequestTableView:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "RequestTableViewCell", for: indexPath) as? RequestTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.delegate = self
+            getRecipientName(requestId: self.viewModel.social.outgoingRequests[indexPath.row], cell: cell)
+            return cell
+        case self.incomingInviteTableView:
             let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
-            cell.textLabel?.text = self.viewModel.social.invites[indexPath.row]
+            cell.textLabel?.text = self.viewModel.social.incomingInvites[indexPath.row]
+            return cell
+        case self.outgoingInviteTableView:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
+            cell.textLabel?.text = self.viewModel.social.outgoingInvites[indexPath.row]
             return cell
         default:
             let cell = UITableViewCell()
