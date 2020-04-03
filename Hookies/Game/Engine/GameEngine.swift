@@ -92,8 +92,8 @@ class GameEngine {
             return
         }
 
-        cannonSystem.launch(player: sprite, with: velocity)
         cannonSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+        cannonSystem.launch(player: sprite, with: velocity)
     }
 
     // MARK: - Start Game
