@@ -92,8 +92,8 @@ class GameEngine {
             return
         }
 
-        cannonSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
         cannonSystem.launch(player: sprite, with: velocity)
+        cannonSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
     }
 
     // MARK: - Start Game
@@ -118,7 +118,11 @@ class GameEngine {
             return
         }
 
-        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .activate)
+        guard let sprite = currentPlayer.getSpriteComponent() else {
+            return
+        }
+
+        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite, type: .activate)
 
         let hasHook = hookSystem.hookTo(hook: hook)
 
@@ -151,7 +155,11 @@ class GameEngine {
             return
         }
 
-        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .deactivate)
+        guard let sprite = currentPlayer.getSpriteComponent() else {
+            return
+        }
+
+        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite, type: .deactivate)
 
         let hasUnhook = hookSystem.unhookFrom(entity: currentPlayer)
 
@@ -170,7 +178,11 @@ class GameEngine {
             return
         }
 
-        deadlockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+        guard let sprite = currentPlayer.getSpriteComponent() else {
+            return
+        }
+
+        deadlockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
         deadlockSystem?.resolveDeadlock()
     }
 
@@ -193,7 +205,7 @@ class GameEngine {
         }
 
         delegate?.playerHasFinishRace()
-        finishingLineSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+        finishingLineSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
     }
 
     // MARK: - Update
@@ -472,7 +484,7 @@ class GameEngine {
             return
         }
 
-        cannonSystem.launch(player: sprite, with: CGVector(vector: velocity))
+        cannonSystem.launch(otherPlayer: sprite, with: CGVector(vector: velocity))
     }
 
     private func applyJumpAction(to otherPlayer: GenericPlayerEventData) {

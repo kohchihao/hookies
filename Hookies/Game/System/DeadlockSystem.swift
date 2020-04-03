@@ -89,7 +89,7 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
 // MARK: - Broadcast Update
 
 extension DeadlockSystem: GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
         broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .jumpAction)
     }
 }

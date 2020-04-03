@@ -191,7 +191,7 @@ class HookSystem: System, HookSystemProtocol {
 // MARK: - Broadcast Update
 
 extension HookSystem {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity, type: HookActionType) {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent, type: HookActionType) {
         guard let hookActionData = createHookAction(from: playerId, and: player, of: type) else {
             return
         }
@@ -201,17 +201,13 @@ extension HookSystem {
 
     private func createHookAction(
         from playerId: String,
-        and player: PlayerEntity,
+        and player: SpriteComponent,
         of type: HookActionType
     ) -> HookActionData? {
-        guard let sprite = player.getSpriteComponent() else {
-            return nil
-        }
-
         let hookActionData = HookActionData(
             playerId: playerId,
-            position: Vector(point: sprite.node.position),
-            velocity: Vector(vector: sprite.node.physicsBody?.velocity),
+            position: Vector(point: player.node.position),
+            velocity: Vector(vector: player.node.physicsBody?.velocity),
             type: type
         )
 

@@ -108,7 +108,7 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
 // MARK: - Broadcast Update
 
 extension FinishingLineSystem: GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
         broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .reachedFinishedLine)
     }
 }

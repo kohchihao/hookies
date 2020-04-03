@@ -23,12 +23,17 @@ class CannonSystem: System, CannonSystemProtocol {
         player.node.physicsBody?.isDynamic = true
         player.node.physicsBody?.applyImpulse(velocity)
     }
+
+    func launch(otherPlayer: SpriteComponent, with velocity: CGVector) {
+        otherPlayer.node.physicsBody?.isDynamic = true
+        otherPlayer.node.physicsBody?.velocity = velocity
+    }
 }
 
 // MARK: - Broadcast Update
 
 extension CannonSystem: GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
         broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .shotFromCannon)
     }
 }
