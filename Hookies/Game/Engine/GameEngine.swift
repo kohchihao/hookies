@@ -118,6 +118,8 @@ class GameEngine {
             return
         }
 
+        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .activate)
+
         let hasHook = hookSystem.hookTo(hook: hook)
 
         if !hasHook {
@@ -129,8 +131,6 @@ class GameEngine {
         }
 
         delegate?.playerDidHook(to: hookDelegateModel)
-
-        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .activate)
     }
 
     func applyUnhookActionToCurrentPlayer() {
@@ -151,6 +151,8 @@ class GameEngine {
             return
         }
 
+        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .deactivate)
+
         let hasUnhook = hookSystem.unhookFrom(entity: currentPlayer)
 
         if !hasUnhook {
@@ -158,8 +160,6 @@ class GameEngine {
         }
 
         delegate?.playerDidUnhook(from: hookDelegateModel)
-
-        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .deactivate)
     }
 
     // MARK: - Current Player Jump Action
