@@ -33,3 +33,11 @@ class HealthSystem: System, HealthSystemProtocol {
         return sprite
     }
 }
+
+// MARK: - Broadcast Update
+
+extension HealthSystem: GenericPlayerEventBroadcast {
+    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
+        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .playerDied)
+    }
+}
