@@ -31,5 +31,5 @@ class SocialViewModel: SocialViewModelRepresentable {
 }
 
 protocol SocialViewModelDelegate: class {
-    
+
 }

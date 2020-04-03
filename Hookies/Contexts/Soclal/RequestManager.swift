@@ -136,4 +136,68 @@ struct RequestManager {
             })
         })
     }
+
+    static func getRequest(requestId: String, completion: @escaping (Request?) -> Void) {
+        API.shared.request.get(requestId: requestId, completion: { request, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return completion(nil)
+            }
+            guard let request = request else {
+                print("request not found")
+                return completion(nil)
+            }
+            return completion(request)
+        })
+    }
+
+    static func acceptRequest(requestId: String) {
+        getRequest(requestId: requestId, completion: { request in
+            guard let request = request else {
+                return
+            }
+            self.checkUsersSocialExist(request: request, completion: { recipientSocialExists, senderSocial, recipientSocial  in
+                guard recipientSocialExists else {
+                    return
+                }
+                guard var sender = senderSocial else {
+                    return
+                }
+                guard var recipient = recipientSocial else {
+                    return
+                }
+                sender.addFriend(userId: request.toUserId)
+                sender.removeRequest(requestId: requestId)
+                API.shared.social.save(social: sender)
+                recipient.addFriend(userId: request.fromUserId)
+                recipient.removeRequest(requestId: requestId)
+                API.shared.social.save(social: recipient)
+                API.shared.request.delete(request: request)
+            })
+        })
+    }
+
+    static func rejectRequest(requestId: String) {
+        getRequest(requestId: requestId, completion: { request in
+            guard let request = request else {
+                return
+            }
+            self.checkUsersSocialExist(request: request, completion: { recipientSocialExists, senderSocial, recipientSocial  in
+                guard recipientSocialExists else {
+                    return
+                }
+                guard var sender = senderSocial else {
+                    return
+                }
+                guard var recipient = recipientSocial else {
+                    return
+                }
+                sender.removeRequest(requestId: requestId)
+                API.shared.social.save(social: sender)
+                recipient.removeRequest(requestId: requestId)
+                API.shared.social.save(social: recipient)
+                API.shared.request.delete(request: request)
+            })
+        })
+    }
 }

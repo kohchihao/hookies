@@ -39,21 +39,25 @@ class SocialViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        var identifier = "FriendTableViewCell"
+
         socialTableView.dataSource = self
         socialTableView.delegate = self
-        let friendTableViewCell = UINib(nibName: "FriendTableViewCell", bundle: nil)
-        socialTableView.register(friendTableViewCell, forCellReuseIdentifier: "FriendTableViewCell")
+        let friendTableViewCell = UINib(nibName: identifier, bundle: nil)
+        socialTableView.register(friendTableViewCell, forCellReuseIdentifier: identifier)
         socialTableView.allowsSelection = false
 
+        identifier = "IncomingRequestTableViewCell"
         incomingRequestTableView.dataSource = self
         incomingRequestTableView.delegate = self
-        let requestTableViewCell = UINib(nibName: "RequestTableViewCell", bundle: nil)
-        incomingRequestTableView.register(requestTableViewCell, forCellReuseIdentifier: "RequestTableViewCell")
+        incomingRequestTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
         incomingRequestTableView.allowsSelection = false
 
+        identifier = "OutgoingRequestTableViewCell"
         outgoingRequestTableView.dataSource = self
         outgoingRequestTableView.delegate = self
-        outgoingRequestTableView.register(requestTableViewCell, forCellReuseIdentifier: "RequestTableViewCell")
+        outgoingRequestTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
         outgoingRequestTableView.allowsSelection = false
 
         incomingInviteTableView.dataSource = self
@@ -110,7 +114,7 @@ class SocialViewController: UIViewController {
         })
     }
 
-    func getUsername(userId: String, cell: UITableViewCell) {
+    func updateUsernameInCell(userId: String, cell: UITableViewCell) {
         API.shared.user.get(withUid: userId, completion: { user, error in
             guard error == nil else {
                 return
@@ -151,82 +155,23 @@ class SocialViewController: UIViewController {
         })
     }
 
-    func acceptRequest(requestId: String) {
-        guard let currentUser = API.shared.user.currentUser else {
-            return
-        }
-        API.shared.request.get(requestId: requestId, completion: { request, error in
-            guard error == nil else {
-                print(error.debugDescription)
-                return
-            }
-            guard let request = request else {
-                print("request not found")
-                return
-            }
-            guard request.fromUserId != currentUser.uid && request.toUserId == currentUser.uid else {
-                print("request is invalid")
-                return
-            }
-            API.shared.social.get(userId: request.fromUserId, completion: { social, error in
-                guard error == nil else {
-                    print(error.debugDescription)
-                    return
-                }
-                guard var social = social else {
-                    print("Sender of request not found")
-                    return
-                }
-                social.addFriend(userId: request.toUserId)
-                social.removeRequest(requestId: requestId)
-                self.saveSocial(social: social)
-                self.viewModel.social.addFriend(userId: request.fromUserId)
-                self.viewModel.social.removeRequest(requestId: requestId)
-                self.saveSocial(social: self.viewModel.social)
-                API.shared.request.delete(request: request)
-            })
-        })
-    }
-
-    func rejectRequest(requestId: String) {
-        API.shared.request.get(requestId: requestId, completion: { request, error in
-            guard error == nil else {
-                print(error.debugDescription)
-                return
-            }
-            guard let request = request else {
-                print("request not found")
-                return
-            }
-            API.shared.social.get(userId: request.fromUserId, completion: { social, error in
-                guard error == nil else {
-                    print(error.debugDescription)
-                    return
-                }
-                guard var social = social else {
-                    print("Sender of request not found")
-                    return
-                }
-                social.removeRequest(requestId: requestId)
-                self.saveSocial(social: social)
-                self.viewModel.social.removeRequest(requestId: requestId)
-                self.saveSocial(social: self.viewModel.social)
-                API.shared.request.delete(request: request)
-            })
-        })
-    }
-
-    func getRecipientName(requestId: String, cell: RequestTableViewCell) {
-        API.shared.request.get(requestId: requestId, completion: { request, error in
-            guard error == nil else {
-                print(error.debugDescription)
-                return
-            }
+    func updateRequestInCell(requestId: String, cell: UITableViewCell) {
+        RequestManager.getRequest(requestId: requestId, completion: { request in
             guard let request = request else {
                 return
             }
-            cell.request = request
-            self.getUsername(userId: request.toUserId, cell: cell)
+            switch cell {
+            case let cell as IncomingRequestTableViewCell:
+                cell.request = request
+                self.updateUsernameInCell(userId: request.toUserId, cell: cell)
+                return
+            case let cell as OutgoingRequestTableViewCell:
+                cell.request = request
+                self.updateUsernameInCell(userId: request.toUserId, cell: cell)
+                return
+            default:
+                return
+            }
         })
     }
 
@@ -289,21 +234,23 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
                 return UITableViewCell()
             }
             cell.delegate = self
-            getUsername(userId: self.viewModel.social.friends[indexPath.row], cell: cell)
+            updateUsernameInCell(userId: self.viewModel.social.friends[indexPath.row], cell: cell)
             return cell
         case self.incomingRequestTableView:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "RequestTableViewCell", for: indexPath) as? RequestTableViewCell else {
+            let identifier = "IncomingRequestTableViewCell"
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? IncomingRequestTableViewCell else {
                 return UITableViewCell()
             }
             cell.delegate = self
-            getRecipientName(requestId: self.viewModel.social.incomingRequests[indexPath.row], cell: cell)
+            updateRequestInCell(requestId: self.viewModel.social.incomingRequests[indexPath.row], cell: cell)
             return cell
         case self.outgoingRequestTableView:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "RequestTableViewCell", for: indexPath) as? RequestTableViewCell else {
+            let identifier = "OutgoingRequestTableViewCell"
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? OutgoingRequestTableViewCell else {
                 return UITableViewCell()
             }
             cell.delegate = self
-            getRecipientName(requestId: self.viewModel.social.outgoingRequests[indexPath.row], cell: cell)
+            updateRequestInCell(requestId: self.viewModel.social.outgoingRequests[indexPath.row], cell: cell)
             return cell
         case self.incomingInviteTableView:
             let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
@@ -349,12 +296,18 @@ extension SocialViewController: FriendTableViewCellDelegate {
     }
 }
 
-extension SocialViewController: RequestTableViewCellDelegate {
+extension SocialViewController: IncomingRequestTableViewCellDelegate {
     func acceptButtonPressed(requestId: String) {
-        acceptRequest(requestId: requestId)
+        RequestManager.acceptRequest(requestId: requestId)
     }
 
     func rejectButtonPressed(requestId: String) {
-        rejectRequest(requestId: requestId)
+        RequestManager.rejectRequest(requestId: requestId)
+    }
+}
+
+extension SocialViewController: OutgoingRequestTableViewCellDelegate {
+    func cancelButtonPressed(requestId: String) {
+        RequestManager.rejectRequest(requestId: requestId)
     }
 }

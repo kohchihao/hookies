@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol RequestTableViewCellDelegate: class {
+protocol IncomingRequestTableViewCellDelegate: class {
     func acceptButtonPressed(requestId: String)
     func rejectButtonPressed(requestId: String)
 }
 
-class RequestTableViewCell: UITableViewCell {
+class IncomingRequestTableViewCell: UITableViewCell {
 
-    weak var delegate: RequestTableViewCellDelegate?
+    weak var delegate: IncomingRequestTableViewCellDelegate?
     var request: Request?
 
     override func awakeFromNib() {
