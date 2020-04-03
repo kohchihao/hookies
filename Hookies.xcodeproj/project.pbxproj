@@ -75,7 +75,6 @@
 		7859AFA324339A6B00B60968 /* SocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFA224339A6B00B60968 /* SocialViewController.swift */; };
 		7859AFA524346EEC00B60968 /* SocialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7859AFA424346EEC00B60968 /* SocialViewController.xib */; };
 		7859AFA72434B8EB00B60968 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFA62434B8EB00B60968 /* Request.swift */; };
-		7859AFA92434B94F00B60968 /* RequestStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFA82434B94F00B60968 /* RequestStatus.swift */; };
 		7859AFAB2434BA6500B60968 /* Request+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFAA2434BA6500B60968 /* Request+FirestoreModel.swift */; };
 		7859AFAD2434D16F00B60968 /* RequestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFAC2434D16F00B60968 /* RequestStore.swift */; };
 		7859AFB22436167600B60968 /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFB02436167600B60968 /* FriendTableViewCell.swift */; };
@@ -232,7 +231,6 @@
 		7859AFA224339A6B00B60968 /* SocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
 		7859AFA424346EEC00B60968 /* SocialViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SocialViewController.xib; sourceTree = "<group>"; };
 		7859AFA62434B8EB00B60968 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		7859AFA82434B94F00B60968 /* RequestStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatus.swift; sourceTree = "<group>"; };
 		7859AFAA2434BA6500B60968 /* Request+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+FirestoreModel.swift"; sourceTree = "<group>"; };
 		7859AFAC2434D16F00B60968 /* RequestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStore.swift; sourceTree = "<group>"; };
 		7859AFB02436167600B60968 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
@@ -817,7 +815,6 @@
 				1107D05F2420DBA00058F590 /* AuthState.swift */,
 				785B79E824249894001D7028 /* CostumeType.swift */,
 				1137270B242517AF00AB4B79 /* GameState.swift */,
-				7859AFA82434B94F00B60968 /* RequestStatus.swift */,
 				11372709242504BC00AB4B79 /* LobbyState.swift */,
 				119A3E45242C99FF0064B034 /* ConnectionState.swift */,
 				D980A6C52430F3C500B55452 /* GameObjectType.swift */,
@@ -1174,7 +1171,6 @@
 				D908771E2429AE1000B73D0E /* LifeComponent.swift in Sources */,
 				D908770E2429A7FE00B73D0E /* PlatformEntity.swift in Sources */,
 				D9617E6B2423A99F000A2AD8 /* JumpButton.swift in Sources */,
-				7859AFA92434B94F00B60968 /* RequestStatus.swift in Sources */,
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
 				D90877102429A87500B73D0E /* BoltEntity.swift in Sources */,

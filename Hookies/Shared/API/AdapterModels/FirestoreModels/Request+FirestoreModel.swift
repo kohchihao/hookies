@@ -18,19 +18,10 @@ extension Request: FirestoreModel {
     }
 
     init?(modelData: FirestoreDataModel) {
-        do {
-            guard let status = RequestStatus(rawValue: try
-                modelData.value(forKey: "status")) else {
-                    return nil
-            }
-            try self.init(
-                requestId: modelData.documentID,
-                fromUserId: modelData.value(forKey: "fromUserId"),
-                toUserId: modelData.value(forKey: "toUserId"),
-                status: status
-            )
-        } catch {
-            return nil
-        }
+        try? self.init(
+            requestId: modelData.documentID,
+            fromUserId: modelData.value(forKey: "fromUserId"),
+            toUserId: modelData.value(forKey: "toUserId")
+        )
     }
 }

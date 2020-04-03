@@ -12,19 +12,16 @@ struct Request {
     private(set) var requestId: String
     private(set) var fromUserId: String
     private(set) var toUserId: String
-    private(set) var status: RequestStatus
 
     init(fromUserId: String, toUserId: String) {
         self.requestId = RandomIDGenerator.getRandomID(length: Constants.requestIdLength)
         self.fromUserId = fromUserId
         self.toUserId = toUserId
-        self.status = .pending
     }
 
-    init(requestId: String, fromUserId: String, toUserId: String, status: RequestStatus) {
+    init(requestId: String, fromUserId: String, toUserId: String) {
         self.requestId = requestId
         self.fromUserId = fromUserId
         self.toUserId = toUserId
-        self.status = status
     }
 }
