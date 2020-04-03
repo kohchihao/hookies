@@ -142,15 +142,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         let boltsNode = getGameObject(of: GameObjectType.bolt)
-
-        // TODO: Platform to GameEngine
         let platformsNode = getGameObject(of: GameObjectType.platform)
 
         gameEngine = GameEngine(
             gameId: gameplayId,
             cannon: cannonNode,
             finishingLine: finishingLineNode,
-            bolts: boltsNode
+            bolts: boltsNode,
+            platforms: platformsNode
         )
 
         gameEngine?.delegate = self
