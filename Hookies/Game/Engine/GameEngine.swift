@@ -25,6 +25,7 @@ class GameEngine {
     private var hookSystem: HookSystem?
     private var closestBoltSystem: ClosestBoltSystem?
     private var deadlockSystem: DeadlockSystem?
+    private var healthSystem: HealthSystem?
 
     // MARK: - Entity
 
@@ -39,11 +40,15 @@ class GameEngine {
         gameId: String,
         cannon: SKSpriteNode,
         finishingLine: SKSpriteNode,
-        bolts: [SKSpriteNode]
+        bolts: [SKSpriteNode],
+        platforms: [SKSpriteNode]
     ) {
         self.gameId = gameId
 
         let boltsSprite = initialiseBolts(bolts)
+        let platformsSprite = initialisePlatforms(platforms)
+
+        self.healthSystem = HealthSystem(platforms: platformsSprite)
 
         self.hookSystem = HookSystem(bolts: boltsSprite)
         self.closestBoltSystem = ClosestBoltSystem(bolts: boltsSprite)
@@ -212,6 +217,7 @@ class GameEngine {
 
     func update(time: TimeInterval) {
         startCountdown()
+        checkCurrentPlayerHealth()
         updateClosestBolt()
         checkDeadlock()
         finishingLineSystem.bringPlayersToStop()
@@ -240,6 +246,28 @@ class GameEngine {
         return boltsSprite
     }
 
+    // MARK: - Platform
+
+    private func initialisePlatforms(_ platforms: [SKSpriteNode]) -> [SpriteComponent] {
+        var platformsSprite = [SpriteComponent]()
+
+        for platform in platforms {
+            let platformEntity = PlatformEntity()
+
+            let platformSprite = SpriteComponent(parent: platformEntity)
+            _ = spriteSystem.set(sprite: platformSprite, to: platform)
+
+            // TODO: Check for moving and rotating bolt
+
+            platformEntity.addComponent(platformSprite)
+
+            platformsSprite.append(platformSprite)
+            self.platforms.append(platformEntity)
+        }
+
+        return platformsSprite
+    }
+
     // MARK: - Cannon
 
     private func createCannonSprite(from node: SKSpriteNode) -> SpriteComponent {
@@ -261,6 +289,22 @@ class GameEngine {
         self.finishingLine.addComponent(sprite)
 
         return sprite
+    }
+
+    // MARK: - Health
+
+    private func checkCurrentPlayerHealth() {
+        guard let sprite = currentPlayer?.getSpriteComponent(), let healthSystem = healthSystem else {
+            return
+        }
+
+        if !healthSystem.isPlayerAlive(for: sprite) {
+            guard let currentPlayerId = currentPlayerId, let currentPlayer = currentPlayer else {
+                return
+            }
+            healthSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+            _ = healthSystem.respawnPlayer(for: sprite)
+        }
     }
 
     // MARK: - Player helper methods

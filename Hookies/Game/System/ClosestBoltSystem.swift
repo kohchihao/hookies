@@ -29,16 +29,20 @@ class ClosestBoltSystem: System, ClosestBoltSystemProtocol {
     }
 
     func findClosestBolt(to position: CGPoint) -> (PreviousClosestBoltSprite?, CurrentClosestBoltSprite?) {
-        previousClosestBoltSprite = currentClosestBoltSprite
         var closestDistance = Double.greatestFiniteMagnitude
         let otherEntityPosition = Vector(point: position)
+        let normalBoltTexture = SKTexture(imageNamed: "bubble_1")
+        let closestBoltTexture = SKTexture(imageNamed: "bubble_3")
+
         for bolt in boltSpriteComponents {
             let boltPositionVector = Vector(point: bolt.node.position)
-            let distance = (boltPositionVector - otherEntityPosition).magnitude
+            let distance = boltPositionVector.distance(to: otherEntityPosition)
             closestDistance = min(Double(distance), closestDistance)
             if closestDistance == Double(distance) {
+                previousClosestBoltSprite = currentClosestBoltSprite
                 currentClosestBoltSprite = bolt
-                return (previousClosestBoltSprite, currentClosestBoltSprite)
+                previousClosestBoltSprite?.node.texture = normalBoltTexture
+                currentClosestBoltSprite?.node.texture = closestBoltTexture
             }
         }
 
