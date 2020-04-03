@@ -302,7 +302,7 @@ class GameEngine {
             guard let currentPlayerId = currentPlayerId, let currentPlayer = currentPlayer else {
                 return
             }
-            healthSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+            healthSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
             _ = healthSystem.respawnPlayer(for: sprite)
         }
     }
@@ -471,6 +471,8 @@ class GameEngine {
                 self.launch(otherPlayer: genericPlayerEventData)
             case .jumpAction:
                 self.applyJumpAction(to: genericPlayerEventData)
+            case .playerDied:
+                self.respawn(otherPlayer: genericPlayerEventData)
             case .reachedFinishedLine:
                 self.stop(otherPlayer: genericPlayerEventData)
             }
@@ -549,6 +551,14 @@ class GameEngine {
             at: CGPoint(vector: otherPlayer.playerData.position),
             with: CGVector(vector: velocity)
         )
+    }
+
+    private func respawn(otherPlayer: GenericPlayerEventData) {
+        guard let sprite = otherPlayers[otherPlayer.playerData.playerId]?.getSpriteComponent() else {
+            return
+        }
+
+        _ = healthSystem?.respawnPlayer(for: sprite, at: CGPoint(vector: otherPlayer.playerData.position))
     }
 
     private func stop(otherPlayer: GenericPlayerEventData) {
