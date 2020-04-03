@@ -13,6 +13,8 @@ import SpriteKit
 
 protocol DeadlockSystemProtocol {
     func checkIfStuck() -> Bool
+    func resolveDeadlock()
+    func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector)
 }
 
 class DeadlockSystem: System, DeadlockSystemProtocol {

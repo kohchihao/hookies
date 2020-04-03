@@ -13,7 +13,9 @@ import SpriteKit
 protocol HookSystemProtocol {
     func add(hook: HookComponent) -> HookComponent
     func hookTo(hook: HookComponent) -> Bool
+    func hookTo(hook: HookComponent, at position: CGPoint, with velocity: CGVector) -> Bool
     func unhookFrom(entity: Entity) -> Bool
+    func unhookFrom(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool
 }
 
 enum HookSystemError: Error {
@@ -79,6 +81,10 @@ class HookSystem: System, HookSystemProtocol {
             if isAttachingToSameBolt {
                 attachToSameBolt(sprite: parentSprite, bolt: closestBolt)
             }
+
+            if !isAttachingToSameBolt {
+                boostVelocity(of: parentSprite, withRespectTo: prevAttachedBolt)
+            }
         }
 
         let anchor = parentSprite.makeAnchor(from: closestBolt)
@@ -88,7 +94,6 @@ class HookSystem: System, HookSystemProtocol {
             let spriteLineJointPin = makeJointPinToLine(from: parentSprite.node, toLine: line) else {
                 return false
         }
-
         parentSprite.node.physicsBody?.applyImpulse(parentSpriteInitialVelocity)
 
         systemHook.hookTo = closestBolt
@@ -185,6 +190,20 @@ class HookSystem: System, HookSystemProtocol {
         }
 
         sprite.node.position = CGPoint(x: sprite.node.position.x, y: sprite.node.position.y + positionYOffset)
+    }
+
+    private func boostVelocity(of sprite: SpriteComponent, withRespectTo bolt: SpriteComponent) {
+        var boostX = 750
+        let boostY = -750
+
+        let isInFrontOfBolt = sprite.node.position.x > bolt.node.position.x
+
+        if isInFrontOfBolt {
+            boostX *= -1
+        }
+
+        let boost = CGVector(dx: boostX, dy: boostY)
+        sprite.node.physicsBody?.applyImpulse(boost)
     }
 }
 

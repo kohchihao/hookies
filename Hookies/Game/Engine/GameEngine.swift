@@ -573,7 +573,11 @@ class GameEngine {
             return
         }
 
-        _ = finishingLineSystem.stop(player: sprite, at: position)
+        guard let velocity = otherPlayer.playerData.velocity else {
+            return
+        }
+
+        _ = finishingLineSystem.stop(player: sprite, at: position, with: CGVector(vector: velocity))
     }
 
     private func applyHookAction(on hook: HookActionData) {

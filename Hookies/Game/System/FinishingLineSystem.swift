@@ -10,7 +10,7 @@ import SpriteKit
 
 protocol FinishingLineSystemProtocol {
     func stop(player: SpriteComponent) -> Bool
-    func stop(player: SpriteComponent, at position: CGPoint) -> Bool
+    func stop(player: SpriteComponent, at position: CGPoint, with velocity: CGVector) -> Bool
     func bringPlayersToStop()
 }
 
@@ -50,15 +50,20 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
     }
 
     func stop(player: SpriteComponent) -> Bool {
-        return stop(player: player, at: player.node.position)
+        guard let velocity = player.node.physicsBody?.velocity else {
+            return false
+        }
+
+        return stop(player: player, at: player.node.position, with: velocity)
     }
 
-    func stop(player: SpriteComponent, at position: CGPoint) -> Bool {
+    func stop(player: SpriteComponent, at position: CGPoint, with velocity: CGVector) -> Bool {
         guard let systemPlayer = players.first(where: { $0 == player }) else {
             return false
         }
 
         systemPlayer.node.position = position
+        systemPlayer.node.physicsBody?.velocity = velocity
 
         playersState[systemPlayer] = .stopping
         finishedPlayers += 1

@@ -10,6 +10,7 @@ import SpriteKit
 
 protocol CannonSystemProtocol {
     func launch(player: SpriteComponent, with velocity: CGVector)
+    func launch(otherPlayer: SpriteComponent, with velocity: CGVector)
 }
 
 class CannonSystem: System, CannonSystemProtocol {
