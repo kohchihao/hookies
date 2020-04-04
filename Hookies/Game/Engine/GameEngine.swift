@@ -62,6 +62,7 @@ class GameEngine {
         setupTotalPlayers()
         connectToGame()
         setupMultiplayer()
+        gameObjectMovementSystem.update()
     }
 
     // MARK: - Initialise Players
@@ -263,9 +264,28 @@ class GameEngine {
             let platformSprite = SpriteComponent(parent: platformEntity)
             _ = spriteSystem.set(sprite: platformSprite, to: platform)
 
-            // TODO: Check for moving and rotating bolt
+            let translate = NonPhysicsTranslateComponent(parent: platformEntity)
+            let rotate = RotateComponent(parent: platformEntity)
+            if platform.name == "platform_movable" {
+                platform.physicsBody?.pinned = false
+
+                let ending = CGPoint(x: platform.position.x + 200, y: platform.position.y)
+                gameObjectMovementSystem.setTranslationLine(
+                    to: platformSprite,
+                    with: translate,
+                    moveInfinitely: true,
+                    speed: 50,
+                    endingAt: ending)
+                gameObjectMovementSystem.setRotation(
+                    to: platformSprite,
+                    with: rotate,
+                    withDuration: 10,
+                    withAngle: 3.142)
+            }
 
             platformEntity.addComponent(platformSprite)
+            platformEntity.addComponent(translate)
+            platformEntity.addComponent(rotate)
 
             platformsSprite.append(platformSprite)
             self.platforms.append(platformEntity)
