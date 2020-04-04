@@ -56,4 +56,10 @@ extension HomeCoordinator: HomeViewNavigationDelegate {
         joinGameCoordinator.coordinatorDelegate = self
         joinGameCoordinator.start()
     }
+
+    func didPressFriendButton(in: HomeViewController) {
+        let socialCoordinator = SocialCoodinator(with: navigator)
+        socialCoordinator.coordinatorDelegate = self
+        socialCoordinator.start()
+    }
 }
