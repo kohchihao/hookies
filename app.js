@@ -1,7 +1,7 @@
 const GameManager = require('./GameManager');
 const app = require('express')();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const io = require('socket.io')(http, {'pingInterval': 2000, 'pingTimeout': 4000}); // ping interval of 2s, timeout 4s
 
 const gameManager = new GameManager();
 const games = io.of('/games');
