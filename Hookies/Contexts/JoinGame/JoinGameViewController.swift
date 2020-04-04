@@ -49,9 +49,7 @@ class JoinGameViewController: UIViewController {
             keyboardHeight = keyboardFrame.cgRectValue.height
         }
 
-        self.joinGameDialog.center = CGPoint(
-            x: self.view.frame.width / 2,
-            y: (self.view.frame.height - keyboardHeight) / 2)
+        self.view.center = CGPoint(x: self.view.frame.width / 2, y: (self.view.frame.height - keyboardHeight) / 2)
         UIView.animate(withDuration: animationDuration, animations: {
             self.view.layoutIfNeeded()
         })

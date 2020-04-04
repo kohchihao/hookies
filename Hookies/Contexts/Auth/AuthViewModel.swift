@@ -24,7 +24,7 @@ class AuthViewModel: AuthViewModelRepresentable {
     }
 
     func createAccountWithUsername(username: String,
-                                   completion: @escaping (_ user: User?, _ error: LocalizedError?) -> Void) {
+                                   completion: @escaping (User?, LocalizedError?) -> Void) {
         API.shared.user.createAccountWithUsername(username: username) { user, error in
             if let error = error {
                 completion(nil, error)

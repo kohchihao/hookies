@@ -18,8 +18,7 @@ extension User: FirestoreModel {
     init?(modelData: FirestoreDataModel) {
         try? self.init(
             uid: modelData.documentID,
-            username: modelData.value(forKey: "username"),
-            email: modelData.value(forKey: "email")
+            username: modelData.value(forKey: "username")
         )
     }
 }

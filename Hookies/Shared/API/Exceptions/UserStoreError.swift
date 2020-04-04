@@ -11,8 +11,6 @@ import Foundation
 enum UserStoreError: Error {
     case usernameExistError
     case notAuthenticated
-    case nameTooShort(minLen: Int)
-    case nameTooLong(maxLen: Int)
 }
 
 extension UserStoreError: LocalizedError {
@@ -23,10 +21,6 @@ extension UserStoreError: LocalizedError {
             return "\(result) Username is already taken"
         case .notAuthenticated:
             return "\(result) You must be authenticated first"
-        case .nameTooShort(let minLen):
-            return "\(result) Name too short (MIN: \(minLen))"
-        case .nameTooLong(let maxLen):
-            return "\(result) Name too long (MAX: \(maxLen))"
         }
     }
 }

@@ -52,7 +52,7 @@ struct Lobby {
         }
         playersId.append(playerId)
         updateCostumeId(playerId: playerId, costumeType: .Pink_Monster)
-        if playersId.count == 4 {
+        if playersId.count == Constants.maxPlayerCount {
             lobbyState = .full
         }
     }
@@ -70,15 +70,15 @@ struct Lobby {
     mutating func updateLobbyState(lobbyState: LobbyState) {
         switch lobbyState {
         case .open:
-            guard playersId.count < 4 else {
+            guard playersId.count < Constants.maxPlayerCount else {
                 return
             }
         case .full:
-            guard playersId.count == 4 else {
+            guard playersId.count == Constants.maxPlayerCount else {
                 return
             }
         case .start:
-            guard !playersId.isEmpty && playersId.count <= 4 else {
+            guard !playersId.isEmpty && playersId.count <= Constants.maxPlayerCount else {
                 return
             }
         }

@@ -10,7 +10,6 @@ import Foundation
 import Firebase
 
 class UserStore {
-
     private let collection: CollectionReference
     private var authListener: AuthStateDidChangeListenerHandle?
     private(set) var currentUser: User?
@@ -99,26 +98,22 @@ class UserStore {
     ///     - `username` meets the `minNameLen` and `maxNameLen` criteria
     ///     - `username` in the firestore users collection, the username must be unique.
     func createAccountWithUsername(username: String,
-                                   completion: @escaping (_ user: User?, _ error: UserStoreError?) -> Void) {
+                                   completion: @escaping (_ user: User?, _ error: LocalizedError?) -> Void) {
         guard let currentUser = Auth.auth().currentUser else {
             return completion(nil, UserStoreError.notAuthenticated)
         }
-        let minNameLen = 4
-        let maxNameLen = 15
 
-        if username.count < minNameLen {
-            return completion(nil, UserStoreError.nameTooShort(minLen: minNameLen))
-        }
-        if username.count > maxNameLen {
-            return completion(nil, UserStoreError.nameTooLong(maxLen: maxNameLen))
-        }
-        let user = User(uid: currentUser.uid, username: username, email: currentUser.email)
-        add(user: user) { user, error in
-            if let error = error {
-                return completion(nil, error)
-            } else {
-                return completion(user, nil)
+        do {
+            let user = try User(uid: currentUser.uid, username: username)
+            add(user: user) { user, error in
+                if let error = error {
+                    return completion(nil, error)
+                } else {
+                    return completion(user, nil)
+                }
             }
+        } catch {
+            return completion(nil, error as? LocalizedError)
         }
     }
 
