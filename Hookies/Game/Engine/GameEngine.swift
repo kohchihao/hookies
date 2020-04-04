@@ -26,6 +26,7 @@ class GameEngine {
     private var closestBoltSystem: ClosestBoltSystem?
     private var deadlockSystem: DeadlockSystem?
     private var healthSystem: HealthSystem?
+    private var userConnectionSystem: UserConnectionSystem?
 
     // MARK: - Entity
 
@@ -49,6 +50,7 @@ class GameEngine {
         let platformsSprite = initialisePlatforms(platforms)
 
         self.healthSystem = HealthSystem(platforms: platformsSprite)
+        self.userConnectionSystem = UserConnectionSystem()
 
         self.hookSystem = HookSystem(bolts: boltsSprite)
         self.closestBoltSystem = ClosestBoltSystem(bolts: boltsSprite)
@@ -396,7 +398,7 @@ class GameEngine {
     private func connectToGame() {
         API.shared.gameplay.connectToGame(gameId: gameId, completion: { otherPlayersId in
             for otherPlayerId in otherPlayersId {
-                self.setupPlayer(of: otherPlayerId)
+                self.setupOtherPlayer(of: otherPlayerId)
             }
         })
     }
@@ -457,11 +459,16 @@ class GameEngine {
 
     private func subscribeToOtherPlayersState() {
         API.shared.gameplay.subscribeToPlayersConnection(listener: { userConnection in
-            if userConnection.state == .connected {
-                self.setupPlayer(of: userConnection.uid)
-            }
+            switch userConnection.state {
+            case .connected:
+                let isNewUser = self.otherPlayers[userConnection.uid] == nil
 
-            // TODO: Setup Disconnected
+                if isNewUser {
+                    self.setupOtherPlayer(of: userConnection.uid)
+                }
+            case .disconnected:
+                self.disconnectOtherPlayer(of: userConnection.uid)
+            }
         })
     }
 
@@ -498,7 +505,7 @@ class GameEngine {
         })
     }
 
-    private func setupPlayer(of id: String) {
+    private func setupOtherPlayer(of id: String) {
         API.shared.lobby.get(lobbyId: self.gameId, completion: { lobby, error in
             guard error == nil else {
                 return
@@ -516,6 +523,20 @@ class GameEngine {
 
             self.delegate?.otherPlayerIsConnected(otherPlayer: node)
         })
+    }
+
+    private func disconnectOtherPlayer(of id: String) {
+        guard let otherPlayer = otherPlayers[id] else {
+            return
+        }
+
+        guard let sprite = otherPlayer.getSpriteComponent() else {
+            return
+        }
+
+        finishingLineSystem.remove(player: sprite)
+        userConnectionSystem?.disconnect(sprite: sprite)
+        otherPlayers[id] = nil
     }
 
     private func launch(otherPlayer: GenericPlayerEventData) {

@@ -96,6 +96,7 @@
 		2B8476BB2433170F00882F30 /* CannonSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8476BA2433170F00882F30 /* CannonSystem.swift */; };
 		2B8476BD24331AD000882F30 /* CannonEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8476BC24331AD000882F30 /* CannonEntity.swift */; };
 		2B99258B242FA50200795B90 /* HookSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B99258A242FA50200795B90 /* HookSystem.swift */; };
+		2BFD87DB24385690000FA49A /* UserConnectionSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFD87DA24385690000FA49A /* UserConnectionSystem.swift */; };
 		7859AF9824332EF500B60968 /* Social.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AF9724332EF500B60968 /* Social.swift */; };
 		7859AF9A2433305F00B60968 /* Social+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AF992433305F00B60968 /* Social+FirestoreModel.swift */; };
 		7859AF9C2433317000B60968 /* SocialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AF9B2433317000B60968 /* SocialStore.swift */; };
@@ -288,6 +289,8 @@
 		2B8476BC24331AD000882F30 /* CannonEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonEntity.swift; sourceTree = "<group>"; };
 		2B992586242EF0BC00795B90 /* SpriteSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystem.swift; sourceTree = "<group>"; };
 		2B99258A242FA50200795B90 /* HookSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSystem.swift; sourceTree = "<group>"; };
+		2BFD87DA24385690000FA49A /* UserConnectionSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectionSystem.swift; sourceTree = "<group>"; };
+		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7859AF9724332EF500B60968 /* Social.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social.swift; sourceTree = "<group>"; };
 		7859AF992433305F00B60968 /* Social+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Social+FirestoreModel.swift"; sourceTree = "<group>"; };
 		7859AF9B2433317000B60968 /* SocialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialStore.swift; sourceTree = "<group>"; };
@@ -305,7 +308,6 @@
 		7859AFB82437095A00B60968 /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		7859AFBA243725C700B60968 /* OutgoingRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRequestTableViewCell.swift; sourceTree = "<group>"; };
 		7859AFBB243725C700B60968 /* OutgoingRequestTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutgoingRequestTableViewCell.xib; sourceTree = "<group>"; };
-		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785B79D92423581B001D7028 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		785B79DB24236B6D001D7028 /* Lobby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lobby.swift; sourceTree = "<group>"; };
@@ -904,6 +906,7 @@
 				11593D8724330A4B00462BE6 /* PowerupEffectSystem.swift */,
 				2B8476BA2433170F00882F30 /* CannonSystem.swift */,
 				D9BC4AB02436332600BD35DF /* HealthSystem.swift */,
+				2BFD87DA24385690000FA49A /* UserConnectionSystem.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1306,7 +1309,6 @@
 				116AD648242DB7CD0070F00B /* Encoder.swift in Sources */,
 				116AD64A242DBA510070F00B /* Vector.swift in Sources */,
 				7859AF9C2433317000B60968 /* SocialStore.swift in Sources */,
-				D90877242429B03B00B73D0E /* CollectableEntity.swift in Sources */,
 				7859AFB624364C5F00B60968 /* IncomingRequestTableViewCell.swift in Sources */,
 				110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */,
 				D9BC4AB12436332600BD35DF /* HealthSystem.swift in Sources */,
@@ -1374,6 +1376,7 @@
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
 				D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */,
+				2BFD87DB24385690000FA49A /* UserConnectionSystem.swift in Sources */,
 				7859AFBC243725C700B60968 /* OutgoingRequestTableViewCell.swift in Sources */,
 				1191BD712435ADAD00189DB8 /* GenericPlayerEvent.swift in Sources */,
 				119A3E4A242CD6970064B034 /* PowerupActionData.swift in Sources */,
