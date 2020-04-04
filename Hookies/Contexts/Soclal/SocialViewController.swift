@@ -294,6 +294,24 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         }
     }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection
+                                section: Int) -> String? {
+       switch tableView {
+       case self.socialTableView:
+           return "Friends"
+       case self.incomingRequestTableView:
+           return "Incoming Requests"
+       case self.outgoingRequestTableView:
+           return "Outgoing Requests"
+       case self.incomingInviteTableView:
+           return "Incoming Game Invites"
+       case self.outgoingInviteTableView:
+           return "Outgoing Game Invites"
+       default:
+           return ""
+       }
+    }
 }
 
 extension SocialViewController: FriendTableViewCellDelegate {
