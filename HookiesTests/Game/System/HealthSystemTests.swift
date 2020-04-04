@@ -17,7 +17,7 @@ class HealthSystemTests: XCTestCase {
 
     var platformNode: SKSpriteNode!
     var platformEntity: PlatformEntity!
-    var playformSprite: SpriteComponent!
+    var platformSprite: SpriteComponent!
 
     var playerSprite: SpriteComponent!
     var playerEntity: PlayerEntity!
@@ -26,11 +26,11 @@ class HealthSystemTests: XCTestCase {
         super.setUp()
         spriteSystem = SpriteSystem()
         platformEntity = PlatformEntity()
-        playformSprite = SpriteComponent(parent: platformEntity)
+        platformSprite = SpriteComponent(parent: platformEntity)
         platformNode = SKSpriteNode()
         platformNode.position = CGPoint(x: 10, y: 10)
-        _ = spriteSystem.set(sprite: playformSprite, to: platformNode)
-        platforms = [playformSprite]
+        _ = spriteSystem.set(sprite: platformSprite, to: platformNode)
+        platforms = [platformSprite]
 
         playerEntity = PlayerEntity()
         playerSprite = SpriteComponent(parent: playerEntity)
@@ -46,7 +46,7 @@ class HealthSystemTests: XCTestCase {
 
         platformNode = nil
         platformEntity = nil
-        playformSprite = nil
+        platformSprite = nil
 
         playerSprite = nil
         playerEntity = nil
