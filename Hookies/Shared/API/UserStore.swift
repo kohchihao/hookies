@@ -67,6 +67,21 @@ class UserStore {
         }
     }
 
+    /// Get a user with the given username.
+    func get(withUsername username: String, completion: @escaping (_ user: User?, _ error: Error?) -> Void) {
+        let query = collection.whereField("username", isEqualTo: username)
+        query.getModels(User.self, completion: { users, error in
+           guard error == nil else {
+                print(error.debugDescription)
+                return completion(nil, error)
+            }
+            guard let user = users?.first else {
+                return completion(nil, nil)
+            }
+            return completion(user, error)
+        })
+    }
+
     func currentUser(completion: @escaping (User?, Error?) -> Void) {
         guard let currentUser = Auth.auth().currentUser else {
             return completion(nil, nil)
@@ -116,6 +131,7 @@ class UserStore {
 
                 if result.isEmpty {
                     ref.setDataModel(user)
+                    self.currentUser = user
                     return completion(user, nil)
                 } else {
                     return completion(nil, UserStoreError.usernameExistError)

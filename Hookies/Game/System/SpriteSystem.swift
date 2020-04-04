@@ -57,6 +57,14 @@ class SpriteSystem: System, SpriteSystemProtocol {
 
     func setPhysicsBody(
         to sprite: SpriteComponent,
+        of type: SpriteType
+    ) -> SpriteComponent {
+        sprite.node.physicsBody = SKPhysicsBody()
+        return setPhysicsBodyProperties(to: sprite, of: type)
+    }
+
+    func setPhysicsBody(
+        to sprite: SpriteComponent,
         of type: SpriteType,
         rectangleOf size: CGSize
     ) -> SpriteComponent {

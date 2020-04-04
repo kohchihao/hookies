@@ -23,6 +23,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var grapplingHookButton: GrapplingHookButton?
     private var jumpButton: JumpButton?
 
+    private var signal: Signal?
+
     private var countdownLabel: SKLabelNode?
     private var count = 5
 
@@ -70,7 +72,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
-            gameEngine?.currentPlayerFinishRace()
+            if contact.bodyA.node == currentPlayer || contact.bodyB.node == currentPlayer {
+                 gameEngine?.stopCurrentPlayer()
+            }
         }
     }
 
@@ -276,11 +280,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleGrapplingHookBtnTouchBegan() {
-        gameEngine?.currentPlayerHookAction()
+        gameEngine?.applyHookActionToCurrentPlayer()
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
-        gameEngine?.currentPlayerUnhookAction()
+        gameEngine?.applyUnhookActionToCurrentPlayer()
     }
 
     // MARK: - Resolve deadlock
@@ -304,6 +308,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func handleJumpButtonTouchEnd() {
         jumpButton?.state = .ButtonNodeStateHidden
     }
+
+    // MARK: - Connection
+
+    private func reconnectPlayer() {
+        signal?.removeFromParent()
+        signal = nil
+    }
+
+    private func disconnectPlayer() {
+        initialiseSignal()
+    }
+
+    private func initialiseSignal() {
+        guard signal == nil else {
+            return
+        }
+
+        guard let sceneFrame = self.scene?.frame else {
+            return
+        }
+
+        let signal = Signal(in: sceneFrame)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
+        let fadeIn = SKAction.fadeIn(withDuration: 0.5)
+        let blinking = SKAction.sequence([fadeOut, fadeIn])
+        signal.run(SKAction.repeatForever(blinking))
+
+        cam?.addChild(signal)
+
+        self.signal = signal
+    }
 }
 
 // MARK: - GameEngineDelegate
@@ -314,14 +349,12 @@ extension GameScene: GameEngineDelegate {
     }
 
     func playerDidHook(to hook: HookDelegateModel) {
-        addChild(hook.anchor)
         addChild(hook.line)
         physicsWorld.add(hook.anchorLineJointPin)
         physicsWorld.add(hook.playerLineJointPin)
     }
 
     func playerDidUnhook(from hook: HookDelegateModel) {
-        hook.anchor.removeFromParent()
         hook.line.removeFromParent()
         physicsWorld.remove(hook.anchorLineJointPin)
         physicsWorld.remove(hook.playerLineJointPin)
@@ -333,5 +366,22 @@ extension GameScene: GameEngineDelegate {
 
     func playerHasFinishRace() {
         disableGameButtons()
+    }
+
+    func otherPlayerIsConnected(otherPlayer: SKSpriteNode) {
+        addChild(otherPlayer)
+    }
+
+    func currentPlayerIsReconnected() {
+        reconnectPlayer()
+    }
+
+    func currentPlayerIsDisconnected() {
+        disconnectPlayer()
+    }
+
+    func gameHasFinish() {
+        print("Transition to post game lobby")
+        viewController.endGame()
     }
 }

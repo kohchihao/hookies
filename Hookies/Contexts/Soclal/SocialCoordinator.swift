@@ -1,58 +1,61 @@
 //
-//  JoinGameCoordinator.swift
+//  SocialCoordinator.swift
 //  Hookies
 //
-//  Created by Tan LongBin on 19/3/20.
+//  Created by Tan LongBin on 31/3/20.
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
 import Foundation
 
-class JoinGameCoordinator: Coordinator {
+class SocialCoodinator: Coordinator {
 
-    // MARK: - PROPERTIES
     var coordinators: [Coordinator] = []
     weak var coordinatorDelegate: CoordinatorDelegate?
 
-    private let viewModel = JoinGameViewModel()
+    private var viewModel: SocialViewModel
 
-    // MARK: - PRIVATE PROPERTIES
     private let navigator: NavigatorRepresentable
 
-    // MARK: - INIT
     init(with navigator: NavigatorRepresentable) {
         self.navigator = navigator
+        self.viewModel = SocialViewModel(lobbyId: nil)
     }
 
-    // MARK: - START
+    init(with navigator: NavigatorRepresentable, viewModel: SocialViewModel) {
+        self.navigator = navigator
+        self.viewModel = viewModel
+    }
+
     func start() {
         coordinatorDelegate?.coordinatorDidStart(self)
         navigator.transition(to: viewController(), as: .modal)
     }
 
-    // MARK: - FUNCTIONS
-    private func viewController() -> JoinGameViewController {
-        let viewController = JoinGameViewController(with: viewModel)
+    private func viewController() -> SocialViewController {
+        let viewController = SocialViewController(with: viewModel)
         viewController.navigationDelegate = self
         return viewController
     }
 }
 
-// MARK: - JoinGameViewNavigationDelegate
-extension JoinGameCoordinator: JoinGameViewNavigationDelegate {
-    func didPressJoinLobbyButton(in: JoinGameViewController, lobbyId: String) {
-        API.shared.lobby.get(lobbyId: lobbyId, completion: { lobby, error in
+extension SocialCoodinator: SocialViewNavigationDelegate {
+    func didAcceptInvite(invite: Invite) {
+        API.shared.lobby.get(lobbyId: invite.lobbyId, completion: { lobby, error in
             guard error == nil else {
                 print(error.debugDescription)
                 return
             }
             guard var lobby = lobby else {
+                print("Lobby not found")
                 return
             }
             guard let playerId = API.shared.user.currentUser?.uid else {
+                print("user is not logged in")
                 return
             }
             guard lobby.lobbyState == .open else {
+                print("lobby is not open")
                 return
             }
             lobby.addPlayer(playerId: playerId)

@@ -6,10 +6,16 @@
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
+import SpriteKit
+
 protocol GameEngineDelegate: AnyObject {
     func startCountdown()
     func playerDidHook(to hook: HookDelegateModel)
     func playerDidUnhook(from hook: HookDelegateModel)
     func playerIsStuck()
     func playerHasFinishRace()
+    func otherPlayerIsConnected(otherPlayer: SKSpriteNode)
+    func currentPlayerIsReconnected()
+    func currentPlayerIsDisconnected()
+    func gameHasFinish()
 }

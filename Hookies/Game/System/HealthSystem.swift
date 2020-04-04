@@ -12,8 +12,10 @@ import SpriteKit
 
 protocol HealthSystemProtocol {
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool
+    func isPlayerAlive(for position: CGPoint) -> Bool
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent
     func respawnPlayer(for sprite: SpriteComponent, at position: CGPoint) -> SpriteComponent
+    func respawnPlayerToClosestPlatform(for sprite: SpriteComponent) -> SpriteComponent?
 }
 
 class HealthSystem: System, HealthSystemProtocol {
@@ -28,25 +30,37 @@ class HealthSystem: System, HealthSystemProtocol {
     }
 
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool {
-        if sprite.node.position.y <= deathHorizontalLine {
+        return self.isPlayerAlive(for: sprite.node.position)
+    }
+
+    func isPlayerAlive(for position: CGPoint) -> Bool {
+        if position.y <= deathHorizontalLine {
             return false
         }
         return true
     }
 
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent {
-        return self.respawnPlayer(for: sprite, at: sprite.node.position)
+        if !isPlayerAlive(for: sprite) {
+            return self.respawnPlayer(for: sprite, at: sprite.node.position)
+        }
+        return sprite
     }
 
     func respawnPlayer(for sprite: SpriteComponent, at position: CGPoint) -> SpriteComponent {
-        sprite.node.position = CGPoint(x: position.x, y: spawnHorizontalLine)
-        sprite.node.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
+        if !isPlayerAlive(for: position) {
+            sprite.node.position = CGPoint(x: position.x, y: spawnHorizontalLine)
+            sprite.node.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+            sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
+        }
+
         return sprite
     }
 
     func respawnPlayerToClosestPlatform(for sprite: SpriteComponent) -> SpriteComponent? {
-        guard let closestPlatform = findClosestNonMovingPlatform(to: sprite.node.position) else {
+        guard let closestPlatform = findClosestNonMovingPlatform(to: sprite.node.position),
+            !isPlayerAlive(for: sprite)
+            else {
             return nil
         }
 
@@ -78,7 +92,7 @@ class HealthSystem: System, HealthSystemProtocol {
 // MARK: - Broadcast Update
 
 extension HealthSystem: GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
         broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .playerDied)
     }
 }

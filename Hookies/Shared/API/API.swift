@@ -18,6 +18,9 @@ class API {
     let user: UserStore
     let gameplay: GameplayStore
     let lobby: LobbyStore
+    let social: SocialStore
+    let request: RequestStore
+    let invite: InviteStore
 
     private init() {
         db = Firestore.firestore()
@@ -28,5 +31,8 @@ class API {
         gameplay = GameplayStore(gameplayCollection: db.collection("gameplays"),
                                  socketRef: socketManager.socket(forNamespace: "/games"))
         lobby = LobbyStore(lobbyCollection: db.collection("lobbies"))
+        social = SocialStore(socialCollection: db.collection("socials"))
+        request = RequestStore(requestCollection: db.collection("requests"))
+        invite = InviteStore(inviteCollection: db.collection("invites"))
     }
 }

@@ -11,7 +11,8 @@ import SpriteKit
 import UIKit
 
 protocol GameViewNavigationDelegate: class {
-
+    // TODO: Add Ranking of Players
+    func gameDidEnd(gamePlayId: String)
 }
 
 class GamePlayViewController: UIViewController {
@@ -54,6 +55,10 @@ class GamePlayViewController: UIViewController {
             view.showsFPS = true
             view.showsNodeCount = true
         }
+    }
+
+    func endGame() {
+        navigationDelegate?.gameDidEnd(gamePlayId: viewModel.gameplayId)
     }
 
     override var prefersStatusBarHidden: Bool {
