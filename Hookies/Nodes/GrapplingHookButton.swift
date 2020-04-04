@@ -12,7 +12,7 @@ class GrapplingHookButton: ButtonNode {
 
     // MARK: - INIT
     init(in frame: CGRect) {
-        let size = CGSize(width: 80, height: 80)
+        let size = CGSize(width: 120, height: 120)
         let texture = SKTexture(imageNamed: "grappling_hook")
         super.init(texture: texture, color: .clear, size: size)
         self.position = CGPoint(
