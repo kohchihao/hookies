@@ -33,9 +33,10 @@ games.on('connection', socket => {
 	socket.on('genericPlayerEventDetected', (data) => {
 		console.log(data);
 		socket.to(currentGameId).emit('genericPlayerEventDetected', data)
-	})
+	});
 
 	socket.on('disconnect', () => {
+		console.log('currentUserId', currentUserId, 'disconnected');
 		gameManager.removeUserFromGame(currentUserId, currentGameId);
 		socket.to(currentGameId).emit("leftGame", currentUserId)
 	});
@@ -43,6 +44,6 @@ games.on('connection', socket => {
 
 // ping interval of 2s, timeout 4s
 const port = process.env.PORT || 3000;
-http.listen(port, {'pingInterval': 2000, 'pingTimeout': 4000}, function() {
+http.listen(port, {pingInterval: 2000, pingTimeout: 4000}, function() {
 	console.log(`listening on *:${port}`);
 });
