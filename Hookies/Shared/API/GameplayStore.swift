@@ -37,18 +37,22 @@ class GameplayStore {
         self.gameId = gameId
         socket.connect()
         socket.once(clientEvent: .connect) { _, _ in
-            guard let currentUser = API.shared.user.currentUser,
-                let gameId = self.gameId else {
-                    return
-            }
-            self.socket.emitWithAck("joinGame", [
-                "user": currentUser.uid,
-                "gameId": gameId
-            ]).timingOut(after: self.timeout) { ack in
-                let otherOnlineUsers = self.decodePlayersInRoomData(data: ack)
-                    .filter({ $0 != currentUser.uid })
-                completion(otherOnlineUsers)
-            }
+            self.joinGame(gameId: gameId, completion: completion)
+        }
+    }
+
+    func joinGame(gameId: String, completion: @escaping ([String]) -> Void) {
+        guard let currentUser = API.shared.user.currentUser,
+            let gameId = self.gameId else {
+                return
+        }
+        self.socket.emitWithAck("joinGame", [
+            "user": currentUser.uid,
+            "gameId": gameId
+        ]).timingOut(after: self.timeout) { ack in
+            let otherOnlineUsers = self.decodePlayersInRoomData(data: ack)
+                .filter({ $0 != currentUser.uid })
+            completion(otherOnlineUsers)
         }
     }
 
@@ -73,14 +77,11 @@ class GameplayStore {
         socket.on(clientEvent: .connect) { _, _ in
             listener(.connected)
 
-            guard let currentUser = API.shared.user.currentUser,
-                let gameId = self.gameId else {
-                    return
+            guard let gameId = self.gameId else {
+                return
             }
-            self.socket.emit("joinGame", [
-                "user": currentUser.uid,
-                "gameId": gameId
-            ])
+
+            self.joinGame(gameId: gameId, completion: { _ in })
         }
         socket.on(clientEvent: .disconnect) { _, _ in
             listener(.disconnected)
