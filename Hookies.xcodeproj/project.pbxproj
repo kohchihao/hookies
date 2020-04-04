@@ -166,6 +166,7 @@
 		D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */; };
 		D9BC4AAF24359D4E00BD35DF /* SpriteSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */; };
 		D9BC4AB12436332600BD35DF /* HealthSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC4AB02436332600BD35DF /* HealthSystem.swift */; };
+		D9BC4AB52438711100BD35DF /* HealthSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC4AB42438711000BD35DF /* HealthSystemTests.swift */; };
 		D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */; };
 		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
 		D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806924338278009D7A52 /* VectorTests.swift */; };
@@ -288,6 +289,7 @@
 		2B8476BC24331AD000882F30 /* CannonEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonEntity.swift; sourceTree = "<group>"; };
 		2B992586242EF0BC00795B90 /* SpriteSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystem.swift; sourceTree = "<group>"; };
 		2B99258A242FA50200795B90 /* HookSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSystem.swift; sourceTree = "<group>"; };
+		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7859AF9724332EF500B60968 /* Social.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social.swift; sourceTree = "<group>"; };
 		7859AF992433305F00B60968 /* Social+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Social+FirestoreModel.swift"; sourceTree = "<group>"; };
 		7859AF9B2433317000B60968 /* SocialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialStore.swift; sourceTree = "<group>"; };
@@ -305,7 +307,6 @@
 		7859AFB82437095A00B60968 /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		7859AFBA243725C700B60968 /* OutgoingRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRequestTableViewCell.swift; sourceTree = "<group>"; };
 		7859AFBB243725C700B60968 /* OutgoingRequestTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutgoingRequestTableViewCell.xib; sourceTree = "<group>"; };
-		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785B79D92423581B001D7028 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		785B79DB24236B6D001D7028 /* Lobby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lobby.swift; sourceTree = "<group>"; };
@@ -367,6 +368,7 @@
 		D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloatingLandMap.sks; sourceTree = "<group>"; };
 		D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystemTests.swift; sourceTree = "<group>"; };
 		D9BC4AB02436332600BD35DF /* HealthSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSystem.swift; sourceTree = "<group>"; };
+		D9BC4AB42438711000BD35DF /* HealthSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSystemTests.swift; sourceTree = "<group>"; };
 		D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystem.swift; sourceTree = "<group>"; };
 		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
 		D9F1806924338278009D7A52 /* VectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
@@ -989,6 +991,7 @@
 			isa = PBXGroup;
 			children = (
 				D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */,
+				D9BC4AB42438711000BD35DF /* HealthSystemTests.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1306,7 +1309,6 @@
 				116AD648242DB7CD0070F00B /* Encoder.swift in Sources */,
 				116AD64A242DBA510070F00B /* Vector.swift in Sources */,
 				7859AF9C2433317000B60968 /* SocialStore.swift in Sources */,
-				D90877242429B03B00B73D0E /* CollectableEntity.swift in Sources */,
 				7859AFB624364C5F00B60968 /* IncomingRequestTableViewCell.swift in Sources */,
 				110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */,
 				D9BC4AB12436332600BD35DF /* HealthSystem.swift in Sources */,
@@ -1449,6 +1451,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9BC4AB52438711100BD35DF /* HealthSystemTests.swift in Sources */,
 				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
 				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,

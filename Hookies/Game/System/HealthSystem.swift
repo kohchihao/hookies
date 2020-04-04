@@ -35,18 +35,26 @@ class HealthSystem: System, HealthSystemProtocol {
     }
 
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent {
-        return self.respawnPlayer(for: sprite, at: sprite.node.position)
+        if !isPlayerAlive(for: sprite) {
+            return self.respawnPlayer(for: sprite, at: sprite.node.position)
+        }
+        return sprite
     }
 
     func respawnPlayer(for sprite: SpriteComponent, at position: CGPoint) -> SpriteComponent {
-        sprite.node.position = CGPoint(x: position.x, y: spawnHorizontalLine)
-        sprite.node.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
+        if !isPlayerAlive(for: sprite) {
+            sprite.node.position = CGPoint(x: position.x, y: spawnHorizontalLine)
+            sprite.node.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+            sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
+        }
+
         return sprite
     }
 
     func respawnPlayerToClosestPlatform(for sprite: SpriteComponent) -> SpriteComponent? {
-        guard let closestPlatform = findClosestNonMovingPlatform(to: sprite.node.position) else {
+        guard let closestPlatform = findClosestNonMovingPlatform(to: sprite.node.position),
+            !isPlayerAlive(for: sprite)
+            else {
             return nil
         }
 
