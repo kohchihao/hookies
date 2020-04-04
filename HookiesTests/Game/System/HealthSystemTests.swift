@@ -54,7 +54,8 @@ class HealthSystemTests: XCTestCase {
     }
 
     func testIsPlayerAlive_playerIsAlive() {
-
+        let playerIsAlive = healthSystem.isPlayerAlive(for: playerSprite)
+        XCTAssertTrue(playerIsAlive)
     }
 
     func testIsPlayerAlive_playerIsDead() {
