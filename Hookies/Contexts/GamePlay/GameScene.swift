@@ -306,6 +306,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func handleJumpButtonTouchEnd() {
         jumpButton?.state = .ButtonNodeStateHidden
     }
+
+    // MARK: - Disconnected
+
+    private func disconnectPlayer() {
+        initialiseSignal()
+    }
+
+    private func initialiseSignal() {
+        guard let sceneFrame = self.scene?.frame else {
+            return
+        }
+
+        let signal = Signal(in: sceneFrame)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.25)
+        let fadeIn = SKAction.fadeIn(withDuration: 0.25)
+        let blinking = SKAction.sequence([fadeOut, fadeIn])
+        signal.run(SKAction.repeatForever(blinking))
+
+        jumpButton?.removeFromParent()
+        cam?.addChild(signal)
+    }
 }
 
 // MARK: - GameEngineDelegate
@@ -337,5 +358,9 @@ extension GameScene: GameEngineDelegate {
 
     func otherPlayerIsConnected(otherPlayer: SKSpriteNode) {
         addChild(otherPlayer)
+    }
+
+    func currentPlayerIsDisconnected() {
+        disconnectPlayer()
     }
 }

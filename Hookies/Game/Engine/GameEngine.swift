@@ -63,6 +63,7 @@ class GameEngine {
 
         setupTotalPlayers()
         connectToGame()
+        subscribeToGameConnection()
         setupMultiplayer()
     }
 
@@ -399,6 +400,14 @@ class GameEngine {
         API.shared.gameplay.connectToGame(gameId: gameId, completion: { otherPlayersId in
             for otherPlayerId in otherPlayersId {
                 self.setupOtherPlayer(of: otherPlayerId)
+            }
+        })
+    }
+
+    private func subscribeToGameConnection() {
+        API.shared.gameplay.subscribeToGameConnection(listener: { connectionState in
+            if connectionState == .disconnected {
+                self.delegate?.currentPlayerIsDisconnected()
             }
         })
     }
