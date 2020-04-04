@@ -154,7 +154,7 @@ class SocialViewController: UIViewController {
             switch cell {
             case let cell as IncomingRequestTableViewCell:
                 cell.request = request
-                self.updateUsernameInCell(userId: request.toUserId, cell: cell)
+                self.updateUsernameInCell(userId: request.fromUserId, cell: cell)
                 return
             case let cell as OutgoingRequestTableViewCell:
                 cell.request = request

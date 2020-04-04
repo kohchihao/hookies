@@ -17,10 +17,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="name_bg" translatesAutoresizingMaskIntoConstraints="NO" id="6UW-Xx-4n5">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                        <rect key="frame" x="-1" y="0.0" width="322" height="60"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cpk-IZ-LCS" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="254" y="15" width="43" height="30"/>
+                        <rect key="frame" x="255" y="15" width="43" height="30"/>
                         <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <state key="normal" title="Reject">
@@ -36,7 +36,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OQL-nF-DAR" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="197" y="15" width="49" height="30"/>
+                        <rect key="frame" x="198" y="15" width="49" height="30"/>
                         <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <state key="normal" title="Accept">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -52,19 +52,16 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Cpk-IZ-LCS" firstAttribute="leading" secondItem="OQL-nF-DAR" secondAttribute="trailing" constant="8" id="yF0-ag-DGm"/>
+                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-16" id="8QC-3z-aH5"/>
+                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="EwU-HE-RfF"/>
+                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="centerY" secondItem="Cpk-IZ-LCS" secondAttribute="centerY" id="KIY-80-ogK"/>
+                    <constraint firstItem="OQL-nF-DAR" firstAttribute="baseline" secondItem="Cpk-IZ-LCS" secondAttribute="baseline" id="Qa9-tt-vte"/>
+                    <constraint firstItem="Cpk-IZ-LCS" firstAttribute="leading" secondItem="OQL-nF-DAR" secondAttribute="trailing" constant="8" id="mRY-SK-uG3"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Cpk-IZ-LCS" secondAttribute="trailing" constant="7" id="qsp-Xu-7bF"/>
+                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-11" id="tzf-9p-OSL"/>
+                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="wQX-s5-F94"/>
                 </constraints>
             </tableViewCellContentView>
-            <constraints>
-                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="1iQ-dh-nDf"/>
-                <constraint firstItem="6UW-Xx-4n5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="8cW-Wg-BPw"/>
-                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="254" id="SJY-X4-ySZ"/>
-                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="Cpk-IZ-LCS" secondAttribute="trailing" constant="23" id="SnW-Ea-OV0"/>
-                <constraint firstItem="6UW-Xx-4n5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="U5l-bB-p47"/>
-                <constraint firstItem="OQL-nF-DAR" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="g0H-lJ-JIB"/>
-                <constraint firstItem="H2p-sc-9uM" firstAttribute="trailing" secondItem="6UW-Xx-4n5" secondAttribute="trailing" id="nu5-dP-Gvb"/>
-                <constraint firstItem="6UW-Xx-4n5" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottom" id="uFm-7P-gva"/>
-            </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <point key="canvasLocation" x="137.68115942028987" y="103.79464285714285"/>
         </tableViewCell>

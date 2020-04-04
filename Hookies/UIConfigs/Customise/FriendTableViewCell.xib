@@ -19,11 +19,26 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="name_bg" translatesAutoresizingMaskIntoConstraints="NO" id="iLu-Xq-mK7">
                         <rect key="frame" x="-1" y="0.0" width="322" height="60"/>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9Z-fd-mc2" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
+                        <rect key="frame" x="161" y="15" width="80" height="30"/>
+                        <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="80" id="WtY-jy-Ga6"/>
+                        </constraints>
+                        <state key="normal" title="Message">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qhq-P8-0MI" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="250" y="15" width="54" height="30"/>
+                        <rect key="frame" x="246" y="15" width="60" height="30"/>
                         <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="54" id="wiZ-GK-UVN"/>
+                            <constraint firstAttribute="width" constant="60" id="kFd-Zm-8NO"/>
                         </constraints>
                         <state key="normal" title="Delete">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -37,31 +52,16 @@
                             <action selector="deleteButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="gcz-3r-br9"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9Z-fd-mc2" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="160" y="15" width="81" height="30"/>
-                        <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="81" id="Vzh-PT-6y5"/>
-                        </constraints>
-                        <state key="normal" title="Message">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </state>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <real key="value" value="10"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-11" id="3m3-kA-bk3"/>
-                    <constraint firstItem="N9Z-fd-mc2" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="GZY-n9-XWm"/>
-                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="centerY" secondItem="N9Z-fd-mc2" secondAttribute="centerY" id="M2H-dG-srq"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Qhq-P8-0MI" secondAttribute="trailing" constant="1" id="MTZ-mf-JTs"/>
-                    <constraint firstItem="N9Z-fd-mc2" firstAttribute="baseline" secondItem="Qhq-P8-0MI" secondAttribute="baseline" id="QN0-ID-zTk"/>
-                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-16" id="Zxg-5R-2Hw"/>
-                    <constraint firstItem="Qhq-P8-0MI" firstAttribute="leading" secondItem="N9Z-fd-mc2" secondAttribute="trailing" constant="9" id="hmr-UI-HEh"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="iLu-Xq-mK7" secondAttribute="trailing" constant="-16" id="lmZ-JN-edX"/>
+                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-16" id="8kB-UJ-m3G"/>
+                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-11" id="9et-6d-yot"/>
+                    <constraint firstItem="Qhq-P8-0MI" firstAttribute="leading" secondItem="N9Z-fd-mc2" secondAttribute="trailing" constant="5" id="KBf-OM-xID"/>
+                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="RGh-9Q-qmN"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Qhq-P8-0MI" secondAttribute="trailing" constant="-1" id="eck-ZZ-gC9"/>
+                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="centerY" secondItem="N9Z-fd-mc2" secondAttribute="centerY" id="mgn-tF-grt"/>
+                    <constraint firstItem="N9Z-fd-mc2" firstAttribute="baseline" secondItem="Qhq-P8-0MI" secondAttribute="baseline" id="sCX-kF-tOB"/>
+                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="sgt-3V-86U"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
