@@ -1,7 +1,7 @@
 const GameManager = require('./GameManager');
 const app = require('express')();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http, {'pingInterval': 2000, 'pingTimeout': 4000}); // ping interval of 2s, timeout 4s
+const io = require('socket.io')(http);
 
 const gameManager = new GameManager();
 const games = io.of('/games');
@@ -41,7 +41,8 @@ games.on('connection', socket => {
 	});
 });
 
+// ping interval of 2s, timeout 4s
 const port = process.env.PORT || 3000;
-http.listen(port, function() {
+http.listen(port, {'pingInterval': 2000, 'pingTimeout': 4000}, function() {
 	console.log(`listening on *:${port}`);
 });
