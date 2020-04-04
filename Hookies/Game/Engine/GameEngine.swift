@@ -438,7 +438,13 @@ class GameEngine {
 
     private func subscribeToGameConnection() {
         API.shared.gameplay.subscribeToGameConnection(listener: { connectionState in
-            if connectionState == .disconnected {
+            switch connectionState {
+            case .connected:
+                let isPlayerReconnecting = self.currentPlayerId != nil
+                if isPlayerReconnecting {
+                    self.delegate?.currentPlayerIsReconnected()
+                }
+            case .disconnected:
                 self.delegate?.currentPlayerIsDisconnected()
             }
         })

@@ -76,6 +76,9 @@ class GameplayStore {
         socket.on(clientEvent: .disconnect) { _, _ in
             listener(.disconnected)
         }
+        socket.on(clientEvent: .reconnectAttempt, callback: { _, _ in
+            listener(.disconnected)
+        })
     }
 
     func broadcastPowerupAction(powerupAction: PowerupActionData) {

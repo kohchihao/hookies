@@ -23,6 +23,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var grapplingHookButton: GrapplingHookButton?
     private var jumpButton: JumpButton?
 
+    private var signal: Signal?
+
     private var countdownLabel: SKLabelNode?
     private var count = 5
 
@@ -307,25 +309,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         jumpButton?.state = .ButtonNodeStateHidden
     }
 
-    // MARK: - Disconnected
+    // MARK: - Connection
+
+    private func reconnectPlayer() {
+        signal?.removeFromParent()
+        signal = nil
+    }
 
     private func disconnectPlayer() {
         initialiseSignal()
     }
 
     private func initialiseSignal() {
+        guard signal == nil else {
+            return
+        }
+
         guard let sceneFrame = self.scene?.frame else {
             return
         }
 
         let signal = Signal(in: sceneFrame)
-        let fadeOut = SKAction.fadeOut(withDuration: 0.25)
-        let fadeIn = SKAction.fadeIn(withDuration: 0.25)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
+        let fadeIn = SKAction.fadeIn(withDuration: 0.5)
         let blinking = SKAction.sequence([fadeOut, fadeIn])
         signal.run(SKAction.repeatForever(blinking))
 
-        jumpButton?.removeFromParent()
         cam?.addChild(signal)
+
+        self.signal = signal
     }
 }
 
@@ -358,6 +370,10 @@ extension GameScene: GameEngineDelegate {
 
     func otherPlayerIsConnected(otherPlayer: SKSpriteNode) {
         addChild(otherPlayer)
+    }
+
+    func currentPlayerIsReconnected() {
+        reconnectPlayer()
     }
 
     func currentPlayerIsDisconnected() {
