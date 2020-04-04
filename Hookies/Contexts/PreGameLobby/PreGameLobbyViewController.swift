@@ -25,6 +25,12 @@ class PreGameLobbyViewController: UIViewController {
         }
         return self.viewModel.lobby.hostId == currentUser.uid && viewModel.lobby.selectedMapType != nil
     }
+    private var selectMapEnabled: Bool {
+        guard let currentUser = API.shared.user.currentUser else {
+            return false
+        }
+        return self.viewModel.lobby.hostId == currentUser.uid
+    }
 
     @IBOutlet private var selectedMapLabel: UILabel!
     @IBOutlet private var gameSessionIdLabel: UILabel!
@@ -40,8 +46,6 @@ class PreGameLobbyViewController: UIViewController {
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: PreGameLobbyViewController.name, bundle: nil)
-        saveLobby(lobby: viewModel.lobby)
-        subscribeToLobby(lobby: viewModel.lobby)
     }
 
     @available(*, unavailable)
@@ -57,7 +61,9 @@ class PreGameLobbyViewController: UIViewController {
         playerViews.append(player2View)
         playerViews.append(player3View)
         playerViews.append(player4View)
-        updateView()
+        saveLobby(lobby: viewModel.lobby)
+        subscribeToLobby(lobby: viewModel.lobby)
+        selectedMapLabel.isEnabled = selectMapEnabled
     }
 
     override var prefersStatusBarHidden: Bool {
