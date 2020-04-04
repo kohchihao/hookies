@@ -242,7 +242,19 @@ class GameEngine {
             let boltSprite = SpriteComponent(parent: boltEntity)
             _ = spriteSystem.set(sprite: boltSprite, to: bolt)
 
-            // TODO: Check for moving and rotating bolt
+            let translate = NonPhysicsTranslateComponent(parent: boltEntity)
+
+            if bolt.name == "bolt_movable" {
+                bolt.physicsBody?.pinned = false
+
+                let ending = CGPoint(x: bolt.position.x + 300, y: bolt.position.y)
+                gameObjectMovementSystem.setTranslationLine(
+                    to: boltSprite,
+                    with: translate,
+                    moveInfinitely: true,
+                    speed: 50,
+                    endingAt: ending)
+            }
 
             boltEntity.addComponent(boltSprite)
 
