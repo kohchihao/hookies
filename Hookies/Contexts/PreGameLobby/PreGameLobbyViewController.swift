@@ -35,10 +35,6 @@ class PreGameLobbyViewController: UIViewController {
 
     @IBOutlet private var selectedMapLabel: UILabel!
     @IBOutlet private var gameSessionIdLabel: UILabel!
-    @IBOutlet private var player1View: LobbyPlayerView!
-    @IBOutlet private var player2View: LobbyPlayerView!
-    @IBOutlet private var player3View: LobbyPlayerView!
-    @IBOutlet private var player4View: LobbyPlayerView!
     @IBOutlet private var costumeIdLabel: UILabel!
     @IBOutlet private var startGameButton: UIButton!
     @IBOutlet private var socialView: UIView!
@@ -57,15 +53,32 @@ class PreGameLobbyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        _ = self.view
+        setupPlayerView()
         viewModel.delegate = self
-        playerViews.append(player1View)
-        playerViews.append(player2View)
-        playerViews.append(player3View)
-        playerViews.append(player4View)
         saveLobby(lobby: viewModel.lobby)
         subscribeToLobby(lobby: viewModel.lobby)
         selectMapButton.isEnabled = selectMapEnabled
+    }
+
+    private func setupPlayerView() {
+        self.playerViews = []
+        let width = self.view.frame.width / CGFloat(Constants.maxPlayerCount)
+        let height = width * 1.2
+        for i in 0...Constants.maxPlayerCount {
+            let x = width * CGFloat(i)
+            let y = self.view.frame.height - height * 1.2
+            let frame = CGRect(x: x, y: y, width: width, height: height)
+            let playerView = LobbyPlayerView(frame: frame)
+            self.view.addSubview(playerView)
+            self.playerViews.append(playerView)
+
+            playerView.mainView.translatesAutoresizingMaskIntoConstraints = false
+            let margins = playerView.layoutMarginsGuide
+            playerView.mainView.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+            playerView.mainView.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+            playerView.mainView.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
+            playerView.mainView.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
+        }
     }
 
     private func setUpSocialView() {
@@ -198,12 +211,26 @@ class PreGameLobbyViewController: UIViewController {
 
     private func updatePlayerViews() {
         getPlayers(playersId: self.viewModel.lobby.playersId, completion: { players in
-            for i in 0..<min(4, players.count) {
-                self.playerViews[i].updateUsernameLabel(username: players[i].username)
-                guard let costumeType = self.viewModel.lobby.costumesId[players[i].uid] else {
+            var players = players
+            players.sort(by: { $0.username > $1.username })
+            guard players.count <= Constants.maxPlayerCount else {
+                print("max number of players exceeded")
+                return
+            }
+            var otherPlayersViewIndex = 1
+            var index: Int
+            for player in players {
+                if player.uid == self.viewModel.lobby.hostId {
+                    index = 0
+                } else {
+                    index = otherPlayersViewIndex
+                    otherPlayersViewIndex += 1
+                }
+                self.playerViews[index].updateUsernameLabel(username: player.username)
+                guard let costumeType = self.viewModel.lobby.costumesId[player.uid] else {
                     return
                 }
-                self.playerViews[i].addPlayerImage(costumeType: costumeType)
+                self.playerViews[index].addPlayerImage(costumeType: costumeType)
             }
         })
     }

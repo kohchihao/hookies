@@ -11,10 +11,6 @@
             <connections>
                 <outlet property="costumeIdLabel" destination="EhH-f1-AWI" id="Xqe-bs-hDT"/>
                 <outlet property="gameSessionIdLabel" destination="E5t-UX-zdb" id="UAr-gf-YAa"/>
-                <outlet property="player1View" destination="sI3-bs-cLm" id="6hG-f0-GFA"/>
-                <outlet property="player2View" destination="LuG-Ab-Xon" id="AzH-Kv-YXH"/>
-                <outlet property="player3View" destination="9c7-Pv-buE" id="TRj-3L-XUp"/>
-                <outlet property="player4View" destination="gLZ-Fz-6yT" id="7Km-Ab-kn1"/>
                 <outlet property="selectMapButton" destination="pxw-Sd-UG5" id="UqJ-hT-EJ6"/>
                 <outlet property="selectedMapLabel" destination="Mqv-bn-hYX" id="ehg-Bk-jKM"/>
                 <outlet property="socialView" destination="Eun-bm-LuI" id="wSn-UU-L9C"/>
@@ -77,22 +73,6 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sI3-bs-cLm" userLabel="Player 1 View" customClass="LobbyPlayerView" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="20" y="410" width="240" height="300"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LuG-Ab-Xon" userLabel="Player 2 View" customClass="LobbyPlayerView" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="268" y="410" width="240" height="300"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9c7-Pv-buE" userLabel="Player 3 View" customClass="LobbyPlayerView" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="516" y="410" width="240" height="300"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gLZ-Fz-6yT" userLabel="Player 4 View" customClass="LobbyPlayerView" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="764" y="410" width="240" height="300"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </view>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eun-bm-LuI">
                     <rect key="frame" x="20" y="20" width="300" height="690"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

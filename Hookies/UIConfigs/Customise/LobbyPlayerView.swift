@@ -11,7 +11,7 @@ import UIKit
 
 class LobbyPlayerView: UIView {
 
-    @IBOutlet private var mainView: UIView!
+    @IBOutlet var mainView: UIView!
     @IBOutlet private var usernameLabel: UILabel!
     @IBOutlet private var usernameLabelBg: UIImageView!
     @IBOutlet private var playerPodium: UIImageView!
