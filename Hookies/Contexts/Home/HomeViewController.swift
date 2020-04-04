@@ -15,11 +15,13 @@ protocol HomeViewNavigationDelegate: class {
     func didPressLogoutButton(in: HomeViewController) throws
     func didPressHostMatchButton(in: HomeViewController)
     func didPressJoinMatchButton(in: HomeViewController)
+    func didPressFriendButton(in: HomeViewController)
 }
 
 class HomeViewController: UIViewController {
     weak var navigationDelegate: HomeViewNavigationDelegate?
     private var viewModel: HomeViewModelRepresentable
+    @IBOutlet private var socialView: UIView!
 
     // MARK: - INIT
     init(with viewModel: HomeViewModelRepresentable) {
@@ -34,6 +36,19 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let socialViewModel = SocialViewModel()
+        let socialViewController = SocialViewController(with: socialViewModel)
+        self.addChild(socialViewController)
+//        socialViewController.view.frame = socialView.frame
+        self.socialView.addSubview(socialViewController.view)
+        socialViewController.didMove(toParent: self)
+        socialViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        let margins = socialView.layoutMarginsGuide
+        socialViewController.view.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        socialViewController.view.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        socialViewController.view.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
+        socialViewController.view.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
+        socialView.isHidden = true
     }
 
     override var shouldAutorotate: Bool {
@@ -66,5 +81,10 @@ class HomeViewController: UIViewController {
 
     @IBAction private func onJoinMatchClicked(_ sender: UIButton) {
         navigationDelegate?.didPressJoinMatchButton(in: self)
+    }
+
+    @IBAction private func onFriendButtonClicked(_ sender: UIButton) {
+//        navigationDelegate?.didPressFriendButton(in: self)
+        self.socialView.isHidden.toggle()
     }
 }
