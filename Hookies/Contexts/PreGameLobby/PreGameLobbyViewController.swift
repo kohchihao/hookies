@@ -42,7 +42,8 @@ class PreGameLobbyViewController: UIViewController {
     @IBOutlet private var costumeIdLabel: UILabel!
     @IBOutlet private var startGameButton: UIButton!
     @IBOutlet private var socialView: UIView!
-    
+    @IBOutlet private var selectMapButton: UIButton!
+
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
@@ -64,7 +65,7 @@ class PreGameLobbyViewController: UIViewController {
         playerViews.append(player4View)
         saveLobby(lobby: viewModel.lobby)
         subscribeToLobby(lobby: viewModel.lobby)
-        selectedMapLabel.isEnabled = selectMapEnabled
+        selectMapButton.isEnabled = selectMapEnabled
     }
 
     private func setUpSocialView() {

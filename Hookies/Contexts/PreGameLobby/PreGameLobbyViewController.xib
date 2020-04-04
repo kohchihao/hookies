@@ -15,6 +15,7 @@
                 <outlet property="player2View" destination="LuG-Ab-Xon" id="AzH-Kv-YXH"/>
                 <outlet property="player3View" destination="9c7-Pv-buE" id="TRj-3L-XUp"/>
                 <outlet property="player4View" destination="gLZ-Fz-6yT" id="7Km-Ab-kn1"/>
+                <outlet property="selectMapButton" destination="pxw-Sd-UG5" id="UqJ-hT-EJ6"/>
                 <outlet property="selectedMapLabel" destination="Mqv-bn-hYX" id="ehg-Bk-jKM"/>
                 <outlet property="socialView" destination="Eun-bm-LuI" id="wSn-UU-L9C"/>
                 <outlet property="startGameButton" destination="wCv-SN-bcb" id="QFU-gu-AAV"/>
