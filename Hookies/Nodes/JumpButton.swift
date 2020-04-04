@@ -14,7 +14,7 @@ class JumpButton: ButtonNode {
 
     // MARK: - INIT
     init(in frame: CGRect) {
-        let size = CGSize(width: 80, height: 80)
+        let size = CGSize(width: 100, height: 100)
         let texture = SKTexture(imageNamed: "jump_button")
         super.init(texture: texture, color: .clear, size: size)
         self.position = CGPoint(

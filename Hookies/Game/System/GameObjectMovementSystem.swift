@@ -22,21 +22,39 @@ protocol GameObjectMovementSystemProtocol {
         to sprite: SpriteComponent,
         with rotate: RotateComponent,
         withDuration duration: Double,
-        withAngle angle: Double) throws
+        withAngle angle: Double)
     func setTranslation(
         to sprite: SpriteComponent,
         with translate: NonPhysicsTranslateComponent,
         withPath path: CGMutablePath,
         moveInfinitely: Bool,
-        duration: Double) throws
+        speed: Double)
+    func setTranslationRectangle(
+        to sprite: SpriteComponent,
+        with translate: NonPhysicsTranslateComponent,
+        moveInfinitely: Bool,
+        speed: Double,
+        width: Double,
+        height: Double)
+    func setTranslationCircle(
+        to sprite: SpriteComponent,
+        with translate: NonPhysicsTranslateComponent,
+        moveInfinitely: Bool,
+        speed: Double,
+        radius: Double)
+    func setTranslationLine(
+        to sprite: SpriteComponent,
+        with translate: NonPhysicsTranslateComponent,
+        moveInfinitely: Bool,
+        speed: Double,
+        endingAt: CGPoint)
     func setBounce(
         to sprite: SpriteComponent,
         with bounce: BounceComponent,
-        withRestitution restitution: Double) throws
+        withRestitution restitution: Double)
 }
 
 class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
-
     private var spriteToRotate = [SpriteComponent: RotateComponent]()
     private var spriteToTranslate = [SpriteComponent: NonPhysicsTranslateComponent]()
     private var spriteToBounce = [SpriteComponent: BounceComponent]()
@@ -113,7 +131,11 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         var reverseTranslateGroup = [SpriteComponent: [SKAction]]()
 
         for (sprite, translate) in spriteToTranslate {
-            let pathAction = SKAction.follow(translate.path, speed: CGFloat(translate.duration))
+            let pathAction = SKAction.follow(
+                translate.path,
+                asOffset: false,
+                orientToPath: false,
+                speed: CGFloat(translate.speed))
 
             if var actionGroup = translateGroup[sprite] {
                 actionGroup.append(pathAction)
@@ -128,7 +150,7 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
                     actionGroup.append(reversedPathAction)
                     reverseTranslateGroup[sprite] = actionGroup
                 } else {
-                    reverseTranslateGroup[sprite] = [pathAction]
+                    reverseTranslateGroup[sprite] = [reversedPathAction]
                 }
             }
         }
@@ -148,7 +170,7 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         with rotate: RotateComponent,
         withDuration duration: Double,
         withAngle angle: Double
-    ) throws {
+    ) {
         rotate.duration = duration
         rotate.radianAngle = angle
 
@@ -162,11 +184,11 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         with translate: NonPhysicsTranslateComponent,
         withPath path: CGMutablePath,
         moveInfinitely: Bool,
-        duration: Double
-    ) throws {
+        speed: Double
+    ) {
         translate.path = path
         translate.moveInfinitely = moveInfinitely
-        translate.duration = duration
+        translate.speed = speed
 
         spriteToTranslate[sprite] = translate
     }
@@ -177,8 +199,74 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         to sprite: SpriteComponent,
         with bounce: BounceComponent,
         withRestitution restitution: Double
-    ) throws {
+    ) {
         bounce.restitution = restitution
         spriteToBounce[sprite] = bounce
+    }
+
+    func setTranslationRectangle(
+        to sprite: SpriteComponent,
+        with translate: NonPhysicsTranslateComponent,
+        moveInfinitely: Bool,
+        speed: Double,
+        width: Double,
+        height: Double
+    ) {
+        let path = createRectangleShapePath(starting: sprite.node.position, width: width, height: height)
+        self.setTranslation(to: sprite, with: translate, withPath: path, moveInfinitely: moveInfinitely, speed: speed)
+    }
+
+    func setTranslationCircle(
+        to sprite: SpriteComponent,
+        with translate: NonPhysicsTranslateComponent,
+        moveInfinitely: Bool,
+        speed: Double,
+        radius: Double
+    ) {
+        let path = createCircleShapePath(starting: sprite.node.position, radius: radius)
+        self.setTranslation(to: sprite, with: translate, withPath: path, moveInfinitely: moveInfinitely, speed: speed)
+    }
+
+    func setTranslationLine(
+        to sprite: SpriteComponent,
+        with translate: NonPhysicsTranslateComponent,
+        moveInfinitely: Bool,
+        speed: Double,
+        endingAt: CGPoint
+    ) {
+        let path = createLineShapePath(starting: sprite.node.position, ending: endingAt)
+        self.setTranslation(to: sprite, with: translate, withPath: path, moveInfinitely: moveInfinitely, speed: speed)
+    }
+
+    private func createRectangleShapePath(
+        starting position: CGPoint,
+        width: Double,
+        height: Double
+    ) -> CGMutablePath {
+        let path = CGMutablePath()
+        path.move(to: position)
+        path.addLine(to: CGPoint(x: position.x + CGFloat(width), y: position.y))
+        path.addLine(to: CGPoint(x: position.x + CGFloat(width), y: position.y - CGFloat(height)))
+        path.addLine(to: CGPoint(x: position.x, y: position.y - CGFloat(height)))
+        path.addLine(to: CGPoint(x: position.x, y: position.y))
+        path.closeSubpath()
+        return path
+    }
+
+    private func createCircleShapePath(starting position: CGPoint, radius: Double) -> CGMutablePath {
+        let path = CGMutablePath()
+        path.move(to: position)
+        let rect = CGRect(x: position.x, y: position.y, width: CGFloat(radius) * 2, height: CGFloat(radius) * 2)
+        path.addEllipse(in: rect)
+        path.closeSubpath()
+        return path
+    }
+
+    private func createLineShapePath(starting startPosition: CGPoint, ending endPosition: CGPoint) -> CGMutablePath {
+        let path = CGMutablePath()
+        path.move(to: startPosition)
+        path.addLine(to: endPosition)
+        path.closeSubpath()
+        return path
     }
 }
