@@ -40,9 +40,25 @@ class JoinGameCoordinator: Coordinator {
 
 // MARK: - JoinGameViewNavigationDelegate
 extension JoinGameCoordinator: JoinGameViewNavigationDelegate {
-    func didPressJoinLobbyButton(in: JoinGameViewController, withLobby: Lobby) {
-        let preGameLobbyCoordinator = PreGameLobbyCoordinator(with: navigator, withLobby: withLobby)
-        preGameLobbyCoordinator.coordinatorDelegate = self
-        preGameLobbyCoordinator.start()
+    func didPressJoinLobbyButton(in: JoinGameViewController, lobbyId: String) {
+        API.shared.lobby.get(lobbyId: lobbyId, completion: { lobby, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            guard var lobby = lobby else {
+                return
+            }
+            guard let playerId = API.shared.user.currentUser?.uid else {
+                return
+            }
+            guard lobby.lobbyState == .open else {
+                return
+            }
+            lobby.addPlayer(playerId: playerId)
+            let preGameLobbyCoordinator = PreGameLobbyCoordinator(with: self.navigator, withLobby: lobby)
+            preGameLobbyCoordinator.coordinatorDelegate = self
+            preGameLobbyCoordinator.start()
+        })
     }
 }

@@ -33,8 +33,8 @@ struct RequestManager {
         })
     }
 
-    static func checkUsersSocialExist(request: Request, completion: @escaping (Bool, Social?, Social?) -> Void) {
-        API.shared.social.get(userId: request.fromUserId, completion: { senderSocial, error in
+    static func checkUsersSocialExist(fromUserId: String, toUserId: String, completion: @escaping (Bool, Social?, Social?) -> Void) {
+        API.shared.social.get(userId: fromUserId, completion: { senderSocial, error in
             guard error == nil else {
                 print(error.debugDescription)
                 return completion(false, nil, nil)
@@ -43,7 +43,7 @@ struct RequestManager {
                 print("Sender of request does not have social")
                 return completion(false, nil, nil)
             }
-            API.shared.social.get(userId: request.toUserId, completion: { recipientSocial, error in
+            API.shared.social.get(userId: toUserId, completion: { recipientSocial, error in
                 guard error == nil else {
                     print(error.debugDescription)
                     return completion(false, nil, nil)
@@ -113,7 +113,7 @@ struct RequestManager {
                 return
             }
             let request = Request(fromUserId: fromUserId, toUserId: toUserId)
-            self.checkUsersSocialExist(request: request, completion: { exists, senderSocial, recipientSocial  in
+            self.checkUsersSocialExist(fromUserId: fromUserId, toUserId: toUserId, completion: { exists, senderSocial, recipientSocial  in
                 guard exists else {
                     return
                 }
@@ -160,14 +160,14 @@ struct RequestManager {
             guard let request = request else {
                 return
             }
-            self.checkUsersSocialExist(request: request, completion: { exists, senderSocial, recipientSocial  in
+            self.checkUsersSocialExist(fromUserId: request.fromUserId, toUserId: request.toUserId, completion: { exists, sender, recipient  in
                 guard exists else {
                     return
                 }
-                guard var sender = senderSocial else {
+                guard var sender = sender else {
                     return
                 }
-                guard var recipient = recipientSocial else {
+                guard var recipient = recipient else {
                     return
                 }
                 sender.addFriend(userId: request.toUserId)
@@ -186,14 +186,14 @@ struct RequestManager {
             guard let request = request else {
                 return
             }
-            self.checkUsersSocialExist(request: request, completion: { exists, senderSocial, recipientSocial  in
+            self.checkUsersSocialExist(fromUserId: request.fromUserId, toUserId: request.toUserId, completion: { exists, sender, recipient  in
                 guard exists else {
                     return
                 }
-                guard var sender = senderSocial else {
+                guard var sender = sender else {
                     return
                 }
-                guard var recipient = recipientSocial else {
+                guard var recipient = recipient else {
                     return
                 }
                 sender.removeRequest(requestId: requestId)

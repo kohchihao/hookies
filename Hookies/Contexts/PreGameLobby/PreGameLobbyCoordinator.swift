@@ -59,6 +59,12 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
         gamePlayCoordinator.coordinatorDelegate = self
         gamePlayCoordinator.start()
     }
+
+    func didPressFriendButton(in: PreGameLobbyViewController) {
+        let socialCoordinator = SocialCoodinator(with: navigator)
+        socialCoordinator.coordinatorDelegate = self
+        socialCoordinator.start()
+    }
 }
 
 extension PreGameLobbyCoordinator: MapDelegate {

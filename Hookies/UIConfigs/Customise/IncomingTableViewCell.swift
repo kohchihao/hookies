@@ -8,15 +8,18 @@
 
 import UIKit
 
-protocol IncomingRequestTableViewCellDelegate: class {
+protocol IncomingTableViewCellDelegate: class {
     func acceptButtonPressed(requestId: String)
     func rejectButtonPressed(requestId: String)
+    func acceptButtonPressed(inviteId: String)
+    func rejectButtonPressed(inviteId: String)
 }
 
-class IncomingRequestTableViewCell: UITableViewCell {
+class IncomingTableViewCell: UITableViewCell {
 
-    weak var delegate: IncomingRequestTableViewCellDelegate?
+    weak var delegate: IncomingTableViewCellDelegate?
     var request: Request?
+    var invite: Invite?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,16 +33,18 @@ class IncomingRequestTableViewCell: UITableViewCell {
     }
 
     @IBAction private func acceptButtonPressed(_ sender: UIButton) {
-        guard let requestId = self.request?.requestId else {
-            return
+        if let requestId = self.request?.requestId {
+            delegate?.acceptButtonPressed(requestId: requestId)
+        } else if let inviteId = self.invite?.inviteId {
+            delegate?.acceptButtonPressed(inviteId: inviteId)
         }
-        delegate?.acceptButtonPressed(requestId: requestId)
     }
 
     @IBAction private func rejectButtonPressed(_ sender: UIButton) {
-        guard let requestId = self.request?.requestId else {
-            return
+        if let requestId = self.request?.requestId {
+            delegate?.rejectButtonPressed(requestId: requestId)
+        } else if let inviteId = self.invite?.inviteId {
+            delegate?.rejectButtonPressed(inviteId: inviteId)
         }
-        delegate?.rejectButtonPressed(requestId: requestId)
     }
 }

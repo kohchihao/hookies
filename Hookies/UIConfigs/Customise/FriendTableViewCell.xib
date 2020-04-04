@@ -20,9 +20,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9Z-fd-mc2" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="152" y="15" width="80" height="30"/>
+                        <rect key="frame" x="168" y="15" width="64" height="30"/>
                         <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <state key="normal" title="Message">
+                        <state key="normal" title="Invite">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <userDefinedRuntimeAttributes>
@@ -30,6 +30,9 @@
                                 <real key="value" value="10"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="inviteButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="DGE-Oa-YFY"/>
+                        </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qhq-P8-0MI" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
                         <rect key="frame" x="242" y="15" width="64" height="30"/>
@@ -61,7 +64,7 @@
                 <constraint firstItem="Qhq-P8-0MI" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.2" id="YOv-DK-41V"/>
                 <constraint firstItem="N9Z-fd-mc2" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="eIL-Im-rV4"/>
                 <constraint firstItem="iLu-Xq-mK7" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" id="hdB-X5-FyY"/>
-                <constraint firstItem="N9Z-fd-mc2" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.25" id="kvH-bU-drG"/>
+                <constraint firstItem="N9Z-fd-mc2" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.2" id="kvH-bU-drG"/>
                 <constraint firstItem="N9Z-fd-mc2" firstAttribute="height" secondItem="njF-e1-oar" secondAttribute="height" multiplier="0.5" id="xav-VP-kih"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

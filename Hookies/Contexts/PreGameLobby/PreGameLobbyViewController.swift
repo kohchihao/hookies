@@ -13,6 +13,7 @@ import GameplayKit
 protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
     func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String)
+    func didPressFriendButton(in: PreGameLobbyViewController)
 }
 
 class PreGameLobbyViewController: UIViewController {
@@ -28,14 +29,14 @@ class PreGameLobbyViewController: UIViewController {
 
     @IBOutlet private var selectedMapLabel: UILabel!
     @IBOutlet private var gameSessionIdLabel: UILabel!
-    @IBOutlet private var playersIdLabel: UILabel!
     @IBOutlet private var player1View: LobbyPlayerView!
     @IBOutlet private var player2View: LobbyPlayerView!
     @IBOutlet private var player3View: LobbyPlayerView!
     @IBOutlet private var player4View: LobbyPlayerView!
     @IBOutlet private var costumeIdLabel: UILabel!
     @IBOutlet private var startGameButton: UIButton!
-
+    @IBOutlet private var socialView: UIView!
+    
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
@@ -58,6 +59,21 @@ class PreGameLobbyViewController: UIViewController {
         playerViews.append(player3View)
         playerViews.append(player4View)
         updateView()
+    }
+
+    private func setUpSocialView() {
+        let socialViewModel = SocialViewModel(lobbyId: self.viewModel.lobby.lobbyId)
+        let socialViewController = SocialViewController(with: socialViewModel)
+        self.addChild(socialViewController)
+        self.socialView.addSubview(socialViewController.view)
+        socialViewController.didMove(toParent: self)
+        socialViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        let margins = socialView.layoutMarginsGuide
+        socialViewController.view.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        socialViewController.view.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        socialViewController.view.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
+        socialViewController.view.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
+        socialView.isHidden = true
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -206,6 +222,10 @@ class PreGameLobbyViewController: UIViewController {
         dispatch.notify(queue: .main, execute: {
             return completion(players)
         })
+    }
+
+    @IBAction private func onFriendButtonPressed(_ sender: UIButton) {
+        navigationDelegate?.didPressFriendButton(in: self)
     }
 }
 

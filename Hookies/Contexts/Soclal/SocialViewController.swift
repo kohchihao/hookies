@@ -10,12 +10,13 @@ import Foundation
 import UIKit
 
 protocol SocialViewNavigationDelegate: class {
-
+    func didAcceptInvite(invite: Invite)
 }
 
 class SocialViewController: UIViewController {
     weak var navigationDelegate: SocialViewNavigationDelegate?
     private var viewModel: SocialViewModelRepresentable
+    private var uid = RandomIDGenerator.getRandomID(length: 4)
 
     @IBOutlet private var socialTableView: UITableView!
     @IBOutlet private var incomingRequestTableView: UITableView!
@@ -47,25 +48,27 @@ class SocialViewController: UIViewController {
         socialTableView.register(friendTableViewCell, forCellReuseIdentifier: identifier)
         socialTableView.allowsSelection = false
 
-        identifier = "IncomingRequestTableViewCell"
+        identifier = "IncomingTableViewCell"
         incomingRequestTableView.dataSource = self
         incomingRequestTableView.delegate = self
         incomingRequestTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
         incomingRequestTableView.allowsSelection = false
 
-        identifier = "OutgoingRequestTableViewCell"
+        identifier = "OutgoingTableViewCell"
         outgoingRequestTableView.dataSource = self
         outgoingRequestTableView.delegate = self
         outgoingRequestTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
         outgoingRequestTableView.allowsSelection = false
 
+        identifier = "IncomingTableViewCell"
         incomingInviteTableView.dataSource = self
         incomingInviteTableView.delegate = self
-        incomingInviteTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LabelCell")
+        incomingInviteTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
 
+        identifier = "OutgoingTableViewCell"
         outgoingInviteTableView.dataSource = self
         outgoingInviteTableView.delegate = self
-        outgoingInviteTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LabelCell")
+        outgoingInviteTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
 
         updateView()
     }
@@ -79,12 +82,11 @@ class SocialViewController: UIViewController {
                 return
             }
             guard let social = social else {
-                self.viewModel = SocialViewModel()
                 API.shared.social.save(social: self.viewModel.social)
                 return
             }
-            self.viewModel = SocialViewModel(social: social)
-            API.shared.social.save(social: social)
+            self.viewModel.social = social
+            API.shared.social.save(social: self.viewModel.social)
         })
     }
 
@@ -152,13 +154,37 @@ class SocialViewController: UIViewController {
                 return
             }
             switch cell {
-            case let cell as IncomingRequestTableViewCell:
+            case let cell as IncomingTableViewCell:
                 cell.request = request
+                cell.invite = nil
                 self.updateUsernameInCell(userId: request.fromUserId, cell: cell)
                 return
-            case let cell as OutgoingRequestTableViewCell:
+            case let cell as OutgoingTableViewCell:
                 cell.request = request
+                cell.invite = nil
                 self.updateUsernameInCell(userId: request.toUserId, cell: cell)
+                return
+            default:
+                return
+            }
+        })
+    }
+
+    func updateInviteInCell(inviteId: String, cell: UITableViewCell) {
+        InviteManager.getInvite(inviteId: inviteId, completion: { invite in
+            guard let invite = invite else {
+                return
+            }
+            switch cell {
+            case let cell as IncomingTableViewCell:
+                cell.invite = invite
+                cell.request = nil
+                self.updateUsernameInCell(userId: invite.fromUserId, cell: cell)
+                return
+            case let cell as OutgoingTableViewCell:
+                cell.invite = invite
+                cell.request = nil
+                self.updateUsernameInCell(userId: invite.toUserId, cell: cell)
                 return
             default:
                 return
@@ -225,53 +251,77 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
             }
             cell.delegate = self
             updateUsernameInCell(userId: self.viewModel.social.friends[indexPath.row], cell: cell)
+            if self.viewModel.inviteEnabled {
+                cell.showInviteButton()
+            } else {
+                cell.hideInviteButton()
+            }
             return cell
         case self.incomingRequestTableView:
-            let identifier = "IncomingRequestTableViewCell"
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? IncomingRequestTableViewCell else {
+            let identifier = "IncomingTableViewCell"
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? IncomingTableViewCell else {
                 return UITableViewCell()
             }
             cell.delegate = self
             updateRequestInCell(requestId: self.viewModel.social.incomingRequests[indexPath.row], cell: cell)
             return cell
         case self.outgoingRequestTableView:
-            let identifier = "OutgoingRequestTableViewCell"
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? OutgoingRequestTableViewCell else {
+            let identifier = "OutgoingTableViewCell"
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? OutgoingTableViewCell else {
                 return UITableViewCell()
             }
             cell.delegate = self
             updateRequestInCell(requestId: self.viewModel.social.outgoingRequests[indexPath.row], cell: cell)
             return cell
         case self.incomingInviteTableView:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
-            cell.textLabel?.text = self.viewModel.social.incomingInvites[indexPath.row]
+            let identifier = "IncomingTableViewCell"
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? IncomingTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.delegate = self
+            updateInviteInCell(inviteId: self.viewModel.social.incomingInvites[indexPath.row], cell: cell)
             return cell
         case self.outgoingInviteTableView:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
-            cell.textLabel?.text = self.viewModel.social.outgoingInvites[indexPath.row]
+            let identifier = "OutgoingTableViewCell"
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? OutgoingTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.delegate = self
+            updateInviteInCell(inviteId: self.viewModel.social.outgoingInvites[indexPath.row], cell: cell)
             return cell
         default:
             let cell = UITableViewCell()
             return cell
         }
     }
-
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        switch tableView {
-//        case self.socialTableView:
-//            print(self.viewModel.social.friends[indexPath.row])
-//        case self.requestTableView:
-//            acceptRequest(requestId: self.viewModel.social.requests[indexPath.row])
-//        case self.inviteTableView:
-//            print(self.viewModel.social.invites[indexPath.row])
-//        default:
-//            break
-//        }
-//        self.dismiss(animated: false, completion: nil)
-//    }
 }
 
 extension SocialViewController: FriendTableViewCellDelegate {
+    func inviteButtonPressed(username: String) {
+        guard self.viewModel.inviteEnabled else {
+            return
+        }
+        guard let fromUserId = API.shared.user.currentUser?.uid else {
+           print("user is not logged in")
+           return
+        }
+        API.shared.user.get(withUsername: username, completion: { user, error in
+           guard error == nil else {
+               print(error.debugDescription)
+               return
+           }
+           guard let toUserId = user?.uid else {
+               print("user does not exists")
+               return
+           }
+            guard let lobbyId = self.viewModel.lobbyId else {
+                print("lobby id not available")
+                return
+            }
+            InviteManager.sendInvite(fromUserId: fromUserId, toUserId: toUserId, lobbyId: lobbyId)
+        })
+    }
+
     func deleteButtonPressed(username: String) {
         API.shared.user.get(withUsername: username, completion: { user, error in
             guard error == nil else {
@@ -286,7 +336,7 @@ extension SocialViewController: FriendTableViewCellDelegate {
     }
 }
 
-extension SocialViewController: IncomingRequestTableViewCellDelegate {
+extension SocialViewController: IncomingTableViewCellDelegate {
     func acceptButtonPressed(requestId: String) {
         RequestManager.acceptRequest(requestId: requestId)
     }
@@ -294,10 +344,28 @@ extension SocialViewController: IncomingRequestTableViewCellDelegate {
     func rejectButtonPressed(requestId: String) {
         RequestManager.rejectRequest(requestId: requestId)
     }
+
+    func acceptButtonPressed(inviteId: String) {
+        InviteManager.processInvite(inviteId: inviteId, completion: { invite in
+            guard let invite = invite else {
+                return
+            }
+            self.navigationDelegate?.didAcceptInvite(invite: invite)
+            self.dismiss(animated: false, completion: nil)
+        })
+    }
+
+    func rejectButtonPressed(inviteId: String) {
+        InviteManager.processInvite(inviteId: inviteId, completion: {_ in })
+    }
 }
 
-extension SocialViewController: OutgoingRequestTableViewCellDelegate {
+extension SocialViewController: OutgoingTableViewCellDelegate {
     func cancelButtonPressed(requestId: String) {
         RequestManager.rejectRequest(requestId: requestId)
+    }
+
+    func cancelButtonPressed(inviteId: String) {
+        InviteManager.processInvite(inviteId: inviteId, completion: {_ in })
     }
 }

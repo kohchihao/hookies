@@ -8,14 +8,16 @@
 
 import UIKit
 
-protocol OutgoingRequestTableViewCellDelegate: class {
+protocol OutgoingTableViewCellDelegate: class {
     func cancelButtonPressed(requestId: String)
+    func cancelButtonPressed(inviteId: String)
 }
 
-class OutgoingRequestTableViewCell: UITableViewCell {
+class OutgoingTableViewCell: UITableViewCell {
 
-    weak var delegate: OutgoingRequestTableViewCellDelegate?
+    weak var delegate: OutgoingTableViewCellDelegate?
     var request: Request?
+    var invite: Invite?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,9 +31,10 @@ class OutgoingRequestTableViewCell: UITableViewCell {
     }
 
     @IBAction private func cancelButtonPressed(_ sender: UIButton) {
-        guard let requestId = self.request?.requestId else {
-            return
+        if let requestId = self.request?.requestId {
+            delegate?.cancelButtonPressed(requestId: requestId)
+        } else if let inviteId = self.invite?.inviteId {
+            delegate?.cancelButtonPressed(inviteId: inviteId)
         }
-        delegate?.cancelButtonPressed(requestId: requestId)
     }
 }
