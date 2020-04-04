@@ -16,7 +16,7 @@ protocol FriendTableViewCellDelegate: class {
 class FriendTableViewCell: UITableViewCell {
 
     weak var delegate: FriendTableViewCellDelegate?
-
+    @IBOutlet private var inviteButton: RoundButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,11 +37,11 @@ class FriendTableViewCell: UITableViewCell {
     }
 
     func hideInviteButton() {
-//        inviteButton.isHidden = true
+        inviteButton.isHidden = true
     }
 
     func showInviteButton() {
-//        inviteButton.isHidden = false
+        inviteButton.isHidden = false
     }
 
     @IBAction private func inviteButtonPressed(_ sender: UIButton) {

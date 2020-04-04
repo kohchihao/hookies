@@ -13,7 +13,7 @@ import GameplayKit
 protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
     func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String)
-    func didPressFriendButton(in: PreGameLobbyViewController)
+    func didPressFriendButton(in: PreGameLobbyViewController, lobbyId: String)
 }
 
 class PreGameLobbyViewController: UIViewController {
@@ -36,7 +36,7 @@ class PreGameLobbyViewController: UIViewController {
     @IBOutlet private var costumeIdLabel: UILabel!
     @IBOutlet private var startGameButton: UIButton!
     @IBOutlet private var socialView: UIView!
-    
+
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
@@ -225,7 +225,7 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     @IBAction private func onFriendButtonPressed(_ sender: UIButton) {
-        navigationDelegate?.didPressFriendButton(in: self)
+        navigationDelegate?.didPressFriendButton(in: self, lobbyId: self.viewModel.lobby.lobbyId)
     }
 }
 

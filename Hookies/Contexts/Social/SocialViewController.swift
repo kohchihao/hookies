@@ -251,6 +251,7 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
             }
             cell.delegate = self
             updateUsernameInCell(userId: self.viewModel.social.friends[indexPath.row], cell: cell)
+            print(self.viewModel.inviteEnabled)
             if self.viewModel.inviteEnabled {
                 cell.showInviteButton()
             } else {

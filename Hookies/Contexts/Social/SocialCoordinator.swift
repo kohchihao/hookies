@@ -22,6 +22,11 @@ class SocialCoodinator: Coordinator {
         self.viewModel = SocialViewModel(lobbyId: nil)
     }
 
+    init(with navigator: NavigatorRepresentable, lobbyId: String) {
+        self.navigator = navigator
+        self.viewModel = SocialViewModel(lobbyId: lobbyId)
+    }
+
     init(with navigator: NavigatorRepresentable, viewModel: SocialViewModel) {
         self.navigator = navigator
         self.viewModel = viewModel

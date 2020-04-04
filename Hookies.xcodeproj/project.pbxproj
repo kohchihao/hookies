@@ -479,7 +479,7 @@
 				D9A123C8241E6B6500A6DB7F /* Maps */,
 				D9FF1A6B241E1B6700E7965F /* GamePlay */,
 				785B79DD242375CA001D7028 /* JoinGame */,
-				7859AF9D24339A1100B60968 /* Soclal */,
+				7859AF9D24339A1100B60968 /* Social */,
 				D9FF1A62241E0D5800E7965F /* PreGameLobby */,
 				1127C55D2415E2E800A78AA0 /* Auth */,
 				1127C55C2415E2E100A78AA0 /* Home */,
@@ -754,7 +754,7 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		7859AF9D24339A1100B60968 /* Soclal */ = {
+		7859AF9D24339A1100B60968 /* Social */ = {
 			isa = PBXGroup;
 			children = (
 				7859AF9E24339A4000B60968 /* SocialCoordinator.swift */,
@@ -764,7 +764,7 @@
 				7859AFB82437095A00B60968 /* RequestManager.swift */,
 				7859AFA424346EEC00B60968 /* SocialViewController.xib */,
 			);
-			path = Soclal;
+			path = Social;
 			sourceTree = "<group>";
 		};
 		785B79DD242375CA001D7028 /* JoinGame */ = {
