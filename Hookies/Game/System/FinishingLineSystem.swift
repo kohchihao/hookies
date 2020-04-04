@@ -9,7 +9,8 @@
 import SpriteKit
 
 protocol FinishingLineSystemProtocol {
-    func stop(player: SpriteComponent) throws
+    func stop(player: SpriteComponent) -> Bool
+    func stop(player: SpriteComponent, at position: CGPoint, with velocity: CGVector) -> Bool
     func bringPlayersToStop()
 }
 
@@ -48,13 +49,26 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         playersState[player] = .moving
     }
 
-    func stop(player: SpriteComponent) throws {
-        guard let systemPlayer = players.first(where: { $0 == player }) else {
-            throw FinishingLineSystemError.spriteDoesNotExist
+    func stop(player: SpriteComponent) -> Bool {
+        guard let velocity = player.node.physicsBody?.velocity else {
+            return false
         }
+
+        return stop(player: player, at: player.node.position, with: velocity)
+    }
+
+    func stop(player: SpriteComponent, at position: CGPoint, with velocity: CGVector) -> Bool {
+        guard let systemPlayer = players.first(where: { $0 == player }) else {
+            return false
+        }
+
+        systemPlayer.node.position = position
+        systemPlayer.node.physicsBody?.velocity = velocity
 
         playersState[systemPlayer] = .stopping
         finishedPlayers += 1
+
+        return true
     }
 
     func bringPlayersToStop() {
@@ -99,7 +113,7 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
 // MARK: - Broadcast Update
 
 extension FinishingLineSystem: GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
         broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .reachedFinishedLine)
     }
 }

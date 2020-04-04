@@ -9,7 +9,7 @@
 protocol GenericPlayerEventBroadcast {}
 
 extension GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity, eventType: GenericPlayerEvent) {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent, eventType: GenericPlayerEvent) {
         guard let genericPlayerEventData = createPlayerEventData(
             from: playerId,
             and: player,
@@ -23,15 +23,11 @@ extension GenericPlayerEventBroadcast {
 
     private func createPlayerEventData(
         from playerId: String,
-        and player: PlayerEntity,
+        and player: SpriteComponent,
         eventType: GenericPlayerEvent
     ) -> GenericPlayerEventData? {
-        guard let sprite = player.getSpriteComponent() else {
-            return nil
-        }
-
-        let position = Vector(point: sprite.node.position)
-        let velocity = Vector(vector: sprite.node.physicsBody?.velocity)
+        let position = Vector(point: player.node.position)
+        let velocity = Vector(vector: player.node.physicsBody?.velocity)
 
         return GenericPlayerEventData(
             playerId: playerId,

@@ -12,8 +12,11 @@ import SpriteKit
 
 protocol HookSystemProtocol {
     func add(hook: HookComponent) -> HookComponent
-    func hookTo(hook: HookComponent) throws
-    func unhookFrom(entity: Entity) throws
+    func hookTo(hook: HookComponent) -> Bool
+    func hookTo(hook: HookComponent, at position: CGPoint, with velocity: CGVector) -> Bool
+    func unhookFrom(entity: Entity) -> Bool
+    func unhookFrom(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool
+    func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector)
 }
 
 enum HookSystemError: Error {
@@ -38,28 +41,42 @@ class HookSystem: System, HookSystemProtocol {
         return element
     }
 
-    func hookTo(hook: HookComponent) throws {
+    func hookTo(hook: HookComponent) -> Bool {
         guard let systemHook = hooks.first(where: { $0 == hook }) else {
-            throw HookSystemError.hookComponentDoesNotExist
+            return false
         }
 
         guard let parentSprite = getParentSprite(of: systemHook) else {
-            throw HookSystemError.spriteComponentDoesNotExist
+            return false
         }
 
-        guard let parentSpriteInitialVelocity = parentSprite.node.physicsBody?.velocity else {
-            return
+        guard let velocity = parentSprite.node.physicsBody?.velocity else {
+            return false
         }
+
+        return hookTo(hook: systemHook, at: parentSprite.node.position, with: velocity)
+    }
+
+    func hookTo(hook: HookComponent, at position: CGPoint, with velocity: CGVector) -> Bool {
+        guard let systemHook = hooks.first(where: { $0 == hook }) else {
+            return false
+        }
+
+        guard let parentSprite = getParentSprite(of: systemHook) else {
+            return false
+        }
+
+        parentSprite.node.position = position
+        parentSprite.node.physicsBody?.velocity = velocity
 
         guard let closestBolt = findClosestBolt(from: parentSprite.node.position) else {
-            throw HookSystemError.closestHookToEntityDoesNotExist
+            return false
         }
 
-        if let prevAttachedBolt = hook.prevHookTo {
-            let isAttachingToSameBolt = prevAttachedBolt.node.position == closestBolt.node.position
-            if isAttachingToSameBolt {
-                attachToSameBolt(sprite: parentSprite, bolt: closestBolt)
-            }
+        let isAttachingToSameBolt = hook.prevHookTo?.node.position == closestBolt.node.position
+
+        if isAttachingToSameBolt {
+            attachToSameBolt(sprite: parentSprite, bolt: closestBolt)
         }
 
         let anchor = parentSprite.makeAnchor(from: closestBolt)
@@ -67,22 +84,41 @@ class HookSystem: System, HookSystemProtocol {
 
         guard let anchorLineJointPin = makeJointPinToLine(from: anchor, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: parentSprite.node, toLine: line) else {
-                throw HookSystemError.physicsBodyDoesNotExist
+                return false
         }
-
-        parentSprite.node.physicsBody?.applyImpulse(parentSpriteInitialVelocity)
 
         systemHook.hookTo = closestBolt
         systemHook.anchor = anchor
         systemHook.line = line
         systemHook.anchorLineJointPin = anchorLineJointPin
         systemHook.parentLineJointPin = spriteLineJointPin
+
+        return true
     }
 
-    func unhookFrom(entity: Entity) throws {
-        guard let hook = entity.getHookComponent() else {
-            throw HookSystemError.hookComponentDoesNotExist
+    func unhookFrom(entity: Entity) -> Bool {
+        guard let sprite = entity.getSpriteComponent() else {
+            return false
         }
+
+        guard let velocity = sprite.node.physicsBody?.velocity else {
+            return false
+        }
+
+        return unhookFrom(entity: entity, at: sprite.node.position, with: velocity)
+    }
+
+    func unhookFrom(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
+        guard let hook = entity.getHookComponent() else {
+            return false
+        }
+
+        guard let sprite = entity.getSpriteComponent() else {
+            return false
+        }
+
+        sprite.node.position = position
+        sprite.node.physicsBody?.velocity = velocity
 
         hook.prevHookTo = hook.hookTo
         hook.hookTo = nil
@@ -90,6 +126,12 @@ class HookSystem: System, HookSystemProtocol {
         hook.line = nil
         hook.anchorLineJointPin = nil
         hook.parentLineJointPin = nil
+
+        return true
+    }
+
+    func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector) {
+        sprite.node.physicsBody?.applyImpulse(velocity)
     }
 
     private func getParentSprite(of hook: HookComponent) -> SpriteComponent? {
@@ -149,7 +191,7 @@ class HookSystem: System, HookSystemProtocol {
 // MARK: - Broadcast Update
 
 extension HookSystem {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity, type: HookActionType) {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent, type: HookActionType) {
         guard let hookActionData = createHookAction(from: playerId, and: player, of: type) else {
             return
         }
@@ -159,17 +201,13 @@ extension HookSystem {
 
     private func createHookAction(
         from playerId: String,
-        and player: PlayerEntity,
+        and player: SpriteComponent,
         of type: HookActionType
     ) -> HookActionData? {
-        guard let sprite = player.getSpriteComponent() else {
-            return nil
-        }
-
         let hookActionData = HookActionData(
             playerId: playerId,
-            position: Vector(point: sprite.node.position),
-            velocity: Vector(vector: sprite.node.physicsBody?.velocity),
+            position: Vector(point: player.node.position),
+            velocity: Vector(vector: player.node.physicsBody?.velocity),
             type: type
         )
 
