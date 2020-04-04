@@ -164,6 +164,7 @@
 		D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */; };
 		D9BC4AAF24359D4E00BD35DF /* SpriteSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */; };
 		D9BC4AB12436332600BD35DF /* HealthSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC4AB02436332600BD35DF /* HealthSystem.swift */; };
+		D9BC4AB52438711100BD35DF /* HealthSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC4AB42438711000BD35DF /* HealthSystemTests.swift */; };
 		D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */; };
 		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
 		D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806924338278009D7A52 /* VectorTests.swift */; };
@@ -362,6 +363,7 @@
 		D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloatingLandMap.sks; sourceTree = "<group>"; };
 		D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSystemTests.swift; sourceTree = "<group>"; };
 		D9BC4AB02436332600BD35DF /* HealthSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSystem.swift; sourceTree = "<group>"; };
+		D9BC4AB42438711000BD35DF /* HealthSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSystemTests.swift; sourceTree = "<group>"; };
 		D9F180602431B57F009D7A52 /* ClosestBoltSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystem.swift; sourceTree = "<group>"; };
 		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
 		D9F1806924338278009D7A52 /* VectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
@@ -981,6 +983,7 @@
 			isa = PBXGroup;
 			children = (
 				D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */,
+				D9BC4AB42438711000BD35DF /* HealthSystemTests.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1438,6 +1441,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9BC4AB52438711100BD35DF /* HealthSystemTests.swift in Sources */,
 				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
 				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
