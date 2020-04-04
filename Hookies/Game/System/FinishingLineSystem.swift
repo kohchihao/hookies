@@ -105,7 +105,7 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
     }
 
     func hasAllPlayersReachedFinishingLine() -> Bool {
-        let isAllPlayersFinished = !players.isEmpty && players.count == finishedPlayers
+        let isAllPlayersFinished = !players.isEmpty && players.count <= finishedPlayers
 
         if isAllPlayersFinished {
             return true

@@ -438,8 +438,6 @@ class GameEngine {
         }
     }
 
-    // MARK: - General Game Methods
-
     private func startCountdown() {
         guard currentPlayer != nil else {
             return
@@ -474,6 +472,8 @@ class GameEngine {
 
                 if isNewUser {
                     self.setupOtherPlayer(of: userConnection.uid)
+                } else {
+                    self.reconnectOtherPlayer(of: userConnection.uid)
                 }
             case .disconnected:
                 self.disconnectOtherPlayer(of: userConnection.uid)
@@ -534,6 +534,19 @@ class GameEngine {
         })
     }
 
+    private func reconnectOtherPlayer(of id: String) {
+        guard let otherPlayer = otherPlayers[id] else {
+            return
+        }
+
+        guard let sprite = otherPlayer.getSpriteComponent() else {
+            return
+        }
+
+        finishingLineSystem.add(player: sprite)
+        userConnectionSystem?.reconnect(sprite: sprite)
+    }
+
     private func disconnectOtherPlayer(of id: String) {
         guard let otherPlayer = otherPlayers[id] else {
             return
@@ -545,7 +558,6 @@ class GameEngine {
 
         finishingLineSystem.remove(player: sprite)
         userConnectionSystem?.disconnect(sprite: sprite)
-        otherPlayers[id] = nil
     }
 
     private func launch(otherPlayer: GenericPlayerEventData) {
