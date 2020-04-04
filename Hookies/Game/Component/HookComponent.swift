@@ -12,7 +12,6 @@ class HookComponent: Component {
     private(set) var parent: Entity
     var hookTo: SpriteComponent?
     var prevHookTo: SpriteComponent?
-    var anchor: SKNode?
     var line: SKShapeNode?
     var anchorLineJointPin: SKPhysicsJointPin?
     var parentLineJointPin: SKPhysicsJointPin?

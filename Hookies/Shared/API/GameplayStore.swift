@@ -37,18 +37,22 @@ class GameplayStore {
         self.gameId = gameId
         socket.connect()
         socket.once(clientEvent: .connect) { _, _ in
-            guard let currentUser = API.shared.user.currentUser,
-                let gameId = self.gameId else {
-                    return
-            }
-            self.socket.emitWithAck("joinGame", [
-                "user": currentUser.uid,
-                "gameId": gameId
-            ]).timingOut(after: self.timeout) { ack in
-                let otherOnlineUsers = self.decodePlayersInRoomData(data: ack)
-                    .filter({ $0 != currentUser.uid })
-                completion(otherOnlineUsers)
-            }
+            self.joinGame(gameId: gameId, completion: completion)
+        }
+    }
+
+    func joinGame(gameId: String, completion: @escaping ([String]) -> Void) {
+        guard let currentUser = API.shared.user.currentUser,
+            let gameId = self.gameId else {
+                return
+        }
+        self.socket.emitWithAck("joinGame", [
+            "user": currentUser.uid,
+            "gameId": gameId
+        ]).timingOut(after: self.timeout) { ack in
+            let otherOnlineUsers = self.decodePlayersInRoomData(data: ack)
+                .filter({ $0 != currentUser.uid })
+            completion(otherOnlineUsers)
         }
     }
 
@@ -72,10 +76,19 @@ class GameplayStore {
     func subscribeToGameConnection(listener: @escaping (ConnectionState) -> Void) {
         socket.on(clientEvent: .connect) { _, _ in
             listener(.connected)
+
+            guard let gameId = self.gameId else {
+                return
+            }
+
+            self.joinGame(gameId: gameId, completion: { _ in })
         }
         socket.on(clientEvent: .disconnect) { _, _ in
             listener(.disconnected)
         }
+        socket.on(clientEvent: .reconnectAttempt, callback: { _, _ in
+            listener(.disconnected)
+        })
     }
 
     func broadcastPowerupAction(powerupAction: PowerupActionData) {
@@ -124,35 +137,6 @@ class GameplayStore {
                 listener(result)
             }
         }
-    }
-
-    func subscribeToPlayerState(gameId: String, playerId: String,
-                                listener: @escaping (PlayerGameState?, Error?) -> Void) {
-        let ref = playerStatesCollection(for: gameId).document(playerId)
-        let listener = ref.addListener(PlayerGameState.self, listener: { playerState, error in
-            listener(playerState, error)
-        })
-        playerStateListeners.append(listener)
-    }
-
-    func subscribeToGameState(gameId: String, listener: @escaping (Gameplay?, Error?) -> Void) {
-        let ref = collection.document(gameId)
-        gameStateListener = ref.addListener(Gameplay.self, listener: { gameplay, error in
-            listener(gameplay, error)
-        })
-    }
-
-    func unsubscribeFromPlayerStates() {
-        playerStateListeners.forEach({ $0.remove() })
-    }
-
-    func unsubscribeFromGameState() {
-        gameStateListener?.remove()
-    }
-
-    func savePlayerState(gameId: String, playerState: PlayerGameState) {
-        let ref = playerStatesCollection(for: gameId).document(playerState.documentID)
-        ref.setDataModel(playerState)
     }
 
     func saveGameState(gameplay: Gameplay) {
