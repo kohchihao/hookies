@@ -139,35 +139,6 @@ class GameplayStore {
         }
     }
 
-    func subscribeToPlayerState(gameId: String, playerId: String,
-                                listener: @escaping (PlayerGameState?, Error?) -> Void) {
-        let ref = playerStatesCollection(for: gameId).document(playerId)
-        let listener = ref.addListener(PlayerGameState.self, listener: { playerState, error in
-            listener(playerState, error)
-        })
-        playerStateListeners.append(listener)
-    }
-
-    func subscribeToGameState(gameId: String, listener: @escaping (Gameplay?, Error?) -> Void) {
-        let ref = collection.document(gameId)
-        gameStateListener = ref.addListener(Gameplay.self, listener: { gameplay, error in
-            listener(gameplay, error)
-        })
-    }
-
-    func unsubscribeFromPlayerStates() {
-        playerStateListeners.forEach({ $0.remove() })
-    }
-
-    func unsubscribeFromGameState() {
-        gameStateListener?.remove()
-    }
-
-    func savePlayerState(gameId: String, playerState: PlayerGameState) {
-        let ref = playerStatesCollection(for: gameId).document(playerState.documentID)
-        ref.setDataModel(playerState)
-    }
-
     func saveGameState(gameplay: Gameplay) {
         let ref = collection.document(gameplay.documentID)
         ref.setDataModel(gameplay)
