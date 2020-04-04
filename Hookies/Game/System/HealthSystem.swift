@@ -12,8 +12,10 @@ import SpriteKit
 
 protocol HealthSystemProtocol {
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool
+    func isPlayerAlive(for position: CGPoint) -> Bool
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent
     func respawnPlayer(for sprite: SpriteComponent, at position: CGPoint) -> SpriteComponent
+    func respawnPlayerToClosestPlatform(for sprite: SpriteComponent) -> SpriteComponent?
 }
 
 class HealthSystem: System, HealthSystemProtocol {
@@ -28,10 +30,7 @@ class HealthSystem: System, HealthSystemProtocol {
     }
 
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool {
-        if sprite.node.position.y <= deathHorizontalLine {
-            return false
-        }
-        return true
+        return self.isPlayerAlive(for: sprite.node.position)
     }
 
     func isPlayerAlive(for position: CGPoint) -> Bool {
