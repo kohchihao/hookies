@@ -363,4 +363,9 @@ extension GameScene: GameEngineDelegate {
     func currentPlayerIsDisconnected() {
         disconnectPlayer()
     }
+
+    func gameHasFinish() {
+        print("Transition to post game lobby")
+        viewController.endGame()
+    }
 }

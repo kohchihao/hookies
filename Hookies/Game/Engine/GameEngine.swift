@@ -433,8 +433,7 @@ class GameEngine {
             API.shared.gameplay.closeGameSession()
             gameState = .finish
 
-            // TODO: Transition to Post Game Lobby
-            print("Transition to post game lobby")
+            delegate?.gameHasFinish()
         }
     }
 

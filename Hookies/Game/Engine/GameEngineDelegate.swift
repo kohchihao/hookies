@@ -16,4 +16,5 @@ protocol GameEngineDelegate: AnyObject {
     func playerHasFinishRace()
     func otherPlayerIsConnected(otherPlayer: SKSpriteNode)
     func currentPlayerIsDisconnected()
+    func gameHasFinish()
 }
