@@ -72,6 +72,15 @@ class GameplayStore {
     func subscribeToGameConnection(listener: @escaping (ConnectionState) -> Void) {
         socket.on(clientEvent: .connect) { _, _ in
             listener(.connected)
+
+            guard let currentUser = API.shared.user.currentUser,
+                let gameId = self.gameId else {
+                    return
+            }
+            self.socket.emit("joinGame", [
+                "user": currentUser.uid,
+                "gameId": gameId
+            ])
         }
         socket.on(clientEvent: .disconnect) { _, _ in
             listener(.disconnected)
