@@ -316,14 +316,12 @@ extension GameScene: GameEngineDelegate {
     }
 
     func playerDidHook(to hook: HookDelegateModel) {
-        addChild(hook.anchor)
         addChild(hook.line)
         physicsWorld.add(hook.anchorLineJointPin)
         physicsWorld.add(hook.playerLineJointPin)
     }
 
     func playerDidUnhook(from hook: HookDelegateModel) {
-        hook.anchor.removeFromParent()
         hook.line.removeFromParent()
         physicsWorld.remove(hook.anchorLineJointPin)
         physicsWorld.remove(hook.playerLineJointPin)

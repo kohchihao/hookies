@@ -67,16 +67,14 @@ class HookSystem: System, HookSystemProtocol {
             attachToSameBolt(sprite: sprite, bolt: closestBolt)
         }
 
-        let anchor = sprite.makeAnchor(from: closestBolt)
         let line = sprite.makeLine(to: closestBolt)
 
-        guard let anchorLineJointPin = makeJointPinToLine(from: anchor, toLine: line),
+        guard let anchorLineJointPin = makeJointPinToLine(from: closestBolt.node, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: sprite.node, toLine: line) else {
                 return false
         }
 
         hook.hookTo = closestBolt
-        hook.anchor = anchor
         hook.line = line
         hook.anchorLineJointPin = anchorLineJointPin
         hook.parentLineJointPin = spriteLineJointPin
@@ -108,7 +106,6 @@ class HookSystem: System, HookSystemProtocol {
 
         hook.prevHookTo = hook.hookTo
         hook.hookTo = nil
-        hook.anchor = nil
         hook.line = nil
         hook.anchorLineJointPin = nil
         hook.parentLineJointPin = nil
@@ -145,10 +142,6 @@ class HookSystem: System, HookSystemProtocol {
             let boost = CGVector(dx: boostX, dy: boostY)
             sprite.node.physicsBody?.applyImpulse(boost)
         }
-    }
-
-    private func getParentSprite(of hook: HookComponent) -> SpriteComponent? {
-        return hook.parent.getSpriteComponent()
     }
 
     private func findClosestBolt(from position: CGPoint) -> SpriteComponent? {

@@ -237,6 +237,7 @@ class GameEngine {
 
             let boltSprite = SpriteComponent(parent: boltEntity)
             _ = spriteSystem.set(sprite: boltSprite, to: bolt)
+            _ = spriteSystem.setPhysicsBody(to: boltSprite, of: .bolt)
 
             // TODO: Check for moving and rotating bolt
 
@@ -344,8 +345,7 @@ class GameEngine {
     }
 
     private func createHookDelegateModel(from hook: HookComponent) -> HookDelegateModel? {
-        guard let anchor = hook.anchor,
-            let line = hook.line,
+        guard let line = hook.line,
             let anchorLineJointPin = hook.anchorLineJointPin,
             let playerLineJointPin = hook.parentLineJointPin
             else {
@@ -353,7 +353,6 @@ class GameEngine {
         }
 
         return HookDelegateModel(
-            anchor: anchor,
             line: line,
             anchorLineJointPin: anchorLineJointPin,
             playerLineJointPin: playerLineJointPin
