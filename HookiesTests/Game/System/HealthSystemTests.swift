@@ -59,30 +59,42 @@ class HealthSystemTests: XCTestCase {
     }
 
     func testIsPlayerAlive_playerIsDead() {
-
+        playerSprite.node.position = CGPoint(x: 1000, y: -500)
+        let playerIsAlive = healthSystem.isPlayerAlive(for: playerSprite)
+        XCTAssertFalse(playerIsAlive)
     }
 
     func testRespawnPlayer_playerIsDead() {
-
+        playerSprite.node.position = CGPoint(x: 1000, y: -500)
+        _ = healthSystem.respawnPlayer(for: playerSprite)
+        XCTAssertEqual(playerSprite.node.position, CGPoint(x: 1000, y: 200))
     }
 
     func testRespawnPlayer_playerIsAlive() {
-
+        _ = healthSystem.respawnPlayer(for: playerSprite)
+        XCTAssertEqual(playerSprite.node.position, CGPoint(x: 10, y: 20))
     }
 
     func testRespawnPlayerWithPosition_playerIsDead() {
-
+        let pos = CGPoint(x: 1000, y: -500)
+        _ = healthSystem.respawnPlayer(for: playerSprite, at: pos)
+        XCTAssertEqual(playerSprite.node.position, CGPoint(x: 1000, y: 200))
     }
 
     func testRespawnPlayerWithPosition_playerIsAlive() {
-
+        let pos = CGPoint(x: 1000, y: -400)
+        _ = healthSystem.respawnPlayer(for: playerSprite, at: pos)
+        XCTAssertEqual(playerSprite.node.position, CGPoint(x: 10, y: 20))
     }
 
     func testRespawnPlayerToClosestPlatform_playerIsDead() {
-
+        playerSprite.node.position = CGPoint(x: 1000, y: -500)
+        _ = healthSystem.respawnPlayerToClosestPlatform(for: playerSprite)
+        XCTAssertEqual(playerSprite.node.position, CGPoint(x: 10, y: 60))
     }
 
     func testRespawnPlayerToClosestPlatform_playerIsAlive() {
-
+        _ = healthSystem.respawnPlayerToClosestPlatform(for: playerSprite)
+        XCTAssertEqual(playerSprite.node.position, CGPoint(x: 10, y: 20))
     }
 }

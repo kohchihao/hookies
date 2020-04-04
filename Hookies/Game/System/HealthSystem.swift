@@ -34,6 +34,13 @@ class HealthSystem: System, HealthSystemProtocol {
         return true
     }
 
+    func isPlayerAlive(for position: CGPoint) -> Bool {
+        if position.y <= deathHorizontalLine {
+            return false
+        }
+        return true
+    }
+
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent {
         if !isPlayerAlive(for: sprite) {
             return self.respawnPlayer(for: sprite, at: sprite.node.position)
@@ -42,7 +49,7 @@ class HealthSystem: System, HealthSystemProtocol {
     }
 
     func respawnPlayer(for sprite: SpriteComponent, at position: CGPoint) -> SpriteComponent {
-        if !isPlayerAlive(for: sprite) {
+        if !isPlayerAlive(for: position) {
             sprite.node.position = CGPoint(x: position.x, y: spawnHorizontalLine)
             sprite.node.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
