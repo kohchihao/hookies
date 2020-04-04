@@ -18,13 +18,9 @@ protocol PreGameLobbyViewNavigationDelegate: class {
 class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
     private var viewModel: PreGameLobbyViewModelRepresentable
-    private var playersIdDispatchGroup = DispatchGroup()
-    private var currentUserDispatchGroup = DispatchGroup()
-    private var players: [User] = []
     private var playerViews: [LobbyPlayerView] = []
-    private var currentUser: User?
     private var startButtonEnabled: Bool {
-        guard let currentUser = self.currentUser else {
+        guard let currentUser = API.shared.user.currentUser else {
             return false
         }
         return self.viewModel.lobby.hostId == currentUser.uid && viewModel.lobby.selectedMapType != nil
@@ -55,7 +51,7 @@ class PreGameLobbyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        getCurrentUser()
+        _ = self.view
         viewModel.delegate = self
         playerViews.append(player1View)
         playerViews.append(player2View)
@@ -126,30 +122,19 @@ class PreGameLobbyViewController: UIViewController {
         startGameButton.isEnabled = startButtonEnabled
         selectedMapLabel.text = viewModel.lobby.selectedMapType.map { $0.rawValue }
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
-        for playerId in viewModel.lobby.playersId {
-            getPlayer(playerId: playerId)
-        }
-        playersIdDispatchGroup.notify(queue: DispatchQueue.main) {
-            if self.players.count == self.viewModel.lobby.playersId.count {
-                self.updatePlayerViews()
-            }
-        }
-        currentUserDispatchGroup.notify(queue: DispatchQueue.main) {
-            if self.currentUser != nil {
-                self.updateCostumeIdLabel()
-            }
-        }
+        updatePlayerViews()
+        updateCostumeIdLabel()
     }
 
     private func updateCostumeIdLabel() {
-        guard let userId = currentUser?.uid else {
+        guard let userId = API.shared.user.currentUser?.uid else {
             return
         }
         costumeIdLabel.text = viewModel.lobby.costumesId[userId].map { $0.rawValue }
     }
 
     @IBAction private func nextCostume() {
-        guard let userId = currentUser?.uid else {
+        guard let userId = API.shared.user.currentUser?.uid else {
             return
         }
         let currentCostume = viewModel.lobby.costumesId[userId]
@@ -169,7 +154,7 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     @IBAction private func prevCostume() {
-        guard let userId = currentUser?.uid else {
+        guard let userId = API.shared.user.currentUser?.uid else {
             return
         }
         let currentCostume = viewModel.lobby.costumesId[userId]
@@ -189,39 +174,37 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func updatePlayerViews() {
-        for i in 0..<min(4, self.players.count) {
-            playerViews[i].updateUsernameLabel(username: players[i].username)
-            guard let costumeType = viewModel.lobby.costumesId[players[i].uid] else {
-                return
+        getPlayers(playersId: self.viewModel.lobby.playersId, completion: { players in
+            for i in 0..<min(4, players.count) {
+                self.playerViews[i].updateUsernameLabel(username: players[i].username)
+                guard let costumeType = self.viewModel.lobby.costumesId[players[i].uid] else {
+                    return
+                }
+                self.playerViews[i].addPlayerImage(costumeType: costumeType)
             }
-            playerViews[i].addPlayerImage(costumeType: costumeType)
-        }
-    }
-
-    private func getPlayer(playerId: String) {
-        playersIdDispatchGroup.enter()
-        API.shared.user.get(withUid: playerId, completion: { user, error in
-            guard error == nil else {
-                return
-            }
-            guard let user = user else {
-                return
-            }
-            if !self.players.contains(user) {
-                self.players.append(user)
-            }
-            self.playersIdDispatchGroup.leave()
         })
     }
 
-    private func getCurrentUser() {
-        currentUserDispatchGroup.enter()
-        API.shared.user.currentUser(completion: { user, error in
-            guard error == nil else {
-                return
-            }
-            self.currentUser = user
-            self.currentUserDispatchGroup.leave()
+    private func getPlayers(playersId: [String], completion: @escaping ([User]) -> Void) {
+        let dispatch = DispatchGroup()
+        var players: [User] = []
+        for playerId in playersId {
+            dispatch.enter()
+            API.shared.user.get(withUid: playerId, completion: { user, error in
+                guard error == nil else {
+                    return
+                }
+                guard let user = user else {
+                    return
+                }
+                if !players.contains(user) {
+                    players.append(user)
+                }
+                dispatch.leave()
+            })
+        }
+        dispatch.notify(queue: .main, execute: {
+            return completion(players)
         })
     }
 }
