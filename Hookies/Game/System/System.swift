@@ -21,4 +21,15 @@ extension System {
 
         return nil
     }
+
+    func get<ComponentType: Component>(_: ComponentType.Type,
+                                       for entity: Entity
+    ) -> ComponentType? {
+        for component in entity.components {
+            if let typed = component as? ComponentType {
+                return typed
+            }
+        }
+        return nil
+    }
 }

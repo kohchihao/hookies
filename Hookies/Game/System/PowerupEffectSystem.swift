@@ -16,18 +16,19 @@ protocol PowerupEffectSystemProtocol {
 }
 
 class PowerupEffectSystem: System {
-    private var players: [SpriteComponent]
+    private var players = [String: SpriteComponent]()
     private var shieldEffects = [PowerupComponent: ShieldEffectComponent]()
     private var movementEffects = [PowerupComponent: MovementEffectComponent]()
     private var hookEffects = [PowerupComponent: PlayerHookEffectComponent]()
     private var thiefEffects = [PowerupComponent: ThiefEffectComponent]()
     private var sliceEffects = [PowerupComponent: SliceEffectComponent]()
 
-    init(players: [SpriteComponent]) {
-        self.players = players
+    func addPlayerSprite(playerId: String, _ sprite: SpriteComponent) {
+        players[playerId] = sprite
     }
 
-    func set(for powerup: PowerupComponent, with effect: Component) {
+    func set(for powerup: PowerupComponent, with effect: PowerupEffectComponent) {
+
         setShieldEffect(for: powerup, component: effect)
         setMovementEffect(for: powerup, component: effect)
         setHookEffect(for: powerup, component: effect)
@@ -39,12 +40,26 @@ class PowerupEffectSystem: System {
         applyShieldEffects()
         applyMovementEffects()
         applyHookEffects()
+        applySliceEffect()
+        applyThiefEffect()
     }
 
     private func applyShieldEffects() {
-//        for (powerup, effect) in shields {
-//
-//        }
+        for (powerup, effect) in shieldEffects where powerup.isActivated {
+            print("apply shield effect")
+            guard let ownerId = powerup.ownerId,
+                let playerSprite = players[ownerId] else {
+                    return
+            }
+            let shieldTexture = SKTexture(imageNamed: "shield_bubble")
+            let shieldSize = CGSize(width: playerSprite.node.size.width * 2,
+                                    height: playerSprite.node.size.height * 2)
+            let shieldNode = SKSpriteNode(texture: shieldTexture,
+                                          color: .clear,
+                                          size: shieldSize)
+            playerSprite.node.addChild(shieldNode)
+            powerup.isActivated = false
+        }
     }
 
     private func applyMovementEffects() {
@@ -64,14 +79,13 @@ class PowerupEffectSystem: System {
     }
 
     private func applyThiefEffect() {
-        
     }
 
     private func findClosestPlayerInFront(from position: CGPoint) -> SpriteComponent? {
         var closestPlayerInFront: SpriteComponent?
         var closestDistance = Double.greatestFiniteMagnitude
         let positionVector = Vector(point: position)
-        for player in players {
+        for player in players.values {
             let playerPositionVector = Vector(point: player.node.position)
             let distance = positionVector.distance(to: playerPositionVector)
             if distance > 0 && distance < closestDistance {

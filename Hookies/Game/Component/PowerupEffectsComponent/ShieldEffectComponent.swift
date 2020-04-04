@@ -9,24 +9,6 @@
 import Foundation
 import CoreGraphics
 
-class ShieldEffectComponent: Component {
-    private(set) var parent: Entity
-    var position: CGPoint?
-
-    init(parent: Entity) {
-        self.parent = parent
-    }
-}
-
-// MARK: - Hashable
-extension ShieldEffectComponent: Hashable {
-    static func == (lhs: ShieldEffectComponent,
-                    rhs: ShieldEffectComponent
-    ) -> Bool {
-        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self).hashValue)
-    }
+class ShieldEffectComponent: PowerupEffectComponent {
+    let duration = 3.0
 }

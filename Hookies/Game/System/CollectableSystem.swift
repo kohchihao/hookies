@@ -11,37 +11,42 @@ import CoreGraphics
 import SpriteKit
 
 protocol CollectableSystemProtocol {
-    func setCollectableOnMap(with powerup: PowerupComponent)
-    func collect(powerup powerupToCollect: PowerupComponent, by player: PlayerEntity)
+//    func setCollectableOnMap(with powerup: PowerupComponent)
+//    func collect(powerup powerupToCollect: PowerupComponent, by player: PlayerEntity)
 }
 
 class CollectableSystem: System, CollectableSystemProtocol {
-    private var availablePowerups: [PowerupComponent]
-    private var powerupsInMap = [PowerupComponent]()
-    private let powerupRespawnDelay = 2.0
+    /// The key will represent the sprite of the powerup while the value represents the actual powerup component
+    private var powerups = [SpriteComponent: PowerupComponent]()
 
-    init(powerups: [PowerupComponent]) {
-        self.availablePowerups = powerups
+    func set(for sprite: SpriteComponent, with powerup: PowerupComponent) {
+        powerups[sprite] = powerup
     }
 
-    func setCollectableOnMap(with powerup: PowerupComponent) {
-        powerupsInMap.append(powerup)
-    }
-
-    func collect(powerup powerupToCollect: PowerupComponent, by player: PlayerEntity) {
-        player.addComponent(powerupToCollect)
-        if let powerupIndex = powerupsInMap.firstIndex(of: powerupToCollect) {
-            powerupsInMap.remove(at: powerupIndex)
-            player.addComponent(powerupToCollect)
+    func removePowerup(for sprite: SpriteComponent) {
+        guard let index = powerups.index(forKey: sprite) else {
+            return
         }
-        let newPowerup = generateRandomPowerup()
-        DispatchQueue.main.asyncAfter(deadline: .now() + powerupRespawnDelay) {
-            self.setCollectableOnMap(with: newPowerup)
-        }
+        powerups.remove(at: index)
     }
 
-    private func generateRandomPowerup() -> PowerupComponent {
-        let randomPowerupIndex = Int.random(in: 1..<availablePowerups.count)
-        return availablePowerups[randomPowerupIndex]
+    func collect(powerup: PowerupEntity, playerId: String) -> PowerupComponent? {
+        print(powerup.components)
+        guard let powerupSprite = getSprite(for: powerup),
+            let powerupComponent = get(PowerupComponent.self, for: powerup),
+            let powerupIndex = powerups.index(forKey: powerupSprite) else {
+                return nil
+        }
+
+        // Remove Sprite components because they are no longer needed as a sprite
+        powerup.components.removeAll(where: { $0 is SpriteComponent })
+        PowerupEntity.addActivatedSpriteIfExist(powerup: powerup)
+        powerups.remove(at: powerupIndex)
+        let fade = SKAction.fadeOut(withDuration: 0.5)
+        powerupSprite.node.run(fade, completion: {
+            powerupSprite.node.removeFromParent()
+        })
+        powerupComponent.setOwner(id: playerId)
+        return powerupComponent
     }
 }

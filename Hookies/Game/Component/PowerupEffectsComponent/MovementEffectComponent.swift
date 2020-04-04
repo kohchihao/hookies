@@ -9,26 +9,8 @@
 import Foundation
 import CoreGraphics
 
-class MovementEffectComponent: Component {
-    private(set) var parent: Entity
+class MovementEffectComponent: PowerupEffectComponent {
     var from: CGPoint?
     var to: CGPoint?
-    var duration: CGFloat?
-
-    init(parent: Entity) {
-        self.parent = parent
-    }
-}
-
-// MARK: - Hashable
-extension MovementEffectComponent: Hashable {
-    static func == (lhs: MovementEffectComponent,
-                    rhs: MovementEffectComponent
-    ) -> Bool {
-        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self).hashValue)
-    }
+    var duration: Double?
 }

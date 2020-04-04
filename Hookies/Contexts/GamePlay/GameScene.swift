@@ -19,9 +19,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var background: Background?
     private var cannon: SKSpriteNode?
     private var finishingLine: SKSpriteNode?
+    private var powerups: [SKSpriteNode] = []
+    private var traps: [SKSpriteNode] = []
 
     private var grapplingHookButton: GrapplingHookButton?
     private var jumpButton: JumpButton?
+    private var powerupButton: PowerupButton?
 
     private var countdownLabel: SKLabelNode?
     private var count = 5
@@ -39,6 +42,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         initialiseBackground(with: view.frame.size)
         initialiseGrapplingHookButton()
         initialiseJumpButton()
+        initialisePowerupButton()
         disableGameButtons()
         initialiseCamera()
         initialiseCountdownMessage()
@@ -52,6 +56,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Called before each frame is rendered
         gameEngine?.update(time: currentTime)
         handleCurrentPlayerTetheringToClosestBolt()
+        handleCurrentPlayerActivatePowerup()
         handleJumpButton()
     }
 
@@ -72,6 +77,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
             // TODO: Game Engine
         }
+
+        for powerup in powerups where contact.bodyA.node == powerup
+            || contact.bodyB.node == powerup {
+                handleContactWithPowerup(powerup)
+        }
+
+        for trap in traps where contact.bodyA.node == trap
+            || contact.bodyB.node == trap {
+                handleContactWithTrap(trap)
+        }
+    }
+
+    private func handleContactWithTrap(_ trap: SKSpriteNode) {
+        print("contact with trap")
+    }
+
+    private func handleContactWithPowerup(_ powerup: SKSpriteNode) {
+        guard let powerupType = gameEngine?.playerContactWith(powerup: powerup, playerId: currentPlayerId) else {
+            return
+        }
+        powerups.removeAll(where: { $0 == powerup })
+        let texture = SKTexture(imageNamed: powerupType.buttonString)
+        let sizeOfPowerup = CGSize(width: 50, height: 50)
+        let powerupDisplay = SKSpriteNode(texture: texture, color: .clear,
+                                          size: sizeOfPowerup)
+        powerupDisplay.position = powerup.position
+        powerupDisplay.zPosition = 0
+        addChild(powerupDisplay)
+
+        let finalPosition = CGPoint(x: powerupDisplay.position.x,
+                                    y: powerupDisplay.position.y + 60)
+        let powerupAnimation = SKAction.sequence([SKAction.move(to: finalPosition, duration: 1),
+                                                  SKAction.fadeOut(withDuration: 0.5)])
+        powerupDisplay.run(powerupAnimation, completion: {
+            powerupDisplay.removeFromParent()
+            self.powerupButton?.setPowerup(to: powerupType)
+        })
     }
 
     // MARK: - Initialise contact delegate
@@ -98,12 +140,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         guard let cam = cam else {
             return
         }
-        guard let grapplingHookButton = grapplingHookButton, let jumpButton = jumpButton else {
-            return
+        guard let grapplingHookButton = grapplingHookButton,
+            let jumpButton = jumpButton,
+            let powerupButton = powerupButton
+            else {
+                return
         }
         addChild(cam)
         cam.addChild(grapplingHookButton)
         cam.addChild(jumpButton)
+        cam.addChild(powerupButton)
     }
 
     // MARK: - Initialise Countdown message
@@ -128,6 +174,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         grapplingHookButton = GrapplingHookButton(in: sceneFrame)
     }
 
+     // MARK: - Initialise Powerup button
+
+    private func initialisePowerupButton() {
+        guard let sceneFrame = self.scene?.frame else {
+            return
+        }
+        powerupButton = PowerupButton(in: sceneFrame)
+    }
+
     // MARK: - Initialise Game Engine
 
     private func initialiseGameEngine() {
@@ -142,6 +197,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         let boltsNode = getGameObject(of: GameObjectType.bolt)
+        let powerupNodes = getGameObject(of: .powerup)
 
         // TODO: Platform to GameEngine
         let platformsNode = getGameObject(of: GameObjectType.platform)
@@ -150,13 +206,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             gameId: gameplayId,
             cannon: cannonNode,
             finishingLine: finishingLineNode,
-            bolts: boltsNode
+            bolts: boltsNode,
+            powerups: powerupNodes
         )
 
         gameEngine?.delegate = self
 
         self.cannon = cannonNode
         self.finishingLine = finishingLineNode
+        self.powerups = powerupNodes
     }
 
     private func getGameObject(of type: GameObjectType) -> [SKSpriteNode] {
@@ -284,6 +342,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameEngine?.currentPlayerUnhookAction()
     }
 
+    // MARK: - Current player activating power up
+
+    private func handleCurrentPlayerActivatePowerup() {
+        powerupButton?.touchBeganHandler = handlePowerupBtnTouch
+    }
+
+    private func handlePowerupBtnTouch() {
+        guard let powerupType = powerupButton?.powerupType else {
+            return
+        }
+        gameEngine?.currentPlayerPowerupAction(with: powerupType)
+        powerupButton?.clearPowerup()
+    }
+
     // MARK: - Resolve deadlock
 
     private func initialiseJumpButton() {
@@ -330,5 +402,17 @@ extension GameScene: GameEngineDelegate {
 
     func playerIsStuck() {
         jumpButton?.state = .ButtonNodeStateActive
+    }
+
+    func addNotActivatedPowerup(_ sprite: SKSpriteNode) {
+        powerups.append(sprite)
+        addChild(sprite)
+        let fadeIn = SKAction.fadeIn(withDuration: 1)
+        sprite.run(fadeIn)
+    }
+
+    func addTrap(with sprite: SKSpriteNode) {
+        addChild(sprite)
+        traps.append(sprite)
     }
 }

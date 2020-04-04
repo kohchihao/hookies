@@ -10,8 +10,9 @@ import Foundation
 
 struct Constants {
     static let prodSocketURL = URL(string: "http://128.199.164.69:3000")!
-    static let devSocketURL = URL(string: "http://localhost:3000")!
-
+    static let devSocketURL = URL(string: "http://128.199.164.69:3000")!
 
     static let maxPlayerCount = 4
+
+    static let powerupRespawnDelay = 2.0
 }
