@@ -96,7 +96,6 @@ struct InviteManager {
                     guard notRepeated else {
                         return
                     }
-                    print(invite)
                     API.shared.invite.save(invite: invite)
                     sender.addOutgoingInvite(inviteId: invite.inviteId)
                     API.shared.social.save(social: sender)
