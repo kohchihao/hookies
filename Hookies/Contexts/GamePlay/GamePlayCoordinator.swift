@@ -43,5 +43,7 @@ class GamePlayCoordinator: Coordinator {
 
 // MARK: - GameViewNavigationDelegate
 extension GamePlayCoordinator: GameViewNavigationDelegate {
-
+    func gameDidEnd(gamePlayId: String) {
+        // TODO: Create Post Lobby Coordinator
+    }
 }
