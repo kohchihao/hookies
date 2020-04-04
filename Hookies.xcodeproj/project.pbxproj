@@ -95,6 +95,11 @@
 		2BFD87DB24385690000FA49A /* UserConnectionSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFD87DA24385690000FA49A /* UserConnectionSystem.swift */; };
 		2BFD87DD24385F11000FA49A /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFD87DC24385F11000FA49A /* Signal.swift */; };
 		2BFD87DF24389990000FA49A /* SpriteSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFD87DE24389990000FA49A /* SpriteSystem.swift */; };
+		784096022438583B00D2CAB4 /* InviteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784096012438583B00D2CAB4 /* InviteManager.swift */; };
+		78409604243858DA00D2CAB4 /* Invite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78409603243858DA00D2CAB4 /* Invite.swift */; };
+		7840960624385CB300D2CAB4 /* Invite+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7840960524385CB300D2CAB4 /* Invite+FirestoreModel.swift */; };
+		7840960824385DF400D2CAB4 /* InviteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7840960724385DF400D2CAB4 /* InviteStore.swift */; };
+		7840960E2438B60000D2CAB4 /* OutgoingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7840960D2438B60000D2CAB4 /* OutgoingTableViewCell.swift */; };
 		7859AF9824332EF500B60968 /* Social.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AF9724332EF500B60968 /* Social.swift */; };
 		7859AF9A2433305F00B60968 /* Social+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AF992433305F00B60968 /* Social+FirestoreModel.swift */; };
 		7859AF9C2433317000B60968 /* SocialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AF9B2433317000B60968 /* SocialStore.swift */; };
@@ -107,11 +112,10 @@
 		7859AFAD2434D16F00B60968 /* RequestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFAC2434D16F00B60968 /* RequestStore.swift */; };
 		7859AFB22436167600B60968 /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFB02436167600B60968 /* FriendTableViewCell.swift */; };
 		7859AFB32436167600B60968 /* FriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7859AFB12436167600B60968 /* FriendTableViewCell.xib */; };
-		7859AFB624364C5F00B60968 /* IncomingRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFB424364C5E00B60968 /* IncomingRequestTableViewCell.swift */; };
-		7859AFB724364C5F00B60968 /* IncomingRequestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7859AFB524364C5E00B60968 /* IncomingRequestTableViewCell.xib */; };
+		7859AFB624364C5F00B60968 /* IncomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFB424364C5E00B60968 /* IncomingTableViewCell.swift */; };
+		7859AFB724364C5F00B60968 /* IncomingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7859AFB524364C5E00B60968 /* IncomingTableViewCell.xib */; };
 		7859AFB92437095A00B60968 /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFB82437095A00B60968 /* RequestManager.swift */; };
-		7859AFBC243725C700B60968 /* OutgoingRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7859AFBA243725C700B60968 /* OutgoingRequestTableViewCell.swift */; };
-		7859AFBD243725C700B60968 /* OutgoingRequestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7859AFBB243725C700B60968 /* OutgoingRequestTableViewCell.xib */; };
+		7859AFBF24383E3300B60968 /* OutgoingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7859AFBE24383E3200B60968 /* OutgoingTableViewCell.xib */; };
 		785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */; };
 		785B79DA2423581B001D7028 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785B79D92423581B001D7028 /* GameKit.framework */; };
 		785B79DC24236B6D001D7028 /* Lobby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79DB24236B6D001D7028 /* Lobby.swift */; };
@@ -286,6 +290,11 @@
 		2BFD87DC24385F11000FA49A /* Signal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signal.swift; sourceTree = "<group>"; };
 		2BFD87DE24389990000FA49A /* SpriteSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpriteSystem.swift; sourceTree = "<group>"; };
 		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
+		784096012438583B00D2CAB4 /* InviteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteManager.swift; sourceTree = "<group>"; };
+		78409603243858DA00D2CAB4 /* Invite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invite.swift; sourceTree = "<group>"; };
+		7840960524385CB300D2CAB4 /* Invite+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Invite+FirestoreModel.swift"; sourceTree = "<group>"; };
+		7840960724385DF400D2CAB4 /* InviteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteStore.swift; sourceTree = "<group>"; };
+		7840960D2438B60000D2CAB4 /* OutgoingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingTableViewCell.swift; sourceTree = "<group>"; };
 		7859AF9724332EF500B60968 /* Social.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social.swift; sourceTree = "<group>"; };
 		7859AF992433305F00B60968 /* Social+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Social+FirestoreModel.swift"; sourceTree = "<group>"; };
 		7859AF9B2433317000B60968 /* SocialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialStore.swift; sourceTree = "<group>"; };
@@ -298,11 +307,10 @@
 		7859AFAC2434D16F00B60968 /* RequestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStore.swift; sourceTree = "<group>"; };
 		7859AFB02436167600B60968 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		7859AFB12436167600B60968 /* FriendTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendTableViewCell.xib; sourceTree = "<group>"; };
-		7859AFB424364C5E00B60968 /* IncomingRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingRequestTableViewCell.swift; sourceTree = "<group>"; };
-		7859AFB524364C5E00B60968 /* IncomingRequestTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IncomingRequestTableViewCell.xib; sourceTree = "<group>"; };
+		7859AFB424364C5E00B60968 /* IncomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingTableViewCell.swift; sourceTree = "<group>"; };
+		7859AFB524364C5E00B60968 /* IncomingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IncomingTableViewCell.xib; sourceTree = "<group>"; };
 		7859AFB82437095A00B60968 /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
-		7859AFBA243725C700B60968 /* OutgoingRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRequestTableViewCell.swift; sourceTree = "<group>"; };
-		7859AFBB243725C700B60968 /* OutgoingRequestTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutgoingRequestTableViewCell.xib; sourceTree = "<group>"; };
+		7859AFBE24383E3200B60968 /* OutgoingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutgoingTableViewCell.xib; sourceTree = "<group>"; };
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785B79D92423581B001D7028 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		785B79DB24236B6D001D7028 /* Lobby.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lobby.swift; sourceTree = "<group>"; };
@@ -457,6 +465,7 @@
 				110B3CE6241F45D900840C4E /* GameplayStore.swift */,
 				7859AFAC2434D16F00B60968 /* RequestStore.swift */,
 				118A4A742424885E005B7188 /* LobbyStore.swift */,
+				7840960724385DF400D2CAB4 /* InviteStore.swift */,
 				7859AF9B2433317000B60968 /* SocialStore.swift */,
 				118A4A7224248663005B7188 /* UserStore.swift */,
 				119C54192416654900F27D87 /* API.swift */,
@@ -567,6 +576,7 @@
 				110B3CDC241F3CD200840C4E /* Gameplay.swift */,
 				785B79DB24236B6D001D7028 /* Lobby.swift */,
 				7859AFA62434B8EB00B60968 /* Request.swift */,
+				78409603243858DA00D2CAB4 /* Invite.swift */,
 				116AD649242DBA510070F00B /* Vector.swift */,
 			);
 			path = Models;
@@ -675,6 +685,7 @@
 			children = (
 				119C541B2416704800F27D87 /* FirestoreModel.swift */,
 				118A4A7024248641005B7188 /* FirestoreDataModel.swift */,
+				7840960524385CB300D2CAB4 /* Invite+FirestoreModel.swift */,
 				119C54282418768A00F27D87 /* User+FirestoreModel.swift */,
 				7859AF992433305F00B60968 /* Social+FirestoreModel.swift */,
 				110B3CE4241F431700840C4E /* Gameplay+FirestoreModel.swift */,
@@ -749,6 +760,7 @@
 				7859AF9E24339A4000B60968 /* SocialCoordinator.swift */,
 				7859AFA224339A6B00B60968 /* SocialViewController.swift */,
 				7859AFA024339A5700B60968 /* SocialViewModel.swift */,
+				784096012438583B00D2CAB4 /* InviteManager.swift */,
 				7859AFB82437095A00B60968 /* RequestManager.swift */,
 				7859AFA424346EEC00B60968 /* SocialViewController.xib */,
 			);
@@ -951,10 +963,10 @@
 			isa = PBXGroup;
 			children = (
 				7859AFB02436167600B60968 /* FriendTableViewCell.swift */,
-				7859AFB424364C5E00B60968 /* IncomingRequestTableViewCell.swift */,
-				7859AFBA243725C700B60968 /* OutgoingRequestTableViewCell.swift */,
-				7859AFBB243725C700B60968 /* OutgoingRequestTableViewCell.xib */,
-				7859AFB524364C5E00B60968 /* IncomingRequestTableViewCell.xib */,
+				7859AFB424364C5E00B60968 /* IncomingTableViewCell.swift */,
+				7840960D2438B60000D2CAB4 /* OutgoingTableViewCell.swift */,
+				7859AFBE24383E3200B60968 /* OutgoingTableViewCell.xib */,
+				7859AFB524364C5E00B60968 /* IncomingTableViewCell.xib */,
 				7859AFB12436167600B60968 /* FriendTableViewCell.xib */,
 				D9A123D2241E6EC500A6DB7F /* RoundButton.swift */,
 				785B79F424253B82001D7028 /* LobbyPlayerView.swift */,
@@ -1160,7 +1172,6 @@
 				7859AFB32436167600B60968 /* FriendTableViewCell.xib in Resources */,
 				D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */,
 				1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */,
-				7859AFBD243725C700B60968 /* OutgoingRequestTableViewCell.xib in Resources */,
 				7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */,
 				788007222413F37100F43B71 /* Actions.sks in Resources */,
 				D92F9405241D2E8A0021DBE4 /* DeadlockMap.sks in Resources */,
@@ -1168,7 +1179,8 @@
 				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
 				785B79F124253A80001D7028 /* LobbyPlayerView.xib in Resources */,
 				D9FF1A80241E325900E7965F /* GamePlayViewController.xib in Resources */,
-				7859AFB724364C5F00B60968 /* IncomingRequestTableViewCell.xib in Resources */,
+				7859AFBF24383E3300B60968 /* OutgoingTableViewCell.xib in Resources */,
+				7859AFB724364C5F00B60968 /* IncomingTableViewCell.xib in Resources */,
 				785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
@@ -1299,9 +1311,11 @@
 				2B4CCD47243632F90086DEC6 /* GenericPlayerEventBroadcast.swift in Sources */,
 				D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */,
 				116AD648242DB7CD0070F00B /* Encoder.swift in Sources */,
+				7840960624385CB300D2CAB4 /* Invite+FirestoreModel.swift in Sources */,
 				116AD64A242DBA510070F00B /* Vector.swift in Sources */,
 				7859AF9C2433317000B60968 /* SocialStore.swift in Sources */,
-				7859AFB624364C5F00B60968 /* IncomingRequestTableViewCell.swift in Sources */,
+				7859AFB624364C5F00B60968 /* IncomingTableViewCell.swift in Sources */,
+				7859AFB624364C5F00B60968 /* IncomingTableViewCell.swift in Sources */,
 				110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */,
 				D9BC4AB12436332600BD35DF /* HealthSystem.swift in Sources */,
 				785B79E924249894001D7028 /* CostumeType.swift in Sources */,
@@ -1341,6 +1355,7 @@
 				7859AFAD2434D16F00B60968 /* RequestStore.swift in Sources */,
 				117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */,
 				11280F4224340BA6004CFAC8 /* PlayerData.swift in Sources */,
+				784096022438583B00D2CAB4 /* InviteManager.swift in Sources */,
 				118A4A7124248641005B7188 /* FirestoreDataModel.swift in Sources */,
 				D9F180612431B57F009D7A52 /* ClosestBoltSystem.swift in Sources */,
 				110B3CDD241F3CD200840C4E /* Gameplay.swift in Sources */,
@@ -1368,14 +1383,15 @@
 				D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */,
 				2BFD87DF24389990000FA49A /* SpriteSystem.swift in Sources */,
 				2BFD87DB24385690000FA49A /* UserConnectionSystem.swift in Sources */,
-				7859AFBC243725C700B60968 /* OutgoingRequestTableViewCell.swift in Sources */,
 				1191BD712435ADAD00189DB8 /* GenericPlayerEvent.swift in Sources */,
 				119A3E4A242CD6970064B034 /* PowerupActionData.swift in Sources */,
 				119C541A2416654900F27D87 /* API.swift in Sources */,
 				D908771A2429AD3F00B73D0E /* BounceComponent.swift in Sources */,
 				1107D0602420DBA00058F590 /* AuthState.swift in Sources */,
 				116AD64C242DBC670070F00B /* Decoder.swift in Sources */,
+				78409604243858DA00D2CAB4 /* Invite.swift in Sources */,
 				785B79DC24236B6D001D7028 /* Lobby.swift in Sources */,
+				7840960824385DF400D2CAB4 /* InviteStore.swift in Sources */,
 				1137270C242517AF00AB4B79 /* GameState.swift in Sources */,
 				11593D7324319BDA00462BE6 /* ShieldPowerupEntity.swift in Sources */,
 				D90877262429B77300B73D0E /* GameObjectMovementSystem.swift in Sources */,
@@ -1424,6 +1440,7 @@
 				11593D8C24331BA600462BE6 /* SliceEffectComponent.swift in Sources */,
 				D90877102429A87500B73D0E /* BoltEntity.swift in Sources */,
 				D980A6C42430D73300B55452 /* DeadlockSystem.swift in Sources */,
+				7840960E2438B60000D2CAB4 /* OutgoingTableViewCell.swift in Sources */,
 				110B3CE5241F431700840C4E /* Gameplay+FirestoreModel.swift in Sources */,
 				7859AFAB2434BA6500B60968 /* Request+FirestoreModel.swift in Sources */,
 				113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */,

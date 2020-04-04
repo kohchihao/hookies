@@ -7,9 +7,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="IncomingRequestTableViewCell" customModule="Hookies" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="IncomingTableViewCell" customModule="Hookies" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="IncomingRequestTableViewCell" customModule="Hookies" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="IncomingTableViewCell" customModule="Hookies" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -20,7 +20,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cpk-IZ-LCS" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="254" y="15" width="43" height="30"/>
+                        <rect key="frame" x="240" y="15" width="64" height="30"/>
                         <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <state key="normal" title="Reject">
@@ -36,7 +36,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OQL-nF-DAR" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="197" y="15" width="49" height="30"/>
+                        <rect key="frame" x="172" y="15" width="64" height="30"/>
                         <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <state key="normal" title="Accept">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -52,18 +52,21 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Cpk-IZ-LCS" firstAttribute="leading" secondItem="OQL-nF-DAR" secondAttribute="trailing" constant="8" id="yF0-ag-DGm"/>
+                    <constraint firstItem="Cpk-IZ-LCS" firstAttribute="leading" secondItem="OQL-nF-DAR" secondAttribute="trailing" constant="4" id="BTT-Rf-M9m"/>
                 </constraints>
             </tableViewCellContentView>
             <constraints>
-                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="1iQ-dh-nDf"/>
-                <constraint firstItem="6UW-Xx-4n5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="8cW-Wg-BPw"/>
-                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="254" id="SJY-X4-ySZ"/>
-                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="Cpk-IZ-LCS" secondAttribute="trailing" constant="23" id="SnW-Ea-OV0"/>
-                <constraint firstItem="6UW-Xx-4n5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="U5l-bB-p47"/>
-                <constraint firstItem="OQL-nF-DAR" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="g0H-lJ-JIB"/>
-                <constraint firstItem="H2p-sc-9uM" firstAttribute="trailing" secondItem="6UW-Xx-4n5" secondAttribute="trailing" id="nu5-dP-Gvb"/>
-                <constraint firstItem="6UW-Xx-4n5" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottom" id="uFm-7P-gva"/>
+                <constraint firstItem="OQL-nF-DAR" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.2" id="0Y9-bW-Asf"/>
+                <constraint firstItem="6UW-Xx-4n5" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="5Tv-NA-tQo"/>
+                <constraint firstItem="6UW-Xx-4n5" firstAttribute="bottom" secondItem="njF-e1-oar" secondAttribute="bottom" id="7hn-3B-zQF"/>
+                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="AAW-69-nTe"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="6UW-Xx-4n5" secondAttribute="trailing" id="FWS-eL-sze"/>
+                <constraint firstItem="OQL-nF-DAR" firstAttribute="height" secondItem="njF-e1-oar" secondAttribute="height" multiplier="0.5" id="YCa-81-guy"/>
+                <constraint firstItem="OQL-nF-DAR" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="aaf-02-KwX"/>
+                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="height" secondItem="njF-e1-oar" secondAttribute="height" multiplier="0.5" id="iiz-LH-GdP"/>
+                <constraint firstItem="6UW-Xx-4n5" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" id="mil-VC-p0d"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="Cpk-IZ-LCS" secondAttribute="trailing" constant="16" id="rv8-pk-P42"/>
+                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.2" id="zNJ-1y-dd1"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <point key="canvasLocation" x="137.68115942028987" y="103.79464285714285"/>

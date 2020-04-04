@@ -10,11 +10,13 @@ import UIKit
 
 protocol FriendTableViewCellDelegate: class {
     func deleteButtonPressed(username: String)
+    func inviteButtonPressed(username: String)
 }
 
 class FriendTableViewCell: UITableViewCell {
 
     weak var delegate: FriendTableViewCellDelegate?
+
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,6 +34,21 @@ class FriendTableViewCell: UITableViewCell {
             return
         }
         delegate?.deleteButtonPressed(username: username)
+    }
+
+    func hideInviteButton() {
+//        inviteButton.isHidden = true
+    }
+
+    func showInviteButton() {
+//        inviteButton.isHidden = false
+    }
+
+    @IBAction private func inviteButtonPressed(_ sender: UIButton) {
+        guard let username = self.textLabel?.text else {
+            return
+        }
+        delegate?.inviteButtonPressed(username: username)
     }
 
 }

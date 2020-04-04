@@ -20,6 +20,7 @@ class API {
     let lobby: LobbyStore
     let social: SocialStore
     let request: RequestStore
+    let invite: InviteStore
 
     private init() {
         db = Firestore.firestore()
@@ -32,5 +33,6 @@ class API {
         lobby = LobbyStore(lobbyCollection: db.collection("lobbies"))
         social = SocialStore(socialCollection: db.collection("socials"))
         request = RequestStore(requestCollection: db.collection("requests"))
+        invite = InviteStore(inviteCollection: db.collection("invites"))
     }
 }

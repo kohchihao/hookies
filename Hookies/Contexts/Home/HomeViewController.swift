@@ -36,10 +36,13 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let socialViewModel = SocialViewModel()
+//        setUpSocialView()
+    }
+
+    private func setUpSocialView() {
+        let socialViewModel = SocialViewModel(lobbyId: nil)
         let socialViewController = SocialViewController(with: socialViewModel)
         self.addChild(socialViewController)
-//        socialViewController.view.frame = socialView.frame
         self.socialView.addSubview(socialViewController.view)
         socialViewController.didMove(toParent: self)
         socialViewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +87,7 @@ class HomeViewController: UIViewController {
     }
 
     @IBAction private func onFriendButtonClicked(_ sender: UIButton) {
-//        navigationDelegate?.didPressFriendButton(in: self)
-        self.socialView.isHidden.toggle()
+        navigationDelegate?.didPressFriendButton(in: self)
+//        self.socialView.isHidden.toggle()
     }
 }
