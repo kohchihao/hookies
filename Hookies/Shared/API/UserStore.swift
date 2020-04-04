@@ -131,6 +131,7 @@ class UserStore {
 
                 if result.isEmpty {
                     ref.setDataModel(user)
+                    self.currentUser = user
                     return completion(user, nil)
                 } else {
                     return completion(nil, UserStoreError.usernameExistError)
