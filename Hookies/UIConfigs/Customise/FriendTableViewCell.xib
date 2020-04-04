@@ -17,14 +17,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="name_bg" translatesAutoresizingMaskIntoConstraints="NO" id="iLu-Xq-mK7">
-                        <rect key="frame" x="-1" y="0.0" width="322" height="60"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9Z-fd-mc2" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="161" y="15" width="80" height="30"/>
+                        <rect key="frame" x="152" y="15" width="80" height="30"/>
                         <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="80" id="WtY-jy-Ga6"/>
-                        </constraints>
                         <state key="normal" title="Message">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
@@ -35,11 +32,8 @@
                         </userDefinedRuntimeAttributes>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qhq-P8-0MI" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="246" y="15" width="60" height="30"/>
+                        <rect key="frame" x="242" y="15" width="64" height="30"/>
                         <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="60" id="kFd-Zm-8NO"/>
-                        </constraints>
                         <state key="normal" title="Delete">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
@@ -54,16 +48,22 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-16" id="8kB-UJ-m3G"/>
-                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-11" id="9et-6d-yot"/>
-                    <constraint firstItem="Qhq-P8-0MI" firstAttribute="leading" secondItem="N9Z-fd-mc2" secondAttribute="trailing" constant="5" id="KBf-OM-xID"/>
-                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="RGh-9Q-qmN"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Qhq-P8-0MI" secondAttribute="trailing" constant="-1" id="eck-ZZ-gC9"/>
-                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="centerY" secondItem="N9Z-fd-mc2" secondAttribute="centerY" id="mgn-tF-grt"/>
-                    <constraint firstItem="N9Z-fd-mc2" firstAttribute="baseline" secondItem="Qhq-P8-0MI" secondAttribute="baseline" id="sCX-kF-tOB"/>
-                    <constraint firstItem="iLu-Xq-mK7" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="sgt-3V-86U"/>
+                    <constraint firstItem="Qhq-P8-0MI" firstAttribute="leading" secondItem="N9Z-fd-mc2" secondAttribute="trailing" constant="10" id="Trc-NY-uPv"/>
                 </constraints>
             </tableViewCellContentView>
+            <constraints>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="iLu-Xq-mK7" secondAttribute="trailing" id="9e3-lp-B4x"/>
+                <constraint firstItem="iLu-Xq-mK7" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="Fmi-TM-DME"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="Qhq-P8-0MI" secondAttribute="trailing" constant="14" id="R5Q-FK-SM6"/>
+                <constraint firstItem="iLu-Xq-mK7" firstAttribute="bottom" secondItem="njF-e1-oar" secondAttribute="bottom" id="Uet-KR-qmD"/>
+                <constraint firstItem="Qhq-P8-0MI" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="XJU-1Y-y30"/>
+                <constraint firstItem="Qhq-P8-0MI" firstAttribute="height" secondItem="njF-e1-oar" secondAttribute="height" multiplier="0.5" id="XXr-YG-Hxc"/>
+                <constraint firstItem="Qhq-P8-0MI" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.2" id="YOv-DK-41V"/>
+                <constraint firstItem="N9Z-fd-mc2" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="eIL-Im-rV4"/>
+                <constraint firstItem="iLu-Xq-mK7" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" id="hdB-X5-FyY"/>
+                <constraint firstItem="N9Z-fd-mc2" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.25" id="kvH-bU-drG"/>
+                <constraint firstItem="N9Z-fd-mc2" firstAttribute="height" secondItem="njF-e1-oar" secondAttribute="height" multiplier="0.5" id="xav-VP-kih"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <point key="canvasLocation" x="134.78260869565219" y="103.79464285714285"/>
         </tableViewCell>

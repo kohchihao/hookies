@@ -17,10 +17,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="name_bg" translatesAutoresizingMaskIntoConstraints="NO" id="6UW-Xx-4n5">
-                        <rect key="frame" x="-1" y="0.0" width="322" height="60"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cpk-IZ-LCS" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                        <rect key="frame" x="250" y="15" width="48" height="30"/>
+                        <rect key="frame" x="240" y="15" width="64" height="30"/>
                         <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <state key="normal" title="Cancel">
@@ -32,21 +32,24 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                         <connections>
+                            <action selector="cancelButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="0hh-Zz-CWB"/>
                             <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="jW3-DA-vBk"/>
                         </connections>
                     </button>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-16" id="8QC-3z-aH5"/>
-                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="EwU-HE-RfF"/>
-                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="centerY" secondItem="Cpk-IZ-LCS" secondAttribute="centerY" id="KIY-80-ogK"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Cpk-IZ-LCS" secondAttribute="trailing" constant="7" id="qsp-Xu-7bF"/>
-                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-11" id="tzf-9p-OSL"/>
-                    <constraint firstItem="6UW-Xx-4n5" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="wQX-s5-F94"/>
-                </constraints>
             </tableViewCellContentView>
+            <constraints>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="6UW-Xx-4n5" secondAttribute="trailing" id="NdB-6Y-I5F"/>
+                <constraint firstItem="6UW-Xx-4n5" firstAttribute="bottom" secondItem="njF-e1-oar" secondAttribute="bottom" id="TdM-NF-5I4"/>
+                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.2" id="Up5-GA-eSl"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="Cpk-IZ-LCS" secondAttribute="trailing" constant="16" id="a2y-Y3-RM4"/>
+                <constraint firstItem="6UW-Xx-4n5" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="lvr-4I-uFR"/>
+                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="height" secondItem="njF-e1-oar" secondAttribute="height" multiplier="0.5" id="p1U-vf-gez"/>
+                <constraint firstItem="6UW-Xx-4n5" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" id="vcs-SC-hjj"/>
+                <constraint firstItem="Cpk-IZ-LCS" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="xXw-OT-O3O"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <point key="canvasLocation" x="137.68115942028987" y="103.79464285714285"/>
+            <point key="canvasLocation" x="137.5" y="103.7109375"/>
         </tableViewCell>
     </objects>
     <resources>
