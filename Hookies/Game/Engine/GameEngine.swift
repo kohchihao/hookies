@@ -127,6 +127,10 @@ class GameEngine {
             return
         }
 
+        guard let initialVelocity = sprite.node.physicsBody?.velocity else {
+            return
+        }
+
         hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite, type: .activate)
 
         let hasHook = hookSystem.hookTo(hook: hook)
@@ -140,6 +144,7 @@ class GameEngine {
         }
 
         delegate?.playerDidHook(to: hookDelegateModel)
+        hookSystem.applyInitialVelocity(sprite: sprite, velocity: initialVelocity)
     }
 
     func applyUnhookActionToCurrentPlayer() {
@@ -585,7 +590,9 @@ class GameEngine {
             return
         }
 
-        guard let hookComponent = otherPlayer.getHookComponent() else {
+        guard let hookComponent = otherPlayer.getHookComponent(),
+            let spriteComponent = otherPlayer.getSpriteComponent()
+            else {
             return
         }
 
@@ -612,6 +619,7 @@ class GameEngine {
         }
 
         delegate?.playerDidHook(to: hookDelegateModel)
+        hookSystem.applyInitialVelocity(sprite: spriteComponent, velocity: CGVector(vector: velocity))
     }
 
     private func applyUnhookAction(on hook: HookActionData) {

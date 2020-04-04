@@ -16,6 +16,7 @@ protocol HookSystemProtocol {
     func hookTo(hook: HookComponent, at position: CGPoint, with velocity: CGVector) -> Bool
     func unhookFrom(entity: Entity) -> Bool
     func unhookFrom(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool
+    func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector)
 }
 
 enum HookSystemError: Error {
@@ -68,23 +69,14 @@ class HookSystem: System, HookSystemProtocol {
         parentSprite.node.position = position
         parentSprite.node.physicsBody?.velocity = velocity
 
-        guard let parentSpriteInitialVelocity = parentSprite.node.physicsBody?.velocity else {
-            return false
-        }
-
         guard let closestBolt = findClosestBolt(from: parentSprite.node.position) else {
             return false
         }
 
-        if let prevAttachedBolt = hook.prevHookTo {
-            let isAttachingToSameBolt = prevAttachedBolt.node.position == closestBolt.node.position
-            if isAttachingToSameBolt {
-                attachToSameBolt(sprite: parentSprite, bolt: closestBolt)
-            }
+        let isAttachingToSameBolt = hook.prevHookTo?.node.position == closestBolt.node.position
 
-            if !isAttachingToSameBolt {
-                boostVelocity(of: parentSprite, withRespectTo: prevAttachedBolt)
-            }
+        if isAttachingToSameBolt {
+            attachToSameBolt(sprite: parentSprite, bolt: closestBolt)
         }
 
         let anchor = parentSprite.makeAnchor(from: closestBolt)
@@ -94,7 +86,6 @@ class HookSystem: System, HookSystemProtocol {
             let spriteLineJointPin = makeJointPinToLine(from: parentSprite.node, toLine: line) else {
                 return false
         }
-        parentSprite.node.physicsBody?.applyImpulse(parentSpriteInitialVelocity)
 
         systemHook.hookTo = closestBolt
         systemHook.anchor = anchor
@@ -137,6 +128,10 @@ class HookSystem: System, HookSystemProtocol {
         hook.parentLineJointPin = nil
 
         return true
+    }
+
+    func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector) {
+        sprite.node.physicsBody?.applyImpulse(velocity)
     }
 
     private func getParentSprite(of hook: HookComponent) -> SpriteComponent? {
@@ -190,20 +185,6 @@ class HookSystem: System, HookSystemProtocol {
         }
 
         sprite.node.position = CGPoint(x: sprite.node.position.x, y: sprite.node.position.y + positionYOffset)
-    }
-
-    private func boostVelocity(of sprite: SpriteComponent, withRespectTo bolt: SpriteComponent) {
-        var boostX = 750
-        let boostY = -750
-
-        let isInFrontOfBolt = sprite.node.position.x > bolt.node.position.x
-
-        if isInFrontOfBolt {
-            boostX *= -1
-        }
-
-        let boost = CGVector(dx: boostX, dy: boostY)
-        sprite.node.physicsBody?.applyImpulse(boost)
     }
 }
 
