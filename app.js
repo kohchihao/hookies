@@ -9,6 +9,7 @@ const games = io.of('/games');
 games.on('connection', socket => {
 	let currentGameId;
 	let currentUserId;
+	console.log('connected');
 
 	socket.on('joinGame', (data, ack) => {
 		currentGameId = data.gameId;
@@ -20,8 +21,13 @@ games.on('connection', socket => {
 		socket.to(currentGameId).emit("joinedGame", data.user)
 	});
 
+	socket.on('powerupCollected', (data) => {
+		console.log("powerup collected", data);
+		socket.to(currentGameId).emit("powerupCollected", data);
+	});
+
 	socket.on('powerupActivated', (data) => {
-		console.log("here", data);
+		console.log("powerup activated", data);
 		socket.to(currentGameId).emit("powerupActivated", data);
 	});
 
