@@ -18,4 +18,6 @@ protocol GameEngineDelegate: AnyObject {
     func currentPlayerIsReconnected()
     func currentPlayerIsDisconnected()
     func gameHasFinish()
+    func addNotActivatedPowerup(_ sprite: SKSpriteNode)
+    func addTrap(with sprite: SKSpriteNode)
 }

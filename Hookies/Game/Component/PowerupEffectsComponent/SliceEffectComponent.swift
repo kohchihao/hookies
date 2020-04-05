@@ -9,24 +9,6 @@
 import Foundation
 import CoreGraphics
 
-class SliceEffectComponent: Component {
-    private(set) var parent: Entity
+class SliceEffectComponent: PowerupEffectComponent {
     var position: CGPoint?
-
-    init(parent: Entity) {
-        self.parent = parent
-    }
-}
-
-// MARK: - Hashable
-extension SliceEffectComponent: Hashable {
-    static func == (lhs: SliceEffectComponent,
-                    rhs: SliceEffectComponent
-    ) -> Bool {
-        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self).hashValue)
-    }
 }

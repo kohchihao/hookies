@@ -5,7 +5,6 @@
 //  Created by JinYing on 2/4/20.
 //  Copyright © 2020 Hookies. All rights reserved.
 //
-
 import SpriteKit
 
 struct HookDelegateModel {

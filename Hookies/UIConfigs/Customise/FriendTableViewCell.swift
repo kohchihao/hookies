@@ -50,5 +50,4 @@ class FriendTableViewCell: UITableViewCell {
         }
         delegate?.inviteButtonPressed(username: username)
     }
-
 }

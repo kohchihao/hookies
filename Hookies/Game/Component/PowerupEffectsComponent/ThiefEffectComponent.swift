@@ -9,24 +9,6 @@
 import Foundation
 import CoreGraphics
 
-class ThiefEffectComponent: Component {
-    private(set) var parent: Entity
+class ThiefEffectComponent: PowerupEffectComponent {
     var position: CGPoint?
-
-    init(parent: Entity) {
-        self.parent = parent
-    }
-}
-
-// MARK: - Hashable
-extension ThiefEffectComponent: Hashable {
-    static func == (lhs: ThiefEffectComponent,
-                    rhs: ThiefEffectComponent
-    ) -> Bool {
-        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self).hashValue)
-    }
 }

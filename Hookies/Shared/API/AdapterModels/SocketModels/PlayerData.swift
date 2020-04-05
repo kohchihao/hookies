@@ -8,6 +8,7 @@
 
 import CoreGraphics
 import SocketIO
+import SpriteKit
 
 struct PlayerData: SocketData, Encoder {
     var encoding: [String: Any] {
@@ -22,6 +23,12 @@ struct PlayerData: SocketData, Encoder {
         self.playerId = playerId
         self.position = position
         self.velocity = velocity
+    }
+
+    init(playerId: String, node: SKSpriteNode) {
+        self.playerId = playerId
+        self.position = Vector(point: node.position)
+        self.velocity = Vector(vector: node.physicsBody?.velocity)
     }
 
     init?(data: DictionaryModel) {

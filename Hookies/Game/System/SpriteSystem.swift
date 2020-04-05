@@ -33,6 +33,7 @@ protocol SpriteSystemProtocol {
         circleOfRadius radius: CGFloat,
         center: CGPoint
     ) -> SpriteComponent
+    func removePhysicsBody(to sprite: SpriteComponent)
 }
 
 class SpriteSystem: System, SpriteSystemProtocol {
@@ -90,6 +91,10 @@ class SpriteSystem: System, SpriteSystemProtocol {
         sprite.node.physicsBody = SKPhysicsBody(circleOfRadius: radius, center: center)
 
         return setPhysicsBodyProperties(to: sprite, of: type)
+    }
+
+    func removePhysicsBody(to sprite: SpriteComponent) {
+        sprite.node.physicsBody = nil
     }
 
     private func setPhysicsBodyProperties(to sprite: SpriteComponent, of type: SpriteType) -> SpriteComponent {
