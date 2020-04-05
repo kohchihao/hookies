@@ -35,29 +35,17 @@ struct InviteManager {
     static func checkInviteIsNotRepeated(invite: Invite, sender: Social, recipient: Social, completion: @escaping (Bool) -> Void) {
         self.getInvites(inviteIds: sender.outgoingInvites, completion: { invites in
             guard !invites.map({ $0.toUserId }).contains(invite.toUserId) else {
-                print("invite already exists")
-                return completion(false)
-            }
-            guard !invites.map({ $0.lobbyId }).contains(invite.lobbyId) else {
-                print("invite from this lobby id already exists")
+                print("invite to this player already exists")
                 return completion(false)
             }
             self.getInvites(inviteIds: sender.incomingInvites, completion: { invites in
                 guard !invites.map({ $0.fromUserId }).contains(invite.toUserId) else {
-                    print("invite already exists")
-                    return completion(false)
-                }
-                guard !invites.map({ $0.lobbyId }).contains(invite.lobbyId) else {
-                    print("invite from this lobby id already exists")
+                    print("there is an existing invite from this player")
                     return completion(false)
                 }
                 self.getInvites(inviteIds: recipient.outgoingInvites, completion: { recipientInvites in
                     guard !recipientInvites.map({ $0.toUserId }).contains(invite.fromUserId) else {
-                        print("invite already exists")
-                        return completion(false)
-                    }
-                    guard !invites.map({ $0.lobbyId }).contains(invite.lobbyId) else {
-                        print("invite from this lobby id already exists")
+                        print("there is an existing invite from this player")
                         return completion(false)
                     }
                     self.getInvites(inviteIds: recipient.incomingInvites, completion: { recipientInvites in
@@ -96,7 +84,6 @@ struct InviteManager {
                     guard notRepeated else {
                         return
                     }
-                    print(invite)
                     API.shared.invite.save(invite: invite)
                     sender.addOutgoingInvite(inviteId: invite.inviteId)
                     API.shared.social.save(social: sender)
