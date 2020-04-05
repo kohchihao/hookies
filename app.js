@@ -26,9 +26,9 @@ games.on('connection', socket => {
 		socket.to(currentGameId).emit("powerupCollected", data);
 	});
 
-	socket.on('powerupActivated', (data) => {
-		console.log("powerup activated", data);
-		socket.to(currentGameId).emit("powerupActivated", data);
+	socket.on('powerupEvent', (data) => {
+		console.log("powerup event detected", data);
+		socket.to(currentGameId).emit("powerupEvent", data);
 	});
 
 	socket.on('hookActionChanged', (data) => {
