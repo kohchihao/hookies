@@ -137,7 +137,6 @@ class GameEngine {
             return
         }
 
-
         guard let initialVelocity = sprite.node.physicsBody?.velocity else {
             return
         }
@@ -579,6 +578,20 @@ class GameEngine {
         API.shared.gameplay.connectToGame(gameId: gameId, completion: { otherPlayersId in
             for otherPlayerId in otherPlayersId {
                 self.setupOtherPlayer(of: otherPlayerId)
+            }
+        })
+    }
+
+    private func subscribeToGameConnection() {
+        API.shared.gameplay.subscribeToGameConnection(listener: { connectionState in
+            switch connectionState {
+            case .connected:
+                let isPlayerReconnecting = self.currentPlayerId != nil
+                if isPlayerReconnecting {
+                    self.delegate?.currentPlayerIsReconnected()
+                }
+            case .disconnected:
+                self.delegate?.currentPlayerIsDisconnected()
             }
         })
     }

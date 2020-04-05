@@ -28,6 +28,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private var signal: Signal?
 
+    private var signal: Signal?
+
     private var countdownLabel: SKLabelNode?
     private var count = 5
 

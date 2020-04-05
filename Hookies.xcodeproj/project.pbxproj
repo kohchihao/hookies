@@ -371,6 +371,27 @@
 		2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookDelegateModel.swift; sourceTree = "<group>"; };
 		2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEventBroadcast.swift; sourceTree = "<group>"; };
 		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
+		784096012438583B00D2CAB4 /* InviteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteManager.swift; sourceTree = "<group>"; };
+		78409603243858DA00D2CAB4 /* Invite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invite.swift; sourceTree = "<group>"; };
+		7840960524385CB300D2CAB4 /* Invite+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Invite+FirestoreModel.swift"; sourceTree = "<group>"; };
+		7840960724385DF400D2CAB4 /* InviteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteStore.swift; sourceTree = "<group>"; };
+		7840960D2438B60000D2CAB4 /* OutgoingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingTableViewCell.swift; sourceTree = "<group>"; };
+		7859AF9724332EF500B60968 /* Social.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social.swift; sourceTree = "<group>"; };
+		7859AF992433305F00B60968 /* Social+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Social+FirestoreModel.swift"; sourceTree = "<group>"; };
+		7859AF9B2433317000B60968 /* SocialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialStore.swift; sourceTree = "<group>"; };
+		7859AF9E24339A4000B60968 /* SocialCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialCoordinator.swift; sourceTree = "<group>"; };
+		7859AFA024339A5700B60968 /* SocialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewModel.swift; sourceTree = "<group>"; };
+		7859AFA224339A6B00B60968 /* SocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
+		7859AFA424346EEC00B60968 /* SocialViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SocialViewController.xib; sourceTree = "<group>"; };
+		7859AFA62434B8EB00B60968 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		7859AFAA2434BA6500B60968 /* Request+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+FirestoreModel.swift"; sourceTree = "<group>"; };
+		7859AFAC2434D16F00B60968 /* RequestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStore.swift; sourceTree = "<group>"; };
+		7859AFB02436167600B60968 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
+		7859AFB12436167600B60968 /* FriendTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendTableViewCell.xib; sourceTree = "<group>"; };
+		7859AFB424364C5E00B60968 /* IncomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingTableViewCell.swift; sourceTree = "<group>"; };
+		7859AFB524364C5E00B60968 /* IncomingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IncomingTableViewCell.xib; sourceTree = "<group>"; };
+		7859AFB82437095A00B60968 /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
+		7859AFBE24383E3200B60968 /* OutgoingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutgoingTableViewCell.xib; sourceTree = "<group>"; };
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785B79D92423581B001D7028 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		785B79DE24237636001D7028 /* JoinGameCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameCoordinator.swift; sourceTree = "<group>"; };
@@ -505,7 +526,7 @@
 				D9A123C8241E6B6500A6DB7F /* Maps */,
 				D9FF1A6B241E1B6700E7965F /* GamePlay */,
 				785B79DD242375CA001D7028 /* JoinGame */,
-				7859AF9D24339A1100B60968 /* Soclal */,
+				7859AF9D24339A1100B60968 /* Social */,
 				D9FF1A62241E0D5800E7965F /* PreGameLobby */,
 				1127C55D2415E2E800A78AA0 /* Auth */,
 				1127C55C2415E2E100A78AA0 /* Home */,
@@ -785,17 +806,17 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		7859AF9D24339A1100B60968 /* Soclal */ = {
+		7859AF9D24339A1100B60968 /* Social */ = {
 			isa = PBXGroup;
 			children = (
-				11CC85172439E991006D3A8F /* InviteManager.swift */,
-				11CC85182439E991006D3A8F /* RequestManager.swift */,
-				11CC85162439E991006D3A8F /* SocialCoordinator.swift */,
-				11CC85132439E991006D3A8F /* SocialViewController.swift */,
-				11CC85142439E991006D3A8F /* SocialViewController.xib */,
-				11CC85152439E991006D3A8F /* SocialViewModel.swift */,
+				7859AF9E24339A4000B60968 /* SocialCoordinator.swift */,
+				7859AFA224339A6B00B60968 /* SocialViewController.swift */,
+				7859AFA024339A5700B60968 /* SocialViewModel.swift */,
+				784096012438583B00D2CAB4 /* InviteManager.swift */,
+				7859AFB82437095A00B60968 /* RequestManager.swift */,
+				7859AFA424346EEC00B60968 /* SocialViewController.xib */,
 			);
-			path = Soclal;
+			path = Social;
 			sourceTree = "<group>";
 		};
 		785B79DD242375CA001D7028 /* JoinGame */ = {
@@ -1222,6 +1243,8 @@
 				11CC84FF2439E8E5006D3A8F /* OutgoingTableViewCell.xib in Resources */,
 				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
 				D9FF1A80241E325900E7965F /* GamePlayViewController.xib in Resources */,
+				7859AFBF24383E3300B60968 /* OutgoingTableViewCell.xib in Resources */,
+				7859AFB724364C5F00B60968 /* IncomingTableViewCell.xib in Resources */,
 				785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
@@ -1506,6 +1529,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9BC4AB52438711100BD35DF /* HealthSystemTests.swift in Sources */,
+				D9937B792438A1E7002D3341 /* DeadlockSystemTests.swift in Sources */,
 				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
 				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
 				11CC85342439E9EB006D3A8F /* HealthSystemTests.swift in Sources */,
