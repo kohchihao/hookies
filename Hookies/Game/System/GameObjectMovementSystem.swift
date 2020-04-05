@@ -171,6 +171,9 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         withDuration duration: Double,
         withAngle angle: Double
     ) {
+        guard duration >= 0 else {
+            return
+        }
         rotate.duration = duration
         rotate.radianAngle = angle
 
@@ -186,6 +189,9 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         moveInfinitely: Bool,
         speed: Double
     ) {
+        guard speed >= 0 else {
+            return
+        }
         translate.path = path
         translate.moveInfinitely = moveInfinitely
         translate.speed = speed
@@ -200,6 +206,9 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         with bounce: BounceComponent,
         withRestitution restitution: Double
     ) {
+        guard restitution >= 0, restitution <= 1 else {
+            return
+        }
         bounce.restitution = restitution
         spriteToBounce[sprite] = bounce
     }
@@ -212,6 +221,10 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         width: Double,
         height: Double
     ) {
+        guard speed >= 0, width >= 0, height >= 0 else {
+            return
+        }
+
         let path = createRectangleShapePath(starting: sprite.node.position, width: width, height: height)
         self.setTranslation(to: sprite, with: translate, withPath: path, moveInfinitely: moveInfinitely, speed: speed)
     }
@@ -223,6 +236,10 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         speed: Double,
         radius: Double
     ) {
+        guard speed >= 0, radius >= 0 else {
+            return
+        }
+
         let path = createCircleShapePath(starting: sprite.node.position, radius: radius)
         self.setTranslation(to: sprite, with: translate, withPath: path, moveInfinitely: moveInfinitely, speed: speed)
     }
@@ -234,6 +251,10 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         speed: Double,
         endingAt: CGPoint
     ) {
+        guard speed >= 0 else {
+            return
+        }
+
         let path = createLineShapePath(starting: sprite.node.position, ending: endingAt)
         self.setTranslation(to: sprite, with: translate, withPath: path, moveInfinitely: moveInfinitely, speed: speed)
     }
