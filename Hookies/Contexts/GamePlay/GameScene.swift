@@ -349,6 +349,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Current player activating power up
     private func handleCurrentPlayerActivatePowerup() {
         powerupButton?.touchBeganHandler = handlePowerupBtnTouch
+        powerupButton?.touchEndHandler = handlePowerupBtnTouchEnd
     }
 
     private func handlePowerupBtnTouch() {
@@ -356,12 +357,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         gameEngine?.currentPlayerPowerupAction(with: powerupType)
-        powerupButton?.clearPowerup()
     }
-
 
     private func handleGrapplingHookBtnTouchBegan() {
         gameEngine?.applyHookActionToCurrentPlayer()
+    }
+
+    private func handlePowerupBtnTouchEnd() {
+        powerupButton?.clearPowerup()
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
