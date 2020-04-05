@@ -42,7 +42,7 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
     }
 
     func resolveDeadlock() {
-        guard let velocity = sprite.node.physicsBody?.velocity else {
+        guard let velocity = sprite.node.physicsBody?.velocity, checkIfStuck() else {
             return
         }
 
@@ -50,6 +50,9 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
     }
 
     func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
+        guard checkIfStuck() else {
+            return
+        }
         sprite.node.position = position
         sprite.node.physicsBody?.velocity = velocity
 

@@ -158,6 +158,9 @@
 		D9617E6B2423A99F000A2AD8 /* JumpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9617E6A2423A99F000A2AD8 /* JumpButton.swift */; };
 		D980A6C42430D73300B55452 /* DeadlockSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D980A6C32430D73300B55452 /* DeadlockSystem.swift */; };
 		D980A6C62430F3C500B55452 /* GameObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D980A6C52430F3C500B55452 /* GameObjectType.swift */; };
+		D9937B792438A1E7002D3341 /* DeadlockSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9937B782438A1E7002D3341 /* DeadlockSystemTests.swift */; };
+		D9937B7B2438BD1E002D3341 /* GameObjectMovementSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9937B7A2438BD1E002D3341 /* GameObjectMovementSystemTests.swift */; };
+		D9937B7F24399C67002D3341 /* ClosestBoltSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9937B7E24399C67002D3341 /* ClosestBoltSystemTests.swift */; };
 		D9A123CA241E6B8500A6DB7F /* MapsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123C9241E6B8500A6DB7F /* MapsCoordinator.swift */; };
 		D9A123CC241E6B9600A6DB7F /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123CB241E6B9600A6DB7F /* MapsViewModel.swift */; };
 		D9A123CE241E6BA300A6DB7F /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */; };
@@ -361,6 +364,9 @@
 		D9617E6A2423A99F000A2AD8 /* JumpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpButton.swift; sourceTree = "<group>"; };
 		D980A6C32430D73300B55452 /* DeadlockSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlockSystem.swift; sourceTree = "<group>"; };
 		D980A6C52430F3C500B55452 /* GameObjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectType.swift; sourceTree = "<group>"; };
+		D9937B782438A1E7002D3341 /* DeadlockSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlockSystemTests.swift; sourceTree = "<group>"; };
+		D9937B7A2438BD1E002D3341 /* GameObjectMovementSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectMovementSystemTests.swift; sourceTree = "<group>"; };
+		D9937B7E24399C67002D3341 /* ClosestBoltSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystemTests.swift; sourceTree = "<group>"; };
 		D9A123C9241E6B8500A6DB7F /* MapsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsCoordinator.swift; sourceTree = "<group>"; };
 		D9A123CB241E6B9600A6DB7F /* MapsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewModel.swift; sourceTree = "<group>"; };
 		D9A123CD241E6BA300A6DB7F /* MapsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
@@ -996,6 +1002,9 @@
 			children = (
 				D9BC4AAE24359D4E00BD35DF /* SpriteSystemTests.swift */,
 				D9BC4AB42438711000BD35DF /* HealthSystemTests.swift */,
+				D9937B7A2438BD1E002D3341 /* GameObjectMovementSystemTests.swift */,
+				D9937B782438A1E7002D3341 /* DeadlockSystemTests.swift */,
+				D9937B7E24399C67002D3341 /* ClosestBoltSystemTests.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1459,13 +1468,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9BC4AB52438711100BD35DF /* HealthSystemTests.swift in Sources */,
+				D9937B792438A1E7002D3341 /* DeadlockSystemTests.swift in Sources */,
 				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
 				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
+				D9937B7B2438BD1E002D3341 /* GameObjectMovementSystemTests.swift in Sources */,
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
 				D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */,
 				119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */,
 				D9BC4AAF24359D4E00BD35DF /* SpriteSystemTests.swift in Sources */,
 				788007392413F37500F43B71 /* HookiesTests.swift in Sources */,
+				D9937B7F24399C67002D3341 /* ClosestBoltSystemTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
