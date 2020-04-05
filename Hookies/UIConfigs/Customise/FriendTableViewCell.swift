@@ -17,7 +17,6 @@ class FriendTableViewCell: UITableViewCell {
 
     weak var delegate: FriendTableViewCellDelegate?
 
-
     override func awakeFromNib() {
         super.awakeFromNib()
         self.isUserInteractionEnabled = true
@@ -50,5 +49,4 @@ class FriendTableViewCell: UITableViewCell {
         }
         delegate?.inviteButtonPressed(username: username)
     }
-
 }

@@ -12,10 +12,17 @@ class PowerupComponent: Component {
     private(set) var parent: Entity
     var isActivated: Bool
     var activatedTime: Date?
+    var type: PowerupType
+    var ownerId: String?
 
-    init(parent: Entity) {
+    init(parent: Entity, type: PowerupType) {
         self.parent = parent
         self.isActivated = false
+        self.type = type
+    }
+
+    func setOwner(id: String) {
+        ownerId = id
     }
 }
 
