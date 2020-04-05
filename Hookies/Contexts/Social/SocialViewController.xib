@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SocialViewController" customModule="Hookies" customModuleProvider="target">
+            <connections>
+                <outlet property="incomingInviteTableView" destination="eyb-BS-tdM" id="86d-VP-LgR"/>
+                <outlet property="incomingRequestTableView" destination="9Kk-Dc-GDK" id="hPq-ub-MwA"/>
+                <outlet property="outgoingInviteTableView" destination="vhn-Bj-9OM" id="Ufc-x5-zto"/>
+                <outlet property="outgoingRequestTableView" destination="gXx-pK-FqQ" id="7po-A4-Iz0"/>
+                <outlet property="requestTextField" destination="bUn-f0-Xbc" id="srS-aC-m1f"/>
+                <outlet property="socialTableView" destination="y1B-t6-gwq" id="1m4-3o-qhL"/>
+                <outlet property="view" destination="iN0-l3-epB" id="iIP-dG-XMc"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="y1B-t6-gwq">
+                    <rect key="frame" x="0.0" y="117" width="338" height="651"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eyb-BS-tdM">
+                    <rect key="frame" x="686" y="0.0" width="338" height="384"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bUn-f0-Xbc">
+                    <rect key="frame" x="0.0" y="0.0" width="338" height="38.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vhn-Bj-9OM">
+                    <rect key="frame" x="686" y="384" width="338" height="384"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9Kk-Dc-GDK">
+                    <rect key="frame" x="343" y="0.0" width="338" height="384"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GA1-iy-wni" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="58.5" width="338" height="38.5"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="Send Request">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="sendRequestButtonClicked:" destination="-1" eventType="touchUpInside" id="zVb-Un-IEP"/>
+                    </connections>
+                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gXx-pK-FqQ">
+                    <rect key="frame" x="343" y="384" width="338" height="384"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="9Kk-Dc-GDK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="276-5h-WOD"/>
+                <constraint firstItem="y1B-t6-gwq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="4vU-hc-Mpi"/>
+                <constraint firstItem="9Kk-Dc-GDK" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="61t-V4-uKG"/>
+                <constraint firstItem="GA1-iy-wni" firstAttribute="top" secondItem="bUn-f0-Xbc" secondAttribute="bottom" constant="20" id="67C-zO-rck"/>
+                <constraint firstItem="9Kk-Dc-GDK" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" multiplier="0.5" id="Ekz-Oh-w7r"/>
+                <constraint firstItem="bUn-f0-Xbc" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" multiplier="0.05" id="JAd-qT-Gr3"/>
+                <constraint firstItem="GA1-iy-wni" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" multiplier="0.05" id="KaM-Hv-9ct"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="vhn-Bj-9OM" secondAttribute="bottom" id="Kvq-sp-53r"/>
+                <constraint firstItem="vhn-Bj-9OM" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" multiplier="0.5" id="M9Y-WS-8Xi"/>
+                <constraint firstItem="gXx-pK-FqQ" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Nns-nv-Auy"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gXx-pK-FqQ" secondAttribute="bottom" id="Qci-H6-s9l"/>
+                <constraint firstItem="gXx-pK-FqQ" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" multiplier="0.5" id="R1c-Po-yZO"/>
+                <constraint firstItem="vhn-Bj-9OM" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.33" id="TTE-8s-E2b"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="eyb-BS-tdM" secondAttribute="trailing" id="UVg-Xm-28R"/>
+                <constraint firstItem="bUn-f0-Xbc" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.33" id="VcG-lF-4Sm"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="vhn-Bj-9OM" secondAttribute="trailing" id="XB2-GF-xg6"/>
+                <constraint firstItem="eyb-BS-tdM" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" multiplier="0.5" id="ZY2-ml-pCh"/>
+                <constraint firstItem="bUn-f0-Xbc" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="bfF-hz-DQl"/>
+                <constraint firstItem="GA1-iy-wni" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="cUo-C7-LO9"/>
+                <constraint firstItem="9Kk-Dc-GDK" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.33" id="elY-lj-VQE"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gXx-pK-FqQ" secondAttribute="bottom" id="fFh-zL-Dym"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="y1B-t6-gwq" secondAttribute="bottom" id="fRc-L7-Uly"/>
+                <constraint firstItem="y1B-t6-gwq" firstAttribute="top" secondItem="GA1-iy-wni" secondAttribute="bottom" constant="20" id="jNQ-3e-IXh"/>
+                <constraint firstItem="y1B-t6-gwq" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.33" id="kFl-Re-I0t"/>
+                <constraint firstItem="bUn-f0-Xbc" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="mWO-HA-0y9"/>
+                <constraint firstItem="eyb-BS-tdM" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.33" id="nXG-sd-ISs"/>
+                <constraint firstItem="gXx-pK-FqQ" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.33" id="nx7-QE-NcK"/>
+                <constraint firstItem="GA1-iy-wni" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.33" id="o9v-lu-tW2"/>
+                <constraint firstItem="eyb-BS-tdM" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="tiA-Cg-pfL"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="140.625" y="103.125"/>
+        </view>
+    </objects>
+</document>

@@ -49,6 +49,11 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         playersState[player] = .moving
     }
 
+    func remove(player: SpriteComponent) {
+        players.remove(player)
+        playersState[player] = nil
+    }
+
     func stop(player: SpriteComponent) -> Bool {
         guard let velocity = player.node.physicsBody?.velocity else {
             return false
@@ -100,7 +105,7 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
     }
 
     func hasAllPlayersReachedFinishingLine() -> Bool {
-        let isAllPlayersFinished = !players.isEmpty && players.count == finishedPlayers
+        let isAllPlayersFinished = !players.isEmpty && players.count <= finishedPlayers
 
         if isAllPlayersFinished {
             return true

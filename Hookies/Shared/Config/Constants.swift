@@ -14,6 +14,7 @@ struct Constants {
 
     static let requestIdLength = 8
     static let lobbyIdLength = 6
+    static let inviteIdLength = 6
 
     static let maxPlayerCount = 4
 

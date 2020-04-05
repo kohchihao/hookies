@@ -11,7 +11,7 @@ import UIKit
 import FirebaseAuth
 
 protocol JoinGameViewNavigationDelegate: class {
-    func didPressJoinLobbyButton(in: JoinGameViewController, withLobby: Lobby)
+    func didPressJoinLobbyButton(in: JoinGameViewController, lobbyId: String)
 }
 
 class JoinGameViewController: UIViewController {
@@ -76,26 +76,8 @@ class JoinGameViewController: UIViewController {
         guard !lobbyId.isEmpty else {
             return
         }
-        API.shared.lobby.get(lobbyId: lobbyId, completion: { lobby, error in
-            guard error == nil else {
-                print(error.debugDescription)
-                return
-            }
-            guard var lobby = lobby else {
-                return
-            }
-            guard let playerId = Auth.auth().currentUser?.uid else {
-                return
-            }
-            guard lobby.lobbyState == .open else {
-                return
-            }
-            lobby.addPlayer(playerId: playerId)
-            if lobby.playersId.contains(playerId) {
-                self.navigationDelegate?.didPressJoinLobbyButton(in: self, withLobby: lobby)
-                self.dismiss(animated: false, completion: nil)
-            }
-        })
+        self.navigationDelegate?.didPressJoinLobbyButton(in: self, lobbyId: lobbyId)
+        self.dismiss(animated: false, completion: nil)
     }
 
     private func playerJoinedLobby(playerId: String, lobby: Lobby) {

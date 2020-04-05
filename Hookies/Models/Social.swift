@@ -55,4 +55,17 @@ struct Social {
     mutating func removeFriend(userId: String) {
         self.friends = self.friends.filter({ $0 != userId })
     }
+
+    mutating func addIncomingInvite(inviteId: String) {
+        self.incomingInvites.append(inviteId)
+    }
+
+    mutating func addOutgoingInvite(inviteId: String) {
+        self.outgoingInvites.append(inviteId)
+    }
+
+    mutating func removeInvite(inviteId: String) {
+        self.incomingInvites = self.incomingInvites.filter({ $0 != inviteId })
+        self.outgoingInvites = self.outgoingInvites.filter({ $0 != inviteId })
+    }
 }
