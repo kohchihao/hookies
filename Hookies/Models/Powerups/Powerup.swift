@@ -11,8 +11,4 @@ import Foundation
 protocol Powerup: Nameable, DictionaryRepresentable {
     var ownerId: String? { get }
     var isActivated: Bool { get }
-
-    mutating func activate(by user: User)
-    mutating func deactivate()
-    mutating func apply(to gameplay: Gameplay)
 }

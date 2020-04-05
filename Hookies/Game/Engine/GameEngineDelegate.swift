@@ -15,4 +15,6 @@ protocol GameEngineDelegate: AnyObject {
     func playerIsStuck()
     func addNotActivatedPowerup(_ sprite: SKSpriteNode)
     func addTrap(with sprite: SKSpriteNode)
+    func playerHasFinishRace()
+    func otherPlayerIsConnected(otherPlayer: SKSpriteNode)
 }

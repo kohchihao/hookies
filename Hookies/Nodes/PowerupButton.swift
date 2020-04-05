@@ -28,16 +28,13 @@ class PowerupButton: ButtonNode {
     }
 
     func setPowerup(to type: PowerupType) {
-        powerupType = type
-        isUserInteractionEnabled = true
-        alpha = 1
         texture = SKTexture(imageNamed: type.buttonString)
+        powerupType = type
+        state = .ButtonNodeStateActive
     }
 
     func clearPowerup() {
-        powerupType = nil
-        isUserInteractionEnabled = false
-        alpha = 0.5
         texture = SKTexture(imageNamed: "empty_powerup_button")
+        state = .ButtonNodeStateDisabled
     }
 }

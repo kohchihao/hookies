@@ -55,4 +55,8 @@ extension Entity {
         }
         return nil
     }
+
+    func removeComponents<ComponentType: Component>(_: ComponentType.Type) {
+        components.removeAll(where: { $0 is ComponentType })
+    }
 }

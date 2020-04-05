@@ -13,6 +13,8 @@ import SpriteKit
 
 protocol DeadlockSystemProtocol {
     func checkIfStuck() -> Bool
+    func resolveDeadlock()
+    func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector)
 }
 
 class DeadlockSystem: System, DeadlockSystemProtocol {
@@ -37,6 +39,21 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
         let isInfiniteBouncing = isInfiniteBouncingDeadlock(physicsBody)
 
        return isVelocityNearlyZero || isInfiniteBouncing
+    }
+
+    func resolveDeadlock() {
+        guard let velocity = sprite.node.physicsBody?.velocity else {
+            return
+        }
+
+        return resolveDeadlock(for: sprite, at: sprite.node.position, with: velocity)
+    }
+
+    func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
+        sprite.node.position = position
+        sprite.node.physicsBody?.velocity = velocity
+
+        sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
     }
 
     /// Checks for velocity is nearly 0.
@@ -71,28 +88,10 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
     }
 }
 
-extension DeadlockSystem {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
-        guard let genericPlayerEventData = createPlayerEventData(from: playerId, and: player) else {
-            return
-        }
+// MARK: - Broadcast Update
 
-        API.shared.gameplay.boardcastGenericPlayerEvent(playerEvent: genericPlayerEventData)
-    }
-
-    private func createPlayerEventData(from playerId: String, and player: PlayerEntity) -> GenericPlayerEventData? {
-        guard let sprite = player.getSpriteComponent() else {
-            return nil
-        }
-
-        let position = Vector(point: sprite.node.position)
-        let velocity = Vector(vector: sprite.node.physicsBody?.velocity)
-
-        return GenericPlayerEventData(
-            playerId: playerId,
-            position: position,
-            velocity: velocity,
-            type: .jumpAction
-        )
+extension DeadlockSystem: GenericPlayerEventBroadcast {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
+        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .jumpAction)
     }
 }

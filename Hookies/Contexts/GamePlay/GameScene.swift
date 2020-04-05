@@ -74,27 +74,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
      // MARK: - Collision Detection
 
     func didBegin(_ contact: SKPhysicsContact) {
-        if contact.bodyA.node == finishingLine || contact.bodyB.node == finishingLine {
-            // TODO: Game Engine
+        guard has(contact: contact, with: currentPlayer) else {
+                return
         }
 
-        for powerup in powerups where contact.bodyA.node == powerup
-            || contact.bodyB.node == powerup {
-                handleContactWithPowerup(powerup)
+        if has(contact: contact, with: finishingLine) {
+            gameEngine?.stopCurrentPlayer()
         }
 
-        for trap in traps where contact.bodyA.node == trap
-            || contact.bodyB.node == trap {
-                handleContactWithTrap(trap)
+        for powerup in powerups where has(contact: contact, with: powerup) {
+            handleContactWithPowerup(powerup)
         }
+
+        for trap in traps where has(contact: contact, with: trap) {
+            handleContactWithTrap(trap)
+        }
+    }
+
+    private func has(contact: SKPhysicsContact, with node: SKSpriteNode?) -> Bool {
+        return contact.bodyA.node == node ||
+            contact.bodyB.node == node
     }
 
     private func handleContactWithTrap(_ trap: SKSpriteNode) {
-        print("contact with trap")
+        guard let playerId = currentPlayerId else {
+            return
+        }
+        gameEngine?.playerContactWith(trap: trap,
+                                      playerId: playerId)
     }
 
     private func handleContactWithPowerup(_ powerup: SKSpriteNode) {
-        guard let powerupType = gameEngine?.playerContactWith(powerup: powerup, playerId: currentPlayerId) else {
+        guard let powerupType = gameEngine?.currentPlayerContactWith(powerup: powerup) else {
             return
         }
         powerups.removeAll(where: { $0 == powerup })
@@ -199,7 +210,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let boltsNode = getGameObject(of: GameObjectType.bolt)
         let powerupNodes = getGameObject(of: .powerup)
 
-        // TODO: Platform to GameEngine
         let platformsNode = getGameObject(of: GameObjectType.platform)
 
         gameEngine = GameEngine(
@@ -207,7 +217,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             cannon: cannonNode,
             finishingLine: finishingLineNode,
             bolts: boltsNode,
-            powerups: powerupNodes
+            powerups: powerupNodes,
+            platforms: platformsNode
         )
 
         gameEngine?.delegate = self
@@ -335,17 +346,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleGrapplingHookBtnTouchBegan() {
-        gameEngine?.currentPlayerHookAction()
+        gameEngine?.applyHookActionToCurrentPlayer()
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
-        gameEngine?.currentPlayerUnhookAction()
+        gameEngine?.applyUnhookActionToCurrentPlayer()
     }
 
     // MARK: - Current player activating power up
 
     private func handleCurrentPlayerActivatePowerup() {
         powerupButton?.touchBeganHandler = handlePowerupBtnTouch
+        powerupButton?.touchEndHandler = handlePowerupBtnTouchEnd
+    }
+
+    private func handlePowerupBtnTouchEnd() {
+        powerupButton?.clearPowerup()
     }
 
     private func handlePowerupBtnTouch() {
@@ -353,7 +369,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         gameEngine?.currentPlayerPowerupAction(with: powerupType)
-        powerupButton?.clearPowerup()
     }
 
     // MARK: - Resolve deadlock
@@ -414,5 +429,13 @@ extension GameScene: GameEngineDelegate {
     func addTrap(with sprite: SKSpriteNode) {
         addChild(sprite)
         traps.append(sprite)
+    }
+
+    func playerHasFinishRace() {
+        disableGameButtons()
+    }
+
+    func otherPlayerIsConnected(otherPlayer: SKSpriteNode) {
+        addChild(otherPlayer)
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-enum PowerupType: String, CaseIterable {
+enum PowerupType: String, CaseIterable, StringRepresentable {
     case playerHook = "player_hook"
     case stealPowerup = "steal_powerup"
     case shield
@@ -27,5 +27,9 @@ enum PowerupType: String, CaseIterable {
                                 color: .clear,
                                 size: size)
         return node
+    }
+
+    var stringValue: String {
+        return rawValue
     }
 }

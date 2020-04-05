@@ -10,6 +10,7 @@ import SpriteKit
 
 protocol CannonSystemProtocol {
     func launch(player: SpriteComponent, with velocity: CGVector)
+    func launch(otherPlayer: SpriteComponent, with velocity: CGVector)
 }
 
 class CannonSystem: System, CannonSystemProtocol {
@@ -23,32 +24,17 @@ class CannonSystem: System, CannonSystemProtocol {
         player.node.physicsBody?.isDynamic = true
         player.node.physicsBody?.applyImpulse(velocity)
     }
+
+    func launch(otherPlayer: SpriteComponent, with velocity: CGVector) {
+        otherPlayer.node.physicsBody?.isDynamic = true
+        otherPlayer.node.physicsBody?.velocity = velocity
+    }
 }
 
 // MARK: - Broadcast Update
 
-extension CannonSystem {
-    func broadcastUpdate(gameId: String, playerId: String, player: PlayerEntity) {
-        guard let genericPlayerEventData = createPlayerEventData(from: playerId, and: player) else {
-            return
-        }
-
-        API.shared.gameplay.boardcastGenericPlayerEvent(playerEvent: genericPlayerEventData)
-    }
-
-    private func createPlayerEventData(from playerId: String, and player: PlayerEntity) -> GenericPlayerEventData? {
-        guard let sprite = player.getSpriteComponent() else {
-            return nil
-        }
-
-        let position = Vector(point: sprite.node.position)
-        let velocity = Vector(vector: sprite.node.physicsBody?.velocity)
-
-        return GenericPlayerEventData(
-            playerId: playerId,
-            position: position,
-            velocity: velocity,
-            type: .shotFromCannon
-        )
+extension CannonSystem: GenericPlayerEventBroadcast {
+    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
+        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .shotFromCannon)
     }
 }

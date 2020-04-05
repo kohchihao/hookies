@@ -21,12 +21,12 @@ protocol PowerupSystemProtocol {
 }
 
 protocol PowerupSystemDelegate: class {
-    func hasAddedTrap(sprite: SpriteComponent)
+    func hasAddedTrap(sprite: SpriteComponent,
+                      netTrap: NetTrapPowerupEntity)
 }
 
 class PowerupSystem: System, PowerupSystemProtocol {
-    // Key representing the sprite of player and value
-    // represent powerup they have
+    // Key: sprite of player, Value: powerup of player
     private var powerups = [SpriteComponent: PowerupComponent]()
     weak var delegate: PowerupSystemDelegate?
 
@@ -59,9 +59,9 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     func activate(powerupType: PowerupType,
                   for sprite: SpriteComponent
-    ) -> PowerupComponent? {
+    ) {
         guard let powerup = powerups[sprite] else {
-            return nil
+            return
         }
         powerup.activatedTime = Date()
         powerup.isActivated = true
@@ -69,7 +69,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         for effect in effects {
             apply(effect: effect, by: sprite)
         }
-        return powerup
     }
 
     func deactivate(powerup: PowerupComponent, for player: PlayerEntity) {
@@ -98,8 +97,12 @@ class PowerupSystem: System, PowerupSystemProtocol {
         add(player: player2, with: powerupToSteal)
     }
 
-    private func apply(effect: PowerupEffectComponent,
-                       by sprite: SpriteComponent) {
+    func apply(effect: PowerupEffectComponent,
+               by sprite: SpriteComponent) {
+        if !(effect is ShieldEffectComponent) && isProtected(spriteComponent: sprite) {
+            return
+        }
+
         switch effect {
         case let shield as ShieldEffectComponent:
             applyShieldEffect(shield, by: sprite)
@@ -112,25 +115,72 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
     }
 
-    private func applyPlacementEffect(_ effect: PlacementEffectComponent,
-                                      by sprite: SpriteComponent) {
-        guard let effectSprite = effect.parent.get(SpriteComponent.self) else {
+    func broadcastUpdate(gameId: String,
+                         playerId: String,
+                         player: PlayerEntity,
+                         powerupType: PowerupType,
+                         eventType: PowerupEventType,
+                         eventPos: Vector? = nil
+    ) {
+        guard let sprite = player.get(SpriteComponent.self) else {
             return
         }
-        effectSprite.node.position = sprite.node.position
-        delegate?.hasAddedTrap(sprite: effectSprite)
+        let node = sprite.node
+        let eventData = PowerupEventData(playerId: playerId,
+                                         node: node,
+                                         eventType: eventType,
+                                         powerupType: powerupType,
+                                         eventPos: eventPos)
+        API.shared.gameplay.broadcastPowerupEvent(powerupEvent: eventData)
+    }
+
+    private func applyPlacementEffect(_ effect: PlacementEffectComponent,
+                                      by sprite: SpriteComponent) {
+        guard let effectSprite = effect.parent.get(SpriteComponent.self),
+            let powerupCom = effect.parent.get(PowerupComponent.self) else {
+            return
+        }
+        switch powerupCom.type {
+        case .netTrap:
+            guard let netTrapEntity = effect.parent as? NetTrapPowerupEntity else {
+                print("Error: Entity is not net trap.")
+                return
+            }
+
+            let movementComponent = MovementEffectComponent(parent: effect.parent)
+            movementComponent.duration = 5.0
+            movementComponent.from = sprite.node.position
+            movementComponent.to = sprite.node.position
+            movementComponent.stopMovement = true
+            effect.parent.addComponent(movementComponent)
+            effectSprite.node.position = sprite.node.position
+            delegate?.hasAddedTrap(sprite: effectSprite,
+                                   netTrap: netTrapEntity)
+        default:
+            return
+        }
+        effect.parent.removeComponents(PlacementEffectComponent.self)
     }
 
     private func applyMovementEffect(_ effect: MovementEffectComponent,
                                      by sprite: SpriteComponent) {
         guard let initialPoint = effect.from,
             let endPoint = effect.to,
-            let duration = effect.duration else {
+            let duration = effect.duration,
+            let effectSprite = effect.parent.get(SpriteComponent.self) else {
                 return
+        }
+
+        if effect.stopMovement {
+            sprite.node.physicsBody?.affectedByGravity = false
         }
         sprite.node.position = initialPoint
         let action = SKAction.move(to: endPoint, duration: duration)
-        sprite.node.run(action)
+        sprite.node.run(action, completion: {
+            sprite.node.physicsBody?.affectedByGravity = true
+            effectSprite.node.removeFromParent()
+            effect.parent.removeComponents(MovementEffectComponent.self)
+        })
     }
 
     private func applyShieldEffect(_ effect: ShieldEffectComponent,
@@ -143,7 +193,16 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                       size: shieldSize)
         sprite.node.addChild(shieldNode)
         DispatchQueue.main.asyncAfter(deadline: .now() + effect.duration) {
+            effect.parent.removeComponents(ShieldEffectComponent.self)
             shieldNode.removeFromParent()
         }
+    }
+
+    private func isProtected(spriteComponent: SpriteComponent) -> Bool {
+        guard let powerup = powerups[spriteComponent] else {
+            return false
+        }
+        let hasShieldEffect = powerup.parent.get(ShieldEffectComponent.self) != nil
+        return powerup.isActivated && hasShieldEffect
     }
 }

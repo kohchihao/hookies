@@ -12,6 +12,9 @@ struct Constants {
     static let prodSocketURL = URL(string: "http://128.199.164.69:3000")!
     static let devSocketURL = URL(string: "http://128.199.164.69:3000")!
 
+    static let requestIdLength = 8
+    static let lobbyIdLength = 6
+
     static let maxPlayerCount = 4
 
     static let powerupRespawnDelay = 2.0

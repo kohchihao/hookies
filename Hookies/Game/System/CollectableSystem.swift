@@ -31,15 +31,17 @@ class CollectableSystem: System, CollectableSystemProtocol {
     }
 
     func collect(powerup: PowerupEntity, playerId: String) -> PowerupComponent? {
-        print(powerup.components)
+        print("in collectable system")
         guard let powerupSprite = getSprite(for: powerup),
             let powerupComponent = get(PowerupComponent.self, for: powerup),
             let powerupIndex = powerups.index(forKey: powerupSprite) else {
+                print("unable to find power component index")
                 return nil
         }
+        print("removing powerup successfully")
+        powerup.removeComponents(CollectableComponent.self)
+        powerup.removeComponents(SpriteComponent.self)
 
-        // Remove Sprite components because they are no longer needed as a sprite
-        powerup.components.removeAll(where: { $0 is SpriteComponent })
         PowerupEntity.addActivatedSpriteIfExist(powerup: powerup)
         powerups.remove(at: powerupIndex)
         let fade = SKAction.fadeOut(withDuration: 0.5)

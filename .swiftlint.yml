@@ -80,7 +80,3 @@ disabled_rules:
 line_length:
   warning: 120
   error: 150
-
-type_body_length:
-    warning: 200
-    error: 500

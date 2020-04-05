@@ -5,7 +5,7 @@
 //  Created by Marcus Koh on 24/3/20.
 //  Copyright © 2020 Hookies. All rights reserved.
 //
-
+// swiftlint:disable type_body_length
 import SpriteKit
 
 class GameEngine {
@@ -25,9 +25,9 @@ class GameEngine {
     private var finishingLineSystem: FinishingLineSystem!
     private var hookSystem: HookSystem?
     private var closestBoltSystem: ClosestBoltSystem?
-    private var deadLockSystem: DeadlockSystem?
     private var powerupSystem = PowerupSystem()
-    private var powerupEffectSystem = PowerupEffectSystem()
+    private var deadlockSystem: DeadlockSystem?
+    private var healthSystem: HealthSystem?
 
     // MARK: - Entity
 
@@ -35,22 +35,28 @@ class GameEngine {
     private var otherPlayers = [String: PlayerEntity]()
     private var platforms = [PlatformEntity]()
     private var bolts = [BoltEntity]()
-    private var powerups = [SKSpriteNode: PowerupEntity]()
+    private var powerups = [SKSpriteNode: PowerupEntity]() // Key: Sprite of powerup, Value: Powerup Entity
     private var cannon = CannonEntity()
     private var finishingLine = FinishingLineEntity()
+    private var netTraps = [SKSpriteNode: NetTrapPowerupEntity]()
 
     init(
         gameId: String,
         cannon: SKSpriteNode,
         finishingLine: SKSpriteNode,
         bolts: [SKSpriteNode],
-        powerups: [SKSpriteNode]
+        powerups: [SKSpriteNode],
+        platforms: [SKSpriteNode]
     ) {
         self.gameId = gameId
 
         let boltsSprite = initialiseBolts(bolts)
         initialisePowerups(powerups)
         powerupSystem.delegate = self
+
+        let platformsSprite = initialisePlatforms(platforms)
+
+        self.healthSystem = HealthSystem(platforms: platformsSprite)
 
         self.hookSystem = HookSystem(bolts: boltsSprite)
         self.closestBoltSystem = ClosestBoltSystem(bolts: boltsSprite)
@@ -64,6 +70,7 @@ class GameEngine {
         setupTotalPlayers()
         connectToGame()
         setupMultiplayer()
+        gameObjectMovementSystem.update()
     }
 
     // MARK: - Initialise Players
@@ -80,9 +87,8 @@ class GameEngine {
 
         currentPlayerId = id
         currentPlayer = player
-        powerupEffectSystem.addPlayerSprite(playerId: id, sprite)
 
-        deadLockSystem = DeadlockSystem(sprite: sprite)
+        deadlockSystem = DeadlockSystem(sprite: sprite)
         finishingLineSystem.add(player: sprite)
 
         return sprite.node
@@ -101,7 +107,7 @@ class GameEngine {
         }
 
         cannonSystem.launch(player: sprite, with: velocity)
-        cannonSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+        cannonSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
     }
 
     // MARK: - Start Game
@@ -112,35 +118,85 @@ class GameEngine {
 
     // MARK: - Current Player Hook Action
 
-    func currentPlayerHookAction() {
+    func applyHookActionToCurrentPlayer() {
         guard let currentPlayerId = currentPlayerId,
             let currentPlayer = currentPlayer else {
             return
         }
 
-        playerHookAction(player: currentPlayer)
-        hookSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .activate)
+        guard let hook = currentPlayer.getHookComponent() else {
+            return
+        }
+
+        guard let hookSystem = hookSystem else {
+            return
+        }
+
+        guard let sprite = currentPlayer.getSpriteComponent() else {
+            return
+        }
+
+        guard let initialVelocity = sprite.node.physicsBody?.velocity else {
+            return
+        }
+
+        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite, type: .activate)
+
+        let hasHook = hookSystem.hookTo(hook: hook)
+
+        if !hasHook {
+            return
+        }
+
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+
+        delegate?.playerDidHook(to: hookDelegateModel)
+        hookSystem.applyInitialVelocity(sprite: sprite, velocity: initialVelocity)
     }
 
-    func currentPlayerUnhookAction() {
+    func applyUnhookActionToCurrentPlayer() {
         guard let currentPlayerId = currentPlayerId,
             let currentPlayer = currentPlayer else {
             return
         }
 
-        playerUnhookAction(player: currentPlayer)
-        hookSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .deactivate)
+        guard let hook = currentPlayer.getHookComponent() else {
+            return
+        }
+
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+
+        guard let hookSystem = hookSystem else {
+            return
+        }
+
+        guard let sprite = currentPlayer.getSpriteComponent() else {
+            return
+        }
+
+        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite, type: .deactivate)
+
+        let hasUnhook = hookSystem.unhookFrom(entity: currentPlayer)
+
+        if !hasUnhook {
+            return
+        }
+
+        delegate?.playerDidUnhook(from: hookDelegateModel)
     }
 
     // MARK: - Current Player Powerup Action
 
     func currentPlayerPowerupAction(with type: PowerupType) {
-        guard let currentPlayer = currentPlayer else {
+        guard let playerId = currentPlayerId,
+            let currentPlayer = currentPlayer else {
             return
         }
-
-        playerPowerupAction(with: type, for: currentPlayer)
-//        hookSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer, type: .activate)
+        playerPowerupAction(with: type, for: currentPlayer, playerId: playerId)
     }
 
     // MARK: - Current Player Jump Action
@@ -155,18 +211,42 @@ class GameEngine {
             return
         }
 
-        sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 500))
-        deadLockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: currentPlayer)
+        deadlockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
+        deadlockSystem?.resolveDeadlock()
+    }
+
+    // MARK: - Current Player Finsh Race
+
+    func stopCurrentPlayer() {
+        guard let currentPlayerId = currentPlayerId,
+            let currentPlayer = currentPlayer else {
+            return
+        }
+
+        guard let sprite = currentPlayer.getSpriteComponent() else {
+            return
+        }
+
+        finishingLineSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
+
+        let hasStop = finishingLineSystem.stop(player: sprite)
+
+        if !hasStop {
+            return
+        }
+
+        delegate?.playerHasFinishRace()
     }
 
     // MARK: - Contact with Collectables
 
-    func playerContactWith(powerup: SKSpriteNode, playerId: String?) -> PowerupType? {
-        guard let playerId = playerId,
+    func currentPlayerContactWith(powerup: SKSpriteNode) -> PowerupType? {
+        guard let playerId = currentPlayerId,
             let currentPlayer = currentPlayer,
+            let playerSprite = currentPlayer.get(SpriteComponent.self),
             let powerupEntity = powerups[powerup],
-            let sprite = powerupEntity.getSpriteComponent(),
-            let powerupIndex = powerups.index(forKey: sprite.node) else {
+            let powerupSprite = powerupEntity.getSpriteComponent(),
+            let powerupIndex = powerups.index(forKey: powerupSprite.node) else {
                 return nil
         }
 
@@ -174,18 +254,68 @@ class GameEngine {
             return nil
         }
 
-        spriteSystem.removePhysicsBody(to: sprite)
+        spriteSystem.removePhysicsBody(to: powerupSprite)
         powerups.remove(at: powerupIndex)
         powerupSystem.add(player: currentPlayer, with: powerupComponent)
-//        respawnPowerup(powerup)
+
+        let playerNode = playerSprite.node
+        let powerupPosition = Vector(point: powerupSprite.node.position)
+        let collectionData = PowerupCollectionData(playerId: playerId,
+                                                   node: playerNode,
+                                                   powerupPosition: powerupPosition,
+                                                   powerupType: powerupComponent.type)
+        API.shared.gameplay.broadcastPowerupCollection(powerupCollection: collectionData)
         return powerupComponent.type
+    }
+
+    // MARK: - Contact with Trap Powerup
+
+    func findTrapAt(point: CGPoint) -> SKSpriteNode? {
+        for trap in netTraps.keys where trap.frame.contains(point) {
+            return trap
+        }
+        return nil
+    }
+
+    func playerContactWith(trap: SKSpriteNode, playerId: String) {
+        guard let netTrap = netTraps[trap],
+            let contactedPlayer = playerId == currentPlayerId ?
+                currentPlayer : otherPlayers[playerId],
+            let playerSprite = contactedPlayer.get(SpriteComponent.self),
+            let powerupComponent = netTrap.get(PowerupComponent.self) else {
+                return
+        }
+        if let ownerId = powerupComponent.ownerId {
+            if playerId == ownerId {
+                return
+            }
+        }
+
+        let effects = netTrap.getMultiple(PowerupEffectComponent.self)
+        for effect in effects {
+            powerupSystem.apply(effect: effect, by: playerSprite)
+        }
+
+        if currentPlayer != nil && contactedPlayer === currentPlayer! {
+            let eventPosition = Vector(point: trap.position)
+            powerupSystem.broadcastUpdate(gameId: gameId,
+                                          playerId: playerId,
+                                          player: contactedPlayer,
+                                          powerupType: powerupComponent.type,
+                                          eventType: .netTrapped,
+                                          eventPos: eventPosition)
+        }
     }
 
     // MARK: - Update
 
     func update(time: TimeInterval) {
         startCountdown()
+        checkCurrentPlayerHealth()
+        updateClosestBolt()
         checkDeadlock()
+        finishingLineSystem.bringPlayersToStop()
+        checkGameEnd()
     }
 
     // MARK: - Bolts
@@ -199,7 +329,19 @@ class GameEngine {
             let boltSprite = SpriteComponent(parent: boltEntity)
             _ = spriteSystem.set(sprite: boltSprite, to: bolt)
 
-            // TODO: Check for moving and rotating bolt
+            let translate = NonPhysicsTranslateComponent(parent: boltEntity)
+
+            if bolt.name == "bolt_movable" {
+                bolt.physicsBody?.pinned = false
+
+                let ending = CGPoint(x: bolt.position.x + 300, y: bolt.position.y)
+                gameObjectMovementSystem.setTranslationLine(
+                    to: boltSprite,
+                    with: translate,
+                    moveInfinitely: true,
+                    speed: 50,
+                    endingAt: ending)
+            }
 
             boltEntity.addComponent(boltSprite)
 
@@ -213,19 +355,23 @@ class GameEngine {
     // MARK: - Power ups
 
     private func initialisePowerups(_ powerups: [SKSpriteNode]) {
-        powerups.forEach({ addNewPowerup(for: $0) })
+        powerups.forEach({ addNewRandomPowerup(for: $0) })
     }
 
-    private func addNewPowerup(for spriteNode: SKSpriteNode) {
+    private func addNewRandomPowerup(for spriteNode: SKSpriteNode) {
+        let availablePowerups = [PowerupType.netTrap, PowerupType.shield]
 //        let randType = PowerupType.allCases.randomElement() ?? .playerHook
-        let randType = PowerupType.netTrap
+        let randType = availablePowerups.randomElement() ?? PowerupType.shield
+        addNewPowerup(with: randType, for: spriteNode)
+    }
 
-        let powerupEntity = PowerupEntity.createSpecializedEntity(for: randType)
+    private func addNewPowerup(with type: PowerupType, for spriteNode: SKSpriteNode) {
+        let powerupEntity = PowerupEntity.createSpecializedEntity(for: type)
         let powerupSprite = SpriteComponent(parent: powerupEntity)
         let collectableComponent = CollectableComponent(parent: powerupEntity,
                                                         position: spriteNode.position)
         let powerupComponent = PowerupComponent(parent: powerupEntity,
-                                                type: randType)
+                                                type: type)
 
         _ = spriteSystem.set(sprite: powerupSprite, to: spriteNode)
         _ = spriteSystem.setPhysicsBody(to: powerupSprite, of: .powerup,
@@ -244,9 +390,50 @@ class GameEngine {
                                           color: .clear,
                                           size: powerup.size)
             newPowerup.position = powerup.position
-            self.addNewPowerup(for: newPowerup)
+            self.addNewRandomPowerup(for: newPowerup)
             self.delegate?.addNotActivatedPowerup(newPowerup)
         }
+    }
+
+    // MARK: - Platform
+
+    private func initialisePlatforms(_ platforms: [SKSpriteNode]) -> [SpriteComponent] {
+        var platformsSprite = [SpriteComponent]()
+
+        for platform in platforms {
+            let platformEntity = PlatformEntity()
+
+            let platformSprite = SpriteComponent(parent: platformEntity)
+            _ = spriteSystem.set(sprite: platformSprite, to: platform)
+
+            let translate = NonPhysicsTranslateComponent(parent: platformEntity)
+            let rotate = RotateComponent(parent: platformEntity)
+            if platform.name == "platform_movable" {
+                platform.physicsBody?.pinned = false
+
+                let ending = CGPoint(x: platform.position.x + 200, y: platform.position.y)
+                gameObjectMovementSystem.setTranslationLine(
+                    to: platformSprite,
+                    with: translate,
+                    moveInfinitely: true,
+                    speed: 50,
+                    endingAt: ending)
+                gameObjectMovementSystem.setRotation(
+                    to: platformSprite,
+                    with: rotate,
+                    withDuration: 10,
+                    withAngle: 3.142)
+            }
+
+            platformEntity.addComponent(platformSprite)
+            platformEntity.addComponent(translate)
+            platformEntity.addComponent(rotate)
+
+            platformsSprite.append(platformSprite)
+            self.platforms.append(platformEntity)
+        }
+
+        return platformsSprite
     }
 
     // MARK: - Cannon
@@ -272,6 +459,22 @@ class GameEngine {
         return sprite
     }
 
+    // MARK: - Health
+
+    private func checkCurrentPlayerHealth() {
+        guard let sprite = currentPlayer?.getSpriteComponent(), let healthSystem = healthSystem else {
+            return
+        }
+
+        if !healthSystem.isPlayerAlive(for: sprite) {
+            guard let currentPlayerId = currentPlayerId else {
+                return
+            }
+            healthSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
+            _ = healthSystem.respawnPlayer(for: sprite)
+        }
+    }
+
     // MARK: - Player helper methods
 
     func addOtherPlayers(id: String, position: CGPoint, image: String) -> SKSpriteNode {
@@ -284,7 +487,6 @@ class GameEngine {
         otherPlayer.addComponent(sprite)
 
         addPlayerComponents(to: otherPlayer)
-        powerupEffectSystem.addPlayerSprite(playerId: id, sprite)
 
         otherPlayers[id] = otherPlayer
 
@@ -307,58 +509,6 @@ class GameEngine {
         return SpriteType.otherPlayers[typeIndex]
     }
 
-    private func playerHookAction(player: PlayerEntity) {
-        guard let hook = player.getHookComponent() else {
-            return
-        }
-
-        do {
-            try hookSystem?.hookTo(hook: hook)
-
-            guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
-                return
-            }
-
-            delegate?.playerDidHook(to: hookDelegateModel)
-        } catch HookSystemError.hookComponentDoesNotExist {
-            print(HookSystemError.hookComponentDoesNotExist)
-            return
-        } catch HookSystemError.spriteComponentDoesNotExist {
-            print(HookSystemError.spriteComponentDoesNotExist)
-            return
-        } catch HookSystemError.closestHookToEntityDoesNotExist {
-            print(HookSystemError.closestHookToEntityDoesNotExist)
-            return
-        } catch HookSystemError.physicsBodyDoesNotExist {
-            print(HookSystemError.physicsBodyDoesNotExist)
-            return
-        } catch {
-            print("Unexpected error: \(error)")
-            return
-        }
-    }
-
-    private func playerUnhookAction(player: PlayerEntity) {
-        guard let hook = player.getHookComponent() else {
-            return
-        }
-
-        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
-            return
-        }
-
-        do {
-            try hookSystem?.unhookFrom(entity: player)
-            delegate?.playerDidUnhook(from: hookDelegateModel)
-        } catch HookSystemError.hookComponentDoesNotExist {
-            print(HookSystemError.hookComponentDoesNotExist)
-            return
-        } catch {
-            print("Unexpected error: \(error)")
-            return
-        }
-    }
-
     private func createHookDelegateModel(from hook: HookComponent) -> HookDelegateModel? {
         guard let anchor = hook.anchor,
             let line = hook.line,
@@ -377,27 +527,40 @@ class GameEngine {
     }
 
     // MARK: - Powerup Activation
+
     private func playerPowerupAction(with type: PowerupType,
-                                     for player: PlayerEntity) {
+                                     for player: PlayerEntity,
+                                     playerId: String
+    ) {
         guard let playerSprite = player.getSpriteComponent() else {
             return
         }
-        _ = powerupSystem.activate(powerupType: type, for: playerSprite)
+        powerupSystem.activate(powerupType: type, for: playerSprite)
+        powerupSystem.broadcastUpdate(gameId: gameId, playerId: playerId,
+                                      player: player,
+                                      powerupType: type,
+                                      eventType: .activate)
     }
 
     // MARK: - Deadlock Detection
 
     private func checkDeadlock() {
-        guard let deadlockSystem = deadLockSystem else {
+        guard let deadlockSystem = deadlockSystem else {
             return
         }
 
-        if gameState == .start && deadlockSystem.checkIfStuck() {
+        guard let currentPlayerSprite = currentPlayer?.getSpriteComponent() else {
+            return
+        }
+
+        let hasPlayerFinishRace = finishingLineSystem.hasPlayerFinish(player: currentPlayerSprite)
+
+        if gameState == .start && !hasPlayerFinishRace && deadlockSystem.checkIfStuck() {
             delegate?.playerIsStuck()
         }
     }
 
-    // MARK: - Game Setup
+    // MARK: - General Game
 
     private func setupTotalPlayers() {
         API.shared.lobby.get(lobbyId: self.gameId, completion: { lobby, error in
@@ -419,6 +582,32 @@ class GameEngine {
                 self.setupPlayer(of: otherPlayerId)
             }
         })
+    }
+
+    private func updateClosestBolt() {
+        guard let currentPlayerPosition = currentPlayer?.getSpriteComponent()?.node.position else {
+            return
+        }
+
+        _ = closestBoltSystem?.findClosestBolt(to: currentPlayerPosition)
+    }
+
+    private func checkGameEnd() {
+        guard let finishingLineSystem = finishingLineSystem else {
+            return
+        }
+
+        guard gameState != .finish else {
+            return
+        }
+
+        if finishingLineSystem.hasAllPlayersReachedFinishingLine() {
+            API.shared.gameplay.closeGameSession()
+            gameState = .finish
+
+            // TODO: Transition to Post Game Lobby
+            print("Transition to post game lobby")
+        }
     }
 
     // MARK: - General Game Methods
@@ -443,9 +632,17 @@ class GameEngine {
     // MARK: - Multiplayer
 
     private func setupMultiplayer() {
-//        subscribeToOtherPlayersState()
-//        subscribeToHookAction()
-//        subscribeToPowerupAction()
+        subscribeToOtherPlayersState()
+        subscribeToGenericPlayerEvent()
+        subscribeToHookAction()
+        subscribeToPowerupCollection()
+        subscribeToPowerupEvent()
+    }
+
+    private func subscribeToPowerupCollection() {
+        API.shared.gameplay.subscribeToPowerupCollection(listener: { collectionData in
+            self.otherPlayerCollectedPowerup(powerupCollectionData: collectionData)
+        })
     }
 
     private func subscribeToOtherPlayersState() {
@@ -456,6 +653,98 @@ class GameEngine {
 
             // TODO: Setup Disconnected
         })
+    }
+
+    private func subscribeToGenericPlayerEvent() {
+        API.shared.gameplay.subscribeToGenericPlayerEvent(listener: { genericPlayerEventData in
+            switch genericPlayerEventData.type {
+            case .shotFromCannon:
+                self.launch(otherPlayer: genericPlayerEventData)
+            case .jumpAction:
+                self.applyJumpAction(to: genericPlayerEventData)
+            case .playerDied:
+                self.respawn(otherPlayer: genericPlayerEventData)
+            case .reachedFinishedLine:
+                self.stop(otherPlayer: genericPlayerEventData)
+            }
+        })
+    }
+
+    private func subscribeToHookAction() {
+        API.shared.gameplay.subscribeToHookAction(listener: { hookActionData in
+
+            switch hookActionData.actionType {
+            case .activate:
+                self.applyHookAction(on: hookActionData)
+            case .deactivate:
+                self.applyUnhookAction(on: hookActionData)
+            }
+        })
+    }
+
+    private func subscribeToPowerupEvent() {
+        API.shared.gameplay.subscribeToPowerupEvent(listener: { powerupEvent in
+            let playerId = powerupEvent.playerData.playerId
+            guard let player = self.otherPlayers[playerId],
+                let playerSprite = player.get(SpriteComponent.self) else {
+                    return
+            }
+
+            playerSprite.node.position = CGPoint(vector: powerupEvent.playerData.position)
+            switch powerupEvent.eventType {
+            case .activate:
+                print("activate powerup other", powerupEvent.type)
+                self.powerupSystem.activate(powerupType: powerupEvent.type,
+                                            for: playerSprite)
+            case .netTrapped:
+                let eventPos = CGPoint(vector: powerupEvent.eventPos)
+                guard let trap = self.findTrapAt(point: eventPos) else {
+                    return
+                }
+                self.playerContactWith(trap: trap, playerId: playerId)
+                return
+            case .deactivate:
+                return
+            }
+        })
+    }
+
+    private func otherPlayerCollectedPowerup(powerupCollectionData: PowerupCollectionData) {
+        let positionOfCollection = CGPoint(vector: powerupCollectionData.powerupPos)
+        let ownerId = powerupCollectionData.playerData.playerId
+
+        guard let powerupSprite = findPowerupSprite(at: positionOfCollection),
+            let powerupIndex = powerups.index(forKey: powerupSprite) else {
+                return
+        }
+
+        powerups.remove(at: powerupIndex)
+        addNewPowerup(with: powerupCollectionData.type, for: powerupSprite)
+
+        guard let powerupEntity = powerups[powerupSprite],
+            let powerupSpriteComponent = powerupEntity.get(SpriteComponent.self) else {
+                return
+        }
+
+        guard let player = otherPlayers[ownerId],
+            let powerupComponent = collectableSystem.collect(powerup: powerupEntity,
+                                                             playerId: ownerId),
+            let updatedPowerupIndex = powerups.index(forKey: powerupSprite) else {
+            return
+        }
+
+        spriteSystem.removePhysicsBody(to: powerupSpriteComponent)
+        powerups.remove(at: updatedPowerupIndex)
+        powerupSystem.add(player: player, with: powerupComponent)
+    }
+
+    private func findPowerupSprite(at point: CGPoint) -> SKSpriteNode? {
+        for powerupSprite in powerups.keys {
+            if powerupSprite.frame.contains(point) {
+                return powerupSprite
+            }
+        }
+        return nil
     }
 
     private func setupPlayer(of id: String) {
@@ -474,37 +763,142 @@ class GameEngine {
 
             let node = self.addOtherPlayers(id: id, position: initialPosition, image: costume.stringValue)
 
-            // Delegate to GameScene
+            self.delegate?.otherPlayerIsConnected(otherPlayer: node)
         })
     }
 
-    private func subscribeToHookAction() {
-        API.shared.gameplay.subscribeToHookAction(listener: { hookActionData in
-            guard let player = self.otherPlayers[hookActionData.playerData.playerId] else {
-                return
-            }
+    private func launch(otherPlayer: GenericPlayerEventData) {
+        guard let otherPlayerEntity = otherPlayers[otherPlayer.playerData.playerId] else {
+            return
+        }
 
-            switch hookActionData.actionType {
-            case .activate:
-                self.playerHookAction(player: player)
-            case .deactivate:
-                self.playerUnhookAction(player: player)
-            }
-        })
+        guard let sprite = otherPlayerEntity.getSpriteComponent() else {
+            return
+        }
+
+        guard let velocity = otherPlayer.playerData.velocity else {
+            return
+        }
+
+        cannonSystem.launch(otherPlayer: sprite, with: CGVector(vector: velocity))
     }
 
-    private func subscribeToPowerupAction() {
-        API.shared.gameplay.subscribeToPowerupAction(listener: { powerupAction in
-            // TODO: Add implementation
-        })
+    private func applyJumpAction(to otherPlayer: GenericPlayerEventData) {
+        guard let otherPlayerEntity = otherPlayers[otherPlayer.playerData.playerId] else {
+            return
+        }
+
+        guard let sprite = otherPlayerEntity.getSpriteComponent() else {
+            return
+        }
+
+        guard let velocity = otherPlayer.playerData.velocity else {
+            return
+        }
+
+        deadlockSystem?.resolveDeadlock(
+            for: sprite,
+            at: CGPoint(vector: otherPlayer.playerData.position),
+            with: CGVector(vector: velocity)
+        )
+    }
+
+    private func respawn(otherPlayer: GenericPlayerEventData) {
+        guard let sprite = otherPlayers[otherPlayer.playerData.playerId]?.getSpriteComponent() else {
+            return
+        }
+
+        _ = healthSystem?.respawnPlayer(for: sprite, at: CGPoint(vector: otherPlayer.playerData.position))
+    }
+
+    private func stop(otherPlayer: GenericPlayerEventData) {
+        guard let otherPlayerEntity = otherPlayers[otherPlayer.playerData.playerId] else {
+            return
+        }
+
+        let position = CGPoint(vector: otherPlayer.playerData.position)
+
+        guard let sprite = otherPlayerEntity.getSpriteComponent() else {
+            return
+        }
+
+        guard let velocity = otherPlayer.playerData.velocity else {
+            return
+        }
+
+        _ = finishingLineSystem.stop(player: sprite, at: position, with: CGVector(vector: velocity))
+    }
+
+    private func applyHookAction(on hook: HookActionData) {
+        guard let otherPlayer = otherPlayers[hook.playerData.playerId] else {
+            return
+        }
+
+        guard let hookComponent = otherPlayer.getHookComponent(),
+            let spriteComponent = otherPlayer.getSpriteComponent()
+            else {
+            return
+        }
+
+        guard let velocity = hook.playerData.velocity else {
+            return
+        }
+
+        guard let hookSystem = hookSystem else {
+            return
+        }
+
+        let hasHook = hookSystem.hookTo(
+            hook: hookComponent,
+            at: CGPoint(vector: hook.playerData.position),
+            with: CGVector(vector: velocity)
+        )
+
+        if !hasHook {
+            return
+        }
+
+        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
+            return
+        }
+
+        delegate?.playerDidHook(to: hookDelegateModel)
+        hookSystem.applyInitialVelocity(sprite: spriteComponent, velocity: CGVector(vector: velocity))
+    }
+
+    private func applyUnhookAction(on hook: HookActionData) {
+        guard let otherPlayer = otherPlayers[hook.playerData.playerId] else {
+            return
+        }
+
+        guard let hookComponent = otherPlayer.getHookComponent() else {
+            return
+        }
+
+        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
+            return
+        }
+
+        guard let hookSystem = hookSystem else {
+            return
+        }
+
+        let hasUnhook = hookSystem.unhookFrom(entity: otherPlayer)
+
+        if !hasUnhook {
+            return
+        }
+
+        delegate?.playerDidUnhook(from: hookDelegateModel)
     }
 }
 
 extension GameEngine: PowerupSystemDelegate {
-    func hasAddedTrap(sprite spriteComponent: SpriteComponent) {
+    func hasAddedTrap(sprite spriteComponent: SpriteComponent, netTrap: NetTrapPowerupEntity) {
         _ = spriteSystem.setPhysicsBody(to: spriteComponent,
                                         of: .netTrap,
                                         rectangleOf: spriteComponent.node.size)
+        netTraps[spriteComponent.node] = netTrap
         delegate?.addTrap(with: spriteComponent.node)
     }
 }
