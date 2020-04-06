@@ -144,6 +144,10 @@ class SocialViewController: UIViewController {
                 print("user does not exists")
                 return
             }
+            guard fromUserId != toUserId else {
+                print("cannot send friend request to yourself")
+                return
+            }
             RequestManager.sendRequest(fromUserId: fromUserId, toUserId: toUserId)
         })
     }
@@ -320,18 +324,22 @@ extension SocialViewController: FriendTableViewCellDelegate {
             return
         }
         guard let fromUserId = API.shared.user.currentUser?.uid else {
-           print("user is not logged in")
-           return
+            print("user is not logged in")
+            return
         }
         API.shared.user.get(withUsername: username, completion: { user, error in
-           guard error == nil else {
+            guard error == nil else {
                print(error.debugDescription)
                return
-           }
-           guard let toUserId = user?.uid else {
+            }
+            guard let toUserId = user?.uid else {
                print("user does not exists")
                return
-           }
+            }
+            guard fromUserId != toUserId else {
+                print("cannot send game invite to yourself")
+                return
+            }
             guard let lobbyId = self.viewModel.lobbyId else {
                 print("lobby id not available")
                 return
