@@ -212,7 +212,7 @@ class PreGameLobbyViewController: UIViewController {
     private func updatePlayerViews() {
         getPlayers(playersId: self.viewModel.lobby.playersId, completion: { players in
             var players = players
-            players.sort(by: { $0.username > $1.username })
+            players.sort(by: { $0.username < $1.username })
             guard players.count <= Constants.maxPlayerCount else {
                 print("max number of players exceeded")
                 return
