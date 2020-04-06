@@ -61,11 +61,14 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func setupPlayerView() {
+        guard Constants.maxPlayerCount > 0 else {
+            return
+        }
         self.playerViews = []
         let width = self.view.frame.width / CGFloat(Constants.maxPlayerCount)
         let height = width * 1.2
-        for i in 0...Constants.maxPlayerCount {
-            let x = width * CGFloat(i)
+        for i in 1...Constants.maxPlayerCount {
+            let x = width * CGFloat(i - 1)
             let y = self.view.frame.height - height * 1.2
             let frame = CGRect(x: x, y: y, width: width, height: height)
             let playerView = LobbyPlayerView(frame: frame)
@@ -201,7 +204,7 @@ class PreGameLobbyViewController: UIViewController {
         getPlayers(playersId: self.viewModel.lobby.playersId, completion: { players in
             var players = players
             players.sort(by: { $0.username < $1.username })
-            guard players.count <= Constants.maxPlayerCount else {
+            guard players.count <= Constants.maxPlayerCount && players.count <= self.playerViews.count else {
                 print("max number of players exceeded")
                 return
             }
