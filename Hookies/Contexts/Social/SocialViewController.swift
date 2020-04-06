@@ -372,6 +372,10 @@ extension SocialViewController: IncomingTableViewCellDelegate {
     }
 
     func acceptButtonPressed(inviteId: String) {
+        guard self.viewModel.lobbyId == nil else {
+            print("you cannot accept a game invite when you are in the pre-game lobby")
+            return
+        }
         InviteManager.processInvite(inviteId: inviteId, completion: { invite in
             guard let invite = invite else {
                 return
