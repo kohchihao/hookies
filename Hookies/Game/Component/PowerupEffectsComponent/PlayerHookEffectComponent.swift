@@ -9,23 +9,7 @@
 import Foundation
 import SpriteKit
 
-class PlayerHookEffectComponent: Component {
-    private(set) var parent: Entity
+class PlayerHookEffectComponent: PowerupEffectComponent {
     var hookTo: SpriteComponent?
     var line: SKShapeNode?
-
-    init(parent: Entity) {
-        self.parent = parent
-    }
-}
-
-// MARK: - Hashable
-extension PlayerHookEffectComponent: Hashable {
-    static func == (lhs: PlayerHookEffectComponent, rhs: PlayerHookEffectComponent) -> Bool {
-        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self).hashValue)
-    }
 }

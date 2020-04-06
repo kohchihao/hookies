@@ -68,6 +68,9 @@
                 <constraint firstItem="N9Z-fd-mc2" firstAttribute="height" secondItem="njF-e1-oar" secondAttribute="height" multiplier="0.5" id="xav-VP-kih"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="inviteButton" destination="N9Z-fd-mc2" id="Oxp-uS-ZxL"/>
+            </connections>
             <point key="canvasLocation" x="134.78260869565219" y="103.79464285714285"/>
         </tableViewCell>
     </objects>

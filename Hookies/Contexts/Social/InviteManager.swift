@@ -32,32 +32,38 @@ struct InviteManager {
         }
     }
 
+    static func checkRecipientIsNotInLobby(invite: Invite, completion: @escaping (Bool) -> Void) {
+        API.shared.lobby.get(lobbyId: invite.lobbyId, completion: { lobby, error in
+            guard error == nil else {
+                print(error.debugDescription)
+                return completion(false)
+            }
+            guard let lobby = lobby else {
+                print("lobby not found")
+                return completion(false)
+            }
+            guard !lobby.playersId.contains(invite.toUserId) else {
+                print("Recipient is already in the lobby")
+                return completion(false)
+            }
+            return completion(true)
+        })
+    }
+
     static func checkInviteIsNotRepeated(invite: Invite, sender: Social, recipient: Social, completion: @escaping (Bool) -> Void) {
         self.getInvites(inviteIds: sender.outgoingInvites, completion: { invites in
             guard !invites.map({ $0.toUserId }).contains(invite.toUserId) else {
-                print("invite already exists")
-                return completion(false)
-            }
-            guard !invites.map({ $0.lobbyId }).contains(invite.lobbyId) else {
-                print("invite from this lobby id already exists")
+                print("invite to this player already exists")
                 return completion(false)
             }
             self.getInvites(inviteIds: sender.incomingInvites, completion: { invites in
                 guard !invites.map({ $0.fromUserId }).contains(invite.toUserId) else {
-                    print("invite already exists")
-                    return completion(false)
-                }
-                guard !invites.map({ $0.lobbyId }).contains(invite.lobbyId) else {
-                    print("invite from this lobby id already exists")
+                    print("there is an existing invite from this player")
                     return completion(false)
                 }
                 self.getInvites(inviteIds: recipient.outgoingInvites, completion: { recipientInvites in
                     guard !recipientInvites.map({ $0.toUserId }).contains(invite.fromUserId) else {
-                        print("invite already exists")
-                        return completion(false)
-                    }
-                    guard !invites.map({ $0.lobbyId }).contains(invite.lobbyId) else {
-                        print("invite from this lobby id already exists")
+                        print("there is an existing invite from this player")
                         return completion(false)
                     }
                     self.getInvites(inviteIds: recipient.incomingInvites, completion: { recipientInvites in
@@ -82,26 +88,30 @@ struct InviteManager {
                 return
             }
             let invite = Invite(fromUserId: fromUserId, toUserId: toUserId, lobbyId: lobbyId)
-            RequestManager.checkUsersSocialExist(fromUserId: fromUserId, toUserId: toUserId, completion: { exists, senderSocial, recipientSocial  in
-                guard exists else {
+            self.checkRecipientIsNotInLobby(invite: invite, completion: { recipientIsNotInLobby in
+                guard recipientIsNotInLobby else {
                     return
                 }
-                guard var sender = senderSocial else {
-                    return
-                }
-                guard var recipient = recipientSocial else {
-                    return
-                }
-                self.checkInviteIsNotRepeated(invite: invite, sender: sender, recipient: recipient, completion: { notRepeated in
-                    guard notRepeated else {
+                RequestManager.checkUsersSocialExist(fromUserId: fromUserId, toUserId: toUserId, completion: { exists, sender, recipient  in
+                    guard exists else {
                         return
                     }
-                    print(invite)
-                    API.shared.invite.save(invite: invite)
-                    sender.addOutgoingInvite(inviteId: invite.inviteId)
-                    API.shared.social.save(social: sender)
-                    recipient.addIncomingInvite(inviteId: invite.inviteId)
-                    API.shared.social.save(social: recipient)
+                    guard var sender = sender else {
+                        return
+                    }
+                    guard var recipient = recipient else {
+                        return
+                    }
+                    self.checkInviteIsNotRepeated(invite: invite, sender: sender, recipient: recipient, completion: { notRepeated in
+                        guard notRepeated else {
+                            return
+                        }
+                        API.shared.invite.save(invite: invite)
+                        sender.addOutgoingInvite(inviteId: invite.inviteId)
+                        API.shared.social.save(social: sender)
+                        recipient.addIncomingInvite(inviteId: invite.inviteId)
+                        API.shared.social.save(social: recipient)
+                    })
                 })
             })
         })

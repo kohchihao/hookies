@@ -8,14 +8,5 @@
 
 import Foundation
 
-class PlayerHookPowerupEntity: Entity {
-    var components: [Component]
-
-    init(components: [Component]) {
-        self.components = components
-    }
-
-    convenience init() {
-        self.init(components: [])
-    }
+class PlayerHookPowerupEntity: PowerupEntity {
 }

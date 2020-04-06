@@ -13,7 +13,7 @@ import GameplayKit
 protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
     func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String)
-    func didPressFriendButton(in: PreGameLobbyViewController)
+    func didPressFriendButton(in: PreGameLobbyViewController, lobbyId: String)
 }
 
 class PreGameLobbyViewController: UIViewController {
@@ -250,7 +250,7 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     @IBAction private func onFriendButtonPressed(_ sender: UIButton) {
-        navigationDelegate?.didPressFriendButton(in: self)
+        navigationDelegate?.didPressFriendButton(in: self, lobbyId: self.viewModel.lobby.lobbyId)
     }
 }
 

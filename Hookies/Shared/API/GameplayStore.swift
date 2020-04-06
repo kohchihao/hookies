@@ -91,8 +91,13 @@ class GameplayStore {
         })
     }
 
-    func broadcastPowerupAction(powerupAction: PowerupActionData) {
-        socket.emit("powerupActivated", powerupAction)
+    func broadcastPowerupEvent(powerupEvent: PowerupEventData) {
+        print("emit powerupData")
+        socket.emit("powerupEvent", powerupEvent)
+    }
+
+    func broadcastPowerupCollection(powerupCollection: PowerupCollectionData) {
+        socket.emit("powerupCollected", powerupCollection)
     }
 
     func broadcastHookAction(hookAction: HookActionData) {
@@ -103,13 +108,31 @@ class GameplayStore {
         socket.emit("genericPlayerEventDetected", playerEvent)
     }
 
-    func subscribeToPowerupAction(listener: @escaping (PowerupActionData) -> Void) {
-        socket.on("powerupActivated") { data, _ in
+    func subscribeToPowerupCollection(listener: @escaping (PowerupCollectionData) -> Void) {
+        socket.on("powerupCollected") { data, _ in
+            print(data)
             guard !data.isEmpty, let powerupData = data[0] as? [String: Any] else {
                 return
             }
             let model = DictionaryModel(data: powerupData)
-            if let result = PowerupActionData(data: model) {
+            print("dict model", model)
+            if let result = PowerupCollectionData(data: model) {
+                print("successfuly converted data")
+                listener(result)
+            }
+        }
+    }
+
+    func subscribeToPowerupEvent(listener: @escaping (PowerupEventData) -> Void) {
+        socket.on("powerupEvent") { data, _ in
+            print(data)
+            guard !data.isEmpty, let powerupData = data[0] as? [String: Any] else {
+                return
+            }
+            let model = DictionaryModel(data: powerupData)
+            print(model)
+            if let result = PowerupEventData(data: model) {
+                print("powerupEvent data", result)
                 listener(result)
             }
         }

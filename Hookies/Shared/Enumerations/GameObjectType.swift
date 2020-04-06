@@ -13,4 +13,5 @@ enum GameObjectType: String {
     case platformMovable = "platform_movable"
     case bolt
     case boltMovable = "bolt_movable"
+    case powerup
 }
