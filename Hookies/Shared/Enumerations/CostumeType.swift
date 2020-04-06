@@ -12,6 +12,32 @@ enum CostumeType: String, CaseIterable {
     case Pink_Monster
     case Owlet_Monster
     case Dude_Monster
+
+    static func nextCostume(currentCostume: CostumeType?) -> CostumeType? {
+        let costumes = CostumeType.allCases
+        guard let currentCostume = currentCostume else {
+            return costumes.first
+        }
+        let currentIndex = costumes.firstIndex(of: currentCostume) ?? 0
+        var nextIndex = currentIndex + 1
+        if !costumes.indices.contains(nextIndex) {
+            nextIndex = 0
+        }
+        return costumes[nextIndex]
+    }
+
+    static func prevCostume(currentCostume: CostumeType?) -> CostumeType? {
+        let costumes = CostumeType.allCases
+        guard let currentCostume = currentCostume else {
+            return costumes.first
+        }
+        let currentIndex = costumes.firstIndex(of: currentCostume) ?? 0
+        var prevIndex = currentIndex - 1
+        if !costumes.indices.contains(prevIndex) {
+            prevIndex = costumes.endIndex - 1
+        }
+        return costumes[prevIndex]
+    }
 }
 
 extension CostumeType: StringRepresentable {
