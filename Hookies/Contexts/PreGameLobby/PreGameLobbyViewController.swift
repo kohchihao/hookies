@@ -174,16 +174,10 @@ class PreGameLobbyViewController: UIViewController {
             return
         }
         let currentCostume = viewModel.lobby.costumesId[userId]
-        switch currentCostume {
-        case .Pink_Monster:
-            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Owlet_Monster)
-        case .Owlet_Monster:
-            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Dude_Monster)
-        case .Dude_Monster:
-            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Pink_Monster)
-        default:
+        guard let nextCostume = CostumeType.nextCostume(currentCostume: currentCostume) else {
             return
         }
+        viewModel.lobby.updateCostumeId(playerId: userId, costumeType: nextCostume)
         updateCostumeIdLabel()
         updatePlayerViews()
         saveLobby(lobby: viewModel.lobby)
@@ -194,16 +188,10 @@ class PreGameLobbyViewController: UIViewController {
             return
         }
         let currentCostume = viewModel.lobby.costumesId[userId]
-        switch currentCostume {
-        case .Pink_Monster:
-            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Dude_Monster)
-        case .Owlet_Monster:
-            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Pink_Monster)
-        case .Dude_Monster:
-            viewModel.lobby.updateCostumeId(playerId: userId, costumeType: .Owlet_Monster)
-        default:
+        guard let prevCostume = CostumeType.prevCostume(currentCostume: currentCostume) else {
             return
         }
+        viewModel.lobby.updateCostumeId(playerId: userId, costumeType: prevCostume)
         updateCostumeIdLabel()
         updatePlayerViews()
         saveLobby(lobby: viewModel.lobby)
