@@ -163,6 +163,12 @@
 		2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */; };
 		2B4CCD442435AC4F0086DEC6 /* HookDelegateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */; };
 		2B4CCD47243632F90086DEC6 /* GenericPlayerEventBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */; };
+		2BA5F93824434C89009AF93C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93724434C89009AF93C /* Player.swift */; };
+		2BA5F93A24434CE7009AF93C /* PlayerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93924434CE7009AF93C /* PlayerType.swift */; };
+		2BA5F93C24434F08009AF93C /* BotType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93B24434F08009AF93C /* BotType.swift */; };
+		2BA5F93E244353F7009AF93C /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93D244353F7009AF93C /* GameObject.swift */; };
+		2BA5F941244354CF009AF93C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F940244354CF009AF93C /* NetworkManager.swift */; };
+		2BA5F943244364E4009AF93C /* DeviceStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F942244364E4009AF93C /* DeviceStatus.swift */; };
 		785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */; };
 		785B79DA2423581B001D7028 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785B79D92423581B001D7028 /* GameKit.framework */; };
 		785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79DE24237636001D7028 /* JoinGameCoordinator.swift */; };
@@ -370,28 +376,19 @@
 		2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngineDelegate.swift; sourceTree = "<group>"; };
 		2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookDelegateModel.swift; sourceTree = "<group>"; };
 		2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEventBroadcast.swift; sourceTree = "<group>"; };
+		2BA5F93724434C89009AF93C /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		2BA5F93924434CE7009AF93C /* PlayerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerType.swift; sourceTree = "<group>"; };
+		2BA5F93B24434F08009AF93C /* BotType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotType.swift; sourceTree = "<group>"; };
+		2BA5F93D244353F7009AF93C /* GameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
+		2BA5F940244354CF009AF93C /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		2BA5F942244364E4009AF93C /* DeviceStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStatus.swift; sourceTree = "<group>"; };
 		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		784096012438583B00D2CAB4 /* InviteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteManager.swift; sourceTree = "<group>"; };
-		78409603243858DA00D2CAB4 /* Invite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invite.swift; sourceTree = "<group>"; };
-		7840960524385CB300D2CAB4 /* Invite+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Invite+FirestoreModel.swift"; sourceTree = "<group>"; };
-		7840960724385DF400D2CAB4 /* InviteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteStore.swift; sourceTree = "<group>"; };
-		7840960D2438B60000D2CAB4 /* OutgoingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingTableViewCell.swift; sourceTree = "<group>"; };
-		7859AF9724332EF500B60968 /* Social.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social.swift; sourceTree = "<group>"; };
-		7859AF992433305F00B60968 /* Social+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Social+FirestoreModel.swift"; sourceTree = "<group>"; };
-		7859AF9B2433317000B60968 /* SocialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialStore.swift; sourceTree = "<group>"; };
 		7859AF9E24339A4000B60968 /* SocialCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialCoordinator.swift; sourceTree = "<group>"; };
 		7859AFA024339A5700B60968 /* SocialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewModel.swift; sourceTree = "<group>"; };
 		7859AFA224339A6B00B60968 /* SocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
 		7859AFA424346EEC00B60968 /* SocialViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SocialViewController.xib; sourceTree = "<group>"; };
-		7859AFA62434B8EB00B60968 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		7859AFAA2434BA6500B60968 /* Request+FirestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+FirestoreModel.swift"; sourceTree = "<group>"; };
-		7859AFAC2434D16F00B60968 /* RequestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStore.swift; sourceTree = "<group>"; };
-		7859AFB02436167600B60968 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
-		7859AFB12436167600B60968 /* FriendTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendTableViewCell.xib; sourceTree = "<group>"; };
-		7859AFB424364C5E00B60968 /* IncomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingTableViewCell.swift; sourceTree = "<group>"; };
-		7859AFB524364C5E00B60968 /* IncomingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IncomingTableViewCell.xib; sourceTree = "<group>"; };
 		7859AFB82437095A00B60968 /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
-		7859AFBE24383E3200B60968 /* OutgoingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutgoingTableViewCell.xib; sourceTree = "<group>"; };
 		785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785B79D92423581B001D7028 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		785B79DE24237636001D7028 /* JoinGameCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameCoordinator.swift; sourceTree = "<group>"; };
@@ -625,6 +622,7 @@
 				11CC85282439E9C4006D3A8F /* Vector.swift */,
 				1198221B2434E2950035AFC1 /* Exceptions */,
 				110B3CF22420756600840C4E /* Powerups */,
+				2BA5F93724434C89009AF93C /* Player.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -783,6 +781,7 @@
 			isa = PBXGroup;
 			children = (
 				2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */,
+				2BA5F93D244353F7009AF93C /* GameObject.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -793,6 +792,27 @@
 				2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */,
 			);
 			path = Broadcast;
+			sourceTree = "<group>";
+		};
+		2BA5F936243E2C41009AF93C /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				11CC85162439E991006D3A8F /* SocialCoordinator.swift */,
+				11CC85132439E991006D3A8F /* SocialViewController.swift */,
+				11CC85172439E991006D3A8F /* InviteManager.swift */,
+				11CC85182439E991006D3A8F /* RequestManager.swift */,
+				11CC85152439E991006D3A8F /* SocialViewModel.swift */,
+				11CC85142439E991006D3A8F /* SocialViewController.xib */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		2BA5F93F244354BA009AF93C /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				2BA5F940244354CF009AF93C /* NetworkManager.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		74506FEAC88EC4570C7397CB /* Pods */ = {
@@ -848,6 +868,7 @@
 				7880071B2413F37100F43B71 /* Products */,
 				74506FEAC88EC4570C7397CB /* Pods */,
 				0D11E04A2253E26F9B991E66 /* Frameworks */,
+				2BA5F936243E2C41009AF93C /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -906,6 +927,7 @@
 		D90876FA24299BC700B73D0E /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				2BA5F93F244354BA009AF93C /* Network */,
 				2B4CCD45243632C50086DEC6 /* Broadcast */,
 				2B4CCD422435AC1B0086DEC6 /* Model */,
 				D90876FE24299BE400B73D0E /* Engine */,
@@ -1079,6 +1101,9 @@
 				11CC84B42439E832006D3A8F /* LobbyState.swift */,
 				11CC84BA2439E832006D3A8F /* PowerupType.swift */,
 				11CC84B82439E832006D3A8F /* SpriteType.swift */,
+				2BA5F93924434CE7009AF93C /* PlayerType.swift */,
+				2BA5F93B24434F08009AF93C /* BotType.swift */,
+				2BA5F942244364E4009AF93C /* DeviceStatus.swift */,
 			);
 			path = Enumerations;
 			sourceTree = "<group>";
@@ -1243,8 +1268,6 @@
 				11CC84FF2439E8E5006D3A8F /* OutgoingTableViewCell.xib in Resources */,
 				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
 				D9FF1A80241E325900E7965F /* GamePlayViewController.xib in Resources */,
-				7859AFBF24383E3300B60968 /* OutgoingTableViewCell.xib in Resources */,
-				7859AFB724364C5F00B60968 /* IncomingTableViewCell.xib in Resources */,
 				785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
@@ -1447,6 +1470,7 @@
 				11CC848A2439E7A8006D3A8F /* PlayerHookEffectComponent.swift in Sources */,
 				11CC84BF2439E832006D3A8F /* GameState.swift in Sources */,
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
+				2BA5F943244364E4009AF93C /* DeviceStatus.swift in Sources */,
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
 				11CC84DA2439E8A0006D3A8F /* HookActionData.swift in Sources */,
 				11CC84E82439E8B9006D3A8F /* GameplayStore.swift in Sources */,
@@ -1463,6 +1487,7 @@
 				11CC844B2439E748006D3A8F /* PowerupSystem.swift in Sources */,
 				11CC844C2439E748006D3A8F /* HealthSystem.swift in Sources */,
 				11CC84CB2439E88A006D3A8F /* FirestoreDataModel.swift in Sources */,
+				2BA5F93824434C89009AF93C /* Player.swift in Sources */,
 				11CC84972439E7C0006D3A8F /* PowerupEntity.swift in Sources */,
 				11CC84892439E7A8006D3A8F /* ShieldEffectComponent.swift in Sources */,
 				D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */,
@@ -1487,8 +1512,10 @@
 				11CC848B2439E7A8006D3A8F /* MovementEffectComponent.swift in Sources */,
 				785B79EC242527C5001D7028 /* RandomIDGenerator.swift in Sources */,
 				11CC84EA2439E8B9006D3A8F /* RequestStore.swift in Sources */,
+				2BA5F93C24434F08009AF93C /* BotType.swift in Sources */,
 				11CC85242439E9BF006D3A8F /* Gameplay.swift in Sources */,
 				D908770624299DC200B73D0E /* GameEngine.swift in Sources */,
+				2BA5F941244354CF009AF93C /* NetworkManager.swift in Sources */,
 				11CC84A62439E7D1006D3A8F /* BoltEntity.swift in Sources */,
 				11CC848C2439E7A8006D3A8F /* ThiefEffectComponent.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
@@ -1498,6 +1525,7 @@
 				11CC847A2439E799006D3A8F /* NonPhysicsTranslateComponent.swift in Sources */,
 				110B3CED2420605600840C4E /* DictionaryRepresentable.swift in Sources */,
 				785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */,
+				2BA5F93E244353F7009AF93C /* GameObject.swift in Sources */,
 				11CC84BE2439E832006D3A8F /* AuthState.swift in Sources */,
 				11CC847C2439E799006D3A8F /* HookComponent.swift in Sources */,
 				110B3CEF242062C300840C4E /* Powerup+DictionaryRepresentable.swift in Sources */,
@@ -1518,6 +1546,7 @@
 				11CC84992439E7C0006D3A8F /* NetTrapPowerupEntity.swift in Sources */,
 				113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */,
 				785B79E324237659001D7028 /* JoinGameViewController.swift in Sources */,
+				2BA5F93A24434CE7009AF93C /* PlayerType.swift in Sources */,
 				11CC84882439E7A8006D3A8F /* PowerupEffectComponent.swift in Sources */,
 				11CC84E72439E8B9006D3A8F /* SocialStore.swift in Sources */,
 				11CC84802439E79F006D3A8F /* RotateComponent.swift in Sources */,
@@ -1529,8 +1558,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9BC4AB52438711100BD35DF /* HealthSystemTests.swift in Sources */,
-				D9937B792438A1E7002D3341 /* DeadlockSystemTests.swift in Sources */,
 				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
 				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
 				11CC85342439E9EB006D3A8F /* HealthSystemTests.swift in Sources */,
