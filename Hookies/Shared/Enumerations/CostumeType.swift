@@ -12,6 +12,10 @@ enum CostumeType: String, CaseIterable {
     case Pink_Monster
     case Owlet_Monster
     case Dude_Monster
+    case Mask_Dude
+    case Ninja_Frog
+    case Pink_Man
+    case Virtual_Guy
 
     static func nextCostume(currentCostume: CostumeType?) -> CostumeType? {
         let costumes = CostumeType.allCases
