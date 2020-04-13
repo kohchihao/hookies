@@ -33,6 +33,7 @@
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
 		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
 		11593D772431EAD000462BE6 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11593D762431EAD000462BE6 /* CGPoint+Extension.swift */; };
+		1160C5EE244485F1007BE5DA /* SocketRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160C5ED244485F1007BE5DA /* SocketRoom.swift */; };
 		116AD648242DB7CD0070F00B /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116AD647242DB7CD0070F00B /* Encoder.swift */; };
 		116AD64C242DBC670070F00B /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116AD64B242DBC670070F00B /* Decoder.swift */; };
 		116AD64E242DC2C30070F00B /* DictionaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116AD64D242DC2C30070F00B /* DictionaryModel.swift */; };
@@ -246,6 +247,7 @@
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
 		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
 		11593D762431EAD000462BE6 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
+		1160C5ED244485F1007BE5DA /* SocketRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketRoom.swift; sourceTree = "<group>"; };
 		116AD647242DB7CD0070F00B /* Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encoder.swift; sourceTree = "<group>"; };
 		116AD64B242DBC670070F00B /* Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
 		116AD64D242DC2C30070F00B /* DictionaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryModel.swift; sourceTree = "<group>"; };
@@ -510,6 +512,7 @@
 				11CC84E42439E8B9006D3A8F /* RequestStore.swift */,
 				11CC84E12439E8B8006D3A8F /* SocialStore.swift */,
 				11CC84E52439E8B9006D3A8F /* UserStore.swift */,
+				1160C5ED244485F1007BE5DA /* SocketRoom.swift */,
 				111D2EF32418C89B0083373C /* Exceptions */,
 				119C54272418766100F27D87 /* Extensions */,
 				119C541F24168C9D00F27D87 /* AdapterModels */,
@@ -1531,6 +1534,7 @@
 				110B3CEF242062C300840C4E /* Powerup+DictionaryRepresentable.swift in Sources */,
 				11CC847B2439E799006D3A8F /* PowerupComponent.swift in Sources */,
 				D9FF1A81241E325900E7965F /* GameScene.swift in Sources */,
+				1160C5EE244485F1007BE5DA /* SocketRoom.swift in Sources */,
 				D9FF1A68241E0DC000E7965F /* PreGameLobbyViewController.swift in Sources */,
 				11CC84CF2439E88A006D3A8F /* Lobby+FirestoreModel.swift in Sources */,
 				11CC84BB2439E832006D3A8F /* ConnectionState.swift in Sources */,

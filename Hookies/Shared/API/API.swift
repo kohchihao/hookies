@@ -27,10 +27,12 @@ class API {
         let settings = FirestoreSettings()
         settings.isPersistenceEnabled = false
         db.settings = settings
+
         user = UserStore(userCollection: db.collection("users"))
         gameplay = GameplayStore(gameplayCollection: db.collection("gameplays"),
                                  socketRef: socketManager.socket(forNamespace: "/games"))
-        lobby = LobbyStore(lobbyCollection: db.collection("lobbies"))
+        lobby = LobbyStore(lobbyCollection: db.collection("lobbies"),
+                           socketRef: socketManager.socket(forNamespace: "/lobbies"))
         social = SocialStore(socialCollection: db.collection("socials"))
         request = RequestStore(requestCollection: db.collection("requests"))
         invite = InviteStore(inviteCollection: db.collection("invites"))
