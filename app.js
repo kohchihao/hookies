@@ -18,6 +18,12 @@ lobbies.on('connection', socket => {
 		currentLobbyId = data.roomId;
 		currentUserId = data.user;
 		const currentLobby = lobbyManager.addRoomIfDoesNotExist(currentLobbyId);
+
+		if (currentLobby.hasUser(currentUserId)) {
+			ack(Array.from(currentLobby.userIds));
+			return;
+		}
+
 		currentLobby.addUser(currentUserId);
 		socket.join(currentLobbyId);
 		ack(Array.from(currentLobby.userIds));
@@ -41,6 +47,12 @@ games.on('connection', socket => {
 		currentGameId = data.roomId;
 		currentUserId = data.user;
 		const currentGame = gameManager.addRoomIfDoesNotExist(currentGameId);
+
+		if (currentGame.hasUser(currentUserId)) {
+			ack(Array.from(currentGame.userIds));
+			return;
+		}
+
 		currentGame.addUser(currentUserId);
 		socket.join(currentGameId);
 		ack(Array.from(currentGame.userIds));

@@ -25,6 +25,14 @@ module.exports = class Room {
         this.userIds.delete(userId);
     }
 
+    /**
+     *
+     * @param userId - String representing the user Id
+     */
+    hasUser(userId) {
+        this.userIds.has(userId)
+    }
+
     size() {
         return this.userIds.size;
     }
