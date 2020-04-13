@@ -18,6 +18,11 @@ class ButtonNode: SKSpriteNode {
     var touchBeganHandler: () -> Void = {  }
     var touchEndHandler: () -> Void = {  }
 
+    var touchUpHandler: () -> Void = {  }
+    var touchDownHandler: () -> Void = {  }
+
+    var initialButtonCenter: CGPoint?
+
     /* Button state management */
     var state: ButtonNodeState = .ButtonNodeStateActive {
         didSet {
@@ -57,11 +62,30 @@ class ButtonNode: SKSpriteNode {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         state = .ButtonNodeStateSelected
         touchBeganHandler()
+        initialButtonCenter = self.position
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let touchPoint: CGPoint = touch.location(in: self.parent!)
+            if touchPoint.y > initialButtonCenter!.y { // shorten
+                touchUpHandler()
+            } else { // lengthen
+                touchDownHandler()
+            }
+
+            let touchPointVector = Vector(point: touchPoint)
+            let currentPositionVector = Vector(point: initialButtonCenter!)
+            if touchPointVector.distance(to: currentPositionVector) <= 70 {
+                self.position = CGPoint(x: self.position.x, y: touchPoint.y)
+            }
+        }
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         state = .ButtonNodeStateActive
         touchEndHandler()
+        self.position = initialButtonCenter!
     }
 
     // MARK: - Init Other ways
