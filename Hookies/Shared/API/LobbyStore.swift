@@ -8,14 +8,17 @@
 
 import Foundation
 import Firebase
+import SocketIO
 
-class LobbyStore {
+class LobbyStore: SocketRoom {
     private let collection: CollectionReference
+    let socket: SocketIOClient
 
     private var lobbyListener: ListenerRegistration?
 
-    init(lobbyCollection: CollectionReference) {
+    init(lobbyCollection: CollectionReference, socketRef: SocketIOClient) {
         collection = lobbyCollection
+        socket = socketRef
     }
 
     func get(lobbyId: String, completion: @escaping (Lobby?, Error?) -> Void) {

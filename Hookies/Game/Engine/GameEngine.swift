@@ -575,7 +575,7 @@ class GameEngine {
     }
 
     private func connectToGame() {
-        API.shared.gameplay.connectToGame(gameId: gameId, completion: { otherPlayersId in
+        API.shared.gameplay.connect(roomId: gameId, completion: { otherPlayersId in
             for otherPlayerId in otherPlayersId {
                 self.setupOtherPlayer(of: otherPlayerId)
             }
@@ -583,7 +583,7 @@ class GameEngine {
     }
 
     private func subscribeToGameConnection() {
-        API.shared.gameplay.subscribeToGameConnection(listener: { connectionState in
+        API.shared.gameplay.subscribeToRoomConnection(roomId: gameId, listener: { connectionState in
             switch connectionState {
             case .connected:
                 let isPlayerReconnecting = self.currentPlayerId != nil
@@ -614,7 +614,7 @@ class GameEngine {
         }
 
         if finishingLineSystem.hasAllPlayersReachedFinishingLine() {
-            API.shared.gameplay.closeGameSession()
+            API.shared.gameplay.close()
             gameState = .finish
 
             delegate?.gameHasFinish()
