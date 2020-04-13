@@ -56,6 +56,7 @@ games.on('connection', socket => {
 		currentGame.addUser(currentUserId);
 		socket.join(currentGameId);
 		ack(Array.from(currentGame.userIds));
+		console.log("emitting join room event");
 		socket.to(currentGameId).emit("joinedRoom", data.user)
 	});
 
