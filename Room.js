@@ -1,12 +1,12 @@
-module.exports = class Game {
+module.exports = class Room {
 
     /**
      *
-     * @param gameId - The gameId of this room.
+     * @param roomId - The id of this room.
      */
-    constructor(gameId) {
+    constructor(roomId) {
         this.userIds = new Set();
-        this.id = gameId;
+        this.id = roomId;
     }
 
     /**
@@ -28,4 +28,4 @@ module.exports = class Game {
     size() {
         return this.userIds.size;
     }
-}
+};

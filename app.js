@@ -1,24 +1,50 @@
 const GameManager = require('./GameManager');
+const LobbyManager = require('./LobbyManager');
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
 const gameManager = new GameManager();
+const lobbyManager = new LobbyManager();
 const games = io.of('/games');
+const lobbies = io.of('/lobbies');
+
+lobbies.on('connection', socket => {
+	let currentLobbyId;
+	let currentUserId;
+	console.log('connected to lobby');
+
+	socket.on('joinRoom', (data, ack) => {
+		currentLobbyId = data.roomId;
+		currentUserId = data.user;
+		const currentLobby = lobbyManager.addRoomIfDoesNotExist(currentLobbyId);
+		currentLobby.addUser(currentUserId);
+		socket.join(currentLobbyId);
+		ack(Array.from(currentLobby.userIds));
+		socket.to(currentLobbyId).emit("joinedRoom", data.user)
+	});
+
+	socket.on('disconnect', () => {
+		console.log('currentUserId', currentUserId, 'disconnected');
+		lobbyManager.removeUserFromRoom(currentUserId, currentLobbyId);
+		socket.to(currentLobbyId).emit("leftRoom", currentUserId)
+	});
+});
+
 
 games.on('connection', socket => {
 	let currentGameId;
 	let currentUserId;
-	console.log('connected');
+	console.log('connected to game');
 
-	socket.on('joinGame', (data, ack) => {
-		currentGameId = data.gameId;
+	socket.on('joinRoom', (data, ack) => {
+		currentGameId = data.roomId;
 		currentUserId = data.user;
-		const currentGame = gameManager.addGameSessionIfDoesNotExist(currentGameId);
+		const currentGame = gameManager.addRoomIfDoesNotExist(currentGameId);
 		currentGame.addUser(currentUserId);
 		socket.join(currentGameId);
 		ack(Array.from(currentGame.userIds));
-		socket.to(currentGameId).emit("joinedGame", data.user)
+		socket.to(currentGameId).emit("joinedRoom", data.user)
 	});
 
 	socket.on('powerupCollected', (data) => {
@@ -43,13 +69,12 @@ games.on('connection', socket => {
 
 	socket.on('disconnect', () => {
 		console.log('currentUserId', currentUserId, 'disconnected');
-		gameManager.removeUserFromGame(currentUserId, currentGameId);
-		socket.to(currentGameId).emit("leftGame", currentUserId)
+		gameManager.removeUserFromRoom(currentUserId, currentGameId);
+		socket.to(currentGameId).emit("leftRoom", currentUserId)
 	});
 });
 
-// ping interval of 2s, timeout 4s
 const port = process.env.PORT || 3000;
-http.listen(port, {pingInterval: 2000, pingTimeout: 4000}, function() {
+http.listen(port, function() {
 	console.log(`listening on *:${port}`);
 });
