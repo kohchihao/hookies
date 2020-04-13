@@ -30,7 +30,7 @@ module.exports = class Room {
      * @param userId - String representing the user Id
      */
     hasUser(userId) {
-        this.userIds.has(userId)
+        return this.userIds.has(userId)
     }
 
     size() {
