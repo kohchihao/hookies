@@ -10,6 +10,15 @@ import SpriteKit
 
 /// Represent entity that will be potentially hooked to another entity
 
+enum HookSystemAction {
+    case lengthen, shorten
+}
+
+typealias AboveBoltDisplacement = Int
+typealias BelowBoltDisplacement = Int
+typealias RightBoltDisplacement = Int
+typealias LeftBoltDisplacement = Int
+
 protocol HookSystemProtocol {
     func hook(from hook: Entity) -> Bool
     func hook(from entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool
@@ -29,11 +38,15 @@ enum HookSystemError: Error {
 class HookSystem: System, HookSystemProtocol {
     private var hooks: Set<HookComponent>
     private var bolts: [SpriteComponent]
+    private let minRopeLength = 70.0
+    private let maxRopeLength = 1000.0
 
     init(bolts: [SpriteComponent]) {
         self.hooks = Set<HookComponent>()
         self.bolts = bolts
     }
+
+    // MARK: - Hook
 
     func hook(from entity: Entity) -> Bool {
         guard let sprite = entity.getSpriteComponent() else {
@@ -61,11 +74,11 @@ class HookSystem: System, HookSystemProtocol {
             return false
         }
 
-        let isAttachingToSameBolt = hook.prevHookTo?.node.position == closestBolt.node.position
-
-        if isAttachingToSameBolt {
-            attachToSameBolt(sprite: sprite, bolt: closestBolt)
-        }
+//        let isAttachingToSameBolt = hook.prevHookTo?.node.position == closestBolt.node.position
+//
+//        if isAttachingToSameBolt {
+//            attachToSameBolt(sprite: sprite, bolt: closestBolt)
+//        }
 
         let line = sprite.makeLine(to: closestBolt)
 
@@ -81,6 +94,138 @@ class HookSystem: System, HookSystemProtocol {
 
         return true
     }
+
+    // MARK: - Adjust length
+
+    func adjustLength(from entity: Entity, type: HookSystemAction) {
+        guard let sprite = entity.getSpriteComponent(),
+            let hook = entity.getHookComponent()
+            else {
+                return
+        }
+
+        adjustRope(sprite: sprite, bolt: hook.hookTo!, type: type)
+
+        let line = sprite.makeLine(to: hook.hookTo!)
+
+        guard let anchorLineJointPin = makeJointPinToLine(from: hook.hookTo!.node, toLine: line),
+            let spriteLineJointPin = makeJointPinToLine(from: sprite.node, toLine: line)
+            else {
+                return
+        }
+
+        hook.line = line
+        hook.anchorLineJointPin = anchorLineJointPin
+        hook.parentLineJointPin = spriteLineJointPin
+    }
+
+    // MARK: - Rope Utility
+    private func adjustRope(
+        sprite: SpriteComponent,
+        bolt: SpriteComponent,
+        type: HookSystemAction
+    ) {
+        let newPosition = updateSpritePosition(sprite: sprite, bolt: bolt, type: type)
+        let newPositionVector = Vector(point: newPosition)
+        let boltPositionVector = Vector(point: bolt.node.position)
+        let ropeLength = newPositionVector.distance(to: boltPositionVector)
+        if  isWithinRopeLimit(length: ropeLength) {
+            print("WithinRopeLimit")
+            if type == .lengthen && !isCollidingWithPlatform(sprite: sprite) {
+                 sprite.node.position = newPosition
+            } else if type == .shorten {
+                 sprite.node.position = newPosition
+            }
+        }
+    }
+
+    private func updateSpritePosition(
+        sprite: SpriteComponent,
+        bolt: SpriteComponent,
+        type: HookSystemAction
+    ) -> CGPoint {
+        let (aboveDisplacement, belowDisplacement) = getVerticalBoltDisplacement(for: type)
+        let (rightDisplacement, leftDisplacement) = getHorizontalBoltDisplacement(for: type)
+
+        var positionYOffset = CGFloat(0)
+        var positionXOffset = CGFloat(0)
+
+        let isAboveBolt = sprite.node.position.y > bolt.node.position.y
+        let isBelowBolt = sprite.node.position.y < bolt.node.position.y
+        let isLeftsideBolt = sprite.node.position.x < bolt.node.position.x
+        let isRightsideBolt = sprite.node.position.x > bolt.node.position.x
+
+        if isAboveBolt {
+            positionYOffset = CGFloat(aboveDisplacement)
+        }
+
+        if isBelowBolt {
+            positionYOffset = CGFloat(belowDisplacement)
+        }
+
+        if isRightsideBolt {
+            positionXOffset = CGFloat(rightDisplacement)
+        }
+
+        if isLeftsideBolt {
+            positionXOffset = CGFloat(leftDisplacement)
+        }
+        return CGPoint(
+            x: sprite.node.position.x + positionXOffset,
+            y: sprite.node.position.y + positionYOffset)
+    }
+
+    private func getHorizontalBoltDisplacement(
+        for type: HookSystemAction
+    ) -> (RightBoltDisplacement, LeftBoltDisplacement) {
+        var rightBoltDisplacement = -5
+        var leftBoltDisplacement = 5
+
+        if type == .lengthen {
+            rightBoltDisplacement *= -1
+            leftBoltDisplacement *= -1
+        }
+
+        return (rightBoltDisplacement, leftBoltDisplacement)
+    }
+
+    private func getVerticalBoltDisplacement(
+        for type: HookSystemAction
+    ) -> (AboveBoltDisplacement, BelowBoltDisplacement) {
+        var aboveBoltDisplacement = -5
+        var belowBoltDisplacement = 5
+
+        if type == .lengthen {
+            aboveBoltDisplacement *= -1
+            belowBoltDisplacement *= -1
+        }
+
+        return (aboveBoltDisplacement, belowBoltDisplacement)
+    }
+
+    private func isWithinRopeLimit(length: Double) -> Bool {
+        return length > minRopeLength && length < maxRopeLength
+    }
+
+    private func isCollidingWithPlatform(sprite: SpriteComponent) -> Bool {
+        guard let physicsBody = sprite.node.physicsBody else {
+            return false
+        }
+        let contactedPhysicsBodies = physicsBody.allContactedBodies()
+        for contactedBody in contactedPhysicsBodies {
+            guard let spriteNode = contactedBody.node as? SKSpriteNode else {
+                return false
+            }
+            if spriteNode.name == GameObjectType.platform.rawValue
+                || spriteNode.name == GameObjectType.platformMovable.rawValue {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    // MARK: - Unhook
 
     func unhook(entity: Entity) -> Bool {
         guard let sprite = entity.getSpriteComponent() else {
@@ -113,9 +258,13 @@ class HookSystem: System, HookSystemProtocol {
         return true
     }
 
+    // MARK: - Add Initial Velocity
+
     func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector) {
         sprite.node.physicsBody?.applyImpulse(velocity)
     }
+
+    // MARK: - Booster
 
     func boostVelocity(to entity: Entity) {
         guard let hook = entity.getHookComponent() else {
@@ -144,6 +293,8 @@ class HookSystem: System, HookSystemProtocol {
         }
     }
 
+    // MARK: - Find Closest Bolt
+
     private func findClosestBolt(from position: CGPoint) -> SpriteComponent? {
         var closestBolt: SpriteComponent?
         var closestDistance = Double.greatestFiniteMagnitude
@@ -159,6 +310,8 @@ class HookSystem: System, HookSystemProtocol {
 
         return closestBolt
     }
+
+    // MARK: - Create Joint
 
     private func makeJointPinToLine(from node: SKNode, toLine line: SKShapeNode) -> SKPhysicsJointPin? {
         guard let nodePhysicsBody = node.physicsBody,

@@ -8,6 +8,10 @@
 
 import Foundation
 import SpriteKit
+
+// TODO: Player fly too high = die
+// TODO: Player fly behind starting point = die
+
 /// A player dies only if he goes too low. Below a fixed horizontal line.
 
 protocol HealthSystemProtocol {

@@ -344,6 +344,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func handleCurrentPlayerTetheringToClosestBolt() {
         grapplingHookButton?.touchBeganHandler = handleGrapplingHookBtnTouchBegan
         grapplingHookButton?.touchEndHandler = handleGrapplingHookBtnTouchEnd
+        grapplingHookButton?.touchUpHandler = handleGrapplingHookBtnUp
+        grapplingHookButton?.touchDownHandler = handleGrapplingHookBtnDown
+    }
+
+    private func handleGrapplingHookBtnUp() {
+        print("Button swiping upwards")
+        gameEngine?.applyShortenActionToCurrentPlayer()
+    }
+
+    private func handleGrapplingHookBtnDown() {
+        print("Button swiping downwards")
+        gameEngine?.applyLengthenActionToCurrentPlayer()
     }
 
     // MARK: - Current player activating power up
