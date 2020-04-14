@@ -8,6 +8,7 @@
 
 import Foundation
 import SpriteKit
+
 /// A player dies only if he
 /// Death condition
 ///  - Below fixed horizontal line

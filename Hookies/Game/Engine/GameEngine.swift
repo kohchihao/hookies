@@ -188,6 +188,91 @@ class GameEngine {
         delegate?.playerDidUnhook(from: hookDelegateModel)
     }
 
+    func applyShortenActionToCurrentPlayer() {
+        guard let currentPlayerId = currentPlayerId,
+            let currentPlayer = currentPlayer else {
+            return
+        }
+
+        guard let hook = currentPlayer.getHookComponent(),
+            let sprite = currentPlayer.getSpriteComponent()
+            else {
+            return
+        }
+
+        guard let hookSystem = hookSystem else {
+            return
+        }
+
+        guard !hookSystem.isShorterThanMin(for: currentPlayer) else {
+            return
+        }
+
+        guard let initialVelocity = sprite.node.physicsBody?.velocity else {
+            return
+        }
+
+        guard let unhookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+        delegate?.playerDidUnhook(from: unhookDelegateModel)
+
+        // TODO: Broadcast to socket
+
+        let adjusted = hookSystem.adjustLength(from: currentPlayer, type: .shorten)
+
+        if !adjusted {
+            return
+        }
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+        delegate?.playerDidHook(to: hookDelegateModel)
+
+        hookSystem.applyInitialVelocity(sprite: sprite, velocity: initialVelocity)
+    }
+
+    func applyLengthenActionToCurrentPlayer() {
+        guard let currentPlayerId = currentPlayerId,
+            let currentPlayer = currentPlayer else {
+            return
+        }
+
+        guard let hook = currentPlayer.getHookComponent(),
+            let sprite = currentPlayer.getSpriteComponent()
+            else {
+            return
+        }
+
+        guard let initialVelocity = sprite.node.physicsBody?.velocity else {
+            return
+        }
+
+        guard let unhookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+        delegate?.playerDidUnhook(from: unhookDelegateModel)
+
+        guard let hookSystem = hookSystem else {
+            return
+        }
+
+        // TODO: Broadcast to socket
+
+        let adjusted = hookSystem.adjustLength(from: currentPlayer, type: .lengthen )
+
+        if !adjusted {
+            return
+        }
+
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+        delegate?.playerDidHook(to: hookDelegateModel)
+
+        hookSystem.applyInitialVelocity(sprite: sprite, velocity: initialVelocity)
+    }
+
     // MARK: - Current Player Powerup Action
 
     func currentPlayerPowerupAction(with type: PowerupType) {
