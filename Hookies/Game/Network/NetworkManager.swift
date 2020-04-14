@@ -238,6 +238,10 @@ class NetworkManager: NetworkManagerProtocol {
                 NotificationCenter.default.post(name: .receivedHookAction, object: self, userInfo: notificationData)
             case .unhook:
                 NotificationCenter.default.post(name: .receivedUnookAction, object: self, userInfo: notificationData)
+            case .lengthenRope:
+                NotificationCenter.default.post(name: .receivedLengthenRopeAction, object: self, userInfo: notificationData)
+            case .shortenRope:
+                NotificationCenter.default.post(name: .receivedShortenRopeAction, object: self, userInfo: notificationData)
             }
         })
     }
