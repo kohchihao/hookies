@@ -686,6 +686,10 @@ class GameEngine {
                 print("hook")
             case .unhook:
                 print("unhook")
+            case .lengthenRope:
+                print("lengthenRope")
+            case .shortenRope:
+                print("shortenRope")
             }
         })
     }

@@ -179,8 +179,10 @@ class NetworkManager: NetworkManagerProtocol {
         subscribeToOtherPlayersState()
         subscribeToGenericPlayerEvent()
 //        subscribeToPowerupCollection()
-//        subscribeToPowerupEvent()
+        subscribeToPowerupEvent()
     }
+
+    // MARK: Player Connection State
 
     private func subscribeToOtherPlayersState() {
         API.shared.gameplay.subscribeToPlayersConnection(listener: { userConnection in
@@ -213,6 +215,8 @@ class NetworkManager: NetworkManagerProtocol {
         })
     }
 
+    // MARK: Generic Player Event
+
     private func subscribeToGenericPlayerEvent() {
         API.shared.gameplay.subscribeToGenericPlayerEvent(listener: { genericPlayerEventData in
 
@@ -239,9 +243,15 @@ class NetworkManager: NetworkManagerProtocol {
             case .unhook:
                 NotificationCenter.default.post(name: .receivedUnookAction, object: self, userInfo: notificationData)
             case .lengthenRope:
-                NotificationCenter.default.post(name: .receivedLengthenRopeAction, object: self, userInfo: notificationData)
+                NotificationCenter.default.post(
+                    name: .receivedLengthenRopeAction,
+                    object: self,
+                    userInfo: notificationData)
             case .shortenRope:
-                NotificationCenter.default.post(name: .receivedShortenRopeAction, object: self, userInfo: notificationData)
+                NotificationCenter.default.post(
+                    name: .receivedShortenRopeAction,
+                    object: self,
+                    userInfo: notificationData)
             }
         })
     }
@@ -263,6 +273,40 @@ class NetworkManager: NetworkManagerProtocol {
 
         return GenericSystemEvent(sprite: playerSprite, eventType: genericPlayerEventData.type)
     }
+
+    // MARK: Powerup Action
+
+    private func subscribeToPowerupEvent() {
+        API.shared.gameplay.subscribeToPowerupEvent(listener: { powerupEventData in
+            guard let powerupSystemEvent = self.createPowerupSystemEvent(from: powerupEventData) else {
+                return
+            }
+
+            NotificationCenter.default.post(
+                name: .receivedPowerupAction,
+                object: self,
+                userInfo: ["data": powerupSystemEvent])
+        })
+    }
+
+    private func createPowerupSystemEvent(from powerupEventData: PowerupEventData) -> PowerupSystemEvent? {
+        let playerId = powerupEventData.playerData.playerId
+
+        guard let playerSprite = playersSprite[playerId] else {
+            print("NetworkManager - createPowerupSystemEvent: No player sprite of \(playerId)")
+            return nil
+        }
+
+        playerSprite.node.position = CGPoint(vector: powerupEventData.playerData.position)
+
+        return PowerupSystemEvent(
+            sprite: playerSprite,
+            powerupEventType: powerupEventData.eventType,
+            powerupPos: powerupEventData.eventPos,
+            powerupType: powerupEventData.type)
+    }
+
+    // TOOD: Subscribe to collection
 
     // MARK: - Other Player Join Event Handler
 
