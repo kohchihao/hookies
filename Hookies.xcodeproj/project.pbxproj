@@ -164,6 +164,7 @@
 		2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */; };
 		2B4CCD442435AC4F0086DEC6 /* HookDelegateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */; };
 		2B4CCD47243632F90086DEC6 /* GenericPlayerEventBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */; };
+		2B64FD732445B36B00C848C4 /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */; };
 		2BA5F93824434C89009AF93C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93724434C89009AF93C /* Player.swift */; };
 		2BA5F93A24434CE7009AF93C /* PlayerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93924434CE7009AF93C /* PlayerType.swift */; };
 		2BA5F93C24434F08009AF93C /* BotType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93B24434F08009AF93C /* BotType.swift */; };
@@ -378,6 +379,7 @@
 		2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngineDelegate.swift; sourceTree = "<group>"; };
 		2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookDelegateModel.swift; sourceTree = "<group>"; };
 		2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEventBroadcast.swift; sourceTree = "<group>"; };
+		2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
 		2BA5F93724434C89009AF93C /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2BA5F93924434CE7009AF93C /* PlayerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerType.swift; sourceTree = "<group>"; };
 		2BA5F93B24434F08009AF93C /* BotType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotType.swift; sourceTree = "<group>"; };
@@ -776,6 +778,7 @@
 			children = (
 				119C5420241691DF00F27D87 /* DocumentReference.swift */,
 				119C5422241691EF00F27D87 /* Query.swift */,
+				2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1472,6 +1475,7 @@
 				118A4A6F2424861E005B7188 /* UIViewController+Nameable.swift in Sources */,
 				11CC848A2439E7A8006D3A8F /* PlayerHookEffectComponent.swift in Sources */,
 				11CC84BF2439E832006D3A8F /* GameState.swift in Sources */,
+				2B64FD732445B36B00C848C4 /* NotificationName+Extension.swift in Sources */,
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
 				2BA5F943244364E4009AF93C /* DeviceStatus.swift in Sources */,
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
