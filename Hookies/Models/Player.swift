@@ -35,3 +35,15 @@ struct Player {
         self.botType = botType
     }
 }
+
+// MARK: - Hashable
+
+extension Player: Hashable {
+    public static func == (lhs: Player, rhs: Player) -> Bool {
+        return lhs.playerId == rhs.playerId
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(playerId)
+    }
+}
