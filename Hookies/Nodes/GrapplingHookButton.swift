@@ -10,6 +10,9 @@ import SpriteKit
 
 class GrapplingHookButton: ButtonNode {
 
+    var touchUpHandler: () -> Void = {  }
+    var touchDownHandler: () -> Void = {  }
+
     // MARK: - INIT
     init(in frame: CGRect) {
         let size = CGSize(width: 120, height: 120)

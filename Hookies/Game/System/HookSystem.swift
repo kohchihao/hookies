@@ -39,7 +39,6 @@ class HookSystem: System, HookSystemProtocol {
     private var hooks: Set<HookComponent>
     private var bolts: [SpriteComponent]
     private let minRopeLength = 100.0
-    private let maxRopeLength = 1000.0
 
     init(bolts: [SpriteComponent]) {
         self.hooks = Set<HookComponent>()

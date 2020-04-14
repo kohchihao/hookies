@@ -213,10 +213,10 @@ class GameEngine {
             return
         }
 
-        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+        guard let unhookDelegateModel = createHookDelegateModel(from: hook) else {
             return
         }
-        delegate?.playerDidUnhook(from: hookDelegateModel)
+        delegate?.playerDidUnhook(from: unhookDelegateModel)
 
         // TODO: Broadcast to socket
 
@@ -225,10 +225,10 @@ class GameEngine {
         if !adjusted {
             return
         }
-        guard let hookDelegateModel1 = createHookDelegateModel(from: hook) else {
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
             return
         }
-        delegate?.playerDidHook(to: hookDelegateModel1)
+        delegate?.playerDidHook(to: hookDelegateModel)
 
         hookSystem.applyInitialVelocity(sprite: sprite, velocity: initialVelocity)
     }
@@ -249,10 +249,10 @@ class GameEngine {
             return
         }
 
-        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+        guard let unhookDelegateModel = createHookDelegateModel(from: hook) else {
             return
         }
-        delegate?.playerDidUnhook(from: hookDelegateModel)
+        delegate?.playerDidUnhook(from: unhookDelegateModel)
 
         guard let hookSystem = hookSystem else {
             return
@@ -266,10 +266,10 @@ class GameEngine {
             return
         }
 
-        guard let hookDelegateModel1 = createHookDelegateModel(from: hook) else {
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
             return
         }
-        delegate?.playerDidHook(to: hookDelegateModel1)
+        delegate?.playerDidHook(to: hookDelegateModel)
 
         hookSystem.applyInitialVelocity(sprite: sprite, velocity: initialVelocity)
     }
