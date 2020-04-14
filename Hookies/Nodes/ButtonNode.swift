@@ -76,7 +76,7 @@ class ButtonNode: SKSpriteNode {
 
             let touchPointVector = Vector(point: touchPoint)
             let currentPositionVector = Vector(point: initialButtonCenter!)
-            if touchPointVector.distance(to: currentPositionVector) <= 70 {
+            if touchPointVector.distance(to: currentPositionVector) <= 50 {
                 self.position = CGPoint(x: self.position.x, y: touchPoint.y)
             }
         }

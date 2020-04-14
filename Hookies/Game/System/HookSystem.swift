@@ -38,7 +38,7 @@ enum HookSystemError: Error {
 class HookSystem: System, HookSystemProtocol {
     private var hooks: Set<HookComponent>
     private var bolts: [SpriteComponent]
-    private let minRopeLength = 70.0
+    private let minRopeLength = 100.0
     private let maxRopeLength = 1000.0
 
     init(bolts: [SpriteComponent]) {
@@ -74,12 +74,6 @@ class HookSystem: System, HookSystemProtocol {
             return false
         }
 
-//        let isAttachingToSameBolt = hook.prevHookTo?.node.position == closestBolt.node.position
-//
-//        if isAttachingToSameBolt {
-//            attachToSameBolt(sprite: sprite, bolt: closestBolt)
-//        }
-
         let line = sprite.makeLine(to: closestBolt)
 
         guard let anchorLineJointPin = makeJointPinToLine(from: closestBolt.node, toLine: line),
@@ -97,49 +91,75 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Adjust length
 
-    func adjustLength(from entity: Entity, type: HookSystemAction) {
+    func adjustLength(from entity: Entity, type: HookSystemAction) -> Bool {
         guard let sprite = entity.getSpriteComponent(),
             let hook = entity.getHookComponent()
             else {
-                return
+                return false
         }
 
-        adjustRope(sprite: sprite, bolt: hook.hookTo!, type: type)
+        guard let bolt = hook.hookTo else {
+            return false
+        }
 
-        let line = sprite.makeLine(to: hook.hookTo!)
+        adjustRope(sprite: sprite, bolt: bolt, type: type)
 
-        guard let anchorLineJointPin = makeJointPinToLine(from: hook.hookTo!.node, toLine: line),
+        let line = sprite.makeLine(to: bolt)
+
+        guard let anchorLineJointPin = makeJointPinToLine(from: bolt.node, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: sprite.node, toLine: line)
             else {
-                return
+                return false
         }
 
         hook.line = line
         hook.anchorLineJointPin = anchorLineJointPin
         hook.parentLineJointPin = spriteLineJointPin
+
+        return true
     }
 
+    // MARK: - Rope Checks
+
+    func isShorterThanMin(for entity: Entity) -> Bool {
+        guard let sprite = entity.getSpriteComponent(),
+            let hook = entity.getHookComponent()
+            else {
+                return false
+        }
+
+        guard let bolt = hook.hookTo else {
+            return false
+        }
+
+        let newPositionVector = Vector(point: sprite.node.position)
+        let boltPositionVector = Vector(point: bolt.node.position)
+        let ropeLength = newPositionVector.distance(to: boltPositionVector)
+        if ropeLength < minRopeLength {
+            return true
+        }
+
+        return false
+    }
+
+
     // MARK: - Rope Utility
+
     private func adjustRope(
         sprite: SpriteComponent,
         bolt: SpriteComponent,
         type: HookSystemAction
     ) {
-        let newPosition = updateSpritePosition(sprite: sprite, bolt: bolt, type: type)
-        let newPositionVector = Vector(point: newPosition)
-        let boltPositionVector = Vector(point: bolt.node.position)
-        let ropeLength = newPositionVector.distance(to: boltPositionVector)
-        if  isWithinRopeLimit(length: ropeLength) {
-            print("WithinRopeLimit")
-            if type == .lengthen && !isCollidingWithPlatform(sprite: sprite) {
-                 sprite.node.position = newPosition
-            } else if type == .shorten {
-                 sprite.node.position = newPosition
-            }
+        let newPosition = getNewSpritePosition(sprite: sprite, bolt: bolt, type: type)
+
+        if type == .lengthen && !isCollidingWithPlatform(sprite: sprite) {
+            sprite.node.position = newPosition
+        } else if type == .shorten {
+            sprite.node.position = newPosition
         }
     }
 
-    private func updateSpritePosition(
+    private func getNewSpritePosition(
         sprite: SpriteComponent,
         bolt: SpriteComponent,
         type: HookSystemAction
@@ -178,8 +198,8 @@ class HookSystem: System, HookSystemProtocol {
     private func getHorizontalBoltDisplacement(
         for type: HookSystemAction
     ) -> (RightBoltDisplacement, LeftBoltDisplacement) {
-        var rightBoltDisplacement = -5
-        var leftBoltDisplacement = 5
+        var rightBoltDisplacement = -3
+        var leftBoltDisplacement = 3
 
         if type == .lengthen {
             rightBoltDisplacement *= -1
@@ -192,8 +212,8 @@ class HookSystem: System, HookSystemProtocol {
     private func getVerticalBoltDisplacement(
         for type: HookSystemAction
     ) -> (AboveBoltDisplacement, BelowBoltDisplacement) {
-        var aboveBoltDisplacement = -5
-        var belowBoltDisplacement = 5
+        var aboveBoltDisplacement = -3
+        var belowBoltDisplacement = 3
 
         if type == .lengthen {
             aboveBoltDisplacement *= -1
@@ -201,10 +221,6 @@ class HookSystem: System, HookSystemProtocol {
         }
 
         return (aboveBoltDisplacement, belowBoltDisplacement)
-    }
-
-    private func isWithinRopeLimit(length: Double) -> Bool {
-        return length > minRopeLength && length < maxRopeLength
     }
 
     private func isCollidingWithPlatform(sprite: SpriteComponent) -> Bool {

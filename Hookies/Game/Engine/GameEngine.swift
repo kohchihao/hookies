@@ -201,6 +201,14 @@ class GameEngine {
             return
         }
 
+        guard let hookSystem = hookSystem else {
+            return
+        }
+
+        guard !hookSystem.isShorterThanMin(for: currentPlayer) else {
+            return
+        }
+
         guard let initialVelocity = sprite.node.physicsBody?.velocity else {
             return
         }
@@ -210,15 +218,13 @@ class GameEngine {
         }
         delegate?.playerDidUnhook(from: hookDelegateModel)
 
-        guard let hookSystem = hookSystem else {
-            return
-        }
-
         // TODO: Broadcast to socket
 
-        // hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite, type: .deactivate)
+        let adjusted = hookSystem.adjustLength(from: currentPlayer, type: .shorten)
 
-        hookSystem.adjustLength(from: currentPlayer, type: .shorten)
+        if !adjusted {
+            return
+        }
         guard let hookDelegateModel1 = createHookDelegateModel(from: hook) else {
             return
         }
@@ -254,9 +260,12 @@ class GameEngine {
 
         // TODO: Broadcast to socket
 
-        // hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite, type: .deactivate)
+        let adjusted = hookSystem.adjustLength(from: currentPlayer, type: .lengthen )
 
-        hookSystem.adjustLength(from: currentPlayer, type: .lengthen)
+        if !adjusted {
+            return
+        }
+
         guard let hookDelegateModel1 = createHookDelegateModel(from: hook) else {
             return
         }
