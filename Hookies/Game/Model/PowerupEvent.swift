@@ -8,5 +8,6 @@
 
 protocol PowerupEvent {
     var powerupPos: Vector { get }
+    var powerupEventType: PowerupEventType { get }
     var powerupType: PowerupType { get }
 }

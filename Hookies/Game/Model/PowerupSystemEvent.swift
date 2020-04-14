@@ -8,13 +8,13 @@
 
 struct PowerupSystemEvent: SystemEvent, PowerupEvent {
     let sprite: SpriteComponent
-    let eventType: GenericPlayerEvent
+    let powerupEventType: PowerupEventType
     let powerupPos: Vector
     let powerupType: PowerupType
 
-    init(sprite: SpriteComponent, eventType: GenericPlayerEvent, powerupPos: Vector, powerupType: PowerupType) {
+    init(sprite: SpriteComponent, powerupEventType: PowerupEventType, powerupPos: Vector, powerupType: PowerupType) {
         self.sprite = sprite
-        self.eventType = eventType
+        self.powerupEventType = powerupEventType
         self.powerupPos = powerupPos
         self.powerupType = powerupType
     }

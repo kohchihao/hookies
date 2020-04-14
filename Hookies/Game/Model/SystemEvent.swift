@@ -8,5 +8,4 @@
 
 protocol SystemEvent {
     var sprite: SpriteComponent { get }
-    var eventType: GenericPlayerEvent { get }
 }
