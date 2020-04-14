@@ -9,10 +9,11 @@
 import Foundation
 import SpriteKit
 
-// TODO: Player fly too high = die
-// TODO: Player fly behind starting point = die
-
-/// A player dies only if he goes too low. Below a fixed horizontal line.
+/// A player dies only if he
+/// Death condition
+///  - Below fixed horizontal line
+///  - Above fixed horizontal line
+///  - Behind starting line
 
 protocol HealthSystemProtocol {
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool
@@ -24,13 +25,16 @@ protocol HealthSystemProtocol {
 
 class HealthSystem: System, HealthSystemProtocol {
 
-    private let deathHorizontalLine = CGFloat(-500)
+    private let deathLowerHorizontalLine = CGFloat(-500)
     private let spawnHorizontalLine = CGFloat(200)
+    private let deathUpperHorizontalLine = CGFloat(500)
 
     private var platforms: [SpriteComponent]
+    private var startLine: SpriteComponent
 
-    init(platforms: [SpriteComponent]) {
+    init(platforms: [SpriteComponent], startLine: SpriteComponent) {
         self.platforms = platforms
+        self.startLine = startLine
     }
 
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool {
@@ -38,7 +42,9 @@ class HealthSystem: System, HealthSystemProtocol {
     }
 
     func isPlayerAlive(for position: CGPoint) -> Bool {
-        if position.y <= deathHorizontalLine {
+        if position.y <= deathLowerHorizontalLine
+            || position.y >= deathUpperHorizontalLine
+            || position.x < startLine.node.position.x {
             return false
         }
         return true
