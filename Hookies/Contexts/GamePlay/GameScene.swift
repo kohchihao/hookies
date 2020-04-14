@@ -349,12 +349,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleGrapplingHookBtnUp() {
-        print("Button swiping upwards")
         gameEngine?.applyShortenActionToCurrentPlayer()
     }
 
     private func handleGrapplingHookBtnDown() {
-        print("Button swiping downwards")
         gameEngine?.applyLengthenActionToCurrentPlayer()
     }
 
