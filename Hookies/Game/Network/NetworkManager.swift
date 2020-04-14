@@ -9,6 +9,8 @@
 import SpriteKit
 import Network
 
+/// Handles Network Communications
+
 protocol NetworkManagerProtocol {
     func set(gameId: String)
 }
@@ -19,6 +21,7 @@ class NetworkManager: NetworkManagerProtocol {
     private(set) var gameId: String?
     private(set) var currentPlayerId: String?
     private(set) var deviceStatus: DeviceStatus?
+    private var otherPlayersId = Set<String>()
     private var playersSprite = [String: SpriteComponent]()
 
     private init() {
@@ -87,8 +90,8 @@ class NetworkManager: NetworkManagerProtocol {
         }
 
         API.shared.gameplay.connect(roomId: gameId, completion: { otherPlayersId in
-            for _ in otherPlayersId {
-                NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
+            for otherPlayerId in otherPlayersId {
+                self.handleOtherPlayerJoinEvent(with: otherPlayerId)
             }
         })
 
@@ -170,14 +173,44 @@ class NetworkManager: NetworkManagerProtocol {
 
     // TODO: Add Selector for Collection
 
-    // MARK: - Socket Subsciptions
+    // MARK: - Socket Subscriptions
 
     private func setupSocketSubscriptions() {
+        subscribeToOtherPlayersState()
         subscribeToGenericPlayerEvent()
-
-//        subscribeToOtherPlayersState()
 //        subscribeToPowerupCollection()
 //        subscribeToPowerupEvent()
+    }
+
+    private func subscribeToOtherPlayersState() {
+        API.shared.gameplay.subscribeToPlayersConnection(listener: { userConnection in
+            switch userConnection.state {
+            case .connected:
+                let isNewUser = !self.otherPlayersId.contains(userConnection.uid)
+
+                if isNewUser {
+                    self.handleOtherPlayerJoinEvent(with: userConnection.uid)
+                } else {
+                    guard let otherPlayerSprite = self.playersSprite[userConnection.uid] else {
+                        return
+                    }
+
+                    NotificationCenter.default.post(
+                        name: .receivedOtherPlayerRejoinEvent,
+                        object: self,
+                        userInfo: ["data": otherPlayerSprite])
+                }
+            case .disconnected:
+                guard let otherPlayerSprite = self.playersSprite[userConnection.uid] else {
+                    return
+                }
+
+                NotificationCenter.default.post(
+                    name: .receivedOtherPlayerDisconnectedEvent,
+                    object: self,
+                    userInfo: ["data": otherPlayerSprite])
+            }
+        })
     }
 
     private func subscribeToGenericPlayerEvent() {
@@ -225,5 +258,13 @@ class NetworkManager: NetworkManagerProtocol {
         playerSprite.node.physicsBody?.velocity = CGVector(vector: velocity)
 
         return GenericSystemEvent(sprite: playerSprite, eventType: genericPlayerEventData.type)
+    }
+
+    // MARK: - Other Player Join Event Handler
+
+    private func handleOtherPlayerJoinEvent(with playerId: String) {
+        NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
+
+        otherPlayersId.insert(playerId)
     }
 }
