@@ -57,14 +57,13 @@ class GameEngine {
 
         let platformsSprite = initialisePlatforms(platforms)
 
-        self.healthSystem = HealthSystem(platforms: platformsSprite)
         self.userConnectionSystem = UserConnectionSystem()
-
         self.hookSystem = HookSystem(bolts: boltsSprite)
         self.closestBoltSystem = ClosestBoltSystem(bolts: boltsSprite)
 
         let cannonSprite = createCannonSprite(from: cannon)
         self.cannonSystem = CannonSystem(cannon: cannonSprite)
+        self.healthSystem = HealthSystem(platforms: platformsSprite, startLine: cannonSprite)
 
         let finishingLineSprite = createFinishingLineSprite(from: finishingLine)
         self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
