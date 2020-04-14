@@ -11,6 +11,8 @@ enum GenericPlayerEvent: String, CaseIterable, StringRepresentable {
     case shotFromCannon
     case jumpAction
     case playerDied
+    case hook
+    case unhook
 
     var stringValue: String {
         return self.rawValue

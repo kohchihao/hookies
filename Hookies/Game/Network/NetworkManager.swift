@@ -6,7 +6,7 @@
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
-import Foundation
+import SpriteKit
 import Network
 
 protocol NetworkManagerProtocol {
@@ -91,6 +91,8 @@ class NetworkManager: NetworkManagerProtocol {
                 NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
             }
         })
+
+        setupSocketSubscriptions()
     }
 
     // MARK: - Add Players Mappings
@@ -128,7 +130,11 @@ class NetworkManager: NetworkManagerProtocol {
         let position = Vector(point: playerAction.sprite.node.position)
         let velocity = Vector(vector: playerAction.sprite.node.physicsBody?.velocity)
 
-        return GenericPlayerEventData(playerId: currentPlayerId, position: position, velocity: velocity, type: playerAction.eventType)
+        return GenericPlayerEventData(
+            playerId: currentPlayerId,
+            position: position,
+            velocity: velocity,
+            type: playerAction.eventType)
     }
 
     // MARK: - Broadcast Powerup
@@ -163,4 +169,61 @@ class NetworkManager: NetworkManagerProtocol {
     }
 
     // TODO: Add Selector for Collection
+
+    // MARK: - Socket Subsciptions
+
+    private func setupSocketSubscriptions() {
+        subscribeToGenericPlayerEvent()
+
+//        subscribeToOtherPlayersState()
+//        subscribeToPowerupCollection()
+//        subscribeToPowerupEvent()
+    }
+
+    private func subscribeToGenericPlayerEvent() {
+        API.shared.gameplay.subscribeToGenericPlayerEvent(listener: { genericPlayerEventData in
+
+            guard let genericSystemEvent = self.createGenericSystemEvent(from: genericPlayerEventData) else {
+                return
+            }
+
+            let notificationData = ["data": genericSystemEvent]
+
+            switch genericPlayerEventData.type {
+            case .shotFromCannon:
+                NotificationCenter.default.post(name: .receivedLaunchAction, object: self, userInfo: notificationData)
+            case .jumpAction:
+                NotificationCenter.default.post(name: .receivedJumpAction, object: self, userInfo: notificationData)
+            case .playerDied:
+                NotificationCenter.default.post(name: .receivedRespawnAction, object: self, userInfo: notificationData)
+            case .reachedFinishedLine:
+                NotificationCenter.default.post(
+                    name: .receivedReachedFinishLineAction,
+                    object: self,
+                    userInfo: notificationData)
+            case .hook:
+                NotificationCenter.default.post(name: .receivedHookAction, object: self, userInfo: notificationData)
+            case .unhook:
+                NotificationCenter.default.post(name: .receivedUnookAction, object: self, userInfo: notificationData)
+            }
+        })
+    }
+
+    private func createGenericSystemEvent(from genericPlayerEventData: GenericPlayerEventData) -> GenericSystemEvent? {
+        let playerId = genericPlayerEventData.playerData.playerId
+
+        guard let playerSprite = playersSprite[playerId] else {
+            print("NetworkManager - CreateGenericSystemEvent: No player sprite of \(playerId)")
+            return nil
+        }
+
+        guard let velocity = genericPlayerEventData.playerData.velocity else {
+            return nil
+        }
+
+        playerSprite.node.position = CGPoint(vector: genericPlayerEventData.playerData.position)
+        playerSprite.node.physicsBody?.velocity = CGVector(vector: velocity)
+
+        return GenericSystemEvent(sprite: playerSprite, eventType: genericPlayerEventData.type)
+    }
 }

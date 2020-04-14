@@ -682,6 +682,10 @@ class GameEngine {
                 self.respawn(otherPlayer: genericPlayerEventData)
             case .reachedFinishedLine:
                 self.stop(otherPlayer: genericPlayerEventData)
+            case .hook:
+                print("hook")
+            case .unhook:
+                print("unhook")
             }
         })
     }
