@@ -142,7 +142,6 @@ class HookSystem: System, HookSystemProtocol {
         return false
     }
 
-
     // MARK: - Rope Utility
 
     private func adjustRope(
@@ -343,23 +342,6 @@ class HookSystem: System, HookSystemProtocol {
         )
 
         return jointPin
-    }
-
-    private func attachToSameBolt(sprite: SpriteComponent, bolt: SpriteComponent) {
-        var positionYOffset = CGFloat(0)
-
-        let isAboveBolt = sprite.node.position.y > bolt.node.position.y
-        let isBelowBolt = sprite.node.position.y < bolt.node.position.y
-
-        if isAboveBolt {
-            positionYOffset = CGFloat(-15)
-        }
-
-        if isBelowBolt {
-            positionYOffset = CGFloat(15)
-        }
-
-        sprite.node.position = CGPoint(x: sprite.node.position.x, y: sprite.node.position.y + positionYOffset)
     }
 }
 
