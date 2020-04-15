@@ -6,12 +6,7 @@
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
-struct GenericSystemEvent: SystemEvent {
+struct GenericSystemEvent {
     let sprite: SpriteComponent
     let eventType: GenericPlayerEvent
-
-    init(sprite: SpriteComponent, eventType: GenericPlayerEvent) {
-        self.sprite = sprite
-        self.eventType = eventType
-    }
 }

@@ -1,14 +1,13 @@
 //
-//  PowerupSystemEvent.swift
+//  PowerupCollectionSystemEvent.swift
 //  Hookies
 //
-//  Created by JinYing on 14/4/20.
+//  Created by JinYing on 15/4/20.
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
-struct PowerupSystemEvent {
+struct PowerupCollectionSystemEvent {
     let sprite: SpriteComponent
-    let powerupEventType: PowerupEventType
     let powerupPos: Vector
     let powerupType: PowerupType
 }

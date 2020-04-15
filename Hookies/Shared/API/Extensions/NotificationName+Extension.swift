@@ -13,6 +13,7 @@ extension Notification.Name {
     static let gameConnectionEvent = Notification.Name("gameConnectionEvent")
     static let addPlayersMapping = Notification.Name("addPlayersMapping")
     static let broadcastGenericPlayerAction = Notification.Name("broadcastGenericPlayerAction")
+    static let broadcastPowerupCollectionEvent = Notification.Name("broadcastPowerupCollectionEvent")
     static let broadcastPowerupAction = Notification.Name("broadcastPowerupAction")
 
     // MARK: - NetworkManager to Systems

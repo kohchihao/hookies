@@ -79,6 +79,11 @@ class NetworkManager: NetworkManagerProtocol {
             selector: #selector(broadcastPowerup(_:)),
             name: .broadcastPowerupAction,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastPowerupCollection(_:)),
+            name: .broadcastPowerupCollectionEvent,
+            object: nil)
     }
 
     // MARK: - Game Connection
@@ -171,14 +176,43 @@ class NetworkManager: NetworkManagerProtocol {
         )
     }
 
-    // TODO: Add Selector for Collection
+    // MARK: - Broadcast Powerup Collection
+
+    @objc private func broadcastPowerupCollection(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: PowerupCollectionSystemEvent] {
+            guard let powerupCollectionSystemEvent = data["data"] else {
+                return
+            }
+
+            guard let powerupCollectionData = createPowerupCollectionData(from: powerupCollectionSystemEvent) else {
+                return
+            }
+
+            API.shared.gameplay.broadcastPowerupCollection(powerupCollection: powerupCollectionData)
+        }
+    }
+
+    private func createPowerupCollectionData(
+        from powerupCollectionSystemEvent: PowerupCollectionSystemEvent
+    ) -> PowerupCollectionData? {
+        guard let currentPlayerId = currentPlayerId else {
+            print("NetworkManager - createPowerupCollectionData: currentPlayerId is nil")
+            return nil
+        }
+
+        return PowerupCollectionData(
+            playerId: currentPlayerId,
+            node: powerupCollectionSystemEvent.sprite.node,
+            powerupPosition: powerupCollectionSystemEvent.powerupPos,
+            powerupType: powerupCollectionSystemEvent.powerupType)
+    }
 
     // MARK: - Socket Subscriptions
 
     private func setupSocketSubscriptions() {
         subscribeToOtherPlayersState()
         subscribeToGenericPlayerEvent()
-//        subscribeToPowerupCollection()
+        subscribeToPowerupCollection()
         subscribeToPowerupEvent()
     }
 
@@ -306,7 +340,38 @@ class NetworkManager: NetworkManagerProtocol {
             powerupType: powerupEventData.type)
     }
 
-    // TOOD: Subscribe to collection
+    // MARK: Powerup Collection
+
+    private func subscribeToPowerupCollection() {
+        API.shared.gameplay.subscribeToPowerupCollection(listener: { collectionData in
+            guard let powerupCollectionSystemEvent = self.createPowerCollectionSystemEvent(from: collectionData) else {
+                return
+            }
+
+            NotificationCenter.default.post(
+                name: .receviedPowerupCollectionEvent,
+                object: self,
+                userInfo: ["data": powerupCollectionSystemEvent])
+        })
+    }
+
+    private func createPowerCollectionSystemEvent(
+        from powerupCollectionData: PowerupCollectionData
+    ) -> PowerupCollectionSystemEvent? {
+        let playerId = powerupCollectionData.playerData.playerId
+
+        guard let playerSprite = playersSprite[playerId] else {
+            print("NetworkManager - createPowerCollectionSystemEvent: No player sprite of \(playerId)")
+            return nil
+        }
+
+        playerSprite.node.position = CGPoint(vector: powerupCollectionData.playerData.position)
+
+        return PowerupCollectionSystemEvent(
+            sprite: playerSprite,
+            powerupPos: powerupCollectionData.powerupPos,
+            powerupType: powerupCollectionData.type)
+    }
 
     // MARK: - Other Player Join Event Handler
 
