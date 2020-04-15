@@ -5,35 +5,49 @@ module.exports = class Room {
      * @param roomId - The id of this room.
      */
     constructor(roomId) {
-        this.userIds = new Set();
+        this.users = new Set();
         this.id = roomId;
     }
 
     /**
      *
-     * @param userId - String representing the user Id
+     * @param user - The user instance
      */
-    addUser(userId) {
-        this.userIds.add(userId);
+    addUser(user) {
+        if (this.hasUser(user)) {
+            return;
+        }
+        this.users.add(user);
     }
 
     /**
      *
-     * @param userId - String representing the user Id
+     * @param user - The user instance
      */
-    removeUser(userId) {
-        this.userIds.delete(userId);
+    removeUser(user) {
+        this.users.forEach(currentUser => {
+            if (currentUser.id === user.id) {
+                this.users.delete(currentUser);
+            }
+        });
+    }
+
+    /**
+     * @param user - The user instance
+     */
+    hasUser(user) {
+        return this.getIdOfUsers().includes(user.id);
     }
 
     /**
      *
-     * @param userId - String representing the user Id
+     * @return Array of user id in the room.
      */
-    hasUser(userId) {
-        return this.userIds.has(userId)
+    getIdOfUsers() {
+        return Array.from(this.users).map(user => user.id);
     }
 
     size() {
-        return this.userIds.size;
+        return this.users.size;
     }
 };

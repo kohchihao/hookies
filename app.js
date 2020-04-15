@@ -1,8 +1,10 @@
-const GameManager = require('./GameManager');
-const LobbyManager = require('./LobbyManager');
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+
+const GameManager = require('./GameManager');
+const LobbyManager = require('./LobbyManager');
+const User = require('./User');
 
 const gameManager = new GameManager();
 const lobbyManager = new LobbyManager();
@@ -10,79 +12,90 @@ const games = io.of('/games');
 const lobbies = io.of('/lobbies');
 
 lobbies.on('connection', socket => {
-	let currentLobbyId;
-	let currentUserId;
+	let currentLobby;
+	let currentUser;
 	console.log('connected to lobby');
 
 	socket.on('joinRoom', (data, ack) => {
-		currentLobbyId = data.roomId;
-		currentUserId = data.user;
-		const currentLobby = lobbyManager.addRoomIfDoesNotExist(currentLobbyId);
+		currentLobby = lobbyManager.addRoomIfDoesNotExist(data.roomId);
+		currentUser = new User(data.user);
 
-		if (currentLobby.hasUser(currentUserId)) {
-			ack(Array.from(currentLobby.userIds));
+		if (currentLobby.hasUser(currentUser)) {
+			ack(Array.from(currentLobby.getIdOfUsers()));
 			return;
 		}
 
-		currentLobby.addUser(currentUserId);
-		socket.join(currentLobbyId);
-		ack(Array.from(currentLobby.userIds));
-		socket.to(currentLobbyId).emit("joinedRoom", data.user)
+		currentLobby.addUser(currentUser);
+		socket.join(currentLobby.id);
+		ack(Array.from(currentLobby.getIdOfUsers()));
+		socket.to(currentLobby.id).emit("joinedRoom", data.user)
 	});
 
 	socket.on('disconnect', () => {
-		console.log('currentUserId', currentUserId, 'disconnected');
-		lobbyManager.removeUserFromRoom(currentUserId, currentLobbyId);
-		socket.to(currentLobbyId).emit("leftRoom", currentUserId)
+		console.log('currentUserId', currentUser.id, 'disconnected');
+		lobbyManager.removeUserFromRoom(currentUser, currentLobby);
+		socket.to(currentLobby.id).emit("leftRoom", currentUser.id);
 	});
 });
 
 
 games.on('connection', socket => {
-	let currentGameId;
-	let currentUserId;
+	let currentGame;
+	let currentUser;
 	console.log('connected to game');
 
 	socket.on('joinRoom', (data, ack) => {
-		currentGameId = data.roomId;
-		currentUserId = data.user;
-		const currentGame = gameManager.addRoomIfDoesNotExist(currentGameId);
+		currentGame = gameManager.addRoomIfDoesNotExist(data.roomId);
+		currentUser = new User(data.user);
 
-		if (currentGame.hasUser(currentUserId)) {
-			ack(Array.from(currentGame.userIds));
+		if (currentGame.hasUser(currentUser)) {
+			ack(Array.from(currentGame.getIdOfUsers()));
 			return;
 		}
 
-		currentGame.addUser(currentUserId);
-		socket.join(currentGameId);
-		ack(Array.from(currentGame.userIds));
-		socket.to(currentGameId).emit("joinedRoom", data.user)
+		currentGame.addUser(currentUser);
+		socket.join(currentGame.id);
+		ack(Array.from(currentGame.getIdOfUsers()));
+		socket.to(currentGame.id).emit("joinedRoom", currentUser.id)
 	});
 
 	socket.on('powerupCollected', (data) => {
 		console.log("powerup collected", data);
-		socket.to(currentGameId).emit("powerupCollected", data);
+		socket.to(currentGame.id).emit("powerupCollected", data);
 	});
 
 	socket.on('powerupEvent', (data) => {
 		console.log("powerup event detected", data);
-		socket.to(currentGameId).emit("powerupEvent", data);
+		socket.to(currentGame.id).emit("powerupEvent", data);
 	});
 
 	socket.on('hookActionChanged', (data) => {
 		console.log("hookActionChange", data);
-		socket.to(currentGameId).emit("hookActionChanged", data);
+		socket.to(currentGame.id).emit("hookActionChanged", data);
 	});
 
 	socket.on('genericPlayerEventDetected', (data) => {
 		console.log(data);
-		socket.to(currentGameId).emit('genericPlayerEventDetected', data)
+		socket.to(currentGame.id).emit('genericPlayerEventDetected', data)
+	});
+
+	socket.on('registerFinishGame', () => {
+		console.log("register finish game for ", currentUser.id);
+		gameManager.registerGameEndedFor(currentGame, currentUser);
+		if (currentGame.hasEnded) {
+			console.log("game ended");
+			games.to(currentGame.id).emit('gameEnded', currentGame.rankings.map(u => u.id));
+		}
 	});
 
 	socket.on('disconnect', () => {
-		console.log('currentUserId', currentUserId, 'disconnected');
-		gameManager.removeUserFromRoom(currentUserId, currentGameId);
-		socket.to(currentGameId).emit("leftRoom", currentUserId)
+		console.log('currentUserId', currentUser.id, 'disconnected');
+		gameManager.removeUserFromRoom(currentUser, currentGame);
+		socket.to(currentGame.id).emit("leftRoom", currentUser.id);
+		if (currentGame.hasEnded) {
+			console.log("game ended");
+			socket.in(currentGame.id).emit('gameEnded', currentGame.rankings.map(u => u.id));
+		}
 	});
 });
 

@@ -1,11 +1,10 @@
-const Room = require('./Room');
 
 module.exports = class RoomManager {
 
-    constructor() {
-        // Key: Socket ID String
-        // Value: Room instance.
-        this.rooms = {}
+    constructor(roomType) {
+        // Set of Room instance
+        this.rooms = new Set();
+        this.roomType = roomType;
     }
 
 
@@ -15,21 +14,21 @@ module.exports = class RoomManager {
      * @param roomId - The String representing the id associated to the room.
      */
     addRoomIfDoesNotExist(roomId) {
-        if (this.rooms[roomId] === undefined) {
-            const newRoom = new Room(roomId);
+        if (this.hasExistingRoomWithId(roomId)) {
+            return this.getRoom(roomId)
+        } else {
+            const newRoom = new this.roomType(roomId);
             this.addRoom(newRoom);
             return newRoom;
-        } else {
-            return this.getRoom(roomId);
         }
     }
 
     /**
      * Get the room instance with the associated roomId. If does not exist, returns undefined.
-     * @param roomId - The String representing the id associated to the room.
+     * @param roomId - The room instance
      */
     getRoom(roomId) {
-        return this.rooms[roomId];
+        return Array.from(this.rooms).find(room => room.id === roomId);
     }
 
     /**
@@ -37,33 +36,46 @@ module.exports = class RoomManager {
      * @param room - The Room instance to add
      */
     addRoom(room) {
-        this.rooms[room.id] = room;
+        if (this.hasExistingRoomWithId(room.id)) {
+            return;
+        }
+        this.rooms.add(room);
     }
 
     /**
      * Will remove the user from the room he is in.
-     * @param userId - The String representing the id of the user.
-     * @param roomId - the String representing the id of the room.
+     * @param user - The User instance.
+     * @param room - the Room instance.
      */
-    removeUserFromRoom(userId, roomId) {
-        const room = this.rooms[roomId];
-        if (room === undefined) {
+    removeUserFromRoom(user, room) {
+        if (room === undefined || !this.rooms.has(room)) {
             return;
         }
-        room.removeUser(userId);
+
+        room.removeUser(user);
         if (room.size() === 0) {
-            this.deleteRoom(roomId);
+            this.deleteRoom(room);
         }
     }
 
     /**
      * Will delete the room instance. If no such room exist, do nothing.
-     * @param roomId - The String representing the id of the room instance.
+     * @param room - The room instance to be deleted.
      */
-    deleteRoom(roomId) {
-        if (this.rooms[roomId] === undefined) {
-            return;
-        }
-        delete this.rooms[roomId];
+    deleteRoom(room) {
+        this.rooms.forEach(currentRoom => {
+            if (currentRoom.id === room.id) {
+                this.rooms.delete(currentRoom);
+            }
+        });
+    }
+
+    /**
+     * Will determine whether there exist a room with the provided id.
+     */
+    hasExistingRoomWithId(roomId) {
+        return Array.from(this.rooms).reduce((result, room) => {
+            return result || room.id === roomId;
+        }, false);
     }
 };
