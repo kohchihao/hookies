@@ -13,11 +13,13 @@ module.exports = class Game extends Room {
      * @param user - The User instance.
      */
     registerGameEndedFor(user) {
-        if (!this.hasUser(user) || this.rankings.includes(user) || this.hasEnded) {
+        if (!this.hasUser(user) || this.rankings.includes(user)) {
             return
         }
 
         this.rankings.push(user);
-        this.hasEnded = this.rankings.length === this.users.size;
+        if (!this.hasEnded) {
+            this.hasEnded = this.rankings.length === this.users.size;
+        }
     }
 };
