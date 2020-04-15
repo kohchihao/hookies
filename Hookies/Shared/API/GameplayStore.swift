@@ -38,6 +38,10 @@ class GameplayStore: SocketRoom {
         socket.emit("genericPlayerEventDetected", playerEvent)
     }
 
+    func registerFinishLineReached() {
+        socket.emit("registerFinishGame")
+    }
+
     func subscribeToPowerupCollection(listener: @escaping (PowerupCollectionData) -> Void) {
         socket.on("powerupCollected") { data, _ in
             guard !data.isEmpty, let powerupData = data[0] as? [String: Any] else {
@@ -83,6 +87,15 @@ class GameplayStore: SocketRoom {
             if let result = GenericPlayerEventData(data: model) {
                 listener(result)
             }
+        }
+    }
+
+    func subscribeToGameEndEvent(listener: @escaping ([String]) -> Void) {
+        socket.on("gameEnded") { data, _ in
+            guard !data.isEmpty, let ranking = data[0] as? [String] else {
+                return
+            }
+            listener(ranking)
         }
     }
 
