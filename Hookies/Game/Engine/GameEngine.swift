@@ -61,11 +61,17 @@ class GameEngine {
         self.hookSystem = HookSystem(bolts: boltsSprite)
         self.closestBoltSystem = ClosestBoltSystem(bolts: boltsSprite)
 
-        let cannonSprite = createCannonSprite(from: cannon)
+        self.setCannonSprite(to: cannon)
+        guard let cannonSprite = self.cannon.get(SpriteComponent.self) else {
+            return
+        }
         self.cannonSystem = CannonSystem(cannon: cannonSprite)
         self.healthSystem = HealthSystem(platforms: platformsSprite, startLine: cannonSprite)
 
-        let finishingLineSprite = createFinishingLineSprite(from: finishingLine)
+        self.setFinishingLineSprite(to: finishingLine)
+        guard let finishingLineSprite = self.finishingLine.get(SpriteComponent.self) else {
+            return
+        }
         self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
 
         setupTotalPlayers()
@@ -77,15 +83,14 @@ class GameEngine {
 
     // MARK: - Initialise Players
 
-    func setCurrentPlayer(id: String, position: CGPoint, image: String) -> SKSpriteNode {
+    func setCurrentPlayer(id: String, position: CGPoint, image: String) -> SKSpriteNode? {
         let player = PlayerEntity()
 
-        let sprite = SpriteComponent(parent: player)
+        guard let sprite = player.get(SpriteComponent.self) else {
+            return nil
+        }
         _ = spriteSystem.set(sprite: sprite, of: .player1, with: image, at: position)
         _ = spriteSystem.setPhysicsBody(to: sprite, of: .player1, rectangleOf: sprite.node.size)
-        player.addComponent(sprite)
-
-        addPlayerComponents(to: player)
 
         currentPlayerId = id
         currentPlayer = player
@@ -410,11 +415,14 @@ class GameEngine {
         for bolt in bolts {
             let boltEntity = BoltEntity()
 
-            let boltSprite = SpriteComponent(parent: boltEntity)
+            guard let boltSprite = boltEntity.get(SpriteComponent.self),
+                let translate = boltEntity.get(NonPhysicsTranslateComponent.self) else {
+                    print("GameEngine - initialisebolt: Components are nil")
+                    return boltsSprite
+            }
+
             _ = spriteSystem.set(sprite: boltSprite, to: bolt)
             _ = spriteSystem.setPhysicsBody(to: boltSprite, of: .bolt)
-
-            let translate = NonPhysicsTranslateComponent(parent: boltEntity)
 
             if bolt.name == "bolt_movable" {
                 bolt.physicsBody?.pinned = false
@@ -427,8 +435,6 @@ class GameEngine {
                     speed: 50,
                     endingAt: ending)
             }
-
-            boltEntity.addComponent(boltSprite)
 
             boltsSprite.append(boltSprite)
             self.bolts.append(boltEntity)
@@ -488,11 +494,16 @@ class GameEngine {
         for platform in platforms {
             let platformEntity = PlatformEntity()
 
-            let platformSprite = SpriteComponent(parent: platformEntity)
+            guard let platformSprite = platformEntity.get(SpriteComponent.self),
+                let translate = platformEntity.get(NonPhysicsTranslateComponent.self),
+                let rotate = platformEntity.get(RotateComponent.self)
+                else {
+                    print("GameEngine - initialisePlatforms: Components are nil")
+                    return platformsSprite
+            }
+
             _ = spriteSystem.set(sprite: platformSprite, to: platform)
 
-            let translate = NonPhysicsTranslateComponent(parent: platformEntity)
-            let rotate = RotateComponent(parent: platformEntity)
             if platform.name == "platform_movable" {
                 platform.physicsBody?.pinned = false
 
@@ -510,10 +521,6 @@ class GameEngine {
                     withAngle: 3.142)
             }
 
-            platformEntity.addComponent(platformSprite)
-            platformEntity.addComponent(translate)
-            platformEntity.addComponent(rotate)
-
             platformsSprite.append(platformSprite)
             self.platforms.append(platformEntity)
         }
@@ -523,25 +530,21 @@ class GameEngine {
 
     // MARK: - Cannon
 
-    private func createCannonSprite(from node: SKSpriteNode) -> SpriteComponent {
-        let sprite = SpriteComponent(parent: cannon)
+    private func setCannonSprite(to node: SKSpriteNode) {
+        guard let sprite = self.cannon.get(SpriteComponent.self) else {
+            return
+        }
         _ = spriteSystem.set(sprite: sprite, to: node)
-
-        cannon.addComponent(sprite)
-
-        return sprite
     }
 
     // MARK: - Finishing Line
 
-    private func createFinishingLineSprite(from node: SKSpriteNode) -> SpriteComponent {
-        let sprite = SpriteComponent(parent: finishingLine)
+    private func setFinishingLineSprite(to node: SKSpriteNode) {
+        guard let sprite = self.finishingLine.get(SpriteComponent.self) else {
+            return
+        }
         _ = spriteSystem.set(sprite: sprite, to: node)
         _ = spriteSystem.setPhysicsBody(to: sprite, of: .finishingLine, rectangleOf: sprite.node.size)
-
-        self.finishingLine.addComponent(sprite)
-
-        return sprite
     }
 
     // MARK: - Health
@@ -562,28 +565,21 @@ class GameEngine {
 
     // MARK: - Player helper methods
 
-    func addOtherPlayers(id: String, position: CGPoint, image: String) -> SKSpriteNode {
+    func addOtherPlayers(id: String, position: CGPoint, image: String) -> SKSpriteNode? {
         let otherPlayer = PlayerEntity()
 
-        let sprite = SpriteComponent(parent: otherPlayer)
+        guard let sprite = otherPlayer.get(SpriteComponent.self) else {
+            return nil
+        }
         let spriteType = getOtherPlayerSpriteType()
         _ = spriteSystem.set(sprite: sprite, of: spriteType, with: image, at: position)
         _ = spriteSystem.setPhysicsBody(to: sprite, of: spriteType, rectangleOf: sprite.node.size)
-        otherPlayer.addComponent(sprite)
-
-        addPlayerComponents(to: otherPlayer)
 
         otherPlayers[id] = otherPlayer
 
         finishingLineSystem.add(player: sprite)
 
         return sprite.node
-    }
-
-    private func addPlayerComponents(to player: PlayerEntity) {
-        let hook = HookComponent(parent: player)
-
-        player.addComponent(hook)
     }
 
     private func getOtherPlayerSpriteType() -> SpriteType {
@@ -869,7 +865,9 @@ class GameEngine {
                 return
             }
 
-            let node = self.addOtherPlayers(id: id, position: initialPosition, image: costume.stringValue)
+            guard let node = self.addOtherPlayers(id: id, position: initialPosition, image: costume.stringValue) else {
+                return
+            }
 
             self.delegate?.otherPlayerIsConnected(otherPlayer: node)
         })
