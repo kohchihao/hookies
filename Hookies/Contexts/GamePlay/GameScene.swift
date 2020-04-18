@@ -12,6 +12,7 @@ import Dispatch
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var gameplayId: String?
+    var players = [Player]()
     private var currentPlayerId: String?
     private var currentPlayer: SKSpriteNode?
 
@@ -209,17 +210,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
-        let boltsNode = getGameObject(of: GameObjectType.bolt)
-        let powerupNodes = getGameObject(of: .powerup)
-        let platformsNode = getGameObject(of: GameObjectType.platform)
+        let boltObjects = getGameObjects(of: .bolt)
+        let powerupObjects = getGameObjects(of: .powerup)
+        let platformObjects = getGameObjects(of: .platform)
+
+        let powerupNodes = getGameNodes(of: .powerup)
 
         gameEngine = GameEngine(
-            gameId: gameplayId,
             cannon: cannonNode,
             finishingLine: finishingLineNode,
-            bolts: boltsNode,
-            powerups: powerupNodes,
-            platforms: platformsNode
+            bolts: boltObjects,
+            powerups: powerupObjects,
+            platforms: platformObjects,
+            players: players
         )
 
         gameEngine?.delegate = self
@@ -229,15 +232,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.powerups = powerupNodes
     }
 
-    private func getGameObject(of type: GameObjectType) -> [SKSpriteNode] {
-        var objects = [SKSpriteNode]()
+    private func getGameNodes(of type: GameObjectType) -> [SKSpriteNode] {
+        var nodes = [SKSpriteNode]()
+
+        for node in self["//" + type.rawValue + "*"] {
+            guard let spriteNode = node as? SKSpriteNode else {
+                return nodes
+            }
+
+            nodes.append(spriteNode)
+        }
+
+        return nodes
+    }
+
+    private func getGameObjects(of type: GameObjectType) -> [GameObject] {
+        var objects = [GameObject]()
 
         for object in self["//" + type.rawValue + "*"] {
             guard let objectNode = object as? SKSpriteNode else {
                 return objects
             }
 
-            objects.append(objectNode)
+            let gameObject = GameObject(node: objectNode, type: type)
+            objects.append(gameObject)
         }
 
         return objects
@@ -474,8 +492,8 @@ extension GameScene: GameEngineDelegate {
         disableGameButtons()
     }
 
-    func otherPlayerIsConnected(otherPlayer: SKSpriteNode) {
-        addChild(otherPlayer)
+    func addPlayer(with sprite: SKSpriteNode) {
+        addChild(sprite)
     }
 
     func currentPlayerIsReconnected() {

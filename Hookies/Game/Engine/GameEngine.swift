@@ -9,7 +9,6 @@
 import SpriteKit
 
 class GameEngine {
-    private let gameId: String
     private var gameState: GameState = .waiting
     private var currentPlayerId: String?
     private var totalNumberOfPlayers = 0
@@ -41,15 +40,18 @@ class GameEngine {
     private var finishingLine = FinishingLineEntity()
     private var netTraps = [SKSpriteNode: NetTrapPowerupEntity]()
 
+    private var startPosition: CGPoint
+
     init(
-        gameId: String,
+        // TODO: Change cannon and finishingLine to GameObject
         cannon: SKSpriteNode,
         finishingLine: SKSpriteNode,
-        bolts: [SKSpriteNode],
-        powerups: [SKSpriteNode],
-        platforms: [SKSpriteNode]
+        bolts: [GameObject],
+        powerups: [GameObject],
+        platforms: [GameObject],
+        players: [Player]
     ) {
-        self.gameId = gameId
+        startPosition = cannon.position
 
         let boltsSprite = initialiseBolts(bolts)
         initialisePowerups(powerups)
@@ -74,31 +76,9 @@ class GameEngine {
         }
         self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
 
-        setupTotalPlayers()
-        connectToGame()
-        subscribeToGameConnection()
+        initialisePlayers(players)
         setupMultiplayer()
         gameObjectMovementSystem.update()
-    }
-
-    // MARK: - Initialise Players
-
-    func setCurrentPlayer(id: String, position: CGPoint, image: String) -> SKSpriteNode? {
-        let player = PlayerEntity()
-
-        guard let sprite = player.get(SpriteComponent.self) else {
-            return nil
-        }
-        _ = spriteSystem.set(sprite: sprite, of: .player1, with: image, at: position)
-        _ = spriteSystem.setPhysicsBody(to: sprite, of: .player1, rectangleOf: sprite.node.size)
-
-        currentPlayerId = id
-        currentPlayer = player
-
-        deadlockSystem = DeadlockSystem(sprite: sprite)
-        finishingLineSystem.add(player: sprite)
-
-        return sprite.node
     }
 
     // MARK: - Launch Current Player
@@ -370,7 +350,7 @@ class GameEngine {
 
     // MARK: - Bolts
 
-    private func initialiseBolts(_ bolts: [SKSpriteNode]) -> [SpriteComponent] {
+    private func initialiseBolts(_ bolts: [GameObject]) -> [SpriteComponent] {
         var boltsSprite = [SpriteComponent]()
 
         for bolt in bolts {
@@ -382,13 +362,13 @@ class GameEngine {
                     return boltsSprite
             }
 
-            _ = spriteSystem.set(sprite: boltSprite, to: bolt)
+            _ = spriteSystem.set(sprite: boltSprite, to: bolt.node)
             _ = spriteSystem.setPhysicsBody(to: boltSprite, of: .bolt)
 
-            if bolt.name == "bolt_movable" {
-                bolt.physicsBody?.pinned = false
+            if bolt.node.name == "bolt_movable" {
+                bolt.node.physicsBody?.pinned = false
 
-                let ending = CGPoint(x: bolt.position.x + 300, y: bolt.position.y)
+                let ending = CGPoint(x: bolt.node.position.x + 300, y: bolt.node.position.y)
                 gameObjectMovementSystem.setTranslationLine(
                     to: boltSprite,
                     with: translate,
@@ -406,8 +386,8 @@ class GameEngine {
 
     // MARK: - Power ups
 
-    private func initialisePowerups(_ powerups: [SKSpriteNode]) {
-        powerups.forEach({ addNewRandomPowerup(for: $0) })
+    private func initialisePowerups(_ powerups: [GameObject]) {
+        powerups.forEach({ addNewRandomPowerup(for: $0.node) })
     }
 
     private func addNewRandomPowerup(for spriteNode: SKSpriteNode) {
@@ -449,7 +429,7 @@ class GameEngine {
 
     // MARK: - Platform
 
-    private func initialisePlatforms(_ platforms: [SKSpriteNode]) -> [SpriteComponent] {
+    private func initialisePlatforms(_ platforms: [GameObject]) -> [SpriteComponent] {
         var platformsSprite = [SpriteComponent]()
 
         for platform in platforms {
@@ -463,12 +443,12 @@ class GameEngine {
                     return platformsSprite
             }
 
-            _ = spriteSystem.set(sprite: platformSprite, to: platform)
+            _ = spriteSystem.set(sprite: platformSprite, to: platform.node)
 
-            if platform.name == "platform_movable" {
-                platform.physicsBody?.pinned = false
+            if platform.node.name == "platform_movable" {
+                platform.node.physicsBody?.pinned = false
 
-                let ending = CGPoint(x: platform.position.x + 200, y: platform.position.y)
+                let ending = CGPoint(x: platform.node.position.x + 200, y: platform.node.position.y)
                 gameObjectMovementSystem.setTranslationLine(
                     to: platformSprite,
                     with: translate,
@@ -520,23 +500,48 @@ class GameEngine {
         }
     }
 
-    // MARK: - Player helper methods
+    // MARK: - Initialise Players
 
-    func addOtherPlayers(id: String, position: CGPoint, image: String) -> SKSpriteNode? {
-        let otherPlayer = PlayerEntity()
+    private func initialisePlayers(_ players: [Player]) {
+        for player in players {
+            if player.isCurrentPlayer {
+                setCurrentPlayer(player)
+            } else {
+                setOtherPlayer(player)
+            }
+        }
+    }
 
-        guard let sprite = otherPlayer.get(SpriteComponent.self) else {
-            return nil
+    private func setCurrentPlayer(_ player: Player) {
+        let playerEntity = PlayerEntity()
+
+        guard let sprite = playerEntity.get(SpriteComponent.self) else {
+            return
+        }
+        _ = spriteSystem.set(sprite: sprite, of: .player1, with: player.costumeType.stringValue, at: startPosition)
+        _ = spriteSystem.setPhysicsBody(to: sprite, of: .player1, rectangleOf: sprite.node.size)
+
+        currentPlayer = playerEntity
+
+        deadlockSystem = DeadlockSystem(sprite: sprite)
+        finishingLineSystem.add(player: sprite)
+
+        delegate?.addPlayer(with: sprite.node)
+    }
+
+    private func setOtherPlayer(_ player: Player) {
+        let playerEntity = PlayerEntity()
+
+        guard let sprite = playerEntity.get(SpriteComponent.self) else {
+            return
         }
         let spriteType = getOtherPlayerSpriteType()
-        _ = spriteSystem.set(sprite: sprite, of: spriteType, with: image, at: position)
+        _ = spriteSystem.set(sprite: sprite, of: spriteType, with: player.costumeType.stringValue, at: startPosition)
         _ = spriteSystem.setPhysicsBody(to: sprite, of: spriteType, rectangleOf: sprite.node.size)
-
-        otherPlayers[id] = otherPlayer
 
         finishingLineSystem.add(player: sprite)
 
-        return sprite.node
+        delegate?.addPlayer(with: sprite.node)
     }
 
     private func getOtherPlayerSpriteType() -> SpriteType {
@@ -597,41 +602,20 @@ class GameEngine {
 
     // MARK: - General Game
 
-    private func setupTotalPlayers() {
-        API.shared.lobby.get(lobbyId: self.gameId, completion: { lobby, error in
-            guard error == nil else {
-                return
-            }
-
-            guard let lobby = lobby else {
-                return
-            }
-
-            self.totalNumberOfPlayers = lobby.playersId.count
-        })
-    }
-
-    private func connectToGame() {
-        API.shared.gameplay.connect(roomId: gameId, completion: { otherPlayersId in
-            for otherPlayerId in otherPlayersId {
-                self.setupOtherPlayer(of: otherPlayerId)
-            }
-        })
-    }
-
-    private func subscribeToGameConnection() {
-        API.shared.gameplay.subscribeToRoomConnection(roomId: gameId, listener: { connectionState in
-            switch connectionState {
-            case .connected:
-                let isPlayerReconnecting = self.currentPlayerId != nil
-                if isPlayerReconnecting {
-                    self.delegate?.currentPlayerIsReconnected()
-                }
-            case .disconnected:
-                self.delegate?.currentPlayerIsDisconnected()
-            }
-        })
-    }
+    // TODO: Move to UserConnectionSystem
+//    private func subscribeToGameConnection() {
+//        API.shared.gameplay.subscribeToRoomConnection(roomId: gameId, listener: { connectionState in
+//            switch connectionState {
+//            case .connected:
+//                let isPlayerReconnecting = self.currentPlayerId != nil
+//                if isPlayerReconnecting {
+//                    self.delegate?.currentPlayerIsReconnected()
+//                }
+//            case .disconnected:
+//                self.delegate?.currentPlayerIsDisconnected()
+//            }
+//        })
+//    }
 
     private func updateClosestBolt() {
         guard let currentPlayerPosition = currentPlayer?.get(SpriteComponent.self)?.node.position else {
@@ -751,28 +735,6 @@ class GameEngine {
             }
         }
         return nil
-    }
-
-    private func setupOtherPlayer(of id: String) {
-        API.shared.lobby.get(lobbyId: self.gameId, completion: { lobby, error in
-            guard error == nil else {
-                return
-            }
-
-            guard let costume = lobby?.costumesId[id] else {
-                return
-            }
-
-            guard let initialPosition = self.cannon.get(SpriteComponent.self)?.node.position else {
-                return
-            }
-
-            guard let node = self.addOtherPlayers(id: id, position: initialPosition, image: costume.stringValue) else {
-                return
-            }
-
-            self.delegate?.otherPlayerIsConnected(otherPlayer: node)
-        })
     }
 
 //    private func reconnectOtherPlayer(of id: String) {
