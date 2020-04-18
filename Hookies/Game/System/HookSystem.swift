@@ -43,6 +43,8 @@ class HookSystem: System, HookSystemProtocol {
     private var bolts: [SpriteComponent]
     private let minRopeLength = 100.0
 
+    weak var delegate: HookSystemDelegate?
+
     init(bolts: [SpriteComponent]) {
         self.hooks = Set<HookComponent>()
         self.bolts = bolts
@@ -92,6 +94,46 @@ class HookSystem: System, HookSystemProtocol {
         hook.line = line
         hook.anchorLineJointPin = anchorLineJointPin
         hook.parentLineJointPin = spriteLineJointPin
+
+        delegate?.hookActionApplied(sprite: sprite, velocity: velocity, hook: hook)
+
+        return true
+    }
+
+    // MARK: - Unhook
+
+    /// Unook for single player
+    func unhook(entity: Entity) -> Bool {
+        guard let sprite = entity.get(SpriteComponent.self) else {
+            return false
+        }
+
+        guard let velocity = sprite.node.physicsBody?.velocity else {
+            return false
+        }
+
+        broadcast(with: sprite, of: .unhook)
+        return unhook(entity: entity, at: sprite.node.position, with: velocity)
+    }
+
+    /// Unhook for multiplayer
+    private func unhook(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
+        guard let sprite = entity.get(SpriteComponent.self),
+            let hook = entity.get(HookComponent.self)
+            else {
+            return false
+        }
+
+        delegate?.unhookActionApplied(hook: hook)
+
+        sprite.node.position = position
+        sprite.node.physicsBody?.velocity = velocity
+
+        hook.prevHookTo = hook.hookTo
+        hook.hookTo = nil
+        hook.line = nil
+        hook.anchorLineJointPin = nil
+        hook.parentLineJointPin = nil
 
         return true
     }
@@ -271,42 +313,6 @@ class HookSystem: System, HookSystemProtocol {
         }
 
         return false
-    }
-
-    // MARK: - Unhook
-
-    /// Unook for single player
-    func unhook(entity: Entity) -> Bool {
-        guard let sprite = entity.get(SpriteComponent.self) else {
-            return false
-        }
-
-        guard let velocity = sprite.node.physicsBody?.velocity else {
-            return false
-        }
-
-        broadcast(with: sprite, of: .unhook)
-        return unhook(entity: entity, at: sprite.node.position, with: velocity)
-    }
-
-    /// Unhook for multiplayer
-    private func unhook(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
-        guard let sprite = entity.get(SpriteComponent.self),
-            let hook = entity.get(HookComponent.self)
-            else {
-            return false
-        }
-
-        sprite.node.position = position
-        sprite.node.physicsBody?.velocity = velocity
-
-        hook.prevHookTo = hook.hookTo
-        hook.hookTo = nil
-        hook.line = nil
-        hook.anchorLineJointPin = nil
-        hook.parentLineJointPin = nil
-
-        return true
     }
 
     // MARK: - Add Initial Velocity

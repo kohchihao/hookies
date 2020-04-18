@@ -77,6 +77,7 @@ class GameEngine {
         self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
 
         self.startSystem.delegate = self
+        self.hookSystem?.delegate = self
         self.userConnectionSystem?.delegate = self
         self.finishingLineSystem.delegate = self
         self.powerupSystem.delegate = self
@@ -109,31 +110,7 @@ class GameEngine {
             return
         }
 
-        guard let hook = currentPlayer.get(HookComponent.self),
-             let sprite = currentPlayer.get(SpriteComponent.self)
-            else {
-            return
-        }
-
-        guard let hookSystem = hookSystem,
-            let initialVelocity = sprite.node.physicsBody?.velocity
-            else {
-            return
-        }
-
-        let hasHook = hookSystem.hook(from: currentPlayer)
-
-        if !hasHook {
-            return
-        }
-
-        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
-            return
-        }
-
-        delegate?.playerDidHook(to: hookDelegateModel)
-        hookSystem.applyInitialVelocity(sprite: sprite, velocity: initialVelocity)
-        hookSystem.boostVelocity(to: currentPlayer)
+        _ = hookSystem?.hook(from: currentPlayer)
     }
 
     func applyUnhookActionToCurrentPlayer() {
@@ -141,23 +118,7 @@ class GameEngine {
             return
         }
 
-        guard let hook = currentPlayer.get(HookComponent.self) else {
-            return
-        }
-
-        guard let hookDelegateModel = createHookDelegateModel(from: hook),
-            let hookSystem = hookSystem
-            else {
-            return
-        }
-
-        let hasUnhook = hookSystem.unhook(entity: currentPlayer)
-
-        if !hasUnhook {
-            return
-        }
-
-        delegate?.playerDidUnhook(from: hookDelegateModel)
+        _ = hookSystem?.unhook(entity: currentPlayer)
     }
 
     // MARK: - Current Player Adjust Action
@@ -556,21 +517,6 @@ class GameEngine {
         return SpriteType.otherPlayers[typeIndex]
     }
 
-    private func createHookDelegateModel(from hook: HookComponent) -> HookDelegateModel? {
-        guard let line = hook.line,
-            let anchorLineJointPin = hook.anchorLineJointPin,
-            let playerLineJointPin = hook.parentLineJointPin
-            else {
-                return nil
-        }
-
-        return HookDelegateModel(
-            line: line,
-            anchorLineJointPin: anchorLineJointPin,
-            playerLineJointPin: playerLineJointPin
-        )
-    }
-
     // MARK: - Powerup Activation
 
     private func playerPowerupAction(with type: PowerupType,
@@ -705,31 +651,46 @@ class GameEngine {
         }
         return nil
     }
-
-    // TODO: Shift to extension
-//    private func applyHookAction(on hook: HookActionData) {
-//        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
-//            return
-//        }
-//
-//        delegate?.playerDidHook(to: hookDelegateModel)
-//        hookSystem?.applyInitialVelocity(sprite: spriteComponent, velocity: CGVector(vector: velocity))
-//        hookSystem?.boostVelocity(to: otherPlayer)
-//    }
-
-    // TODO: Shift to extension
-//    private func applyUnhookAction(on hook: HookActionData) {
-//        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
-//            return
-//        }
-//
-//        delegate?.playerDidUnhook(from: hookDelegateModel)
-//    }
 }
 
 extension GameEngine: StartSystemDelegate {
     func isReadyToStart() {
         startCountdown()
+    }
+}
+
+extension GameEngine: HookSystemDelegate {
+    func hookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent) {
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+
+        delegate?.playerDidHook(to: hookDelegateModel)
+        hookSystem?.applyInitialVelocity(sprite: sprite, velocity: velocity)
+        hookSystem?.boostVelocity(to: sprite.parent)
+    }
+
+    func unhookActionApplied(hook: HookComponent) {
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+
+        delegate?.playerDidUnhook(from: hookDelegateModel)
+    }
+
+    private func createHookDelegateModel(from hook: HookComponent) -> HookDelegateModel? {
+        guard let line = hook.line,
+            let anchorLineJointPin = hook.anchorLineJointPin,
+            let playerLineJointPin = hook.parentLineJointPin
+            else {
+                return nil
+        }
+
+        return HookDelegateModel(
+            line: line,
+            anchorLineJointPin: anchorLineJointPin,
+            playerLineJointPin: playerLineJointPin
+        )
     }
 }
 
