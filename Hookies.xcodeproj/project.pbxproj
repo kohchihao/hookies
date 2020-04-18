@@ -192,6 +192,7 @@
 		D923C13C241A42B5004AB20A /* CannotDieMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D923C13B241A42B5004AB20A /* CannotDieMap.sks */; };
 		D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C13D241A4346004AB20A /* AppDelegate.swift */; };
 		D92F9405241D2E8A0021DBE4 /* DeadlockMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D92F9404241D2E890021DBE4 /* DeadlockMap.sks */; };
+		D979D8FD244ACC3700830E8C /* StartSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D979D8FC244ACC3700830E8C /* StartSystem.swift */; };
 		D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D5241E71C000A6DB7F /* MapType.swift */; };
 		D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */; };
 		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
@@ -425,6 +426,7 @@
 		D923C13B241A42B5004AB20A /* CannotDieMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = CannotDieMap.sks; sourceTree = "<group>"; };
 		D923C13D241A4346004AB20A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D92F9404241D2E890021DBE4 /* DeadlockMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeadlockMap.sks; sourceTree = "<group>"; };
+		D979D8FC244ACC3700830E8C /* StartSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSystem.swift; sourceTree = "<group>"; };
 		D9A123D5241E71C000A6DB7F /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloatingLandMap.sks; sourceTree = "<group>"; };
 		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
@@ -999,6 +1001,7 @@
 				11CC843B2439E748006D3A8F /* SpriteSystem.swift */,
 				11CC843D2439E748006D3A8F /* System.swift */,
 				11CC84382439E748006D3A8F /* UserConnectionSystem.swift */,
+				D979D8FC244ACC3700830E8C /* StartSystem.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1442,6 +1445,7 @@
 				119A3E3E242C73230064B034 /* Constants.swift in Sources */,
 				1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */,
 				1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */,
+				D979D8FD244ACC3700830E8C /* StartSystem.swift in Sources */,
 				11CC851C2439E991006D3A8F /* SocialCoordinator.swift in Sources */,
 				110B3CF42420759700840C4E /* HookPowerup.swift in Sources */,
 				11CC84B22439E81A006D3A8F /* Background.swift in Sources */,
