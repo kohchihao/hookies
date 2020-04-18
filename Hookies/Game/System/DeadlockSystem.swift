@@ -28,6 +28,11 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
 
     init(sprite: SpriteComponent) {
         self.sprite = sprite
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedJumpAction(_:)),
+            name: .receivedJumpAction,
+            object: nil)
     }
 
     func checkIfStuck() -> Bool {
@@ -41,15 +46,19 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
        return isVelocityNearlyZero || isInfiniteBouncing
     }
 
+    /// Resolve deadlock for single player
     func resolveDeadlock() {
         guard let velocity = sprite.node.physicsBody?.velocity else {
             return
         }
 
+        let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .jumpAction)
+        broadcast(genericSystemEvent)
         return resolveDeadlock(for: sprite, at: sprite.node.position, with: velocity)
     }
 
-    func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
+    /// Resolve deadlock for multi player
+    internal func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
         sprite.node.position = position
         sprite.node.physicsBody?.velocity = velocity
 
@@ -86,12 +95,40 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
         }
         return false
     }
+
+    /// Broadcast
+    private func broadcast(_ genericSystemEvent: GenericSystemEvent) {
+        NotificationCenter.default.post(
+            name: .broadcastGenericPlayerAction,
+            object: self,
+            userInfo: ["data": genericSystemEvent])
+    }
 }
 
 // MARK: - Broadcast Update
+// TODO: REMOVE
 
 extension DeadlockSystem: GenericPlayerEventBroadcast {
     func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
         broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .jumpAction)
+    }
+}
+
+// MARK: - Networking
+
+extension DeadlockSystem {
+
+    @objc private func receivedJumpAction(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: GenericSystemEvent] {
+            guard let genericSystemEvent = data["data"] else {
+                return
+            }
+
+            let sprite = genericSystemEvent.sprite
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+            resolveDeadlock(for: sprite, at: sprite.node.position, with: velocity)
+        }
     }
 }
