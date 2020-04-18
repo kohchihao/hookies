@@ -245,7 +245,7 @@ class PreGameLobbyViewController: UIViewController {
             })
         }
         dispatch.notify(queue: .main, execute: {
-            return completion(players)
+            completion(players)
         })
     }
 

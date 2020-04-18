@@ -20,7 +20,14 @@ struct Social {
         self.userId = userId
     }
 
-    init(userId: String, friends: [String], inRequests: [String], outRequests: [String], inInvites: [String], outInvites: [String]) {
+    init(
+        userId: String,
+        friends: [String],
+        inRequests: [String],
+        outRequests: [String],
+        inInvites: [String],
+        outInvites: [String]
+    ) {
         self.userId = userId
         self.friends = friends
         self.incomingRequests = inRequests
