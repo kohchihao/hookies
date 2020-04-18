@@ -17,5 +17,11 @@ class PlayerEntity: Entity {
 
     convenience init() {
         self.init(components: [])
+
+        let hook = HookComponent(parent: self)
+        let sprite = SpriteComponent(parent: self)
+
+        addComponent(hook)
+        addComponent(sprite)
     }
 }

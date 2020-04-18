@@ -17,5 +17,13 @@ class PlatformEntity: Entity {
 
     convenience init() {
         self.init(components: [])
+
+        let sprite = SpriteComponent(parent: self)
+        let translate = NonPhysicsTranslateComponent(parent: self)
+        let rotate = RotateComponent(parent: self)
+
+        addComponent(sprite)
+        addComponent(translate)
+        addComponent(rotate)
     }
 }

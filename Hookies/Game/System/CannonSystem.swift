@@ -10,7 +10,6 @@ import SpriteKit
 
 protocol CannonSystemProtocol {
     func launch(player: SpriteComponent, with velocity: CGVector)
-    func launch(otherPlayer: SpriteComponent, with velocity: CGVector)
 }
 
 class CannonSystem: System, CannonSystemProtocol {
@@ -18,23 +17,55 @@ class CannonSystem: System, CannonSystemProtocol {
 
     init(cannon: SpriteComponent) {
         self.cannon = cannon
+        registerNotificationObservers()
     }
 
+    /// Launch for single player
     func launch(player: SpriteComponent, with velocity: CGVector) {
+        broadcast(with: player)
+
         player.node.physicsBody?.isDynamic = true
         player.node.physicsBody?.applyImpulse(velocity)
     }
 
-    func launch(otherPlayer: SpriteComponent, with velocity: CGVector) {
+    /// Launch for multiplayer
+    private func launch(otherPlayer: SpriteComponent, with velocity: CGVector) {
         otherPlayer.node.physicsBody?.isDynamic = true
         otherPlayer.node.physicsBody?.velocity = velocity
     }
 }
 
-// MARK: - Broadcast Update
+// MARK: - Networking
 
-extension CannonSystem: GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
-        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .shotFromCannon)
+extension CannonSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedLaunchAction(_:)),
+            name: .receivedLaunchAction,
+            object: nil)
+    }
+
+    private func broadcast(with sprite: SpriteComponent) {
+        let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .shotFromCannon)
+        NotificationCenter.default.post(
+            name: .broadcastGenericPlayerAction,
+            object: self,
+            userInfo: ["data": genericSystemEvent])
+    }
+
+    @objc private func receivedLaunchAction(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: GenericSystemEvent] {
+            guard let genericSystemEvent = data["data"] else {
+                return
+            }
+
+            let sprite = genericSystemEvent.sprite
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+
+            launch(otherPlayer: sprite, with: velocity)
+        }
     }
 }
