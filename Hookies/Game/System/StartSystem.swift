@@ -24,7 +24,7 @@ class StartSystem: System, StartSystemProtocol {
     private var totalNumberOfPlayers = 1 {
         didSet {
             if totalNumberOfPlayers == expectedNumberOfPlayers {
-                startSystemDelegate?.isReadyToStart()
+                delegate?.isReadyToStart()
             }
         }
     }
@@ -34,7 +34,7 @@ class StartSystem: System, StartSystemProtocol {
     }
 
     private var players: [Player: SpriteComponent] = [:]
-    weak var startSystemDelegate: StartSystemDelegate?
+    weak var delegate: StartSystemDelegate?
 
     init() {
         NotificationCenter.default.addObserver(
@@ -58,7 +58,7 @@ class StartSystem: System, StartSystemProtocol {
 
     func getReady() {
         if expectedNumberOfPlayers == 1 {
-            startSystemDelegate?.isReadyToStart()
+            delegate?.isReadyToStart()
         }
         NotificationCenter.default.post(
             name: .gameConnectionEvent,
