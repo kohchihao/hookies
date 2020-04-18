@@ -105,14 +105,6 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         return false
     }
 
-    private func registerNotificationObservers() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(receivedReachedFinishLineAction(_:)),
-            name: .receivedReachedFinishLineAction,
-            object: nil)
-    }
-
     /// Stop for multiplayer
     private func stop(player: SpriteComponent, at position: CGPoint, with velocity: CGVector) -> Bool {
         guard let systemPlayer = players.first(where: { $0 == player }) else {
@@ -132,6 +124,14 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
 // MARK: Networking
 
 extension FinishingLineSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedReachedFinishLineAction(_:)),
+            name: .receivedReachedFinishLineAction,
+            object: nil)
+    }
+
     private func broadcast(with sprite: SpriteComponent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .reachedFinishedLine)
         NotificationCenter.default.post(

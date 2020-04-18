@@ -27,11 +27,8 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
 
     init(sprite: SpriteComponent) {
         self.sprite = sprite
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(receivedJumpAction(_:)),
-            name: .receivedJumpAction,
-            object: nil)
+
+        registerNotificationObservers()
     }
 
     func checkIfStuck() -> Bool {
@@ -96,7 +93,15 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
 }
 
 // MARK: - Networking
+
 extension DeadlockSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedJumpAction(_:)),
+            name: .receivedJumpAction,
+            object: nil)
+    }
 
     /// Broadcast
     private func broadcast(with sprite: SpriteComponent) {

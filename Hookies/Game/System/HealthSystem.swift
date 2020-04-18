@@ -34,11 +34,8 @@ class HealthSystem: System, HealthSystemProtocol {
     init(platforms: [SpriteComponent], startLine: SpriteComponent) {
         self.platforms = platforms
         self.startLine = startLine
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(receivedRespawnAction(_:)),
-            name: .receivedRespawnAction,
-            object: nil)
+
+        registerNotificationObservers()
     }
 
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool {
@@ -111,6 +108,15 @@ class HealthSystem: System, HealthSystemProtocol {
 // MARK: - Networking
 
 extension HealthSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+        self,
+        selector: #selector(receivedRespawnAction(_:)),
+        name: .receivedRespawnAction,
+        object: nil)
+
+    }
+
     /// Broadcast
     private func broadcast(with sprite: SpriteComponent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .playerDied)

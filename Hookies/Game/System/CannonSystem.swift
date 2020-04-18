@@ -28,14 +28,6 @@ class CannonSystem: System, CannonSystemProtocol {
         broadcast(with: player)
     }
 
-    private func registerNotificationObservers() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(receivedLaunchAction(_:)),
-            name: .receivedLaunchAction,
-            object: nil)
-    }
-
     /// Launch for multiplayer
     private func launch(otherPlayer: SpriteComponent, with velocity: CGVector) {
         otherPlayer.node.physicsBody?.isDynamic = true
@@ -46,6 +38,14 @@ class CannonSystem: System, CannonSystemProtocol {
 // MARK: - Networking
 
 extension CannonSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedLaunchAction(_:)),
+            name: .receivedLaunchAction,
+            object: nil)
+    }
+
     private func broadcast(with sprite: SpriteComponent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .shotFromCannon)
         NotificationCenter.default.post(
