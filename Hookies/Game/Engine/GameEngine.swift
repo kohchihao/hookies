@@ -430,7 +430,9 @@ class GameEngine {
     private func setCurrentPlayer(_ player: Player) {
         let playerEntity = PlayerEntity()
 
-        guard let sprite = playerEntity.get(SpriteComponent.self) else {
+        guard let sprite = playerEntity.get(SpriteComponent.self),
+            let hook = playerEntity.get(HookComponent.self)
+            else {
             return
         }
         _ = spriteSystem.set(sprite: sprite, of: .player1, with: player.costumeType.stringValue, at: startPosition)
@@ -438,7 +440,7 @@ class GameEngine {
 
         currentPlayer = playerEntity
 
-        deadlockSystem = DeadlockSystem(sprite: sprite)
+        deadlockSystem = DeadlockSystem(sprite: sprite, hook: hook)
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
 
