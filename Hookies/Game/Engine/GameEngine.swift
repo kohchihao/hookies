@@ -300,7 +300,7 @@ class GameEngine {
             return
         }
 
-        deadlockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
+        deadlockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite) //TODO: REMOVE
         deadlockSystem?.resolveDeadlock()
     }
 
@@ -558,7 +558,7 @@ class GameEngine {
             guard let currentPlayerId = currentPlayerId else {
                 return
             }
-            healthSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
+            healthSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite) //TODO: REMOVE
             _ = healthSystem.respawnPlayer(for: sprite)
         }
     }
@@ -936,6 +936,7 @@ class GameEngine {
         )
     }
 
+    // TODO: REMOVE
     private func respawn(otherPlayer: GenericPlayerEventData) {
         guard let sprite = otherPlayers[otherPlayer.playerData.playerId]?.getSpriteComponent() else {
             return
