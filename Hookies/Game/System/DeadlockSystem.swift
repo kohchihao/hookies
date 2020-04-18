@@ -115,7 +115,6 @@ extension DeadlockSystem: GenericPlayerEventBroadcast {
 }
 
 // MARK: - Networking
-
 extension DeadlockSystem {
 
     @objc private func receivedJumpAction(_ notification: Notification) {
