@@ -44,47 +44,39 @@ class GameEngine {
     private var startPosition: CGPoint
 
     init(
-        // TODO: Change cannon and finishingLine to GameObject
-        cannon: SKSpriteNode,
-        finishingLine: SKSpriteNode,
+        cannon: GameObject,
+        finishingLine: GameObject,
         bolts: [GameObject],
         powerups: [GameObject],
         platforms: [GameObject],
         players: [Player]
     ) {
-        startPosition = cannon.position
+        startPosition = cannon.node.position
 
         let boltsSprite = initialiseBolts(bolts)
-        self.initialisePowerups(powerups)
-
         let platformsSprite = initialisePlatforms(platforms)
+        initialisePowerups(powerups)
 
-        self.userConnectionSystem = UserConnectionSystem()
-        self.hookSystem = HookSystem(bolts: boltsSprite)
-        self.closestBoltSystem = ClosestBoltSystem(bolts: boltsSprite)
+        userConnectionSystem = UserConnectionSystem()
+        hookSystem = HookSystem(bolts: boltsSprite)
+        closestBoltSystem = ClosestBoltSystem(bolts: boltsSprite)
+        healthSystem = HealthSystem(platforms: platformsSprite, startPosition: startPosition)
 
-        self.setCannonSprite(to: cannon)
-        guard let cannonSprite = self.cannon.get(SpriteComponent.self) else {
-            return
-        }
-        self.cannonSystem = CannonSystem(cannon: cannonSprite)
-        self.healthSystem = HealthSystem(platforms: platformsSprite, startLine: cannonSprite)
+        initialiseCannon(cannon)
+        initialiseFinishingLine(finishingLine)
 
-        self.setFinishingLineSprite(to: finishingLine)
-        guard let finishingLineSprite = self.finishingLine.get(SpriteComponent.self) else {
-            return
-        }
-        self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
+        initialiseDelegates()
+        initialisePlayers(players)
+        startSystem.getReady()
+        gameObjectMovementSystem.update()
+    }
 
+    private func initialiseDelegates() {
         self.startSystem.delegate = self
         self.hookSystem?.delegate = self
         self.userConnectionSystem?.delegate = self
         self.finishingLineSystem.delegate = self
         self.powerupSystem.delegate = self
-
-        self.initialisePlayers(players)
-        self.startSystem.getReady()
-        self.gameObjectMovementSystem.update()
     }
 
     // MARK: - Launch Current Player
@@ -233,12 +225,12 @@ class GameEngine {
 
         if currentPlayer != nil && contactedPlayer === currentPlayer! {
             let eventPosition = Vector(point: trap.position)
-            powerupSystem.broadcastUpdate(gameId: gameId,
-                                          playerId: playerId,
-                                          player: contactedPlayer,
-                                          powerupType: powerupComponent.type,
-                                          eventType: .netTrapped,
-                                          eventPos: eventPosition)
+//            powerupSystem.broadcastUpdate(gameId: gameId,
+//                                          playerId: playerId,
+//                                          player: contactedPlayer,
+//                                          powerupType: powerupComponent.type,
+//                                          eventType: .netTrapped,
+//                                          eventPos: eventPosition)
         }
     }
 
@@ -257,6 +249,10 @@ class GameEngine {
         var boltsSprite = [SpriteComponent]()
 
         for bolt in bolts {
+            guard bolt.type == .bolt || bolt.type == .boltMovable else {
+                fatalError("Failed to initialise bolt")
+            }
+
             let boltEntity = BoltEntity()
 
             guard let boltSprite = boltEntity.get(SpriteComponent.self),
@@ -336,6 +332,10 @@ class GameEngine {
         var platformsSprite = [SpriteComponent]()
 
         for platform in platforms {
+            guard platform.type == .platform || platform.type == .platformMovable else {
+                fatalError("Failed to initialise platform")
+            }
+
             let platformEntity = PlatformEntity()
 
             guard let platformSprite = platformEntity.get(SpriteComponent.self),
@@ -374,21 +374,33 @@ class GameEngine {
 
     // MARK: - Cannon
 
-    private func setCannonSprite(to node: SKSpriteNode) {
+    private func initialiseCannon(_ cannon: GameObject) {
+        guard cannon.type == .cannon else {
+            fatalError("Failed to initalise cannon")
+        }
+
         guard let sprite = self.cannon.get(SpriteComponent.self) else {
             return
         }
-        _ = spriteSystem.set(sprite: sprite, to: node)
+        _ = spriteSystem.set(sprite: sprite, to: cannon.node)
+
+        self.cannonSystem = CannonSystem(cannon: sprite)
     }
 
     // MARK: - Finishing Line
 
-    private func setFinishingLineSprite(to node: SKSpriteNode) {
+    private func initialiseFinishingLine(_ finishingLine: GameObject) {
+        guard finishingLine.type == .finishingLine else {
+            fatalError("Failed to initalise finishing line")
+        }
+
         guard let sprite = self.finishingLine.get(SpriteComponent.self) else {
             return
         }
-        _ = spriteSystem.set(sprite: sprite, to: node)
+        _ = spriteSystem.set(sprite: sprite, to: finishingLine.node)
         _ = spriteSystem.setPhysicsBody(to: sprite, of: .finishingLine, rectangleOf: sprite.node.size)
+
+        self.finishingLineSystem = FinishingLineSystem(finishingLine: sprite)
     }
 
     // MARK: - Health
@@ -466,10 +478,10 @@ class GameEngine {
             return
         }
         powerupSystem.activate(powerupType: type, for: playerSprite)
-        powerupSystem.broadcastUpdate(gameId: gameId, playerId: playerId,
-                                      player: player,
-                                      powerupType: type,
-                                      eventType: .activate)
+//        powerupSystem.broadcastUpdate(gameId: gameId, playerId: playerId,
+//                                      player: player,
+//                                      powerupType: type,
+//                                      eventType: .activate)
     }
 
     // MARK: - Deadlock Detection

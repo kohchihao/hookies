@@ -199,12 +199,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Initialise Game Engine
 
     private func initialiseGameEngine() {
-        guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode,
-            let finishingLineNode = self.childNode(withName: "//ending_line") as? SKSpriteNode
-            else {
-            return
-        }
-
+        let cannonObject = getGameObjects(of: .cannon)[0]
+        let finishingLineObject = getGameObjects(of: .finishingLine)[0]
         let boltObjects = getGameObjects(of: .bolt)
         let powerupObjects = getGameObjects(of: .powerup)
         let platformObjects = getGameObjects(of: .platform)
@@ -212,8 +208,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let powerupNodes = getGameNodes(of: .powerup)
 
         gameEngine = GameEngine(
-            cannon: cannonNode,
-            finishingLine: finishingLineNode,
+            cannon: cannonObject,
+            finishingLine: finishingLineObject,
             bolts: boltObjects,
             powerups: powerupObjects,
             platforms: platformObjects,
@@ -222,8 +218,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         gameEngine?.delegate = self
 
-        self.cannon = cannonNode
-        self.finishingLine = finishingLineNode
+        self.cannon = cannonObject.node
+        self.finishingLine = finishingLineObject.node
         self.powerups = powerupNodes
     }
 

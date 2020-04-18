@@ -29,11 +29,11 @@ class HealthSystem: System, HealthSystemProtocol {
     private let deathUpperHorizontalLine = CGFloat(500)
 
     private var platforms: [SpriteComponent]
-    private var startLine: SpriteComponent
+    private var startPosition: CGPoint
 
-    init(platforms: [SpriteComponent], startLine: SpriteComponent) {
+    init(platforms: [SpriteComponent], startPosition: CGPoint) {
         self.platforms = platforms
-        self.startLine = startLine
+        self.startPosition = startPosition
 
         registerNotificationObservers()
     }
@@ -45,7 +45,7 @@ class HealthSystem: System, HealthSystemProtocol {
     func isPlayerAlive(for position: CGPoint) -> Bool {
         if position.y <= deathLowerHorizontalLine
             || position.y >= deathUpperHorizontalLine
-            || position.x < startLine.node.position.x {
+            || position.x < startPosition.x {
             return false
         }
         return true
