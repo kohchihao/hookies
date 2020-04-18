@@ -28,6 +28,7 @@ class GameEngine {
     private var deadlockSystem: DeadlockSystem?
     private var healthSystem: HealthSystem?
     private var userConnectionSystem: UserConnectionSystem?
+    private var startSystem = StartSystem()
 
     // MARK: - Entity
 
@@ -54,8 +55,7 @@ class GameEngine {
         startPosition = cannon.position
 
         let boltsSprite = initialiseBolts(bolts)
-        initialisePowerups(powerups)
-        powerupSystem.delegate = self
+        self.initialisePowerups(powerups)
 
         let platformsSprite = initialisePlatforms(platforms)
 
@@ -76,9 +76,12 @@ class GameEngine {
         }
         self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
 
-        initialisePlayers(players)
-        setupMultiplayer()
-        gameObjectMovementSystem.update()
+        self.startSystem.startSystemDelegate = self
+        self.powerupSystem.delegate = self
+
+        self.initialisePlayers(players)
+        self.startSystem.getReady()
+        self.gameObjectMovementSystem.update()
     }
 
     // MARK: - Launch Current Player
@@ -340,7 +343,6 @@ class GameEngine {
     // MARK: - Update
 
     func update(time: TimeInterval) {
-        startCountdown()
         checkCurrentPlayerHealth()
         updateClosestBolt()
         checkDeadlock()
@@ -525,6 +527,7 @@ class GameEngine {
 
         deadlockSystem = DeadlockSystem(sprite: sprite)
         finishingLineSystem.add(player: sprite)
+        startSystem.add(player: player, with: sprite)
 
         delegate?.addPlayer(with: sprite.node)
     }
@@ -540,6 +543,7 @@ class GameEngine {
         _ = spriteSystem.setPhysicsBody(to: sprite, of: spriteType, rectangleOf: sprite.node.size)
 
         finishingLineSystem.add(player: sprite)
+        startSystem.add(player: player, with: sprite)
 
         delegate?.addPlayer(with: sprite.node)
     }
@@ -647,16 +651,12 @@ class GameEngine {
             return
         }
 
-        if gameState != .waiting {
+        guard gameState == .waiting else {
             return
         }
 
-        let isAllPlayerInGame = totalNumberOfPlayers != 0 && totalNumberOfPlayers == otherPlayers.count + 1
-
-        if isAllPlayerInGame {
-            delegate?.startCountdown()
-            gameState = .launching
-        }
+        delegate?.startCountdown()
+        gameState = .launching
     }
 
     // MARK: - Multiplayer
@@ -782,6 +782,12 @@ class GameEngine {
 //
 //        delegate?.playerDidUnhook(from: hookDelegateModel)
 //    }
+}
+
+extension GameEngine: StartSystemDelegate {
+    func isReadyToStart() {
+        startCountdown()
+    }
 }
 
 extension GameEngine: PowerupSystemDelegate {
