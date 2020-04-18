@@ -50,7 +50,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         initialiseCamera()
         initialiseCountdownMessage()
         initialiseGameEngine()
-        initialiseCurrentPlayer()
     }
 
     // MARK: - Update
@@ -200,10 +199,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Initialise Game Engine
 
     private func initialiseGameEngine() {
-        guard let gameplayId = gameplayId else {
-            return
-        }
-
         guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode,
             let finishingLineNode = self.childNode(withName: "//ending_line") as? SKSpriteNode
             else {
@@ -259,42 +254,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         return objects
-    }
-
-    // MARK: - Initialise current player
-
-    private func initialiseCurrentPlayer() {
-        guard let gameplayId = gameplayId else {
-            return
-        }
-
-        // Getting costume
-        API.shared.lobby.get(lobbyId: gameplayId, completion: { lobby, error in
-            guard error == nil else {
-                return
-            }
-
-            guard let currentPlayerId = self.currentPlayerId,
-                let cannon = self.cannon
-                else {
-                return
-            }
-
-            guard let costume = lobby?.costumesId[currentPlayerId] else {
-                return
-            }
-
-            guard let currentPlayer = self.gameEngine?.setCurrentPlayer(
-                id: currentPlayerId,
-                position: cannon.position,
-                image: costume.stringValue
-                ) else {
-                    return
-            }
-
-            self.currentPlayer = currentPlayer
-            self.addChild(currentPlayer)
-        })
     }
 
     // MARK: - Centering camera
@@ -375,6 +334,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     // MARK: - Current player activating power up
+
     private func handleCurrentPlayerActivatePowerup() {
         powerupButton?.touchBeganHandler = handlePowerupBtnTouch
         powerupButton?.touchEndHandler = handlePowerupBtnTouchEnd

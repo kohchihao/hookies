@@ -97,12 +97,6 @@ class GameEngine {
         cannonSystem.launch(player: sprite, with: velocity)
     }
 
-    // MARK: - Start Game
-
-    func startGame() {
-        gameState = .start
-    }
-
     // MARK: - Current Player Hook Action
 
     func applyHookActionToCurrentPlayer() {
@@ -601,6 +595,10 @@ class GameEngine {
 extension GameEngine: StartSystemDelegate {
     func isReadyToStart() {
         startCountdown()
+    }
+
+    func startGame() {
+        gameState = .start
     }
 }
 
