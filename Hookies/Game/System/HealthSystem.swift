@@ -108,15 +108,8 @@ class HealthSystem: System, HealthSystemProtocol {
 
 }
 
-// MARK: - Broadcast Update
-// TODO: REMOVE
-extension HealthSystem: GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
-        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .playerDied)
-    }
-}
-
 // MARK: - Networking
+
 extension HealthSystem {
     /// Broadcast
     private func broadcast(with sprite: SpriteComponent) {
