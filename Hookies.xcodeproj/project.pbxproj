@@ -502,6 +502,7 @@
 		1127C5572415DAA900A78AA0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D979D8FB244AB82400830E8C /* Extensions */,
 				D9F180652432E617009D7A52 /* Enumerations */,
 				119A3E3A242C72B90064B034 /* Config */,
 				785B79EA242527A0001D7028 /* Util */,
@@ -784,7 +785,6 @@
 			children = (
 				119C5420241691DF00F27D87 /* DocumentReference.swift */,
 				119C5422241691EF00F27D87 /* Query.swift */,
-				2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1034,6 +1034,14 @@
 				D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */,
 			);
 			path = Maps;
+			sourceTree = "<group>";
+		};
+		D979D8FB244AB82400830E8C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D9A123C8241E6B6500A6DB7F /* Maps */ = {
