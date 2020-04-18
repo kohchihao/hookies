@@ -157,7 +157,9 @@ class NetworkManager: NetworkManagerProtocol {
                 return
             }
 
-            API.shared.gameplay.broadcastPowerupEvent(powerupEvent: powerupEventData)
+            if (powerupEventData.playerData.playerId == currentPlayerId) {
+                API.shared.gameplay.broadcastPowerupEvent(powerupEvent: powerupEventData)
+            }
         }
     }
 
@@ -336,8 +338,8 @@ class NetworkManager: NetworkManagerProtocol {
         return PowerupSystemEvent(
             sprite: playerSprite,
             powerupEventType: powerupEventData.eventType,
-            powerupPos: powerupEventData.eventPos,
-            powerupType: powerupEventData.type)
+            powerupType: powerupEventData.type,
+            powerupPos: powerupEventData.eventPos)
     }
 
     // MARK: Powerup Collection

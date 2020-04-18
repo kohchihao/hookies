@@ -9,6 +9,6 @@
 struct PowerupSystemEvent {
     let sprite: SpriteComponent
     let powerupEventType: PowerupEventType
-    let powerupPos: Vector
     let powerupType: PowerupType
+    let powerupPos: Vector?
 }

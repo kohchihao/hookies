@@ -21,8 +21,30 @@ class PowerupEntity: Entity {
 }
 
 extension PowerupEntity {
-    static func createSpecializedEntity(for type: PowerupType
+    static func createSpecializedEntity(for type: PowerupType,
+                                        at position: CGPoint
     ) -> PowerupEntity {
+        let powerup = createEntity(for: type)
+        let powerupSprite = SpriteComponent(parent: powerup)
+        let collectableComponent = CollectableComponent(parent: powerup,
+                                                        position: position)
+        let powerupComponent = PowerupComponent(parent: powerup,
+                                                type: type)
+        powerup.addComponent(powerupSprite)
+        powerup.addComponent(collectableComponent)
+        powerup.addComponent(powerupComponent)
+        return powerup
+    }
+
+    static func addActivatedSpriteIfExist(powerup: Entity) {
+        if powerup is NetTrapPowerupEntity {
+            let spriteComponent = SpriteComponent(parent: powerup)
+            spriteComponent.node = PowerupType.netTrap.node
+            powerup.addComponent(spriteComponent)
+        }
+    }
+
+    private static func createEntity(for type: PowerupType) -> PowerupEntity {
         switch type {
         case .cutHook:
             return createCutHookEntity()
@@ -34,14 +56,6 @@ extension PowerupEntity {
             return createShieldEntity()
         case .stealPowerup:
             return createStealPowerupEntity()
-        }
-    }
-
-    static func addActivatedSpriteIfExist(powerup: PowerupEntity) {
-        if powerup is NetTrapPowerupEntity {
-            let spriteComponent = SpriteComponent(parent: powerup)
-            spriteComponent.node = PowerupType.netTrap.node
-            powerup.addComponent(spriteComponent)
         }
     }
 

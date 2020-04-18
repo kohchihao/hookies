@@ -54,7 +54,6 @@
 		11CC84452439E748006D3A8F /* DeadlockSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84392439E748006D3A8F /* DeadlockSystem.swift */; };
 		11CC84462439E748006D3A8F /* FinishingLineSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC843A2439E748006D3A8F /* FinishingLineSystem.swift */; };
 		11CC84472439E748006D3A8F /* SpriteSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC843B2439E748006D3A8F /* SpriteSystem.swift */; };
-		11CC84482439E748006D3A8F /* CollectableSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC843C2439E748006D3A8F /* CollectableSystem.swift */; };
 		11CC84492439E748006D3A8F /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC843D2439E748006D3A8F /* System.swift */; };
 		11CC844A2439E748006D3A8F /* CannonSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC843E2439E748006D3A8F /* CannonSystem.swift */; };
 		11CC844B2439E748006D3A8F /* PowerupSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC843F2439E748006D3A8F /* PowerupSystem.swift */; };
@@ -272,7 +271,6 @@
 		11CC84392439E748006D3A8F /* DeadlockSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeadlockSystem.swift; sourceTree = "<group>"; };
 		11CC843A2439E748006D3A8F /* FinishingLineSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishingLineSystem.swift; sourceTree = "<group>"; };
 		11CC843B2439E748006D3A8F /* SpriteSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpriteSystem.swift; sourceTree = "<group>"; };
-		11CC843C2439E748006D3A8F /* CollectableSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectableSystem.swift; sourceTree = "<group>"; };
 		11CC843D2439E748006D3A8F /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		11CC843E2439E748006D3A8F /* CannonSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CannonSystem.swift; sourceTree = "<group>"; };
 		11CC843F2439E748006D3A8F /* PowerupSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerupSystem.swift; sourceTree = "<group>"; };
@@ -989,7 +987,6 @@
 			children = (
 				11CC843E2439E748006D3A8F /* CannonSystem.swift */,
 				11CC84422439E748006D3A8F /* ClosestBoltSystem.swift */,
-				11CC843C2439E748006D3A8F /* CollectableSystem.swift */,
 				11CC84392439E748006D3A8F /* DeadlockSystem.swift */,
 				11CC843A2439E748006D3A8F /* FinishingLineSystem.swift */,
 				11CC84412439E748006D3A8F /* GameObjectMovementSystem.swift */,
@@ -1559,7 +1556,6 @@
 				11CC85032439E8E5006D3A8F /* LobbyPlayerView.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
 				11CC84C02439E832006D3A8F /* SpriteType.swift in Sources */,
-				11CC84482439E748006D3A8F /* CollectableSystem.swift in Sources */,
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
 				11CC84982439E7C0006D3A8F /* StealPowerupEntity.swift in Sources */,

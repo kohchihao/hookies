@@ -56,6 +56,14 @@ extension Entity {
         return nil
     }
 
+    func removeFirstComponent(of component: Component) {
+        guard let indexToRemove = components
+            .firstIndex(where: { $0 === component }) else {
+                return
+        }
+        components.remove(at: indexToRemove)
+    }
+
     func removeComponents<ComponentType: Component>(_: ComponentType.Type) {
         components.removeAll(where: { $0 is ComponentType })
     }
