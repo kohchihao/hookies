@@ -22,10 +22,10 @@ class CannonSystem: System, CannonSystemProtocol {
 
     /// Launch for single player
     func launch(player: SpriteComponent, with velocity: CGVector) {
+        broadcast(with: player)
+
         player.node.physicsBody?.isDynamic = true
         player.node.physicsBody?.applyImpulse(velocity)
-
-        broadcast(with: player)
     }
 
     /// Launch for multiplayer
