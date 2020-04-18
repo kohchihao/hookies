@@ -126,13 +126,7 @@ struct RequestManager {
                 fromUserId: fromUserId,
                 toUserId: toUserId
             ) { exists, senderSocial, recipientSocial  in
-                guard exists else {
-                    return
-                }
-                guard var sender = senderSocial else {
-                    return
-                }
-                guard var recipient = recipientSocial else {
+                guard exists, var sender = senderSocial, var recipient = recipientSocial else {
                     return
                 }
                 guard !sender.friends.contains(request.toUserId)

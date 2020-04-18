@@ -100,13 +100,7 @@ struct InviteManager {
                 RequestManager.checkUsersSocialExist(
                     fromUserId: fromUserId,
                     toUserId: toUserId) { exists, sender, recipient  in
-                        guard exists else {
-                            return
-                        }
-                        guard var sender = sender else {
-                            return
-                        }
-                        guard var recipient = recipient else {
+                        guard exists, var sender = sender, var recipient = recipient else {
                             return
                         }
                         self.checkInviteIsNotRepeated(
