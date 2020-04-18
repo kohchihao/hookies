@@ -264,7 +264,7 @@ class GameEngine {
             _ = spriteSystem.set(sprite: boltSprite, to: bolt.node)
             _ = spriteSystem.setPhysicsBody(to: boltSprite, of: .bolt)
 
-            if bolt.node.name == "bolt_movable" {
+            if bolt.node.name == GameObjectType.boltMovable.rawValue {
                 bolt.node.physicsBody?.pinned = false
 
                 let ending = CGPoint(x: bolt.node.position.x + 300, y: bolt.node.position.y)
@@ -348,7 +348,7 @@ class GameEngine {
 
             _ = spriteSystem.set(sprite: platformSprite, to: platform.node)
 
-            if platform.node.name == "platform_movable" {
+            if platform.node.name == GameObjectType.platformMovable.rawValue {
                 platform.node.physicsBody?.pinned = false
 
                 let ending = CGPoint(x: platform.node.position.x + 200, y: platform.node.position.y)
@@ -512,32 +512,16 @@ class GameEngine {
         _ = closestBoltSystem?.findClosestBolt(to: currentPlayerPosition)
     }
 
-    private func startCountdown() {
-        guard currentPlayer != nil else {
-            return
-        }
-
-        guard gameState == .waiting else {
-            return
-        }
-
-        delegate?.startCountdown()
-        gameState = .launching
-    }
-
     // MARK: - Multiplayer
 
-    private func setupMultiplayer() {
-        subscribeToPowerupCollection()
-        subscribeToPowerupEvent()
-    }
-
+    // TODO: To Remove
     private func subscribeToPowerupCollection() {
         API.shared.gameplay.subscribeToPowerupCollection(listener: { collectionData in
             self.otherPlayerCollectedPowerup(powerupCollectionData: collectionData)
         })
     }
 
+    // TODO: To Remove
     private func subscribeToPowerupEvent() {
         API.shared.gameplay.subscribeToPowerupEvent(listener: { powerupEvent in
             let playerId = powerupEvent.playerData.playerId
@@ -565,6 +549,7 @@ class GameEngine {
         })
     }
 
+    // TODO: To Remove
     private func otherPlayerCollectedPowerup(powerupCollectionData: PowerupCollectionData) {
         let positionOfCollection = CGPoint(vector: powerupCollectionData.powerupPos)
         let ownerId = powerupCollectionData.playerData.playerId
@@ -594,6 +579,7 @@ class GameEngine {
         powerupSystem.add(player: player, with: powerupComponent)
     }
 
+    // TODO: To Remove
     private func findPowerupSprite(at point: CGPoint) -> SKSpriteNode? {
         for powerupSprite in powerups.keys {
             if powerupSprite.frame.contains(point) {
@@ -604,6 +590,8 @@ class GameEngine {
     }
 }
 
+// MARK: - StartSystemDelegate
+
 extension GameEngine: StartSystemDelegate {
     func isReadyToStart() {
         startCountdown()
@@ -612,7 +600,22 @@ extension GameEngine: StartSystemDelegate {
     func startGame() {
         gameState = .start
     }
+
+    private func startCountdown() {
+        guard currentPlayer != nil else {
+            return
+        }
+
+        guard gameState == .waiting else {
+            return
+        }
+
+        delegate?.startCountdown()
+        gameState = .launching
+    }
 }
+
+// MARK: - HookSystemDelegate
 
 extension GameEngine: HookSystemDelegate {
     func adjustHookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent) {
@@ -658,7 +661,9 @@ extension GameEngine: HookSystemDelegate {
     }
 }
 
-extension GameEngine: UserConnectionDelegate {
+// MARK: - UserConnectionSystemDelegate
+
+extension GameEngine: UserConnectionSystemDelegate {
     func userConnected() {
         delegate?.currentPlayerIsReconnected()
     }
@@ -668,11 +673,15 @@ extension GameEngine: UserConnectionDelegate {
     }
 }
 
+// MARK: - FinishingLineSystemDelegate
+
 extension GameEngine: FinishingLineSystemDelegate {
     func gameEnded(rankings: [SpriteComponent]) {
         delegate?.gameHasFinish()
     }
 }
+
+// MARK: - PowerupSystemDelegate
 
 extension GameEngine: PowerupSystemDelegate {
     func hasAddedTrap(sprite spriteComponent: SpriteComponent, netTrap: NetTrapPowerupEntity) {

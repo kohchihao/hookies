@@ -12,13 +12,13 @@ protocol UserConnectionSystemProtocol {
 
 }
 
-protocol UserConnectionDelegate: AnyObject {
+protocol UserConnectionSystemDelegate: AnyObject {
     func userConnected()
     func userDisconnected()
 }
 
 class UserConnectionSystem: System, UserConnectionSystemProtocol {
-    weak var delegate: UserConnectionDelegate?
+    weak var delegate: UserConnectionSystemDelegate?
 
     init() {
         registerNotificationObservers()
