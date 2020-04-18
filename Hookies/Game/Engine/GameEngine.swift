@@ -104,8 +104,7 @@ class GameEngine {
     // MARK: - Launch Current Player
 
     func launchCurrentPlayer(with velocity: CGVector) {
-        guard let currentPlayerId = currentPlayerId,
-            let currentPlayer = currentPlayer else {
+        guard let currentPlayer = currentPlayer else {
             return
         }
 
@@ -114,7 +113,6 @@ class GameEngine {
         }
 
         cannonSystem.launch(player: sprite, with: velocity)
-        cannonSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
     }
 
     // MARK: - Start Game
@@ -126,26 +124,21 @@ class GameEngine {
     // MARK: - Current Player Hook Action
 
     func applyHookActionToCurrentPlayer() {
-        guard let currentPlayerId = currentPlayerId,
-            let currentPlayer = currentPlayer else {
+        guard let currentPlayer = currentPlayer else {
             return
         }
 
-        guard let hook = currentPlayer.getHookComponent(),
-             let sprite = currentPlayer.getSpriteComponent()
+        guard let hook = currentPlayer.get(HookComponent.self),
+             let sprite = currentPlayer.get(SpriteComponent.self)
             else {
             return
         }
 
-        guard let hookSystem = hookSystem else {
+        guard let hookSystem = hookSystem,
+            let initialVelocity = sprite.node.physicsBody?.velocity
+            else {
             return
         }
-
-        guard let initialVelocity = sprite.node.physicsBody?.velocity else {
-            return
-        }
-
-        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite, type: .activate)
 
         let hasHook = hookSystem.hook(from: currentPlayer)
 
@@ -163,26 +156,19 @@ class GameEngine {
     }
 
     func applyUnhookActionToCurrentPlayer() {
-        guard let currentPlayerId = currentPlayerId,
-            let currentPlayer = currentPlayer else {
+        guard let currentPlayer = currentPlayer else {
             return
         }
 
-        guard let hook = currentPlayer.getHookComponent(),
-            let sprite = currentPlayer.getSpriteComponent()
+        guard let hook = currentPlayer.get(HookComponent.self) else {
+            return
+        }
+
+        guard let hookDelegateModel = createHookDelegateModel(from: hook),
+            let hookSystem = hookSystem
             else {
             return
         }
-
-        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
-            return
-        }
-
-        guard let hookSystem = hookSystem else {
-            return
-        }
-
-        hookSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite, type: .deactivate)
 
         let hasUnhook = hookSystem.unhook(entity: currentPlayer)
 
@@ -193,14 +179,15 @@ class GameEngine {
         delegate?.playerDidUnhook(from: hookDelegateModel)
     }
 
+    // MARK: - Current Player Adjust Action
+
     func applyShortenActionToCurrentPlayer() {
-        guard let currentPlayerId = currentPlayerId,
-            let currentPlayer = currentPlayer else {
+        guard let currentPlayer = currentPlayer else {
             return
         }
 
-        guard let hook = currentPlayer.getHookComponent(),
-            let sprite = currentPlayer.getSpriteComponent()
+        guard let hook = currentPlayer.get(HookComponent.self),
+            let sprite = currentPlayer.get(SpriteComponent.self)
             else {
             return
         }
@@ -222,8 +209,6 @@ class GameEngine {
         }
         delegate?.playerDidUnhook(from: unhookDelegateModel)
 
-        // TODO: Broadcast to socket
-
         let adjusted = hookSystem.adjustLength(from: currentPlayer, type: .shorten)
 
         if !adjusted {
@@ -238,13 +223,12 @@ class GameEngine {
     }
 
     func applyLengthenActionToCurrentPlayer() {
-        guard let currentPlayerId = currentPlayerId,
-            let currentPlayer = currentPlayer else {
+        guard let currentPlayer = currentPlayer else {
             return
         }
 
-        guard let hook = currentPlayer.getHookComponent(),
-            let sprite = currentPlayer.getSpriteComponent()
+        guard let hook = currentPlayer.get(HookComponent.self),
+            let sprite = currentPlayer.get(SpriteComponent.self)
             else {
             return
         }
@@ -261,8 +245,6 @@ class GameEngine {
         guard let hookSystem = hookSystem else {
             return
         }
-
-        // TODO: Broadcast to socket
 
         let adjusted = hookSystem.adjustLength(from: currentPlayer, type: .lengthen )
 
@@ -291,32 +273,19 @@ class GameEngine {
     // MARK: - Current Player Jump Action
 
     func currentPlayerJumpAction() {
-        guard let currentPlayerId = currentPlayerId,
-            let currentPlayer = currentPlayer else {
-            return
-        }
-
-        guard let sprite = currentPlayer.getSpriteComponent() else {
-            return
-        }
-
-        deadlockSystem?.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite) //TODO: REMOVE
         deadlockSystem?.resolveDeadlock()
     }
 
     // MARK: - Current Player Finsh Race
 
     func stopCurrentPlayer() {
-        guard let currentPlayerId = currentPlayerId,
-            let currentPlayer = currentPlayer else {
+        guard let currentPlayer = currentPlayer else {
             return
         }
 
-        guard let sprite = currentPlayer.getSpriteComponent() else {
+        guard let sprite = currentPlayer.get(SpriteComponent.self) else {
             return
         }
-
-        finishingLineSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite)
 
         let hasStop = finishingLineSystem.stop(player: sprite)
 
@@ -550,15 +519,11 @@ class GameEngine {
     // MARK: - Health
 
     private func checkCurrentPlayerHealth() {
-        guard let sprite = currentPlayer?.getSpriteComponent(), let healthSystem = healthSystem else {
+        guard let sprite = currentPlayer?.get(SpriteComponent.self), let healthSystem = healthSystem else {
             return
         }
 
         if !healthSystem.isPlayerAlive(for: sprite) {
-            guard let currentPlayerId = currentPlayerId else {
-                return
-            }
-            healthSystem.broadcastUpdate(gameId: gameId, playerId: currentPlayerId, player: sprite) //TODO: REMOVE
             _ = healthSystem.respawnPlayer(for: sprite)
         }
     }
@@ -721,9 +686,6 @@ class GameEngine {
     // MARK: - Multiplayer
 
     private func setupMultiplayer() {
-        subscribeToOtherPlayersState()
-        subscribeToGenericPlayerEvent()
-        subscribeToHookAction()
         subscribeToPowerupCollection()
         subscribeToPowerupEvent()
     }
@@ -731,58 +693,6 @@ class GameEngine {
     private func subscribeToPowerupCollection() {
         API.shared.gameplay.subscribeToPowerupCollection(listener: { collectionData in
             self.otherPlayerCollectedPowerup(powerupCollectionData: collectionData)
-        })
-    }
-
-    private func subscribeToOtherPlayersState() {
-        API.shared.gameplay.subscribeToPlayersConnection(listener: { userConnection in
-            switch userConnection.state {
-            case .connected:
-                let isNewUser = self.otherPlayers[userConnection.uid] == nil
-
-                if isNewUser {
-                    self.setupOtherPlayer(of: userConnection.uid)
-                } else {
-                    self.reconnectOtherPlayer(of: userConnection.uid)
-                }
-            case .disconnected:
-                self.disconnectOtherPlayer(of: userConnection.uid)
-            }
-        })
-    }
-
-    private func subscribeToGenericPlayerEvent() {
-        API.shared.gameplay.subscribeToGenericPlayerEvent(listener: { genericPlayerEventData in
-            switch genericPlayerEventData.type {
-            case .shotFromCannon:
-                self.launch(otherPlayer: genericPlayerEventData)
-            case .jumpAction:
-                self.applyJumpAction(to: genericPlayerEventData)
-            case .playerDied:
-                self.respawn(otherPlayer: genericPlayerEventData)
-            case .reachedFinishedLine:
-                self.stop(otherPlayer: genericPlayerEventData)
-            case .hook:
-                print("hook")
-            case .unhook:
-                print("unhook")
-            case .lengthenRope:
-                print("lengthenRope")
-            case .shortenRope:
-                print("shortenRope")
-            }
-        })
-    }
-
-    private func subscribeToHookAction() {
-        API.shared.gameplay.subscribeToHookAction(listener: { hookActionData in
-
-            switch hookActionData.actionType {
-            case .activate:
-                self.applyHookAction(on: hookActionData)
-            case .deactivate:
-                self.applyUnhookAction(on: hookActionData)
-            }
         })
     }
 
@@ -873,159 +783,51 @@ class GameEngine {
         })
     }
 
-    private func reconnectOtherPlayer(of id: String) {
-        guard let otherPlayer = otherPlayers[id] else {
-            return
-        }
+//    private func reconnectOtherPlayer(of id: String) {
+//        guard let otherPlayer = otherPlayers[id] else {
+//            return
+//        }
+//
+//        guard let sprite = otherPlayer.getSpriteComponent() else {
+//            return
+//        }
+//
+//        finishingLineSystem.add(player: sprite)
+//        userConnectionSystem?.reconnect(sprite: sprite)
+//    }
+//
+//    private func disconnectOtherPlayer(of id: String) {
+//        guard let otherPlayer = otherPlayers[id] else {
+//            return
+//        }
+//
+//        guard let sprite = otherPlayer.getSpriteComponent() else {
+//            return
+//        }
+//
+//        finishingLineSystem.remove(player: sprite)
+//        userConnectionSystem?.disconnect(sprite: sprite)
+//    }
 
-        guard let sprite = otherPlayer.getSpriteComponent() else {
-            return
-        }
+    // TODO: Shift to extension
+//    private func applyHookAction(on hook: HookActionData) {
+//        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
+//            return
+//        }
+//
+//        delegate?.playerDidHook(to: hookDelegateModel)
+//        hookSystem?.applyInitialVelocity(sprite: spriteComponent, velocity: CGVector(vector: velocity))
+//        hookSystem?.boostVelocity(to: otherPlayer)
+//    }
 
-        finishingLineSystem.add(player: sprite)
-        userConnectionSystem?.reconnect(sprite: sprite)
-    }
-
-    private func disconnectOtherPlayer(of id: String) {
-        guard let otherPlayer = otherPlayers[id] else {
-            return
-        }
-
-        guard let sprite = otherPlayer.getSpriteComponent() else {
-            return
-        }
-
-        finishingLineSystem.remove(player: sprite)
-        userConnectionSystem?.disconnect(sprite: sprite)
-    }
-
-    private func launch(otherPlayer: GenericPlayerEventData) {
-        guard let otherPlayerEntity = otherPlayers[otherPlayer.playerData.playerId] else {
-            return
-        }
-
-        guard let sprite = otherPlayerEntity.getSpriteComponent() else {
-            return
-        }
-
-        guard let velocity = otherPlayer.playerData.velocity else {
-            return
-        }
-
-        cannonSystem.launch(otherPlayer: sprite, with: CGVector(vector: velocity))
-    }
-
-    // TODO: REMOVE
-    private func applyJumpAction(to otherPlayer: GenericPlayerEventData) {
-        guard let otherPlayerEntity = otherPlayers[otherPlayer.playerData.playerId] else {
-            return
-        }
-
-        guard let sprite = otherPlayerEntity.getSpriteComponent() else {
-            return
-        }
-
-        guard let velocity = otherPlayer.playerData.velocity else {
-            return
-        }
-
-        deadlockSystem?.resolveDeadlock(
-            for: sprite,
-            at: CGPoint(vector: otherPlayer.playerData.position),
-            with: CGVector(vector: velocity)
-        )
-    }
-
-    // TODO: REMOVE
-    private func respawn(otherPlayer: GenericPlayerEventData) {
-        guard let sprite = otherPlayers[otherPlayer.playerData.playerId]?.getSpriteComponent() else {
-            return
-        }
-
-        _ = healthSystem?.respawnPlayer(for: sprite, at: CGPoint(vector: otherPlayer.playerData.position))
-    }
-
-    private func stop(otherPlayer: GenericPlayerEventData) {
-        guard let otherPlayerEntity = otherPlayers[otherPlayer.playerData.playerId] else {
-            return
-        }
-
-        let position = CGPoint(vector: otherPlayer.playerData.position)
-
-        guard let sprite = otherPlayerEntity.getSpriteComponent() else {
-            return
-        }
-
-        guard let velocity = otherPlayer.playerData.velocity else {
-            return
-        }
-
-        _ = finishingLineSystem.stop(player: sprite, at: position, with: CGVector(vector: velocity))
-    }
-
-    private func applyHookAction(on hook: HookActionData) {
-        guard let otherPlayer = otherPlayers[hook.playerData.playerId] else {
-            return
-        }
-
-        guard let hookComponent = otherPlayer.getHookComponent(),
-            let spriteComponent = otherPlayer.getSpriteComponent()
-            else {
-            return
-        }
-
-        guard let velocity = hook.playerData.velocity else {
-            return
-        }
-
-        guard let hookSystem = hookSystem else {
-            return
-        }
-
-        let hasHook = hookSystem.hook(
-            from: otherPlayer,
-            at: CGPoint(vector: hook.playerData.position),
-            with: CGVector(vector: velocity)
-        )
-
-        if !hasHook {
-            return
-        }
-
-        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
-            return
-        }
-
-        delegate?.playerDidHook(to: hookDelegateModel)
-        hookSystem.applyInitialVelocity(sprite: spriteComponent, velocity: CGVector(vector: velocity))
-        hookSystem.boostVelocity(to: otherPlayer)
-    }
-
-    private func applyUnhookAction(on hook: HookActionData) {
-        guard let otherPlayer = otherPlayers[hook.playerData.playerId] else {
-            return
-        }
-
-        guard let hookComponent = otherPlayer.getHookComponent() else {
-            return
-        }
-
-        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
-            return
-        }
-
-        guard let hookSystem = hookSystem else {
-            return
-        }
-
-        let hasUnhook = hookSystem.unhook(entity: otherPlayer)
-
-        if !hasUnhook {
-            return
-        }
-
-        delegate?.playerDidUnhook(from: hookDelegateModel)
-    }
+    // TODO: Shift to extension
+//    private func applyUnhookAction(on hook: HookActionData) {
+//        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
+//            return
+//        }
+//
+//        delegate?.playerDidUnhook(from: hookDelegateModel)
+//    }
 }
 
 extension GameEngine: PowerupSystemDelegate {
