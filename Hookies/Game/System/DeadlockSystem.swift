@@ -57,7 +57,7 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
     }
 
     /// Resolve deadlock for multi player
-    internal func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
+    private func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
         sprite.node.position = position
         sprite.node.physicsBody?.velocity = velocity
 

@@ -19,7 +19,6 @@ protocol HealthSystemProtocol {
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool
     func isPlayerAlive(for position: CGPoint) -> Bool
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent
-    func respawnPlayer(for sprite: SpriteComponent, at position: CGPoint) -> SpriteComponent
     func respawnPlayerToClosestPlatform(for sprite: SpriteComponent) -> SpriteComponent?
 }
 
@@ -35,6 +34,11 @@ class HealthSystem: System, HealthSystemProtocol {
     init(platforms: [SpriteComponent], startLine: SpriteComponent) {
         self.platforms = platforms
         self.startLine = startLine
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedRespawnAction(_:)),
+            name: .receivedRespawnAction,
+            object: nil)
     }
 
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool {
@@ -50,14 +54,18 @@ class HealthSystem: System, HealthSystemProtocol {
         return true
     }
 
+    /// Respawn single player
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent {
         if !isPlayerAlive(for: sprite) {
+            let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .playerDied)
+            broadcast(genericSystemEvent)
             return self.respawnPlayer(for: sprite, at: sprite.node.position)
         }
         return sprite
     }
 
-    func respawnPlayer(for sprite: SpriteComponent, at position: CGPoint) -> SpriteComponent {
+    /// Respawn multiplayer
+    private func respawnPlayer(for sprite: SpriteComponent, at position: CGPoint) -> SpriteComponent {
         if !isPlayerAlive(for: position) {
             sprite.node.position = CGPoint(x: position.x, y: spawnHorizontalLine)
             sprite.node.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
@@ -97,12 +105,34 @@ class HealthSystem: System, HealthSystemProtocol {
 
         return platformSpriteComponent
     }
+
+    /// Broadcast
+    private func broadcast(_ genericSystemEvent: GenericSystemEvent) {
+        NotificationCenter.default.post(
+            name: .broadcastGenericPlayerAction,
+            object: self,
+            userInfo: ["data": genericSystemEvent])
+    }
 }
 
 // MARK: - Broadcast Update
-
+// TODO: REMOVE
 extension HealthSystem: GenericPlayerEventBroadcast {
     func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
         broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .playerDied)
+    }
+}
+
+// MARK: - Networking
+extension HealthSystem {
+    @objc private func receivedRespawnAction(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: GenericSystemEvent] {
+            guard let genericSystemEvent = data["data"] else {
+                return
+            }
+
+            let sprite = genericSystemEvent.sprite
+            _ = respawnPlayer(for: sprite, at: sprite.node.position)
+        }
     }
 }
