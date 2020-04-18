@@ -19,20 +19,25 @@ protocol DeadlockSystemProtocol {
 class DeadlockSystem: System, DeadlockSystemProtocol {
 
     private var sprite: SpriteComponent
+    private var hook: HookComponent
     private var isStuck = false
     private var contactedPlatforms: [SKSpriteNode: Int] = [:]
     private let highestMinimumHorizontalVelocity: CGFloat = 0.5
     private let lowestMinimumHorizontalVelocity: CGFloat = -0.5
     private let maximumTouches = 10
 
-    init(sprite: SpriteComponent) {
+    init(sprite: SpriteComponent, hook: HookComponent) {
         self.sprite = sprite
-
+        self.hook = hook
         registerNotificationObservers()
     }
 
     func checkIfStuck() -> Bool {
         guard let physicsBody = sprite.node.physicsBody else {
+            return false
+        }
+
+        guard hook.hookTo == nil else {
             return false
         }
 
