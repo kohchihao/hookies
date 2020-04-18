@@ -104,11 +104,7 @@ class GameEngine {
     // MARK: - Launch Current Player
 
     func launchCurrentPlayer(with velocity: CGVector) {
-        guard let currentPlayer = currentPlayer else {
-            return
-        }
-
-        guard let sprite = currentPlayer.getSpriteComponent() else {
+        guard let sprite = currentPlayer?.get(SpriteComponent.self) else {
             return
         }
 
@@ -279,11 +275,7 @@ class GameEngine {
     // MARK: - Current Player Finsh Race
 
     func stopCurrentPlayer() {
-        guard let currentPlayer = currentPlayer else {
-            return
-        }
-
-        guard let sprite = currentPlayer.get(SpriteComponent.self) else {
+        guard let sprite = currentPlayer?.get(SpriteComponent.self) else {
             return
         }
 
@@ -592,7 +584,7 @@ class GameEngine {
             return
         }
 
-        guard let currentPlayerSprite = currentPlayer?.getSpriteComponent() else {
+        guard let currentPlayerSprite = currentPlayer?.get(SpriteComponent.self) else {
             return
         }
 
@@ -642,7 +634,7 @@ class GameEngine {
     }
 
     private func updateClosestBolt() {
-        guard let currentPlayerPosition = currentPlayer?.getSpriteComponent()?.node.position else {
+        guard let currentPlayerPosition = currentPlayer?.get(SpriteComponent.self)?.node.position else {
             return
         }
 
@@ -771,7 +763,7 @@ class GameEngine {
                 return
             }
 
-            guard let initialPosition = self.cannon.getSpriteComponent()?.node.position else {
+            guard let initialPosition = self.cannon.get(SpriteComponent.self)?.node.position else {
                 return
             }
 
@@ -788,7 +780,7 @@ class GameEngine {
 //            return
 //        }
 //
-//        guard let sprite = otherPlayer.getSpriteComponent() else {
+//        guard let sprite = otherPlayer.get(SpriteComponent.self) else {
 //            return
 //        }
 //
