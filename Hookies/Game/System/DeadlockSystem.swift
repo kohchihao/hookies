@@ -51,8 +51,7 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
             return
         }
 
-        let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .jumpAction)
-        broadcast(genericSystemEvent)
+        broadcast(with: sprite)
         return resolveDeadlock(for: sprite, at: sprite.node.position, with: velocity)
     }
 
@@ -94,14 +93,6 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
         }
         return false
     }
-
-    /// Broadcast
-    private func broadcast(_ genericSystemEvent: GenericSystemEvent) {
-        NotificationCenter.default.post(
-            name: .broadcastGenericPlayerAction,
-            object: self,
-            userInfo: ["data": genericSystemEvent])
-    }
 }
 
 // MARK: - Broadcast Update
@@ -115,6 +106,15 @@ extension DeadlockSystem: GenericPlayerEventBroadcast {
 
 // MARK: - Networking
 extension DeadlockSystem {
+
+    /// Broadcast
+    private func broadcast(with sprite: SpriteComponent) {
+        let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .jumpAction)
+        NotificationCenter.default.post(
+            name: .broadcastGenericPlayerAction,
+            object: self,
+            userInfo: ["data": genericSystemEvent])
+    }
 
     @objc private func receivedJumpAction(_ notification: Notification) {
         if let data = notification.userInfo as? [String: GenericSystemEvent] {

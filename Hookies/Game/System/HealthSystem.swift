@@ -57,8 +57,7 @@ class HealthSystem: System, HealthSystemProtocol {
     /// Respawn single player
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent {
         if !isPlayerAlive(for: sprite) {
-            let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .playerDied)
-            broadcast(genericSystemEvent)
+            broadcast(with: sprite)
             return self.respawnPlayer(for: sprite, at: sprite.node.position)
         }
         return sprite
@@ -106,13 +105,7 @@ class HealthSystem: System, HealthSystemProtocol {
         return platformSpriteComponent
     }
 
-    /// Broadcast
-    private func broadcast(_ genericSystemEvent: GenericSystemEvent) {
-        NotificationCenter.default.post(
-            name: .broadcastGenericPlayerAction,
-            object: self,
-            userInfo: ["data": genericSystemEvent])
-    }
+
 }
 
 // MARK: - Broadcast Update
@@ -125,6 +118,15 @@ extension HealthSystem: GenericPlayerEventBroadcast {
 
 // MARK: - Networking
 extension HealthSystem {
+    /// Broadcast
+    private func broadcast(with sprite: SpriteComponent) {
+        let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .playerDied)
+        NotificationCenter.default.post(
+            name: .broadcastGenericPlayerAction,
+            object: self,
+            userInfo: ["data": genericSystemEvent])
+    }
+
     @objc private func receivedRespawnAction(_ notification: Notification) {
         if let data = notification.userInfo as? [String: GenericSystemEvent] {
             guard let genericSystemEvent = data["data"] else {
