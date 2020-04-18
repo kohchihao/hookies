@@ -19,6 +19,7 @@ class Signal: SKSpriteNode {
         zPosition = 200
     }
 
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

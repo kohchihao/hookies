@@ -62,4 +62,3 @@ struct PowerupCollectionData: SocketData, Encoder {
         return encoding
     }
 }
-

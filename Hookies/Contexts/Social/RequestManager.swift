@@ -33,7 +33,11 @@ struct RequestManager {
         })
     }
 
-    static func checkUsersSocialExist(fromUserId: String, toUserId: String, completion: @escaping (Bool, Social?, Social?) -> Void) {
+    static func checkUsersSocialExist(
+        fromUserId: String,
+        toUserId: String,
+        completion: @escaping (Bool, Social?, Social?) -> Void
+    ) {
         API.shared.social.get(userId: fromUserId, completion: { senderSocial, error in
             guard error == nil else {
                 print(error.debugDescription)
@@ -79,7 +83,12 @@ struct RequestManager {
         }
     }
 
-    static func checkRequestIsNotRepeated(request: Request, sender: Social, recipient: Social, completion: @escaping (Bool) -> Void) {
+    static func checkRequestIsNotRepeated(
+        request: Request,
+        sender: Social,
+        recipient: Social,
+        completion: @escaping (Bool) -> Void
+    ) {
         self.getRequests(requestIds: sender.outgoingRequests, completion: { requests in
             guard !requests.map({ $0.toUserId }).contains(request.toUserId) else {
                 print("request already exists")
@@ -108,26 +117,25 @@ struct RequestManager {
     }
 
     static func sendRequest(fromUserId: String, toUserId: String) {
-        self.checkUsersExist(fromUserId: fromUserId, toUserId: toUserId, completion: { usersExist in
+        self.checkUsersExist(fromUserId: fromUserId, toUserId: toUserId) { usersExist in
             guard usersExist else {
                 return
             }
             let request = Request(fromUserId: fromUserId, toUserId: toUserId)
-            self.checkUsersSocialExist(fromUserId: fromUserId, toUserId: toUserId, completion: { exists, senderSocial, recipientSocial  in
-                guard exists else {
+            self.checkUsersSocialExist(
+                fromUserId: fromUserId,
+                toUserId: toUserId
+            ) { exists, senderSocial, recipientSocial  in
+                guard exists, var sender = senderSocial, var recipient = recipientSocial else {
                     return
                 }
-                guard var sender = senderSocial else {
-                    return
+                guard !sender.friends.contains(request.toUserId)
+                    && !recipient.friends.contains(request.fromUserId)
+                    else {
+                        print("Users are already friends")
+                        return
                 }
-                guard var recipient = recipientSocial else {
-                    return
-                }
-                guard !sender.friends.contains(request.toUserId) && !recipient.friends.contains(request.fromUserId) else {
-                    print("Users are already friends")
-                    return
-                }
-                self.checkRequestIsNotRepeated(request: request, sender: sender, recipient: recipient, completion: { notRepeated in
+                self.checkRequestIsNotRepeated(request: request, sender: sender, recipient: recipient) { notRepeated in
                     guard notRepeated else {
                         return
                     }
@@ -136,9 +144,9 @@ struct RequestManager {
                     API.shared.social.save(social: sender)
                     recipient.addIncomingRequest(requestId: request.requestId)
                     API.shared.social.save(social: recipient)
-                })
-            })
-        })
+                }
+            }
+        }
     }
 
     static func getRequest(requestId: String, completion: @escaping (Request?) -> Void) {
@@ -156,11 +164,14 @@ struct RequestManager {
     }
 
     static func acceptRequest(requestId: String) {
-        getRequest(requestId: requestId, completion: { request in
+        getRequest(requestId: requestId) { request in
             guard let request = request else {
                 return
             }
-            self.checkUsersSocialExist(fromUserId: request.fromUserId, toUserId: request.toUserId, completion: { exists, sender, recipient  in
+            self.checkUsersSocialExist(
+                fromUserId: request.fromUserId,
+                toUserId: request.toUserId
+            ) { exists, sender, recipient  in
                 guard exists else {
                     return
                 }
@@ -177,16 +188,19 @@ struct RequestManager {
                 recipient.removeRequest(requestId: requestId)
                 API.shared.social.save(social: recipient)
                 API.shared.request.delete(request: request)
-            })
-        })
+            }
+        }
     }
 
     static func rejectRequest(requestId: String) {
-        getRequest(requestId: requestId, completion: { request in
+        getRequest(requestId: requestId) { request in
             guard let request = request else {
                 return
             }
-            self.checkUsersSocialExist(fromUserId: request.fromUserId, toUserId: request.toUserId, completion: { exists, sender, recipient  in
+            self.checkUsersSocialExist(
+                fromUserId: request.fromUserId,
+                toUserId: request.toUserId
+            ) { exists, sender, recipient  in
                 guard exists else {
                     return
                 }
@@ -201,7 +215,7 @@ struct RequestManager {
                 recipient.removeRequest(requestId: requestId)
                 API.shared.social.save(social: recipient)
                 API.shared.request.delete(request: request)
-            })
-        })
+            }
+        }
     }
 }

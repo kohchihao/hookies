@@ -50,7 +50,12 @@ struct InviteManager {
         })
     }
 
-    static func checkInviteIsNotRepeated(invite: Invite, sender: Social, recipient: Social, completion: @escaping (Bool) -> Void) {
+    static func checkInviteIsNotRepeated(
+        invite: Invite,
+        sender: Social,
+        recipient: Social,
+        completion: @escaping (Bool) -> Void
+    ) {
         self.getInvites(inviteIds: sender.outgoingInvites, completion: { invites in
             guard !invites.map({ $0.toUserId }).contains(invite.toUserId) else {
                 print("invite to this player already exists")
@@ -83,38 +88,38 @@ struct InviteManager {
     }
 
     static func sendInvite(fromUserId: String, toUserId: String, lobbyId: String) {
-        RequestManager.checkUsersExist(fromUserId: fromUserId, toUserId: toUserId, completion: { usersExist in
+        RequestManager.checkUsersExist(fromUserId: fromUserId, toUserId: toUserId) { usersExist in
             guard usersExist else {
                 return
             }
             let invite = Invite(fromUserId: fromUserId, toUserId: toUserId, lobbyId: lobbyId)
-            self.checkRecipientIsNotInLobby(invite: invite, completion: { recipientIsNotInLobby in
+            self.checkRecipientIsNotInLobby(invite: invite) { recipientIsNotInLobby in
                 guard recipientIsNotInLobby else {
                     return
                 }
-                RequestManager.checkUsersSocialExist(fromUserId: fromUserId, toUserId: toUserId, completion: { exists, sender, recipient  in
-                    guard exists else {
-                        return
-                    }
-                    guard var sender = sender else {
-                        return
-                    }
-                    guard var recipient = recipient else {
-                        return
-                    }
-                    self.checkInviteIsNotRepeated(invite: invite, sender: sender, recipient: recipient, completion: { notRepeated in
-                        guard notRepeated else {
+                RequestManager.checkUsersSocialExist(
+                    fromUserId: fromUserId,
+                    toUserId: toUserId) { exists, sender, recipient  in
+                        guard exists, var sender = sender, var recipient = recipient else {
                             return
                         }
-                        API.shared.invite.save(invite: invite)
-                        sender.addOutgoingInvite(inviteId: invite.inviteId)
-                        API.shared.social.save(social: sender)
-                        recipient.addIncomingInvite(inviteId: invite.inviteId)
-                        API.shared.social.save(social: recipient)
-                    })
-                })
-            })
-        })
+                        self.checkInviteIsNotRepeated(
+                            invite: invite,
+                            sender: sender,
+                            recipient: recipient
+                        ) { notRepeated in
+                            guard notRepeated else {
+                                return
+                            }
+                            API.shared.invite.save(invite: invite)
+                            sender.addOutgoingInvite(inviteId: invite.inviteId)
+                            API.shared.social.save(social: sender)
+                            recipient.addIncomingInvite(inviteId: invite.inviteId)
+                            API.shared.social.save(social: recipient)
+                        }
+                }
+            }
+        }
     }
 
     static func getInvite(inviteId: String, completion: @escaping (Invite?) -> Void) {
@@ -132,11 +137,14 @@ struct InviteManager {
     }
 
     static func processInvite(inviteId: String, completion: @escaping (Invite?) -> Void) {
-        getInvite(inviteId: inviteId, completion: { invite in
+        getInvite(inviteId: inviteId) { invite in
             guard let invite = invite else {
                 return completion(nil)
             }
-            RequestManager.checkUsersSocialExist(fromUserId: invite.fromUserId, toUserId: invite.toUserId, completion: { exists, sender, recipient  in
+            RequestManager.checkUsersSocialExist(
+                fromUserId: invite.fromUserId,
+                toUserId: invite.toUserId
+            ) { exists, sender, recipient  in
                 guard exists else {
                     return completion(nil)
                 }
@@ -152,7 +160,7 @@ struct InviteManager {
                 API.shared.social.save(social: recipient)
                 API.shared.invite.delete(invite: invite)
                 completion(invite)
-            })
-        })
+            }
+        }
     }
 }
