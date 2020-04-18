@@ -723,32 +723,6 @@ class GameEngine {
         return nil
     }
 
-//    private func reconnectOtherPlayer(of id: String) {
-//        guard let otherPlayer = otherPlayers[id] else {
-//            return
-//        }
-//
-//        guard let sprite = otherPlayer.get(SpriteComponent.self) else {
-//            return
-//        }
-//
-//        finishingLineSystem.add(player: sprite)
-//        userConnectionSystem?.reconnect(sprite: sprite)
-//    }
-//
-//    private func disconnectOtherPlayer(of id: String) {
-//        guard let otherPlayer = otherPlayers[id] else {
-//            return
-//        }
-//
-//        guard let sprite = otherPlayer.getSpriteComponent() else {
-//            return
-//        }
-//
-//        finishingLineSystem.remove(player: sprite)
-//        userConnectionSystem?.disconnect(sprite: sprite)
-//    }
-
     // TODO: Shift to extension
 //    private func applyHookAction(on hook: HookActionData) {
 //        guard let hookDelegateModel = createHookDelegateModel(from: hookComponent) else {
