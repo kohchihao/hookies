@@ -210,10 +210,32 @@ class NetworkManager: NetworkManagerProtocol {
     // MARK: - Socket Subscriptions
 
     private func setupSocketSubscriptions() {
+        subscribeToRoomConnection()
         subscribeToOtherPlayersState()
         subscribeToGenericPlayerEvent()
         subscribeToPowerupCollection()
         subscribeToPowerupEvent()
+    }
+
+    // MARK: Room Connection (Current Player Connection)
+
+    private func subscribeToRoomConnection() {
+        guard let gameId = gameId, let deviceStatus = deviceStatus else {
+            return
+        }
+
+        guard deviceStatus == .online else {
+            return
+        }
+
+        API.shared.gameplay.subscribeToRoomConnection(roomId: gameId, listener: { connectionState in
+            switch connectionState {
+            case .connected:
+                NotificationCenter.default.post(name: .receivedCurrentPlayerRejoinEvent, object: self)
+            case .disconnected:
+                NotificationCenter.default.post(name: .receivedCurrentPlayerDisconnectedEvent, object: self)
+            }
+        })
     }
 
     // MARK: Player Connection State

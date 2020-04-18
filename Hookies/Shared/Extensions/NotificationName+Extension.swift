@@ -24,6 +24,8 @@ extension Notification.Name {
     // UserConnection
     static let receivedOtherPlayerDisconnectedEvent = Notification.Name("receivedOtherPlayerDisconnectedEvent")
     static let receivedOtherPlayerRejoinEvent = Notification.Name("receivedOtherPlayerRejoinEvent")
+    static let receivedCurrentPlayerRejoinEvent = Notification.Name("receivedCurrentPlayerRejoinEvent")
+    static let receivedCurrentPlayerDisconnectedEvent = Notification.Name("receivedCurrentPlayerDisconnectedEvent")
 
     // Hook
     static let receivedHookAction = Notification.Name("receivedHookAction")

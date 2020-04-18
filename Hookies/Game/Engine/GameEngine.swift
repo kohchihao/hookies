@@ -77,6 +77,7 @@ class GameEngine {
         self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
 
         self.startSystem.startSystemDelegate = self
+        self.userConnectionSystem?.userConnectionDelegate = self
         self.powerupSystem.delegate = self
 
         self.initialisePlayers(players)
@@ -606,21 +607,6 @@ class GameEngine {
 
     // MARK: - General Game
 
-    // TODO: Move to UserConnectionSystem
-//    private func subscribeToGameConnection() {
-//        API.shared.gameplay.subscribeToRoomConnection(roomId: gameId, listener: { connectionState in
-//            switch connectionState {
-//            case .connected:
-//                let isPlayerReconnecting = self.currentPlayerId != nil
-//                if isPlayerReconnecting {
-//                    self.delegate?.currentPlayerIsReconnected()
-//                }
-//            case .disconnected:
-//                self.delegate?.currentPlayerIsDisconnected()
-//            }
-//        })
-//    }
-
     private func updateClosestBolt() {
         guard let currentPlayerPosition = currentPlayer?.get(SpriteComponent.self)?.node.position else {
             return
@@ -787,6 +773,16 @@ class GameEngine {
 extension GameEngine: StartSystemDelegate {
     func isReadyToStart() {
         startCountdown()
+    }
+}
+
+extension GameEngine: UserConnectionDelegate {
+    func userConnected() {
+        delegate?.currentPlayerIsReconnected()
+    }
+
+    func userDisconnected() {
+        delegate?.currentPlayerIsDisconnected()
     }
 }
 

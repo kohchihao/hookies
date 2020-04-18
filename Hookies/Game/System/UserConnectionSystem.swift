@@ -12,7 +12,14 @@ protocol UserConnectionSystemProtocol {
 
 }
 
+protocol UserConnectionDelegate: AnyObject {
+    func userConnected()
+    func userDisconnected()
+}
+
 class UserConnectionSystem: System, UserConnectionSystemProtocol {
+    weak var userConnectionDelegate: UserConnectionDelegate?
+
     init() {
         registerNotificationObservers()
     }
@@ -38,6 +45,17 @@ extension UserConnectionSystem {
             selector: #selector(receivedOtherPlayerDisconnectedEvent(_:)),
             name: .receivedOtherPlayerDisconnectedEvent,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedCurrentPlayerRejoinEvent(_:)),
+            name: .receivedCurrentPlayerRejoinEvent,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedCurrentPlayerDisconnectedEvent(_:)),
+            name: .receivedCurrentPlayerDisconnectedEvent,
+            object: nil)
+
     }
 
     @objc private func receivedOtherPlayerRejoinEvent(_ notification: Notification) {
@@ -58,5 +76,13 @@ extension UserConnectionSystem {
 
             disconnect(sprite: sprite)
         }
+    }
+
+    @objc private func receivedCurrentPlayerRejoinEvent(_ notification: Notification) {
+        userConnectionDelegate?.userConnected()
+    }
+
+    @objc private func receivedCurrentPlayerDisconnectedEvent(_ notification: Notification) {
+        userConnectionDelegate?.userDisconnected()
     }
 }
