@@ -26,6 +26,11 @@ protocol HookSystemProtocol {
     func boostVelocity(to entity: Entity)
 }
 
+protocol HookSystemDelegate: AnyObject {
+    func hookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
+    func unhookActionApplied(hook: HookComponent)
+}
+
 enum HookSystemError: Error {
     case hookComponentDoesNotExist
     case spriteComponentDoesNotExist
@@ -111,7 +116,12 @@ class HookSystem: System, HookSystemProtocol {
         return adjustLength(from: entity, type: type, position: sprite.node.position, velocity: velocity)
     }
 
-    private func adjustLength(from entity: Entity, type: HookSystemAction, position: CGPoint, velocity: CGVector) -> Bool {
+    private func adjustLength(
+        from entity: Entity,
+        type: HookSystemAction,
+        position: CGPoint,
+        velocity: CGVector
+    ) -> Bool {
         guard let sprite = entity.get(SpriteComponent.self),
             let hook = entity.get(HookComponent.self)
             else {
@@ -417,6 +427,7 @@ extension HookSystem {
             }
 
             _ = hook(from: sprite.parent, at: sprite.node.position, with: velocity)
+            // TODO: Delegate back to GameEngine
         }
     }
 
@@ -431,10 +442,10 @@ extension HookSystem {
                 return
             }
 
+            // TODO: Delegate back to GameEngine
             _ = unhook(entity: sprite.parent, at: sprite.node.position, with: velocity)
         }
     }
-
 
     @objc private func receivedShortenRopeAction(_ notification: Notification) {
         if let data = notification.userInfo as? [String: GenericSystemEvent] {

@@ -101,8 +101,6 @@ class HealthSystem: System, HealthSystemProtocol {
 
         return platformSpriteComponent
     }
-
-
 }
 
 // MARK: - Networking
