@@ -164,6 +164,10 @@
 		2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */; };
 		2B4CCD442435AC4F0086DEC6 /* HookDelegateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */; };
 		2B4CCD47243632F90086DEC6 /* GenericPlayerEventBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */; };
+		2B4E43A12446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */; };
+		2B64FD732445B36B00C848C4 /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */; };
+		2B64FD7B2445EBD400C848C4 /* GenericSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */; };
+		2B64FD7F244613C000C848C4 /* PowerupSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD7E244613C000C848C4 /* PowerupSystemEvent.swift */; };
 		2BA5F93824434C89009AF93C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93724434C89009AF93C /* Player.swift */; };
 		2BA5F93A24434CE7009AF93C /* PlayerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93924434CE7009AF93C /* PlayerType.swift */; };
 		2BA5F93C24434F08009AF93C /* BotType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93B24434F08009AF93C /* BotType.swift */; };
@@ -188,6 +192,7 @@
 		D923C13C241A42B5004AB20A /* CannotDieMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D923C13B241A42B5004AB20A /* CannotDieMap.sks */; };
 		D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D923C13D241A4346004AB20A /* AppDelegate.swift */; };
 		D92F9405241D2E8A0021DBE4 /* DeadlockMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D92F9404241D2E890021DBE4 /* DeadlockMap.sks */; };
+		D979D8FD244ACC3700830E8C /* StartSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D979D8FC244ACC3700830E8C /* StartSystem.swift */; };
 		D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D5241E71C000A6DB7F /* MapType.swift */; };
 		D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */; };
 		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
@@ -378,6 +383,10 @@
 		2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngineDelegate.swift; sourceTree = "<group>"; };
 		2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookDelegateModel.swift; sourceTree = "<group>"; };
 		2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEventBroadcast.swift; sourceTree = "<group>"; };
+		2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupCollectionSystemEvent.swift; sourceTree = "<group>"; };
+		2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
+		2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSystemEvent.swift; sourceTree = "<group>"; };
+		2B64FD7E244613C000C848C4 /* PowerupSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupSystemEvent.swift; sourceTree = "<group>"; };
 		2BA5F93724434C89009AF93C /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2BA5F93924434CE7009AF93C /* PlayerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerType.swift; sourceTree = "<group>"; };
 		2BA5F93B24434F08009AF93C /* BotType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotType.swift; sourceTree = "<group>"; };
@@ -417,6 +426,7 @@
 		D923C13B241A42B5004AB20A /* CannotDieMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = CannotDieMap.sks; sourceTree = "<group>"; };
 		D923C13D241A4346004AB20A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D92F9404241D2E890021DBE4 /* DeadlockMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeadlockMap.sks; sourceTree = "<group>"; };
+		D979D8FC244ACC3700830E8C /* StartSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSystem.swift; sourceTree = "<group>"; };
 		D9A123D5241E71C000A6DB7F /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloatingLandMap.sks; sourceTree = "<group>"; };
 		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
@@ -494,6 +504,7 @@
 		1127C5572415DAA900A78AA0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D979D8FB244AB82400830E8C /* Extensions */,
 				D9F180652432E617009D7A52 /* Enumerations */,
 				119A3E3A242C72B90064B034 /* Config */,
 				785B79EA242527A0001D7028 /* Util */,
@@ -785,6 +796,9 @@
 			children = (
 				2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */,
 				2BA5F93D244353F7009AF93C /* GameObject.swift */,
+				2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */,
+				2B64FD7E244613C000C848C4 /* PowerupSystemEvent.swift */,
+				2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -987,6 +1001,7 @@
 				11CC843B2439E748006D3A8F /* SpriteSystem.swift */,
 				11CC843D2439E748006D3A8F /* System.swift */,
 				11CC84382439E748006D3A8F /* UserConnectionSystem.swift */,
+				D979D8FC244ACC3700830E8C /* StartSystem.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1022,6 +1037,14 @@
 				D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */,
 			);
 			path = Maps;
+			sourceTree = "<group>";
+		};
+		D979D8FB244AB82400830E8C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D9A123C8241E6B6500A6DB7F /* Maps */ = {
@@ -1422,6 +1445,7 @@
 				119A3E3E242C73230064B034 /* Constants.swift in Sources */,
 				1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */,
 				1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */,
+				D979D8FD244ACC3700830E8C /* StartSystem.swift in Sources */,
 				11CC851C2439E991006D3A8F /* SocialCoordinator.swift in Sources */,
 				110B3CF42420759700840C4E /* HookPowerup.swift in Sources */,
 				11CC84B22439E81A006D3A8F /* Background.swift in Sources */,
@@ -1433,6 +1457,7 @@
 				1198221D2434E2B10035AFC1 /* UserModelError.swift in Sources */,
 				11CC84C22439E832006D3A8F /* PowerupType.swift in Sources */,
 				11CC84772439E799006D3A8F /* LifeComponent.swift in Sources */,
+				2B64FD7B2445EBD400C848C4 /* GenericSystemEvent.swift in Sources */,
 				11CC84AE2439E81A006D3A8F /* PowerupButton.swift in Sources */,
 				11CC852C2439E9C4006D3A8F /* Vector.swift in Sources */,
 				11CC852B2439E9C4006D3A8F /* Request.swift in Sources */,
@@ -1461,6 +1486,7 @@
 				11CC84442439E748006D3A8F /* UserConnectionSystem.swift in Sources */,
 				11CC850F2439E920006D3A8F /* MapsViewModel.swift in Sources */,
 				11CC85292439E9C4006D3A8F /* User.swift in Sources */,
+				2B4E43A12446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift in Sources */,
 				11CC84FE2439E8E5006D3A8F /* FriendTableViewCell.swift in Sources */,
 				11CC84BD2439E832006D3A8F /* CostumeType.swift in Sources */,
 				11CC84782439E799006D3A8F /* Component.swift in Sources */,
@@ -1472,6 +1498,7 @@
 				118A4A6F2424861E005B7188 /* UIViewController+Nameable.swift in Sources */,
 				11CC848A2439E7A8006D3A8F /* PlayerHookEffectComponent.swift in Sources */,
 				11CC84BF2439E832006D3A8F /* GameState.swift in Sources */,
+				2B64FD732445B36B00C848C4 /* NotificationName+Extension.swift in Sources */,
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
 				2BA5F943244364E4009AF93C /* DeviceStatus.swift in Sources */,
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
@@ -1539,6 +1566,7 @@
 				11CC84CF2439E88A006D3A8F /* Lobby+FirestoreModel.swift in Sources */,
 				11CC84BB2439E832006D3A8F /* ConnectionState.swift in Sources */,
 				11CC84C12439E832006D3A8F /* GameObjectType.swift in Sources */,
+				2B64FD7F244613C000C848C4 /* PowerupSystemEvent.swift in Sources */,
 				11CC848D2439E7A8006D3A8F /* PlacementEffectComponent.swift in Sources */,
 				11CC85032439E8E5006D3A8F /* LobbyPlayerView.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,

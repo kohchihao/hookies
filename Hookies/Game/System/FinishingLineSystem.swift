@@ -10,8 +10,11 @@ import SpriteKit
 
 protocol FinishingLineSystemProtocol {
     func stop(player: SpriteComponent) -> Bool
-    func stop(player: SpriteComponent, at position: CGPoint, with velocity: CGVector) -> Bool
     func bringPlayersToStop()
+}
+
+protocol FinishingLineSystemDelegate: AnyObject {
+    func gameEnded(rankings: [SpriteComponent])
 }
 
 enum FinishingLineSystemError: Error {
@@ -28,20 +31,23 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
     private let finishingLine: SpriteComponent
     private var players: Set<SpriteComponent>
     private var playersState: [SpriteComponent: PlayerState]
-    private var finishedPlayers: Int
+
+    weak var delegate: FinishingLineSystemDelegate?
 
     init(finishingLine: SpriteComponent, players: Set<SpriteComponent>) {
         self.finishingLine = finishingLine
         self.players = players
-        self.finishedPlayers = 0
         self.playersState = [SpriteComponent: PlayerState]()
+
+        registerNotificationObservers()
     }
 
     init(finishingLine: SpriteComponent) {
         self.finishingLine = finishingLine
         self.players = Set<SpriteComponent>()
-        self.finishedPlayers = 0
         self.playersState = [SpriteComponent: PlayerState]()
+
+        registerNotificationObservers()
     }
 
     func add(player: SpriteComponent) {
@@ -54,26 +60,15 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         playersState[player] = nil
     }
 
+    /// Stop for single player
     func stop(player: SpriteComponent) -> Bool {
         guard let velocity = player.node.physicsBody?.velocity else {
             return false
         }
 
+        broadcastReachedFinishLine(with: player)
+        broadcastFinishGame()
         return stop(player: player, at: player.node.position, with: velocity)
-    }
-
-    func stop(player: SpriteComponent, at position: CGPoint, with velocity: CGVector) -> Bool {
-        guard let systemPlayer = players.first(where: { $0 == player }) else {
-            return false
-        }
-
-        systemPlayer.node.position = position
-        systemPlayer.node.physicsBody?.velocity = velocity
-
-        playersState[systemPlayer] = .stopping
-        finishedPlayers += 1
-
-        return true
     }
 
     func bringPlayersToStop() {
@@ -104,21 +99,70 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         return state != .moving
     }
 
-    func hasAllPlayersReachedFinishingLine() -> Bool {
-        let isAllPlayersFinished = !players.isEmpty && players.count <= finishedPlayers
-
-        if isAllPlayersFinished {
-            return true
+    /// Stop for multiplayer
+    private func stop(player: SpriteComponent, at position: CGPoint, with velocity: CGVector) -> Bool {
+        guard let systemPlayer = players.first(where: { $0 == player }) else {
+            return false
         }
 
-        return false
+        systemPlayer.node.position = position
+        systemPlayer.node.physicsBody?.velocity = velocity
+
+        playersState[systemPlayer] = .stopping
+
+        return true
     }
 }
 
-// MARK: - Broadcast Update
+// MARK: Networking
 
-extension FinishingLineSystem: GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
-        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .reachedFinishedLine)
+extension FinishingLineSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedReachedFinishLineAction(_:)),
+            name: .receivedReachedFinishLineAction,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedGameEndEvent(_:)),
+            name: .receivedGameEndEvent,
+            object: nil)
+    }
+
+    private func broadcastReachedFinishLine(with sprite: SpriteComponent) {
+        let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .reachedFinishedLine)
+        NotificationCenter.default.post(
+            name: .broadcastGenericPlayerAction,
+            object: self,
+            userInfo: ["data": genericSystemEvent])
+    }
+
+    private func broadcastFinishGame() {
+        NotificationCenter.default.post(name: .broadcastFinishGameEvent, object: self)
+    }
+
+    @objc private func receivedReachedFinishLineAction(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: GenericSystemEvent] {
+            guard let genericSystemEvent = data["data"] else {
+                return
+            }
+
+            let sprite = genericSystemEvent.sprite
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+            _ = stop(player: sprite, at: sprite.node.position, with: velocity)
+        }
+    }
+
+    @objc private func receivedGameEndEvent(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: [SpriteComponent]] {
+            guard let rankings = data["data"] else {
+                return
+            }
+
+            delegate?.gameEnded(rankings: rankings)
+        }
     }
 }

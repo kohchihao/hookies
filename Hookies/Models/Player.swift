@@ -10,11 +10,12 @@ import Foundation
 
 struct Player {
     let playerId: String
+    let isCurrentPlayer: Bool
     let playerType: PlayerType
     private(set) var costumeType: CostumeType
     private(set) var botType: BotType?
 
-    init?(playerId: String, playerType: PlayerType, costumeType: CostumeType) {
+    init?(playerId: String, playerType: PlayerType, costumeType: CostumeType, isCurrentPlayer: Bool) {
         if playerType != .human {
             return nil
         }
@@ -22,6 +23,7 @@ struct Player {
         self.playerId = playerId
         self.playerType = playerType
         self.costumeType = costumeType
+        self.isCurrentPlayer = isCurrentPlayer
     }
 
     init?(playerId: String, playerType: PlayerType, costumeType: CostumeType, botType: BotType) {
@@ -33,5 +35,18 @@ struct Player {
         self.playerType = playerType
         self.costumeType = costumeType
         self.botType = botType
+        self.isCurrentPlayer = false
+    }
+}
+
+// MARK: - Hashable
+
+extension Player: Hashable {
+    public static func == (lhs: Player, rhs: Player) -> Bool {
+        return lhs.playerId == rhs.playerId
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(playerId)
     }
 }

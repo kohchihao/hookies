@@ -21,11 +21,15 @@ typealias LeftBoltDisplacement = Int
 
 protocol HookSystemProtocol {
     func hook(from hook: Entity) -> Bool
-    func hook(from entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool
     func unhook(entity: Entity) -> Bool
-    func unhook(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool
     func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector)
     func boostVelocity(to entity: Entity)
+}
+
+protocol HookSystemDelegate: AnyObject {
+    func hookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
+    func adjustHookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
+    func unhookActionApplied(hook: HookComponent)
 }
 
 enum HookSystemError: Error {
@@ -40,15 +44,20 @@ class HookSystem: System, HookSystemProtocol {
     private var bolts: [SpriteComponent]
     private let minRopeLength = 100.0
 
+    weak var delegate: HookSystemDelegate?
+
     init(bolts: [SpriteComponent]) {
         self.hooks = Set<HookComponent>()
         self.bolts = bolts
+
+        registerNotificationObservers()
     }
 
     // MARK: - Hook
 
+    /// Hook for single player
     func hook(from entity: Entity) -> Bool {
-        guard let sprite = entity.getSpriteComponent() else {
+        guard let sprite = entity.get(SpriteComponent.self) else {
             return false
         }
 
@@ -56,12 +65,14 @@ class HookSystem: System, HookSystemProtocol {
             return false
         }
 
+        broadcast(with: sprite, of: .hook)
         return hook(from: entity, at: sprite.node.position, with: velocity)
     }
 
-    func hook(from entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
-        guard let sprite = entity.getSpriteComponent(),
-            let hook = entity.getHookComponent()
+    /// Hook for multiplayer
+    private func hook(from entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
+        guard let sprite = entity.get(SpriteComponent.self),
+            let hook = entity.get(HookComponent.self)
             else {
             return false
         }
@@ -85,17 +96,85 @@ class HookSystem: System, HookSystemProtocol {
         hook.anchorLineJointPin = anchorLineJointPin
         hook.parentLineJointPin = spriteLineJointPin
 
+        delegate?.hookActionApplied(sprite: sprite, velocity: velocity, hook: hook)
+
+        return true
+    }
+
+    // MARK: - Unhook
+
+    /// Unook for single player
+    func unhook(entity: Entity) -> Bool {
+        guard let sprite = entity.get(SpriteComponent.self) else {
+            return false
+        }
+
+        guard let velocity = sprite.node.physicsBody?.velocity else {
+            return false
+        }
+
+        broadcast(with: sprite, of: .unhook)
+        return unhook(entity: entity, at: sprite.node.position, with: velocity)
+    }
+
+    /// Unhook for multiplayer
+    private func unhook(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
+        guard let sprite = entity.get(SpriteComponent.self),
+            let hook = entity.get(HookComponent.self)
+            else {
+            return false
+        }
+
+        delegate?.unhookActionApplied(hook: hook)
+
+        sprite.node.position = position
+        sprite.node.physicsBody?.velocity = velocity
+
+        hook.prevHookTo = hook.hookTo
+        hook.hookTo = nil
+        hook.line = nil
+        hook.anchorLineJointPin = nil
+        hook.parentLineJointPin = nil
+
         return true
     }
 
     // MARK: - Adjust length
 
     func adjustLength(from entity: Entity, type: HookSystemAction) -> Bool {
-        guard let sprite = entity.getSpriteComponent(),
-            let hook = entity.getHookComponent()
+        guard let sprite = entity.get(SpriteComponent.self) else {
+            return false
+        }
+
+        guard let velocity = sprite.node.physicsBody?.velocity else {
+            return false
+        }
+
+        var broadcastType = GenericPlayerEvent.shortenRope
+        if type == .lengthen {
+            broadcastType = .lengthenRope
+        }
+        broadcast(with: sprite, of: broadcastType)
+
+        return adjustLength(from: entity, type: type, position: sprite.node.position, velocity: velocity)
+    }
+
+    private func adjustLength(
+        from entity: Entity,
+        type: HookSystemAction,
+        position: CGPoint,
+        velocity: CGVector
+    ) -> Bool {
+        guard let sprite = entity.get(SpriteComponent.self),
+            let hook = entity.get(HookComponent.self)
             else {
                 return false
         }
+
+        delegate?.unhookActionApplied(hook: hook)
+
+        sprite.node.position = position
+        sprite.node.physicsBody?.velocity = velocity
 
         guard let bolt = hook.hookTo else {
             return false
@@ -115,14 +194,16 @@ class HookSystem: System, HookSystemProtocol {
         hook.anchorLineJointPin = anchorLineJointPin
         hook.parentLineJointPin = spriteLineJointPin
 
+        delegate?.adjustHookActionApplied(sprite: sprite, velocity: velocity, hook: hook)
+
         return true
     }
 
     // MARK: - Rope Checks
 
     func isShorterThanMin(for entity: Entity) -> Bool {
-        guard let sprite = entity.getSpriteComponent(),
-            let hook = entity.getHookComponent()
+        guard let sprite = entity.get(SpriteComponent.self),
+            let hook = entity.get(HookComponent.self)
             else {
                 return false
         }
@@ -239,39 +320,6 @@ class HookSystem: System, HookSystemProtocol {
         return false
     }
 
-    // MARK: - Unhook
-
-    func unhook(entity: Entity) -> Bool {
-        guard let sprite = entity.getSpriteComponent() else {
-            return false
-        }
-
-        guard let velocity = sprite.node.physicsBody?.velocity else {
-            return false
-        }
-
-        return unhook(entity: entity, at: sprite.node.position, with: velocity)
-    }
-
-    func unhook(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
-        guard let sprite = entity.getSpriteComponent(),
-            let hook = entity.getHookComponent()
-            else {
-            return false
-        }
-
-        sprite.node.position = position
-        sprite.node.physicsBody?.velocity = velocity
-
-        hook.prevHookTo = hook.hookTo
-        hook.hookTo = nil
-        hook.line = nil
-        hook.anchorLineJointPin = nil
-        hook.parentLineJointPin = nil
-
-        return true
-    }
-
     // MARK: - Add Initial Velocity
 
     func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector) {
@@ -281,14 +329,14 @@ class HookSystem: System, HookSystemProtocol {
     // MARK: - Booster
 
     func boostVelocity(to entity: Entity) {
-        guard let hook = entity.getHookComponent() else {
+        guard let hook = entity.get(HookComponent.self) else {
             return
         }
 
         let isAttachingToSameBolt = hook.hookTo == hook.prevHookTo
 
         if !isAttachingToSameBolt {
-            guard let sprite = entity.getSpriteComponent(),
+            guard let sprite = entity.get(SpriteComponent.self),
                 let bolt = hook.hookTo else {
                 return
             }
@@ -344,29 +392,93 @@ class HookSystem: System, HookSystemProtocol {
     }
 }
 
-// MARK: - Broadcast Update
+// MARK: - Networking
 
 extension HookSystem {
-    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent, type: HookActionType) {
-        guard let hookActionData = createHookAction(from: playerId, and: player, of: type) else {
-            return
-        }
-
-        API.shared.gameplay.broadcastHookAction(hookAction: hookActionData)
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedHookAction(_:)),
+            name: .receivedHookAction,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedUnookAction(_:)),
+            name: .receivedUnookAction,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedShortenRopeAction(_:)),
+            name: .receivedShortenRopeAction,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedLengthenRopeAction(_:)),
+            name: .receivedLengthenRopeAction,
+            object: nil)
     }
 
-    private func createHookAction(
-        from playerId: String,
-        and player: SpriteComponent,
-        of type: HookActionType
-    ) -> HookActionData? {
-        let hookActionData = HookActionData(
-            playerId: playerId,
-            position: Vector(point: player.node.position),
-            velocity: Vector(vector: player.node.physicsBody?.velocity),
-            type: type
-        )
+    private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
+        let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: eventType)
+        NotificationCenter.default.post(
+            name: .broadcastGenericPlayerAction,
+            object: self,
+            userInfo: ["data": genericSystemEvent])
+    }
 
-        return hookActionData
+    @objc private func receivedHookAction(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: GenericSystemEvent] {
+            guard let genericSystemEvent = data["data"] else {
+                return
+            }
+
+            let sprite = genericSystemEvent.sprite
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+
+            _ = hook(from: sprite.parent, at: sprite.node.position, with: velocity)
+            // TODO: Delegate back to GameEngine
+        }
+    }
+
+    @objc private func receivedUnookAction(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: GenericSystemEvent] {
+            guard let genericSystemEvent = data["data"] else {
+                return
+            }
+
+            let sprite = genericSystemEvent.sprite
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+
+            // TODO: Delegate back to GameEngine
+            _ = unhook(entity: sprite.parent, at: sprite.node.position, with: velocity)
+        }
+    }
+
+    @objc private func receivedShortenRopeAction(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: GenericSystemEvent] {
+            guard let genericSystemEvent = data["data"] else {
+                return
+            }
+
+            let sprite = genericSystemEvent.sprite
+
+            _ = adjustLength(from: sprite.parent, type: .shorten)
+        }
+    }
+
+    @objc private func receivedLengthenRopeAction(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: GenericSystemEvent] {
+            guard let genericSystemEvent = data["data"] else {
+                return
+            }
+
+            let sprite = genericSystemEvent.sprite
+
+            _ = adjustLength(from: sprite.parent, type: .lengthen)
+        }
     }
 }
