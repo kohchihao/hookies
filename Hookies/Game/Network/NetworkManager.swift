@@ -84,6 +84,11 @@ class NetworkManager: NetworkManagerProtocol {
             selector: #selector(broadcastPowerupCollection(_:)),
             name: .broadcastPowerupCollectionEvent,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastFinishGame(_:)),
+            name: .broadcastFinishGameEvent,
+            object: nil)
     }
 
     // MARK: - Game Connection
@@ -207,12 +212,19 @@ class NetworkManager: NetworkManagerProtocol {
             powerupType: powerupCollectionSystemEvent.powerupType)
     }
 
+    // MARK: - Broadcast Finish Game
+
+    @objc private func broadcastFinishGame(_ notification: Notification) {
+        API.shared.gameplay.registerFinishLineReached()
+    }
+
     // MARK: - Socket Subscriptions
 
     private func setupSocketSubscriptions() {
         subscribeToRoomConnection()
         subscribeToOtherPlayersState()
         subscribeToGenericPlayerEvent()
+        subscribeToGameEndEvent()
         subscribeToPowerupCollection()
         subscribeToPowerupEvent()
     }
@@ -328,6 +340,27 @@ class NetworkManager: NetworkManagerProtocol {
         playerSprite.node.physicsBody?.velocity = CGVector(vector: velocity)
 
         return GenericSystemEvent(sprite: playerSprite, eventType: genericPlayerEventData.type)
+    }
+
+    // MARK: Game end
+
+    private func subscribeToGameEndEvent() {
+        API.shared.gameplay.subscribeToGameEndEvent(listener: { rankings in
+            var rankingsSprite = [SpriteComponent]()
+
+            for userId in rankings {
+                guard let playerSprite = self.playersSprite[userId] else {
+                    return
+                }
+
+                rankingsSprite.append(playerSprite)
+            }
+
+            NotificationCenter.default.post(
+                name: .receivedGameEndEvent,
+                object: self,
+                userInfo: ["data": rankingsSprite])
+        })
     }
 
     // MARK: Powerup Action

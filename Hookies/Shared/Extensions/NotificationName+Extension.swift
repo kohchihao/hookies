@@ -15,6 +15,7 @@ extension Notification.Name {
     static let broadcastGenericPlayerAction = Notification.Name("broadcastGenericPlayerAction")
     static let broadcastPowerupCollectionEvent = Notification.Name("broadcastPowerupCollectionEvent")
     static let broadcastPowerupAction = Notification.Name("broadcastPowerupAction")
+    static let broadcastFinishGameEvent = Notification.Name("broadcastFinishGameEvent")
 
     // MARK: - NetworkManager to Systems
 
@@ -44,6 +45,7 @@ extension Notification.Name {
 
     // FinishingLine
     static let receivedReachedFinishLineAction = Notification.Name("receivedReachedFinishLineAction")
+    static let receivedGameEndEvent = Notification.Name("receivedGameEndEvent")
 
     // Powerup
     static let receviedPowerupCollectionEvent = Notification.Name("receivedPowerupCollectionEvent")

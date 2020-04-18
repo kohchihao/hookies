@@ -76,8 +76,9 @@ class GameEngine {
         }
         self.finishingLineSystem = FinishingLineSystem(finishingLine: finishingLineSprite)
 
-        self.startSystem.startSystemDelegate = self
-        self.userConnectionSystem?.userConnectionDelegate = self
+        self.startSystem.delegate = self
+        self.userConnectionSystem?.delegate = self
+        self.finishingLineSystem.delegate = self
         self.powerupSystem.delegate = self
 
         self.initialisePlayers(players)
@@ -348,7 +349,6 @@ class GameEngine {
         updateClosestBolt()
         checkDeadlock()
         finishingLineSystem.bringPlayersToStop()
-        checkGameEnd()
     }
 
     // MARK: - Bolts
@@ -615,23 +615,6 @@ class GameEngine {
         _ = closestBoltSystem?.findClosestBolt(to: currentPlayerPosition)
     }
 
-    private func checkGameEnd() {
-        guard let finishingLineSystem = finishingLineSystem else {
-            return
-        }
-
-        guard gameState != .finish else {
-            return
-        }
-
-        if finishingLineSystem.hasAllPlayersReachedFinishingLine() {
-            API.shared.gameplay.close()
-            gameState = .finish
-
-            delegate?.gameHasFinish()
-        }
-    }
-
     private func startCountdown() {
         guard currentPlayer != nil else {
             return
@@ -757,6 +740,12 @@ extension GameEngine: UserConnectionDelegate {
 
     func userDisconnected() {
         delegate?.currentPlayerIsDisconnected()
+    }
+}
+
+extension GameEngine: FinishingLineSystemDelegate {
+    func gameEnded(rankings: [SpriteComponent]) {
+        delegate?.gameHasFinish()
     }
 }
 

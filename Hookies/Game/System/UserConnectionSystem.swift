@@ -18,7 +18,7 @@ protocol UserConnectionDelegate: AnyObject {
 }
 
 class UserConnectionSystem: System, UserConnectionSystemProtocol {
-    weak var userConnectionDelegate: UserConnectionDelegate?
+    weak var delegate: UserConnectionDelegate?
 
     init() {
         registerNotificationObservers()
@@ -79,10 +79,10 @@ extension UserConnectionSystem {
     }
 
     @objc private func receivedCurrentPlayerRejoinEvent(_ notification: Notification) {
-        userConnectionDelegate?.userConnected()
+        delegate?.userConnected()
     }
 
     @objc private func receivedCurrentPlayerDisconnectedEvent(_ notification: Notification) {
-        userConnectionDelegate?.userDisconnected()
+        delegate?.userDisconnected()
     }
 }
