@@ -128,12 +128,6 @@ class GameEngine {
             return
         }
 
-        guard let hook = currentPlayer.get(HookComponent.self),
-            let sprite = currentPlayer.get(SpriteComponent.self)
-            else {
-            return
-        }
-
         guard let hookSystem = hookSystem else {
             return
         }
@@ -142,26 +136,7 @@ class GameEngine {
             return
         }
 
-        guard let initialVelocity = sprite.node.physicsBody?.velocity else {
-            return
-        }
-
-        guard let unhookDelegateModel = createHookDelegateModel(from: hook) else {
-            return
-        }
-        delegate?.playerDidUnhook(from: unhookDelegateModel)
-
-        let adjusted = hookSystem.adjustLength(from: currentPlayer, type: .shorten)
-
-        if !adjusted {
-            return
-        }
-        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
-            return
-        }
-        delegate?.playerDidHook(to: hookDelegateModel)
-
-        hookSystem.applyInitialVelocity(sprite: sprite, velocity: initialVelocity)
+        _ = hookSystem.adjustLength(from: currentPlayer, type: .shorten)
     }
 
     func applyLengthenActionToCurrentPlayer() {
@@ -169,37 +144,7 @@ class GameEngine {
             return
         }
 
-        guard let hook = currentPlayer.get(HookComponent.self),
-            let sprite = currentPlayer.get(SpriteComponent.self)
-            else {
-            return
-        }
-
-        guard let initialVelocity = sprite.node.physicsBody?.velocity else {
-            return
-        }
-
-        guard let unhookDelegateModel = createHookDelegateModel(from: hook) else {
-            return
-        }
-        delegate?.playerDidUnhook(from: unhookDelegateModel)
-
-        guard let hookSystem = hookSystem else {
-            return
-        }
-
-        let adjusted = hookSystem.adjustLength(from: currentPlayer, type: .lengthen )
-
-        if !adjusted {
-            return
-        }
-
-        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
-            return
-        }
-        delegate?.playerDidHook(to: hookDelegateModel)
-
-        hookSystem.applyInitialVelocity(sprite: sprite, velocity: initialVelocity)
+        _ = hookSystem?.adjustLength(from: currentPlayer, type: .lengthen)
     }
 
     // MARK: - Current Player Powerup Action
@@ -660,6 +605,15 @@ extension GameEngine: StartSystemDelegate {
 }
 
 extension GameEngine: HookSystemDelegate {
+    func adjustHookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent) {
+        guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
+            return
+        }
+
+        delegate?.playerDidHook(to: hookDelegateModel)
+        hookSystem?.applyInitialVelocity(sprite: sprite, velocity: velocity)
+    }
+
     func hookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent) {
         guard let hookDelegateModel = createHookDelegateModel(from: hook) else {
             return

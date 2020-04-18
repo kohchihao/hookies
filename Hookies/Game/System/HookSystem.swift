@@ -28,6 +28,7 @@ protocol HookSystemProtocol {
 
 protocol HookSystemDelegate: AnyObject {
     func hookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
+    func adjustHookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
     func unhookActionApplied(hook: HookComponent)
 }
 
@@ -170,6 +171,8 @@ class HookSystem: System, HookSystemProtocol {
                 return false
         }
 
+        delegate?.unhookActionApplied(hook: hook)
+
         sprite.node.position = position
         sprite.node.physicsBody?.velocity = velocity
 
@@ -190,6 +193,8 @@ class HookSystem: System, HookSystemProtocol {
         hook.line = line
         hook.anchorLineJointPin = anchorLineJointPin
         hook.parentLineJointPin = spriteLineJointPin
+
+        delegate?.adjustHookActionApplied(sprite: sprite, velocity: velocity, hook: hook)
 
         return true
     }
