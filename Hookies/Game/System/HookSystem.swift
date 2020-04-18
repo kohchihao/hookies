@@ -32,13 +32,6 @@ protocol HookSystemDelegate: AnyObject {
     func unhookActionApplied(hook: HookComponent)
 }
 
-enum HookSystemError: Error {
-    case hookComponentDoesNotExist
-    case spriteComponentDoesNotExist
-    case closestHookToEntityDoesNotExist
-    case physicsBodyDoesNotExist
-}
-
 class HookSystem: System, HookSystemProtocol {
     private var hooks: Set<HookComponent>
     private var bolts: [SpriteComponent]
@@ -57,11 +50,7 @@ class HookSystem: System, HookSystemProtocol {
 
     /// Hook for single player
     func hook(from entity: Entity) -> Bool {
-        guard let sprite = entity.get(SpriteComponent.self) else {
-            return false
-        }
-
-        guard let velocity = sprite.node.physicsBody?.velocity else {
+        guard let sprite = entity.get(SpriteComponent.self), let velocity = sprite.node.physicsBody?.velocity else {
             return false
         }
 
@@ -105,11 +94,7 @@ class HookSystem: System, HookSystemProtocol {
 
     /// Unook for single player
     func unhook(entity: Entity) -> Bool {
-        guard let sprite = entity.get(SpriteComponent.self) else {
-            return false
-        }
-
-        guard let velocity = sprite.node.physicsBody?.velocity else {
+        guard let sprite = entity.get(SpriteComponent.self), let velocity = sprite.node.physicsBody?.velocity else {
             return false
         }
 
@@ -142,11 +127,7 @@ class HookSystem: System, HookSystemProtocol {
     // MARK: - Adjust length
 
     func adjustLength(from entity: Entity, type: HookSystemAction) -> Bool {
-        guard let sprite = entity.get(SpriteComponent.self) else {
-            return false
-        }
-
-        guard let velocity = sprite.node.physicsBody?.velocity else {
+        guard let sprite = entity.get(SpriteComponent.self), let velocity = sprite.node.physicsBody?.velocity else {
             return false
         }
 
@@ -165,10 +146,8 @@ class HookSystem: System, HookSystemProtocol {
         position: CGPoint,
         velocity: CGVector
     ) -> Bool {
-        guard let sprite = entity.get(SpriteComponent.self),
-            let hook = entity.get(HookComponent.self)
-            else {
-                return false
+        guard let sprite = entity.get(SpriteComponent.self), let hook = entity.get(HookComponent.self) else {
+            return false
         }
 
         delegate?.unhookActionApplied(hook: hook)
@@ -202,10 +181,8 @@ class HookSystem: System, HookSystemProtocol {
     // MARK: - Rope Checks
 
     func isShorterThanMin(for entity: Entity) -> Bool {
-        guard let sprite = entity.get(SpriteComponent.self),
-            let hook = entity.get(HookComponent.self)
-            else {
-                return false
+        guard let sprite = entity.get(SpriteComponent.self), let hook = entity.get(HookComponent.self) else {
+            return false
         }
 
         guard let bolt = hook.hookTo else {
@@ -336,8 +313,7 @@ class HookSystem: System, HookSystemProtocol {
         let isAttachingToSameBolt = hook.hookTo == hook.prevHookTo
 
         if !isAttachingToSameBolt {
-            guard let sprite = entity.get(SpriteComponent.self),
-                let bolt = hook.hookTo else {
+            guard let sprite = entity.get(SpriteComponent.self), let bolt = hook.hookTo else {
                 return
             }
 
@@ -376,10 +352,8 @@ class HookSystem: System, HookSystemProtocol {
     // MARK: - Create Joint
 
     private func makeJointPinToLine(from node: SKNode, toLine line: SKShapeNode) -> SKPhysicsJointPin? {
-        guard let nodePhysicsBody = node.physicsBody,
-            let linePhysicsBody = line.physicsBody
-            else {
-                return nil
+        guard let nodePhysicsBody = node.physicsBody, let linePhysicsBody = line.physicsBody else {
+            return nil
         }
 
         let jointPin = SKPhysicsJointPin.joint(
@@ -438,7 +412,6 @@ extension HookSystem {
             }
 
             _ = hook(from: sprite.parent, at: sprite.node.position, with: velocity)
-            // TODO: Delegate back to GameEngine
         }
     }
 
@@ -453,7 +426,6 @@ extension HookSystem {
                 return
             }
 
-            // TODO: Delegate back to GameEngine
             _ = unhook(entity: sprite.parent, at: sprite.node.position, with: velocity)
         }
     }
@@ -465,7 +437,6 @@ extension HookSystem {
             }
 
             let sprite = genericSystemEvent.sprite
-
             _ = adjustLength(from: sprite.parent, type: .shorten)
         }
     }
@@ -477,7 +448,6 @@ extension HookSystem {
             }
 
             let sprite = genericSystemEvent.sprite
-
             _ = adjustLength(from: sprite.parent, type: .lengthen)
         }
     }

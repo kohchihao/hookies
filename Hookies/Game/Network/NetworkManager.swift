@@ -287,40 +287,31 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func subscribeToGenericPlayerEvent() {
         API.shared.gameplay.subscribeToGenericPlayerEvent(listener: { genericPlayerEventData in
-
             guard let genericSystemEvent = self.createGenericSystemEvent(from: genericPlayerEventData) else {
                 return
             }
 
             let notificationData = ["data": genericSystemEvent]
-
+            var name: Notification.Name
             switch genericPlayerEventData.type {
             case .shotFromCannon:
-                NotificationCenter.default.post(name: .receivedLaunchAction, object: self, userInfo: notificationData)
+                name = .receivedLaunchAction
             case .jumpAction:
-                NotificationCenter.default.post(name: .receivedJumpAction, object: self, userInfo: notificationData)
+                name = .receivedJumpAction
             case .playerDied:
-                NotificationCenter.default.post(name: .receivedRespawnAction, object: self, userInfo: notificationData)
+                name = .receivedRespawnAction
             case .reachedFinishedLine:
-                NotificationCenter.default.post(
-                    name: .receivedReachedFinishLineAction,
-                    object: self,
-                    userInfo: notificationData)
+                name = .receivedReachedFinishLineAction
             case .hook:
-                NotificationCenter.default.post(name: .receivedHookAction, object: self, userInfo: notificationData)
+                name = .receivedHookAction
             case .unhook:
-                NotificationCenter.default.post(name: .receivedUnookAction, object: self, userInfo: notificationData)
+                name = .receivedUnookAction
             case .lengthenRope:
-                NotificationCenter.default.post(
-                    name: .receivedLengthenRopeAction,
-                    object: self,
-                    userInfo: notificationData)
+                name = .receivedLengthenRopeAction
             case .shortenRope:
-                NotificationCenter.default.post(
-                    name: .receivedShortenRopeAction,
-                    object: self,
-                    userInfo: notificationData)
+                name = .receivedShortenRopeAction
             }
+            NotificationCenter.default.post(name: name, object: self, userInfo: notificationData)
         })
     }
 
