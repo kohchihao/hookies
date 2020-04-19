@@ -14,6 +14,7 @@ protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
     func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String)
     func didPressFriendButton(in: PreGameLobbyViewController, lobbyId: String)
+    func leaveLobby()
 }
 
 class PreGameLobbyViewController: UIViewController {
@@ -44,6 +45,29 @@ class PreGameLobbyViewController: UIViewController {
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: PreGameLobbyViewController.name, bundle: nil)
+        NetworkManager.shared.set(gameId: self.viewModel.lobby.lobbyId)
+        API.shared.lobby.connect(roomId: self.viewModel.lobby.lobbyId, completion: { otherUsers in
+            print("other users: \(otherUsers)")
+        })
+        API.shared.lobby.subscribeToRoomConnection(roomId: self.viewModel.lobby.lobbyId, listener: { connectionState in
+            switch connectionState {
+            case .connected:
+                print("room \(connectionState)")
+            case .disconnected:
+                print("room \(connectionState)")
+                self.leaveLobby()
+            }
+        })
+        API.shared.lobby.subscribeToPlayersConnection(listener: { userConnection in
+            switch userConnection.state {
+            case .connected:
+                print(userConnection)
+            case .disconnected:
+                print("\(userConnection.uid) disconnected")
+                self.viewModel.lobby.removePlayer(playerId: userConnection.uid)
+                API.shared.lobby.save(lobby: self.viewModel.lobby)
+            }
+        })
     }
 
     @available(*, unavailable)
@@ -114,18 +138,31 @@ class PreGameLobbyViewController: UIViewController {
                 return
             }
             guard let updatedLobby = lobby else {
+                self.leaveLobby()
                 return
             }
             self.viewModel.lobby = updatedLobby
             self.updateView()
+            if updatedLobby.lobbyState == .empty {
+                API.shared.lobby.delete(lobbyId: self.viewModel.lobby.lobbyId)
+                self.leaveLobby()
+            }
             if self.viewModel.lobby.lobbyState == .start {
                 self.startGame()
             }
         })
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        API.shared.lobby.unsubscribeFromLobby()
+        API.shared.lobby.close()
+        print("viewDidDisappear")
+    }
+
     deinit {
         API.shared.lobby.unsubscribeFromLobby()
+        API.shared.lobby.close()
+        print("deinitialized")
     }
 
     @IBAction private func onSelectMapClicked(_ sender: UIButton) {
@@ -150,6 +187,10 @@ class PreGameLobbyViewController: UIViewController {
             in: self,
             withSelectedMapType: selectedMapType,
             gameplayId: viewModel.lobby.lobbyId)
+    }
+
+    private func leaveLobby() {
+        navigationDelegate?.leaveLobby()
     }
 
     private func createGameplaySession(with lobby: Lobby) {

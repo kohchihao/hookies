@@ -34,6 +34,15 @@ class LobbyStore: SocketRoom {
         })
     }
 
+    func delete(lobbyId: String) {
+        let ref = collection.document(lobbyId)
+        ref.delete(completion: { error in
+            if let error = error {
+                print("Error removing the document: \(error)")
+            }
+        })
+    }
+
     func subscribeToLobby(lobbyId: String, listener: @escaping (Lobby?, Error?) -> Void) {
         let ref = collection.document(lobbyId)
         lobbyListener = ref.addListener(Lobby.self, listener: { lobby, error in

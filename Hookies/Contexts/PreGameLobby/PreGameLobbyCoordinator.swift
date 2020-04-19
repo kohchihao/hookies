@@ -65,6 +65,12 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
         socialCoordinator.coordinatorDelegate = self
         socialCoordinator.start()
     }
+
+    func leaveLobby() {
+        let homeCoordinator = HomeCoordinator(with: navigator)
+        homeCoordinator.coordinatorDelegate = self
+        homeCoordinator.start()
+    }
 }
 
 extension PreGameLobbyCoordinator: MapDelegate {
