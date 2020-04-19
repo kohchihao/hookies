@@ -10,6 +10,7 @@ const gameManager = new GameManager();
 const lobbyManager = new LobbyManager();
 const games = io.of('/games');
 const lobbies = io.of('/lobbies');
+io.set('heartbeat interval', 3);
 
 lobbies.on('connection', socket => {
 	let currentLobby;
