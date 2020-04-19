@@ -12,7 +12,7 @@ import GameplayKit
 
 protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
-    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String)
+    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String, players: [Player])
     func didPressFriendButton(in: PreGameLobbyViewController, lobbyId: String)
 }
 
@@ -44,6 +44,7 @@ class PreGameLobbyViewController: UIViewController {
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: PreGameLobbyViewController.name, bundle: nil)
+        NetworkManager.shared.set(gameId: self.viewModel.lobby.lobbyId)
     }
 
     @available(*, unavailable)
@@ -146,15 +147,34 @@ class PreGameLobbyViewController: UIViewController {
         }
         saveLobby(lobby: viewModel.lobby)
         createGameplaySession(with: viewModel.lobby)
+        let players = createPlayers(with: viewModel.lobby)
         navigationDelegate?.didPressStartButton(
             in: self,
             withSelectedMapType: selectedMapType,
-            gameplayId: viewModel.lobby.lobbyId)
+            gameplayId: viewModel.lobby.lobbyId, players: players)
     }
 
     private func createGameplaySession(with lobby: Lobby) {
         let gameplay = Gameplay(gameId: lobby.lobbyId, gameState: .waiting, playersId: lobby.playersId)
         API.shared.gameplay.saveGameState(gameplay: gameplay)
+    }
+
+    private func createPlayers(with lobby: Lobby) -> [Player] {
+        var players: [Player] = []
+        let hostCostume = lobby.costumesId[lobby.hostId] ?? CostumeType.getDefault()
+        guard let host = Player(playerId: lobby.hostId, playerType: .human, costumeType: hostCostume, isCurrentPlayer: true) else {
+            return players
+        }
+        players.append(host)
+        for playerId in lobby.playersId.filter({ $0 != lobby.hostId }) {
+            let playerCostume = lobby.costumesId[playerId] ?? CostumeType.getDefault()
+            guard let player = Player(playerId: playerId, playerType: .human, costumeType: playerCostume, isCurrentPlayer: false) else {
+                continue
+            }
+            players.append(player)
+        }
+        print(players)
+        return players
     }
 
     private func updateView() {
