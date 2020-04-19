@@ -41,7 +41,6 @@ class GamePlayViewController: UIViewController {
             if let scene = GameScene(fileNamed: viewModel.selectedMap.rawValue) {
                 scene.gameplayId = viewModel.gameplayId
                 scene.players = viewModel.players
-                print(scene.players)
 
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill

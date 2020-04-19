@@ -161,19 +161,23 @@ class PreGameLobbyViewController: UIViewController {
 
     private func createPlayers(with lobby: Lobby) -> [Player] {
         var players: [Player] = []
+        guard let currentId = API.shared.user.currentUser?.uid else {
+            print("Error: current player not found.")
+            return players
+        }
+        let hostId = lobby.hostId
         let hostCostume = lobby.costumesId[lobby.hostId] ?? CostumeType.getDefault()
-        guard let host = Player(playerId: lobby.hostId, playerType: .human, costumeType: hostCostume, isCurrentPlayer: true) else {
+        guard let host = Player(playerId: hostId, playerType: .human, costumeType: hostCostume, isCurrentPlayer: currentId == hostId) else {
             return players
         }
         players.append(host)
         for playerId in lobby.playersId.filter({ $0 != lobby.hostId }) {
-            let playerCostume = lobby.costumesId[playerId] ?? CostumeType.getDefault()
-            guard let player = Player(playerId: playerId, playerType: .human, costumeType: playerCostume, isCurrentPlayer: false) else {
+            let costume = lobby.costumesId[playerId] ?? CostumeType.getDefault()
+            guard let player = Player(playerId: playerId, playerType: .human, costumeType: costume, isCurrentPlayer: currentId == playerId) else {
                 continue
             }
             players.append(player)
         }
-        print(players)
         return players
     }
 
