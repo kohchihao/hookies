@@ -66,6 +66,7 @@ class PreGameLobbyViewController: UIViewController {
                 print("\(userConnection.uid) disconnected")
                 self.viewModel.lobby.removePlayer(playerId: userConnection.uid)
                 API.shared.lobby.save(lobby: self.viewModel.lobby)
+                self.updateView()
             }
         })
     }
@@ -154,6 +155,7 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         API.shared.lobby.unsubscribeFromLobby()
         API.shared.lobby.close()
         print("viewDidDisappear")
@@ -248,6 +250,9 @@ class PreGameLobbyViewController: UIViewController {
             guard players.count <= Constants.maxPlayerCount && players.count <= self.playerViews.count else {
                 print("max number of players exceeded")
                 return
+            }
+            for playerView in self.playerViews {
+                playerView.resetView()
             }
             var otherPlayersViewIndex = 1
             var index: Int
