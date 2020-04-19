@@ -46,8 +46,8 @@ class PowerupSystem: System, PowerupSystemProtocol {
         let powerupPos = Vector(point: powerupSprite.node.position)
         let info = [
             "data": PowerupCollectionSystemEvent(sprite: sprite,
-                                                 powerupType: powerupComponent.type,
-                                                 powerupPos: powerupPos)
+                                                 powerupPos: powerupPos,
+                                                 powerupType: powerupComponent.type)
         ]
         NotificationCenter.default.post(name: Notification.Name.broadcastPowerupCollectionEvent,
                                         object: nil,
