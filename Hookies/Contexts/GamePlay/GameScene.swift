@@ -12,6 +12,7 @@ import Dispatch
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var gameplayId: String?
+    var players = [Player]()
     private var currentPlayerId: String?
     private var currentPlayer: SKSpriteNode?
 
@@ -49,7 +50,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         initialiseCamera()
         initialiseCountdownMessage()
         initialiseGameEngine()
-        initialiseCurrentPlayer()
     }
 
     // MARK: - Update
@@ -198,84 +198,57 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Initialise Game Engine
 
     private func initialiseGameEngine() {
-        guard let gameplayId = gameplayId else {
-            return
-        }
+        let cannonObject = getGameObjects(of: .cannon)[0]
+        let finishingLineObject = getGameObjects(of: .finishingLine)[0]
+        let boltObjects = getGameObjects(of: .bolt)
+        let powerupObjects = getGameObjects(of: .powerup)
+        let platformObjects = getGameObjects(of: .platform)
 
-        guard let cannonNode = self.childNode(withName: "//cannon") as? SKSpriteNode,
-            let finishingLineNode = self.childNode(withName: "//ending_line") as? SKSpriteNode
-            else {
-            return
-        }
-
-        let boltsNode = getGameObject(of: GameObjectType.bolt)
-        let powerupNodes = getGameObject(of: .powerup)
-        let platformsNode = getGameObject(of: GameObjectType.platform)
+        let powerupNodes = getGameNodes(of: .powerup)
 
         gameEngine = GameEngine(
-            gameId: gameplayId,
-            cannon: cannonNode,
-            finishingLine: finishingLineNode,
-            bolts: boltsNode,
-            powerups: powerupNodes,
-            platforms: platformsNode
+            cannon: cannonObject,
+            finishingLine: finishingLineObject,
+            bolts: boltObjects,
+            powerups: powerupObjects,
+            platforms: platformObjects,
+            players: players
         )
 
         gameEngine?.delegate = self
 
-        self.cannon = cannonNode
-        self.finishingLine = finishingLineNode
+        self.cannon = cannonObject.node
+        self.finishingLine = finishingLineObject.node
         self.powerups = powerupNodes
     }
 
-    private func getGameObject(of type: GameObjectType) -> [SKSpriteNode] {
-        var objects = [SKSpriteNode]()
+    private func getGameNodes(of type: GameObjectType) -> [SKSpriteNode] {
+        var nodes = [SKSpriteNode]()
+
+        for node in self["//" + type.rawValue + "*"] {
+            guard let spriteNode = node as? SKSpriteNode else {
+                return nodes
+            }
+
+            nodes.append(spriteNode)
+        }
+
+        return nodes
+    }
+
+    private func getGameObjects(of type: GameObjectType) -> [GameObject] {
+        var objects = [GameObject]()
 
         for object in self["//" + type.rawValue + "*"] {
             guard let objectNode = object as? SKSpriteNode else {
                 return objects
             }
 
-            objects.append(objectNode)
+            let gameObject = GameObject(node: objectNode, type: type)
+            objects.append(gameObject)
         }
 
         return objects
-    }
-
-    // MARK: - Initialise current player
-
-    private func initialiseCurrentPlayer() {
-        guard let gameplayId = gameplayId else {
-            return
-        }
-
-        // Getting costume
-        API.shared.lobby.get(lobbyId: gameplayId, completion: { lobby, error in
-            guard error == nil else {
-                return
-            }
-
-            guard let currentPlayerId = self.currentPlayerId,
-                let cannon = self.cannon
-                else {
-                return
-            }
-
-            guard let costume = lobby?.costumesId[currentPlayerId] else {
-                return
-            }
-
-            guard let currentPlayer = self.gameEngine?.setCurrentPlayer(
-                id: currentPlayerId,
-                position: cannon.position,
-                image: costume.stringValue
-                ) else {
-                    return
-            }
-
-            self.currentPlayer = currentPlayer
-            self.addChild(currentPlayer)
-        })
     }
 
     // MARK: - Centering camera
@@ -356,6 +329,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     // MARK: - Current player activating power up
+
     private func handleCurrentPlayerActivatePowerup() {
         powerupButton?.touchBeganHandler = handlePowerupBtnTouch
         powerupButton?.touchEndHandler = handlePowerupBtnTouchEnd
@@ -473,8 +447,8 @@ extension GameScene: GameEngineDelegate {
         disableGameButtons()
     }
 
-    func otherPlayerIsConnected(otherPlayer: SKSpriteNode) {
-        addChild(otherPlayer)
+    func addPlayer(with sprite: SKSpriteNode) {
+        addChild(sprite)
     }
 
     func currentPlayerIsReconnected() {

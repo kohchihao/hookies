@@ -13,7 +13,7 @@ extension Invite: FirestoreModel {
         return inviteId
     }
 
-    var encoding: [String : Any] {
+    var encoding: [String: Any] {
         return defaultEncoding()
     }
 

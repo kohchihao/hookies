@@ -14,24 +14,30 @@ import SpriteKit
 protocol DeadlockSystemProtocol {
     func checkIfStuck() -> Bool
     func resolveDeadlock()
-    func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector)
 }
 
 class DeadlockSystem: System, DeadlockSystemProtocol {
 
     private var sprite: SpriteComponent
+    private var hook: HookComponent
     private var isStuck = false
     private var contactedPlatforms: [SKSpriteNode: Int] = [:]
     private let highestMinimumHorizontalVelocity: CGFloat = 0.5
     private let lowestMinimumHorizontalVelocity: CGFloat = -0.5
     private let maximumTouches = 10
 
-    init(sprite: SpriteComponent) {
+    init(sprite: SpriteComponent, hook: HookComponent) {
         self.sprite = sprite
+        self.hook = hook
+        registerNotificationObservers()
     }
 
     func checkIfStuck() -> Bool {
         guard let physicsBody = sprite.node.physicsBody else {
+            return false
+        }
+
+        guard hook.hookTo == nil else {
             return false
         }
 
@@ -41,15 +47,18 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
        return isVelocityNearlyZero || isInfiniteBouncing
     }
 
+    /// Resolve deadlock for single player
     func resolveDeadlock() {
         guard let velocity = sprite.node.physicsBody?.velocity else {
             return
         }
 
+        broadcast(with: sprite)
         return resolveDeadlock(for: sprite, at: sprite.node.position, with: velocity)
     }
 
-    func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
+    /// Resolve deadlock for multi player
+    private func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
         sprite.node.position = position
         sprite.node.physicsBody?.velocity = velocity
 
@@ -88,10 +97,37 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
     }
 }
 
-// MARK: - Broadcast Update
+// MARK: - Networking
 
-extension DeadlockSystem: GenericPlayerEventBroadcast {
-    func broadcastUpdate(gameId: String, playerId: String, player: SpriteComponent) {
-        broadcastUpdate(gameId: gameId, playerId: playerId, player: player, eventType: .jumpAction)
+extension DeadlockSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedJumpAction(_:)),
+            name: .receivedJumpAction,
+            object: nil)
+    }
+
+    /// Broadcast
+    private func broadcast(with sprite: SpriteComponent) {
+        let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .jumpAction)
+        NotificationCenter.default.post(
+            name: .broadcastGenericPlayerAction,
+            object: self,
+            userInfo: ["data": genericSystemEvent])
+    }
+
+    @objc private func receivedJumpAction(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: GenericSystemEvent] {
+            guard let genericSystemEvent = data["data"] else {
+                return
+            }
+
+            let sprite = genericSystemEvent.sprite
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+            resolveDeadlock(for: sprite, at: sprite.node.position, with: velocity)
+        }
     }
 }

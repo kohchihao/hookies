@@ -27,16 +27,6 @@ extension Entity {
         return nil
     }
 
-    func getHookComponent() -> HookComponent? {
-        for component in components {
-            if let hook = component as? HookComponent {
-                return hook
-            }
-        }
-
-        return nil
-    }
-
     func getMultiple<ComponentType: Component>(_: ComponentType.Type) -> [ComponentType] {
         var result = [ComponentType]()
         for component in components {

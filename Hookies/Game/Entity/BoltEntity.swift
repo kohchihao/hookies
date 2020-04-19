@@ -17,5 +17,11 @@ class BoltEntity: Entity {
 
     convenience init() {
         self.init(components: [])
+
+        let sprite = SpriteComponent(parent: self)
+        let translate = NonPhysicsTranslateComponent(parent: self)
+
+        addComponent(sprite)
+        addComponent(translate)
     }
 }

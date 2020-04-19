@@ -84,6 +84,11 @@ class NetworkManager: NetworkManagerProtocol {
             selector: #selector(broadcastPowerupCollection(_:)),
             name: .broadcastPowerupCollectionEvent,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastFinishGame(_:)),
+            name: .broadcastFinishGameEvent,
+            object: nil)
     }
 
     // MARK: - Game Connection
@@ -209,13 +214,42 @@ class NetworkManager: NetworkManagerProtocol {
             powerupType: powerupCollectionSystemEvent.powerupType)
     }
 
+    // MARK: - Broadcast Finish Game
+
+    @objc private func broadcastFinishGame(_ notification: Notification) {
+        API.shared.gameplay.registerFinishLineReached()
+    }
+
     // MARK: - Socket Subscriptions
 
     private func setupSocketSubscriptions() {
+        subscribeToRoomConnection()
         subscribeToOtherPlayersState()
         subscribeToGenericPlayerEvent()
+        subscribeToGameEndEvent()
         subscribeToPowerupCollection()
         subscribeToPowerupEvent()
+    }
+
+    // MARK: Room Connection (Current Player Connection)
+
+    private func subscribeToRoomConnection() {
+        guard let gameId = gameId, let deviceStatus = deviceStatus else {
+            return
+        }
+
+        guard deviceStatus == .online else {
+            return
+        }
+
+        API.shared.gameplay.subscribeToRoomConnection(roomId: gameId, listener: { connectionState in
+            switch connectionState {
+            case .connected:
+                NotificationCenter.default.post(name: .receivedCurrentPlayerRejoinEvent, object: self)
+            case .disconnected:
+                NotificationCenter.default.post(name: .receivedCurrentPlayerDisconnectedEvent, object: self)
+            }
+        })
     }
 
     // MARK: Player Connection State
@@ -255,40 +289,31 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func subscribeToGenericPlayerEvent() {
         API.shared.gameplay.subscribeToGenericPlayerEvent(listener: { genericPlayerEventData in
-
             guard let genericSystemEvent = self.createGenericSystemEvent(from: genericPlayerEventData) else {
                 return
             }
 
             let notificationData = ["data": genericSystemEvent]
-
+            var name: Notification.Name
             switch genericPlayerEventData.type {
             case .shotFromCannon:
-                NotificationCenter.default.post(name: .receivedLaunchAction, object: self, userInfo: notificationData)
+                name = .receivedLaunchAction
             case .jumpAction:
-                NotificationCenter.default.post(name: .receivedJumpAction, object: self, userInfo: notificationData)
+                name = .receivedJumpAction
             case .playerDied:
-                NotificationCenter.default.post(name: .receivedRespawnAction, object: self, userInfo: notificationData)
+                name = .receivedRespawnAction
             case .reachedFinishedLine:
-                NotificationCenter.default.post(
-                    name: .receivedReachedFinishLineAction,
-                    object: self,
-                    userInfo: notificationData)
+                name = .receivedReachedFinishLineAction
             case .hook:
-                NotificationCenter.default.post(name: .receivedHookAction, object: self, userInfo: notificationData)
+                name = .receivedHookAction
             case .unhook:
-                NotificationCenter.default.post(name: .receivedUnookAction, object: self, userInfo: notificationData)
+                name = .receivedUnookAction
             case .lengthenRope:
-                NotificationCenter.default.post(
-                    name: .receivedLengthenRopeAction,
-                    object: self,
-                    userInfo: notificationData)
+                name = .receivedLengthenRopeAction
             case .shortenRope:
-                NotificationCenter.default.post(
-                    name: .receivedShortenRopeAction,
-                    object: self,
-                    userInfo: notificationData)
+                name = .receivedShortenRopeAction
             }
+            NotificationCenter.default.post(name: name, object: self, userInfo: notificationData)
         })
     }
 
@@ -308,6 +333,27 @@ class NetworkManager: NetworkManagerProtocol {
         playerSprite.node.physicsBody?.velocity = CGVector(vector: velocity)
 
         return GenericSystemEvent(sprite: playerSprite, eventType: genericPlayerEventData.type)
+    }
+
+    // MARK: Game end
+
+    private func subscribeToGameEndEvent() {
+        API.shared.gameplay.subscribeToGameEndEvent(listener: { rankings in
+            var rankingsSprite = [SpriteComponent]()
+
+            for userId in rankings {
+                guard let playerSprite = self.playersSprite[userId] else {
+                    return
+                }
+
+                rankingsSprite.append(playerSprite)
+            }
+
+            NotificationCenter.default.post(
+                name: .receivedGameEndEvent,
+                object: self,
+                userInfo: ["data": rankingsSprite])
+        })
     }
 
     // MARK: Powerup Action

@@ -250,8 +250,11 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch tableView {
         case self.socialTableView:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendTableViewCell", for: indexPath) as? FriendTableViewCell else {
-                return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: "FriendTableViewCell",
+                for: indexPath) as? FriendTableViewCell
+                else {
+                    return UITableViewCell()
             }
             cell.delegate = self
             updateUsernameInCell(userId: self.viewModel.social.friends[indexPath.row], cell: cell)
@@ -263,32 +266,44 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         case self.incomingRequestTableView:
             let identifier = "IncomingTableViewCell"
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? IncomingTableViewCell else {
-                return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: identifier,
+                for: indexPath) as? IncomingTableViewCell
+                else {
+                    return UITableViewCell()
             }
             cell.delegate = self
             updateRequestInCell(requestId: self.viewModel.social.incomingRequests[indexPath.row], cell: cell)
             return cell
         case self.outgoingRequestTableView:
             let identifier = "OutgoingTableViewCell"
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? OutgoingTableViewCell else {
-                return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: identifier,
+                for: indexPath) as? OutgoingTableViewCell
+                else {
+                    return UITableViewCell()
             }
             cell.delegate = self
             updateRequestInCell(requestId: self.viewModel.social.outgoingRequests[indexPath.row], cell: cell)
             return cell
         case self.incomingInviteTableView:
             let identifier = "IncomingTableViewCell"
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? IncomingTableViewCell else {
-                return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: identifier,
+                for: indexPath) as? IncomingTableViewCell
+                else {
+                    return UITableViewCell()
             }
             cell.delegate = self
             updateInviteInCell(inviteId: self.viewModel.social.incomingInvites[indexPath.row], cell: cell)
             return cell
         case self.outgoingInviteTableView:
             let identifier = "OutgoingTableViewCell"
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? OutgoingTableViewCell else {
-                return UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: identifier,
+                for: indexPath) as? OutgoingTableViewCell
+                else {
+                    return UITableViewCell()
             }
             cell.delegate = self
             updateInviteInCell(inviteId: self.viewModel.social.outgoingInvites[indexPath.row], cell: cell)
@@ -386,7 +401,7 @@ extension SocialViewController: IncomingTableViewCellDelegate {
     }
 
     func rejectButtonPressed(inviteId: String) {
-        InviteManager.processInvite(inviteId: inviteId, completion: {_ in })
+        InviteManager.processInvite(inviteId: inviteId, completion: { _ in })
     }
 }
 
@@ -396,6 +411,6 @@ extension SocialViewController: OutgoingTableViewCellDelegate {
     }
 
     func cancelButtonPressed(inviteId: String) {
-        InviteManager.processInvite(inviteId: inviteId, completion: {_ in })
+        InviteManager.processInvite(inviteId: inviteId, completion: { _ in })
     }
 }

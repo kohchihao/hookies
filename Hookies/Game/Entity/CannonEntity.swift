@@ -17,5 +17,8 @@ class CannonEntity: Entity {
 
     convenience init() {
         self.init(components: [])
+
+        let sprite = SpriteComponent(parent: self)
+        addComponent(sprite)
     }
 }

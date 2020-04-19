@@ -15,6 +15,7 @@ protocol PowerupSystemProtocol {
 
 protocol PowerupSystemDelegate: class {
     func hasAddedTrap(sprite: SpriteComponent)
+    func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
 }
 
 class PowerupSystem: System, PowerupSystemProtocol {
@@ -45,8 +46,8 @@ class PowerupSystem: System, PowerupSystemProtocol {
         let powerupPos = Vector(point: powerupSprite.node.position)
         let info = [
             "data": PowerupCollectionSystemEvent(sprite: sprite,
-                                                 powerupPos: powerupPos,
-                                                 powerupType: powerupComponent.type)
+                                                 powerupType: powerupComponent.type,
+                                                 powerupPos: powerupPos)
         ]
         NotificationCenter.default.post(name: Notification.Name.broadcastPowerupCollectionEvent,
                                         object: nil,
@@ -86,8 +87,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
         let info = [
             "data": PowerupSystemEvent(sprite: sprite,
                                        powerupEventType: .activate,
-                                       powerupType: powerupType,
-                                       powerupPos: nil)
+                                       powerupType: powerupType)
         ]
         NotificationCenter.default.post(name: Notification.Name.broadcastPowerupAction,
                                         object: nil,
@@ -234,5 +234,71 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
         let hasShieldEffect = powerup.parent.get(ShieldEffectComponent.self) != nil
         return powerup.isActivated && hasShieldEffect
+    }
+}
+
+
+// MARK: - Networking
+
+extension PowerupSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedPowerupCollectionAction(_:)),
+            name: .receivedHookAction,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedPowerupEventAction(_:)),
+            name: .receivedUnookAction,
+            object: nil)
+    }
+
+    @objc private func receivedPowerupCollectionAction(_ notification: Notification) {
+        guard let data = notification.userInfo as? [String: PowerupCollectionSystemEvent],
+            let collectionEvent = data["data"] else {
+                return
+        }
+        let positionOfCollection = CGPoint(vector: collectionEvent.powerupPos)
+
+        guard let powerup = findPowerup(at: positionOfCollection),
+             let player = collectionEvent.sprite.parent as? PlayerEntity,
+             let sprite = player.get(SpriteComponent.self) else {
+                return
+        }
+
+        powerups.remove(powerup)
+        collect(powerupComponent: powerup, by: sprite)
+        delegate?.collected(powerup: powerup, by: sprite)
+    }
+
+    @objc private func receivedPowerupEventAction(_ notification: Notification) {
+        guard let data = notification.userInfo as? [String: PowerupSystemEvent],
+            let powerupEvent = data["data"] else {
+                return
+        }
+
+        let playerSprite = powerupEvent.sprite
+        switch powerupEvent.powerupEventType {
+        case .activate:
+            activate(powerupType: powerupEvent.powerupType, for: playerSprite)
+        case .netTrapped:
+            let eventPos = CGPoint(vector: powerupEvent.powerupPos)
+            activateNetTrap(at: eventPos, on: playerSprite)
+        case.deactivate:
+            return
+        }
+    }
+
+    private func findPowerup(at point: CGPoint) -> PowerupComponent? {
+        for powerup in powerups {
+            guard let sprite = powerup.parent.get(SpriteComponent.self) else {
+                continue
+            }
+            if (sprite.node.frame.contains(point)) {
+                return powerup
+            }
+        }
+        return nil
     }
 }
