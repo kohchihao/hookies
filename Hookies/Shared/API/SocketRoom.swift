@@ -16,6 +16,7 @@ extension SocketRoom {
     /// Will remove all listeners that has been added the current room session.
     func close() {
         socket.removeAllHandlers()
+        socket.disconnect()
     }
 
     /// Connect the current user to the defined room id.
