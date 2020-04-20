@@ -119,7 +119,7 @@ class Logger {
         guard traceableFunctionName else {
             return ""
         }
-        let function = "[" + functionName + "()]" + spacing
+        let function = "[" + functionName + "]" + spacing
         return function
     }
 
