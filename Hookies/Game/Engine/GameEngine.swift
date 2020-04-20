@@ -29,6 +29,7 @@ class GameEngine {
     private var healthSystem: HealthSystem?
     private var userConnectionSystem: UserConnectionSystem?
     private var startSystem = StartSystem()
+    private var endSystem: EndSystem?
 
     // MARK: - Entity
 
@@ -69,11 +70,10 @@ class GameEngine {
     }
 
     private func initialiseDelegates() {
-        self.startSystem.delegate = self
-        self.hookSystem?.delegate = self
-        self.userConnectionSystem?.delegate = self
-        self.finishingLineSystem.delegate = self
-        self.powerupSystem.delegate = self
+        startSystem.delegate = self
+        hookSystem?.delegate = self
+        userConnectionSystem?.delegate = self
+        powerupSystem.delegate = self
     }
 
     // MARK: - Add Players
@@ -81,6 +81,9 @@ class GameEngine {
     func addPlayers(_ players: [Player]) {
         initialisePlayers(players)
         startSystem.getReady()
+
+        endSystem = EndSystem(totalPlayers: players.count)
+        endSystem?.delegate = self
     }
 
     // MARK: - Launch Current Player
@@ -679,11 +682,10 @@ extension GameEngine: UserConnectionSystemDelegate {
     }
 }
 
-// MARK: - FinishingLineSystemDelegate
+// MARK: - EndSystemDelegate
 
-extension GameEngine: FinishingLineSystemDelegate {
+extension GameEngine: EndSystemDelegate {
     func gameEnded(rankings: [SpriteComponent]) {
-        print("gameEnded: received game end event")
         delegate?.gameHasFinish()
     }
 }

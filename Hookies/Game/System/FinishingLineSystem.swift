@@ -67,7 +67,7 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         }
 
         broadcastReachedFinishLine(with: player)
-        broadcastFinishGame()
+        broadcastFinishGame(with: player)
         return stop(player: player, at: player.node.position, with: velocity)
     }
 
@@ -123,11 +123,11 @@ extension FinishingLineSystem {
             selector: #selector(receivedReachedFinishLineAction(_:)),
             name: .receivedReachedFinishLineAction,
             object: nil)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(receivedGameEndEvent(_:)),
-            name: .receivedGameEndEvent,
-            object: nil)
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(receivedGameEndEvent(_:)),
+//            name: .receivedGameEndEvent,
+//            object: nil)
     }
 
     private func broadcastReachedFinishLine(with sprite: SpriteComponent) {
@@ -138,8 +138,8 @@ extension FinishingLineSystem {
             userInfo: ["data": genericSystemEvent])
     }
 
-    private func broadcastFinishGame() {
-        NotificationCenter.default.post(name: .broadcastFinishGameEvent, object: self)
+    private func broadcastFinishGame(with sprite: SpriteComponent) {
+        NotificationCenter.default.post(name: .broadcastFinishGameEvent, object: self, userInfo: ["data": sprite])
     }
 
     @objc private func receivedReachedFinishLineAction(_ notification: Notification) {
@@ -156,14 +156,13 @@ extension FinishingLineSystem {
         }
     }
 
-    @objc private func receivedGameEndEvent(_ notification: Notification) {
-        if let data = notification.userInfo as? [String: [SpriteComponent]] {
-            guard let rankings = data["data"] else {
-                return
-            }
-
-            print("FinishingLine: received game end event")
-            delegate?.gameEnded(rankings: rankings)
-        }
-    }
+//    @objc private func receivedGameEndEvent(_ notification: Notification) {
+//        if let data = notification.userInfo as? [String: [SpriteComponent]] {
+//            guard let rankings = data["data"] else {
+//                return
+//            }
+//
+//            delegate?.gameEnded(rankings: rankings)
+//        }
+//    }
 }

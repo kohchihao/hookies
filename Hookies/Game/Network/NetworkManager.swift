@@ -216,6 +216,23 @@ class NetworkManager: NetworkManagerProtocol {
 
     @objc private func broadcastFinishGame(_ notification: Notification) {
         API.shared.gameplay.registerFinishLineReached()
+
+        guard let deviceStatus = deviceStatus else {
+            return
+        }
+
+        if deviceStatus == .offline {
+            if let data = notification.userInfo as? [String: SpriteComponent] {
+                guard let sprite = data["data"] else {
+                    return
+                }
+
+                NotificationCenter.default.post(
+                    name: .broadcastPlayerFinishSprite,
+                    object: self,
+                    userInfo: ["data": sprite])
+            }
+        }
     }
 
     // MARK: - Socket Subscriptions
