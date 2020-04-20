@@ -347,6 +347,7 @@ class NetworkManager: NetworkManagerProtocol {
         }
 
         playerSprite.node.position = CGPoint(vector: genericPlayerEventData.playerData.position)
+        playerSprite.node.physicsBody?.isDynamic = true
         playerSprite.node.physicsBody?.velocity = CGVector(vector: velocity)
 
         return GenericSystemEvent(sprite: playerSprite, eventType: genericPlayerEventData.type)
