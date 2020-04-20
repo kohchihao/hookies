@@ -63,6 +63,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameEngine?.update(time: currentTime)
         handleCurrentPlayerTetheringToClosestBolt()
         handleCurrentPlayerActivatePowerup()
+        handleCurrentPlayerAdjustRope()
         handleJumpButton()
     }
 
@@ -222,8 +223,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         shortenButton = ShortenButton(in: sceneFrame)
     }
 
-
-
     // MARK: - Initialise Game Engine
 
     private func initialiseGameEngine() {
@@ -334,10 +333,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func disableGameButtons() {
         grapplingHookButton?.state = .ButtonNodeStateDisabled
         jumpButton?.state = .ButtonNodeStateHidden
+        shortenButton?.state = .ButtonNodeStateDisabled
+        lengthenButton?.state = .ButtonNodeStateDisabled
     }
 
     private func enableGameButtons() {
         grapplingHookButton?.state = .ButtonNodeStateActive
+        shortenButton?.state = .ButtonNodeStateActive
+        lengthenButton?.state = .ButtonNodeStateActive
     }
 
     // MARK: - Current player tethering to hook
@@ -345,15 +348,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func handleCurrentPlayerTetheringToClosestBolt() {
         grapplingHookButton?.touchBeganHandler = handleGrapplingHookBtnTouchBegan
         grapplingHookButton?.touchEndHandler = handleGrapplingHookBtnTouchEnd
-        grapplingHookButton?.touchUpHandler = handleGrapplingHookBtnUp
-        grapplingHookButton?.touchDownHandler = handleGrapplingHookBtnDown
     }
 
-    private func handleGrapplingHookBtnUp() {
+    private func handleCurrentPlayerAdjustRope() {
+        shortenButton?.touchBeganHandler = handleShortening
+        lengthenButton?.touchBeganHandler = handleLengthening
+    }
+
+    private func handleShortening() {
         gameEngine?.applyShortenActionToCurrentPlayer()
     }
 
-    private func handleGrapplingHookBtnDown() {
+    private func handleLengthening() {
         gameEngine?.applyLengthenActionToCurrentPlayer()
     }
 
