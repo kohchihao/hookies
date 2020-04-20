@@ -27,6 +27,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private var powerups = Set<PowerupComponent>()
     private var netTraps = Set<SpriteComponent>()
 
+    init() {
+        registerNotificationObservers()
+    }
+
     func collect(powerupComponent: PowerupComponent, by sprite: SpriteComponent) {
         guard let powerupSprite = powerupComponent.parent.get(SpriteComponent.self),
             let player = sprite.parent as? PlayerEntity else {
