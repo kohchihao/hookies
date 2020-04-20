@@ -99,7 +99,9 @@ class NetworkManager: NetworkManagerProtocol {
             return
         }
 
+        print("NetworkManager - GameConnection: Connecting to game...")
         API.shared.gameplay.connect(roomId: gameId, completion: { otherPlayersId in
+            print("NetworkManager - GameConnection: Connected to game")
             for otherPlayerId in otherPlayersId {
                 self.handleOtherPlayerJoinEvent(with: otherPlayerId)
             }

@@ -60,6 +60,7 @@ class StartSystem: System, StartSystemProtocol {
         if expectedNumberOfPlayers == 1 {
             delegate?.isReadyToStart()
         }
+        print("StartSystem: Connecting to game...")
         NotificationCenter.default.post(
             name: .gameConnectionEvent,
             object: self,
