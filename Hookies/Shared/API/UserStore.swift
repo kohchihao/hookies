@@ -72,7 +72,7 @@ class UserStore {
         let query = collection.whereField("username", isEqualTo: username)
         query.getModels(User.self, completion: { users, error in
            guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return completion(nil, error)
             }
             guard let user = users?.first else {

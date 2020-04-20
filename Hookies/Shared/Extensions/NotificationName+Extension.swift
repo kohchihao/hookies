@@ -45,9 +45,12 @@ extension Notification.Name {
 
     // FinishingLine
     static let receivedReachedFinishLineAction = Notification.Name("receivedReachedFinishLineAction")
-    static let receivedGameEndEvent = Notification.Name("receivedGameEndEvent")
 
     // Powerup
     static let receviedPowerupCollectionEvent = Notification.Name("receivedPowerupCollectionEvent")
     static let receivedPowerupAction = Notification.Name("receivedPowerupAction")
+
+    // End
+    static let broadcastPlayerFinishSprite = Notification.Name("broadcastPlayerFinishSprite")
+    static let receivedGameEndEvent = Notification.Name("receivedGameEndEvent")
 }

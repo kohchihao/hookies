@@ -28,6 +28,7 @@ class GameEngine {
     private var healthSystem: HealthSystem?
     private var userConnectionSystem: UserConnectionSystem?
     private var startSystem = StartSystem()
+    private var endSystem: EndSystem?
 
     // MARK: - Entity
 
@@ -46,8 +47,7 @@ class GameEngine {
         finishingLine: GameObject,
         bolts: [GameObject],
         powerups: [GameObject],
-        platforms: [GameObject],
-        players: [Player]
+        platforms: [GameObject]
     ) {
         startPosition = cannon.node.position
 
@@ -64,17 +64,25 @@ class GameEngine {
         initialiseFinishingLine(finishingLine)
 
         initialiseDelegates()
-        initialisePlayers(players)
-        startSystem.getReady()
         gameObjectMovementSystem.update()
+        Logger.log.traceableFunctionName = true
     }
 
     private func initialiseDelegates() {
-        self.startSystem.delegate = self
-        self.hookSystem?.delegate = self
-        self.userConnectionSystem?.delegate = self
-        self.finishingLineSystem.delegate = self
-        self.powerupSystem.delegate = self
+        startSystem.delegate = self
+        hookSystem?.delegate = self
+        userConnectionSystem?.delegate = self
+        powerupSystem.delegate = self
+    }
+
+    // MARK: - Add Players
+
+    func addPlayers(_ players: [Player]) {
+        initialisePlayers(players)
+        startSystem.getReady()
+
+        endSystem = EndSystem(totalPlayers: players.count)
+        endSystem?.delegate = self
     }
 
     // MARK: - Launch Current Player
@@ -210,7 +218,7 @@ class GameEngine {
 
             guard let boltSprite = boltEntity.get(SpriteComponent.self),
                 let translate = boltEntity.get(NonPhysicsTranslateComponent.self) else {
-                    print("GameEngine - initialisebolt: Components are nil")
+                    Logger.log.show(details: "Components are nil", logType: .error)
                     return boltsSprite
             }
 
@@ -302,7 +310,7 @@ class GameEngine {
                 let translate = platformEntity.get(NonPhysicsTranslateComponent.self),
                 let rotate = platformEntity.get(RotateComponent.self)
                 else {
-                    print("GameEngine - initialisePlatforms: Components are nil")
+                    Logger.log.show(details: "Components are nil", logType: .error)
                     return platformsSprite
             }
 
@@ -404,7 +412,7 @@ class GameEngine {
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
 
-        delegate?.addPlayer(with: sprite.node)
+        delegate?.addCurrentPlayer(with: sprite.node)
     }
 
     private func setOtherPlayer(_ player: Player) {
@@ -554,9 +562,9 @@ extension GameEngine: UserConnectionSystemDelegate {
     }
 }
 
-// MARK: - FinishingLineSystemDelegate
+// MARK: - EndSystemDelegate
 
-extension GameEngine: FinishingLineSystemDelegate {
+extension GameEngine: EndSystemDelegate {
     func gameEnded(rankings: [SpriteComponent]) {
         delegate?.gameHasFinish()
     }

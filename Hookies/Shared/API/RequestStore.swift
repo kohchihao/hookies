@@ -38,7 +38,7 @@ class RequestStore {
         let ref = collection.document(request.documentID)
         ref.delete(completion: { error in
             if let error = error {
-                print("Error removing the document: \(error)")
+                Logger.log.show(details: "Error removing the document: \(error)", logType: .error)
             }
         })
     }

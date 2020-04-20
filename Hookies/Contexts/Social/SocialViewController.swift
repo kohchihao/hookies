@@ -100,7 +100,7 @@ class SocialViewController: UIViewController {
         }
         API.shared.social.subscribeToSocial(userId: currentUser.uid, listener: { social, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
             guard let updatedSocial = social else {
@@ -128,24 +128,24 @@ class SocialViewController: UIViewController {
             return
         }
         guard !username.isEmpty else {
-            print("username field cannot be empty")
+            Logger.log.show(details: "username field cannot be empty", logType: .warning)
             return
         }
         guard let fromUserId = API.shared.user.currentUser?.uid else {
-            print("user is not logged in")
+            Logger.log.show(details: "user is not logged in", logType: .error)
             return
         }
         API.shared.user.get(withUsername: username, completion: { user, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
             guard let toUserId = user?.uid else {
-                print("user does not exists")
+                Logger.log.show(details: "user does not exists", logType: .error)
                 return
             }
             guard fromUserId != toUserId else {
-                print("cannot send friend request to yourself")
+                Logger.log.show(details: "cannot send friend request to yourself", logType: .warning)
                 return
             }
             RequestManager.sendRequest(fromUserId: fromUserId, toUserId: toUserId)
@@ -199,7 +199,7 @@ class SocialViewController: UIViewController {
     func removeFriend(user: User) {
         API.shared.social.get(userId: user.uid, completion: { social, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
             guard var social = social else {
@@ -339,24 +339,24 @@ extension SocialViewController: FriendTableViewCellDelegate {
             return
         }
         guard let fromUserId = API.shared.user.currentUser?.uid else {
-            print("user is not logged in")
+            Logger.log.show(details: "user is not logged in", logType: .error)
             return
         }
         API.shared.user.get(withUsername: username, completion: { user, error in
             guard error == nil else {
-               print(error.debugDescription)
+               Logger.log.show(details: error.debugDescription, logType: .error)
                return
             }
             guard let toUserId = user?.uid else {
-               print("user does not exists")
-               return
+                Logger.log.show(details: "user does not exists", logType: .error)
+                return
             }
             guard fromUserId != toUserId else {
-                print("cannot send game invite to yourself")
+                Logger.log.show(details: "cannot send game invite to yourself", logType: .error)
                 return
             }
             guard let lobbyId = self.viewModel.lobbyId else {
-                print("lobby id not available")
+                Logger.log.show(details: "lobby id not available", logType: .error)
                 return
             }
             InviteManager.sendInvite(fromUserId: fromUserId, toUserId: toUserId, lobbyId: lobbyId)
@@ -366,7 +366,7 @@ extension SocialViewController: FriendTableViewCellDelegate {
     func deleteButtonPressed(username: String) {
         API.shared.user.get(withUsername: username, completion: { user, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
             guard let user = user else {
@@ -388,7 +388,9 @@ extension SocialViewController: IncomingTableViewCellDelegate {
 
     func acceptButtonPressed(inviteId: String) {
         guard self.viewModel.lobbyId == nil else {
-            print("you cannot accept a game invite when you are in the pre-game lobby")
+            Logger.log.show(
+                details: "you cannot accept a game invite when you are in the pre-game lobby",
+                logType: .warning)
             return
         }
         InviteManager.processInvite(inviteId: inviteId, completion: { invite in

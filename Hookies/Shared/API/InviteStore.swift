@@ -38,7 +38,7 @@ class InviteStore {
         let ref = collection.document(invite.documentID)
         ref.delete(completion: { error in
             if let error = error {
-                print("Error removing the document: \(error)")
+                Logger.log.show(details: "Error removing the document: \(error)", logType: .error)
             }
         })
     }

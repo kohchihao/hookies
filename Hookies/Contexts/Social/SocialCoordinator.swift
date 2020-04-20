@@ -48,19 +48,19 @@ extension SocialCoodinator: SocialViewNavigationDelegate {
     func didAcceptInvite(invite: Invite) {
         API.shared.lobby.get(lobbyId: invite.lobbyId, completion: { lobby, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
             guard var lobby = lobby else {
-                print("Lobby not found")
+                Logger.log.show(details: "Lobby not found", logType: .error)
                 return
             }
             guard let playerId = API.shared.user.currentUser?.uid else {
-                print("user is not logged in")
+                Logger.log.show(details: "user is not logged in", logType: .error)
                 return
             }
             guard lobby.lobbyState == .open else {
-                print("lobby is not open")
+                Logger.log.show(details: "lobby is not open", logType: .error)
                 return
             }
             lobby.addPlayer(playerId: playerId)

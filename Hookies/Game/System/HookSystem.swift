@@ -14,10 +14,10 @@ enum HookSystemAction {
     case lengthen, shorten
 }
 
-typealias AboveBoltDisplacement = Int
-typealias BelowBoltDisplacement = Int
-typealias RightBoltDisplacement = Int
-typealias LeftBoltDisplacement = Int
+typealias AboveBoltDisplacement = Double
+typealias BelowBoltDisplacement = Double
+typealias RightBoltDisplacement = Double
+typealias LeftBoltDisplacement = Double
 
 protocol HookSystemProtocol {
     func hook(from hook: Entity) -> Bool
@@ -220,8 +220,14 @@ class HookSystem: System, HookSystemProtocol {
         bolt: SpriteComponent,
         type: HookSystemAction
     ) -> CGPoint {
-        let (aboveDisplacement, belowDisplacement) = getVerticalBoltDisplacement(for: type)
-        let (rightDisplacement, leftDisplacement) = getHorizontalBoltDisplacement(for: type)
+        let (aboveDisplacement, belowDisplacement) = getVerticalBoltDisplacement(
+            sprite: sprite,
+            bolt: bolt,
+            type: type)
+        let (rightDisplacement, leftDisplacement) = getHorizontalBoltDisplacement(
+            sprite: sprite,
+            bolt: bolt,
+            type: type)
 
         var positionYOffset = CGFloat(0)
         var positionXOffset = CGFloat(0)
@@ -252,10 +258,18 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     private func getHorizontalBoltDisplacement(
-        for type: HookSystemAction
+        sprite: SpriteComponent,
+        bolt: SpriteComponent,
+        type: HookSystemAction
     ) -> (RightBoltDisplacement, LeftBoltDisplacement) {
-        var rightBoltDisplacement = -3
-        var leftBoltDisplacement = 3
+        let h = 10.0
+        let playerPosVector = Vector(point: sprite.node.position)
+        let boltPosVector = Vector(point: bolt.node.position)
+        let angle = boltPosVector.angle(from: playerPosVector)
+        let x = h * cos(angle)
+
+        var rightBoltDisplacement = -x
+        var leftBoltDisplacement = x
 
         if type == .lengthen {
             rightBoltDisplacement *= -1
@@ -266,10 +280,18 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     private func getVerticalBoltDisplacement(
-        for type: HookSystemAction
+        sprite: SpriteComponent,
+        bolt: SpriteComponent,
+        type: HookSystemAction
     ) -> (AboveBoltDisplacement, BelowBoltDisplacement) {
-        var aboveBoltDisplacement = -3
-        var belowBoltDisplacement = 3
+        let h = 10.0
+        let playerPosVector = Vector(point: sprite.node.position)
+        let boltPosVector = Vector(point: bolt.node.position)
+        let angle = boltPosVector.angle(from: playerPosVector)
+        let y = h * sin(angle)
+
+        var aboveBoltDisplacement = -y
+        var belowBoltDisplacement = y
 
         if type == .lengthen {
             aboveBoltDisplacement *= -1
@@ -437,7 +459,11 @@ extension HookSystem {
             }
 
             let sprite = genericSystemEvent.sprite
-            _ = adjustLength(from: sprite.parent, type: .shorten)
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+
+            _ = adjustLength(from: sprite.parent, type: .shorten, position: sprite.node.position, velocity: velocity)
         }
     }
 
@@ -448,7 +474,11 @@ extension HookSystem {
             }
 
             let sprite = genericSystemEvent.sprite
-            _ = adjustLength(from: sprite.parent, type: .lengthen)
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+
+            _ = adjustLength(from: sprite.parent, type: .lengthen, position: sprite.node.position, velocity: velocity)
         }
     }
 }

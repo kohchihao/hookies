@@ -54,8 +54,17 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
         mapsCoordinator.start()
     }
 
-    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String, players: [Player]) {
-        let gamePlayCoordinator = GamePlayCoordinator(with: navigator, mapType: mapType, gameplayId: gameplayId, players: players)
+    func didPressStartButton(
+        in: PreGameLobbyViewController,
+        withSelectedMapType mapType: MapType,
+        gameplayId: String,
+        players: [Player]
+    ) {
+        let gamePlayCoordinator = GamePlayCoordinator(
+            with: navigator,
+            mapType: mapType,
+            gameplayId: gameplayId,
+            players: players)
         gamePlayCoordinator.coordinatorDelegate = self
         gamePlayCoordinator.start()
     }
