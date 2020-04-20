@@ -43,7 +43,7 @@ extension JoinGameCoordinator: JoinGameViewNavigationDelegate {
     func didPressJoinLobbyButton(in: JoinGameViewController, lobbyId: String) {
         API.shared.lobby.get(lobbyId: lobbyId, completion: { lobby, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
             guard var lobby = lobby else {
