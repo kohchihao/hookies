@@ -111,7 +111,7 @@ class PreGameLobbyViewController: UIViewController {
     func subscribeToLobby(lobby: Lobby) {
         API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
             guard let updatedLobby = lobby else {
@@ -162,7 +162,7 @@ class PreGameLobbyViewController: UIViewController {
     private func createPlayers(with lobby: Lobby) -> [Player] {
         var players: [Player] = []
         guard let currentId = API.shared.user.currentUser?.uid else {
-            print("Error: current player not found.")
+            Logger.log.show(details: "current player not found", logType: .error)
             return players
         }
         let hostId = lobby.hostId
@@ -229,7 +229,7 @@ class PreGameLobbyViewController: UIViewController {
             var players = players
             players.sort(by: { $0.username < $1.username })
             guard players.count <= Constants.maxPlayerCount && players.count <= self.playerViews.count else {
-                print("max number of players exceeded")
+                Logger.log.show(details: "max number of players exceeded", logType: .error)
                 return
             }
             var otherPlayersViewIndex = 1
