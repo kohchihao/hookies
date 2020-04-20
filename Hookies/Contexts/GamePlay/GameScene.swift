@@ -26,6 +26,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var grapplingHookButton: GrapplingHookButton?
     private var jumpButton: JumpButton?
     private var powerupButton: PowerupButton?
+    private var lengthenButton: LengthenButton?
+    private var shortenButton: ShortenButton?
 
     private var signal: Signal?
 
@@ -46,6 +48,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         initialiseGrapplingHookButton()
         initialiseJumpButton()
         initialisePowerupButton()
+        initialiseShortenButton()
+        initialiseLengthenButton()
         disableGameButtons()
         initialiseCamera()
         initialiseCountdownMessage()
@@ -155,7 +159,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         guard let grapplingHookButton = grapplingHookButton,
             let jumpButton = jumpButton,
-            let powerupButton = powerupButton
+            let powerupButton = powerupButton,
+            let lengthenButton = lengthenButton,
+            let shortenButton = shortenButton
             else {
                 return
         }
@@ -163,6 +169,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cam.addChild(grapplingHookButton)
         cam.addChild(jumpButton)
         cam.addChild(powerupButton)
+        cam.addChild(lengthenButton)
+        cam.addChild(shortenButton)
     }
 
     // MARK: - Initialise Countdown message
@@ -178,7 +186,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.cam?.addChild(countdownLabel!)
     }
 
-     // MARK: - Initialise Grappling Hook button
+    // MARK: - Initialise Grappling Hook button
 
     private func initialiseGrapplingHookButton() {
         guard let sceneFrame = self.scene?.frame else {
@@ -187,7 +195,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         grapplingHookButton = GrapplingHookButton(in: sceneFrame)
     }
 
-     // MARK: - Initialise Powerup button
+    // MARK: - Initialise Powerup button
 
     private func initialisePowerupButton() {
         guard let sceneFrame = self.scene?.frame else {
@@ -195,6 +203,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         powerupButton = PowerupButton(in: sceneFrame)
     }
+
+    // MARK: - Initialise Lengthen button
+
+    private func initialiseLengthenButton() {
+        guard let sceneFrame = self.scene?.frame else {
+            return
+        }
+        lengthenButton = LengthenButton(in: sceneFrame)
+    }
+
+    // MARK: - Initialise Shorten button
+
+    private func initialiseShortenButton() {
+        guard let sceneFrame = self.scene?.frame else {
+            return
+        }
+        shortenButton = ShortenButton(in: sceneFrame)
+    }
+
+
 
     // MARK: - Initialise Game Engine
 

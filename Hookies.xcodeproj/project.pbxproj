@@ -196,6 +196,8 @@
 		D979D8FD244ACC3700830E8C /* StartSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D979D8FC244ACC3700830E8C /* StartSystem.swift */; };
 		D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D5241E71C000A6DB7F /* MapType.swift */; };
 		D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */; };
+		D9DB89A5244DA58B00A86DFC /* LengthenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DB89A4244DA58B00A86DFC /* LengthenButton.swift */; };
+		D9DB89A7244DA6A600A86DFC /* ShortenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DB89A6244DA6A600A86DFC /* ShortenButton.swift */; };
 		D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F180632431B923009D7A52 /* CGVector+Extension.swift */; };
 		D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806924338278009D7A52 /* VectorTests.swift */; };
 		D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F1806B24338F27009D7A52 /* UserTests.swift */; };
@@ -431,6 +433,8 @@
 		D979D8FC244ACC3700830E8C /* StartSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSystem.swift; sourceTree = "<group>"; };
 		D9A123D5241E71C000A6DB7F /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloatingLandMap.sks; sourceTree = "<group>"; };
+		D9DB89A4244DA58B00A86DFC /* LengthenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LengthenButton.swift; sourceTree = "<group>"; };
+		D9DB89A6244DA6A600A86DFC /* ShortenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortenButton.swift; sourceTree = "<group>"; };
 		D9F180632431B923009D7A52 /* CGVector+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extension.swift"; sourceTree = "<group>"; };
 		D9F1806924338278009D7A52 /* VectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
 		D9F1806B24338F27009D7A52 /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
@@ -1027,6 +1031,8 @@
 				11CC84A92439E81A006D3A8F /* JumpButton.swift */,
 				11CC84A82439E81A006D3A8F /* PowerupButton.swift */,
 				11CC84AB2439E81A006D3A8F /* Signal.swift */,
+				D9DB89A4244DA58B00A86DFC /* LengthenButton.swift */,
+				D9DB89A6244DA6A600A86DFC /* ShortenButton.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -1492,6 +1498,7 @@
 				11CC85292439E9C4006D3A8F /* User.swift in Sources */,
 				2B4E43A12446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift in Sources */,
 				11CC84FE2439E8E5006D3A8F /* FriendTableViewCell.swift in Sources */,
+				D9DB89A7244DA6A600A86DFC /* ShortenButton.swift in Sources */,
 				11CC84BD2439E832006D3A8F /* CostumeType.swift in Sources */,
 				11CC84782439E799006D3A8F /* Component.swift in Sources */,
 				11CC84A12439E7D1006D3A8F /* Entity.swift in Sources */,
@@ -1532,6 +1539,7 @@
 				11CC844A2439E748006D3A8F /* CannonSystem.swift in Sources */,
 				11CC851E2439E991006D3A8F /* RequestManager.swift in Sources */,
 				11CC84D12439E88A006D3A8F /* Invite+FirestoreModel.swift in Sources */,
+				D9DB89A5244DA58B00A86DFC /* LengthenButton.swift in Sources */,
 				116AD64E242DC2C30070F00B /* DictionaryModel.swift in Sources */,
 				11CC84DC2439E8A0006D3A8F /* PlayerData.swift in Sources */,
 				D9FF1A7E241E325900E7965F /* GamePlayViewController.swift in Sources */,
