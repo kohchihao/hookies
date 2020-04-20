@@ -67,6 +67,7 @@ class GameEngine {
 
         initialiseDelegates()
         gameObjectMovementSystem.update()
+        Logger.log.traceableFunctionName = true
     }
 
     private func initialiseDelegates() {
@@ -264,7 +265,7 @@ class GameEngine {
 
             guard let boltSprite = boltEntity.get(SpriteComponent.self),
                 let translate = boltEntity.get(NonPhysicsTranslateComponent.self) else {
-                    print("GameEngine - initialisebolt: Components are nil")
+                    Logger.log.show(details: "Components are nil", logType: .error)
                     return boltsSprite
             }
 
@@ -349,7 +350,7 @@ class GameEngine {
                 let translate = platformEntity.get(NonPhysicsTranslateComponent.self),
                 let rotate = platformEntity.get(RotateComponent.self)
                 else {
-                    print("GameEngine - initialisePlatforms: Components are nil")
+                    Logger.log.show(details: "Components are nil", logType: .error)
                     return platformsSprite
             }
 

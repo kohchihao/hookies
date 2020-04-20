@@ -28,6 +28,7 @@ class NetworkManager: NetworkManagerProtocol {
         currentPlayerId = API.shared.user.currentUser?.uid
         setUpDeviceStatus()
         registerNotificationObservers()
+        Logger.log.traceableFunctionName = true
     }
 
     func set(gameId: String) {
@@ -95,13 +96,13 @@ class NetworkManager: NetworkManagerProtocol {
 
     @objc private func gameConnection(_ notification: Notification) {
         guard let gameId = gameId else {
-            print("NetworkManager - GameConnection: gameId is nil")
+            Logger.log.show(details: "gameId is nil", logType: .error)
             return
         }
 
-        print("NetworkManager - GameConnection: Connecting to game...")
+        Logger.log.show(details: "Connecting to game...", logType: .information)
         API.shared.gameplay.connect(roomId: gameId, completion: { otherPlayersId in
-            print("NetworkManager - GameConnection: Connected to game")
+            Logger.log.show(details: "Connected to game", logType: .information)
             for otherPlayerId in otherPlayersId {
                 self.handleOtherPlayerJoinEvent(with: otherPlayerId)
             }
@@ -138,7 +139,7 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func createPlayerEventData(from playerAction: GenericSystemEvent) -> GenericPlayerEventData? {
         guard let currentPlayerId = currentPlayerId else {
-            print("NetworkManager - CreatePlayerEventData: currentPlayerId is nil")
+            Logger.log.show(details: "currentPlayerId is nil", logType: .error)
             return nil
         }
 
@@ -170,7 +171,7 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func createPowerupEventData(from powerupSystemEvent: PowerupSystemEvent) -> PowerupEventData? {
         guard let currentPlayerId = currentPlayerId else {
-            print("NetworkManager - CreatePowerupEventData: currentPlayerId is nil")
+            Logger.log.show(details: "currentPlayerId is nil", logType: .error)
             return nil
         }
 
@@ -203,7 +204,7 @@ class NetworkManager: NetworkManagerProtocol {
         from powerupCollectionSystemEvent: PowerupCollectionSystemEvent
     ) -> PowerupCollectionData? {
         guard let currentPlayerId = currentPlayerId else {
-            print("NetworkManager - createPowerupCollectionData: currentPlayerId is nil")
+            Logger.log.show(details: "currentPlayerId is nil", logType: .error)
             return nil
         }
 
@@ -338,7 +339,9 @@ class NetworkManager: NetworkManagerProtocol {
         let playerId = genericPlayerEventData.playerData.playerId
 
         guard let playerSprite = playersSprite[playerId] else {
-            print("NetworkManager - CreateGenericSystemEvent: No player sprite of \(playerId) and event \(genericPlayerEventData.type)")
+            Logger.log.show(
+                details: "No player sprite of \(playerId) and event \(genericPlayerEventData.type)",
+                logType: .error)
             return nil
         }
 
@@ -393,7 +396,7 @@ class NetworkManager: NetworkManagerProtocol {
         let playerId = powerupEventData.playerData.playerId
 
         guard let playerSprite = playersSprite[playerId] else {
-            print("NetworkManager - createPowerupSystemEvent: No player sprite of \(playerId)")
+            Logger.log.show(details: "No player sprite of \(playerId)", logType: .error)
             return nil
         }
 
@@ -427,7 +430,7 @@ class NetworkManager: NetworkManagerProtocol {
         let playerId = powerupCollectionData.playerData.playerId
 
         guard let playerSprite = playersSprite[playerId] else {
-            print("NetworkManager - createPowerCollectionSystemEvent: No player sprite of \(playerId)")
+            Logger.log.show(details: "No player sprite of \(playerId)", logType: .error)
             return nil
         }
 

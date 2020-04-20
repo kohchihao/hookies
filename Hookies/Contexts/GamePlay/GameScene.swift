@@ -500,7 +500,7 @@ extension GameScene: GameEngineDelegate {
     }
 
     func gameHasFinish() {
-        print("Transition to post game lobby")
+        Logger.log.show(details: "Transition to post game lobby", logType: .information)
         viewController.endGame()
     }
 }
