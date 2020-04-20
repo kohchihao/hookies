@@ -448,7 +448,7 @@ class GameEngine {
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
 
-        delegate?.addPlayer(with: sprite.node)
+        delegate?.addCurrentPlayer(with: sprite.node)
     }
 
     private func setOtherPlayer(_ player: Player) {

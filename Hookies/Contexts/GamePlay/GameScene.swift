@@ -448,6 +448,11 @@ extension GameScene: GameEngineDelegate {
         disableGameButtons()
     }
 
+    func addCurrentPlayer(with sprite: SKSpriteNode) {
+        addChild(sprite)
+        currentPlayer = sprite
+    }
+
     func addPlayer(with sprite: SKSpriteNode) {
         addChild(sprite)
     }
