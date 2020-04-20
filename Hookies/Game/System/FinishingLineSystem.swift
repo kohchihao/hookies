@@ -162,6 +162,7 @@ extension FinishingLineSystem {
                 return
             }
 
+            print("FinishingLine: received game end event")
             delegate?.gameEnded(rankings: rankings)
         }
     }

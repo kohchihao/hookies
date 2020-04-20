@@ -72,7 +72,7 @@ extension StartSystem {
 
     private func broadcast() {
         NotificationCenter.default.post(
-            name: .broadcastGenericPlayerAction,
+            name: .addPlayersMapping,
             object: self,
             userInfo: players)
     }

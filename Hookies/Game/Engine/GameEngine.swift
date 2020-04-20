@@ -683,6 +683,7 @@ extension GameEngine: UserConnectionSystemDelegate {
 
 extension GameEngine: FinishingLineSystemDelegate {
     func gameEnded(rankings: [SpriteComponent]) {
+        print("gameEnded: received game end event")
         delegate?.gameHasFinish()
     }
 }

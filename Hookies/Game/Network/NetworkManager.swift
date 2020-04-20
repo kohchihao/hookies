@@ -103,9 +103,9 @@ class NetworkManager: NetworkManagerProtocol {
             for otherPlayerId in otherPlayersId {
                 self.handleOtherPlayerJoinEvent(with: otherPlayerId)
             }
-        })
 
-        setupSocketSubscriptions()
+            self.setupSocketSubscriptions()
+        })
     }
 
     // MARK: - Add Players Mappings
