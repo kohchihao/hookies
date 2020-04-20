@@ -336,7 +336,7 @@ class NetworkManager: NetworkManagerProtocol {
         let playerId = genericPlayerEventData.playerData.playerId
 
         guard let playerSprite = playersSprite[playerId] else {
-            print("NetworkManager - CreateGenericSystemEvent: No player sprite of \(playerId)")
+            print("NetworkManager - CreateGenericSystemEvent: No player sprite of \(playerId) and event \(genericPlayerEventData.type)")
             return nil
         }
 

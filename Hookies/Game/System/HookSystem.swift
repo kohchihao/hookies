@@ -459,7 +459,11 @@ extension HookSystem {
             }
 
             let sprite = genericSystemEvent.sprite
-            _ = adjustLength(from: sprite.parent, type: .shorten)
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+
+            _ = adjustLength(from: sprite.parent, type: .shorten, position: sprite.node.position, velocity: velocity)
         }
     }
 
@@ -470,7 +474,11 @@ extension HookSystem {
             }
 
             let sprite = genericSystemEvent.sprite
-            _ = adjustLength(from: sprite.parent, type: .lengthen)
+            guard let velocity = sprite.node.physicsBody?.velocity else {
+                return
+            }
+
+            _ = adjustLength(from: sprite.parent, type: .lengthen, position: sprite.node.position, velocity: velocity)
         }
     }
 }
