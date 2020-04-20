@@ -13,14 +13,6 @@ protocol FinishingLineSystemProtocol {
     func bringPlayersToStop()
 }
 
-protocol FinishingLineSystemDelegate: AnyObject {
-    func gameEnded(rankings: [SpriteComponent])
-}
-
-enum FinishingLineSystemError: Error {
-    case spriteDoesNotExist
-}
-
 enum PlayerState {
     case moving
     case stopping
@@ -31,8 +23,6 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
     private let finishingLine: SpriteComponent
     private var players: Set<SpriteComponent>
     private var playersState: [SpriteComponent: PlayerState]
-
-    weak var delegate: FinishingLineSystemDelegate?
 
     init(finishingLine: SpriteComponent, players: Set<SpriteComponent>) {
         self.finishingLine = finishingLine
@@ -123,11 +113,6 @@ extension FinishingLineSystem {
             selector: #selector(receivedReachedFinishLineAction(_:)),
             name: .receivedReachedFinishLineAction,
             object: nil)
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(receivedGameEndEvent(_:)),
-//            name: .receivedGameEndEvent,
-//            object: nil)
     }
 
     private func broadcastReachedFinishLine(with sprite: SpriteComponent) {
@@ -155,14 +140,4 @@ extension FinishingLineSystem {
             _ = stop(player: sprite, at: sprite.node.position, with: velocity)
         }
     }
-
-//    @objc private func receivedGameEndEvent(_ notification: Notification) {
-//        if let data = notification.userInfo as? [String: [SpriteComponent]] {
-//            guard let rankings = data["data"] else {
-//                return
-//            }
-//
-//            delegate?.gameEnded(rankings: rankings)
-//        }
-//    }
 }
