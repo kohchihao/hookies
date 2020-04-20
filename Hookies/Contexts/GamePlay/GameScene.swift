@@ -26,6 +26,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var grapplingHookButton: GrapplingHookButton?
     private var jumpButton: JumpButton?
     private var powerupButton: PowerupButton?
+    private var lengthenButton: LengthenButton?
+    private var shortenButton: ShortenButton?
 
     private var signal: Signal?
 
@@ -46,6 +48,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         initialiseGrapplingHookButton()
         initialiseJumpButton()
         initialisePowerupButton()
+        initialiseShortenButton()
+        initialiseLengthenButton()
         disableGameButtons()
         initialiseCamera()
         initialiseCountdownMessage()
@@ -59,6 +63,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameEngine?.update(time: currentTime)
         handleCurrentPlayerTetheringToClosestBolt()
         handleCurrentPlayerActivatePowerup()
+        handleCurrentPlayerAdjustRope()
         handleJumpButton()
     }
 
@@ -155,7 +160,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         guard let grapplingHookButton = grapplingHookButton,
             let jumpButton = jumpButton,
-            let powerupButton = powerupButton
+            let powerupButton = powerupButton,
+            let lengthenButton = lengthenButton,
+            let shortenButton = shortenButton
             else {
                 return
         }
@@ -163,6 +170,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cam.addChild(grapplingHookButton)
         cam.addChild(jumpButton)
         cam.addChild(powerupButton)
+        cam.addChild(lengthenButton)
+        cam.addChild(shortenButton)
     }
 
     // MARK: - Initialise Countdown message
@@ -178,7 +187,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.cam?.addChild(countdownLabel!)
     }
 
-     // MARK: - Initialise Grappling Hook button
+    // MARK: - Initialise Grappling Hook button
 
     private func initialiseGrapplingHookButton() {
         guard let sceneFrame = self.scene?.frame else {
@@ -187,13 +196,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         grapplingHookButton = GrapplingHookButton(in: sceneFrame)
     }
 
-     // MARK: - Initialise Powerup button
+    // MARK: - Initialise Powerup button
 
     private func initialisePowerupButton() {
         guard let sceneFrame = self.scene?.frame else {
             return
         }
         powerupButton = PowerupButton(in: sceneFrame)
+    }
+
+    // MARK: - Initialise Lengthen button
+
+    private func initialiseLengthenButton() {
+        guard let sceneFrame = self.scene?.frame else {
+            return
+        }
+        lengthenButton = LengthenButton(in: sceneFrame)
+    }
+
+    // MARK: - Initialise Shorten button
+
+    private func initialiseShortenButton() {
+        guard let sceneFrame = self.scene?.frame else {
+            return
+        }
+        shortenButton = ShortenButton(in: sceneFrame)
     }
 
     // MARK: - Initialise Game Engine
@@ -212,11 +239,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             finishingLine: finishingLineObject,
             bolts: boltObjects,
             powerups: powerupObjects,
-            platforms: platformObjects,
-            players: players
+            platforms: platformObjects
         )
 
         gameEngine?.delegate = self
+        gameEngine?.addPlayers(players)
 
         self.cannon = cannonObject.node
         self.finishingLine = finishingLineObject.node
@@ -306,10 +333,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func disableGameButtons() {
         grapplingHookButton?.state = .ButtonNodeStateDisabled
         jumpButton?.state = .ButtonNodeStateHidden
+        shortenButton?.state = .ButtonNodeStateDisabled
+        lengthenButton?.state = .ButtonNodeStateDisabled
     }
 
     private func enableGameButtons() {
         grapplingHookButton?.state = .ButtonNodeStateActive
+        shortenButton?.state = .ButtonNodeStateActive
+        lengthenButton?.state = .ButtonNodeStateActive
     }
 
     // MARK: - Current player tethering to hook
@@ -317,15 +348,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func handleCurrentPlayerTetheringToClosestBolt() {
         grapplingHookButton?.touchBeganHandler = handleGrapplingHookBtnTouchBegan
         grapplingHookButton?.touchEndHandler = handleGrapplingHookBtnTouchEnd
-        grapplingHookButton?.touchUpHandler = handleGrapplingHookBtnUp
-        grapplingHookButton?.touchDownHandler = handleGrapplingHookBtnDown
     }
 
-    private func handleGrapplingHookBtnUp() {
+    private func handleCurrentPlayerAdjustRope() {
+        shortenButton?.touchBeganHandler = handleShortening
+        lengthenButton?.touchBeganHandler = handleLengthening
+    }
+
+    private func handleShortening() {
         gameEngine?.applyShortenActionToCurrentPlayer()
     }
 
-    private func handleGrapplingHookBtnDown() {
+    private func handleLengthening() {
         gameEngine?.applyLengthenActionToCurrentPlayer()
     }
 
@@ -446,6 +480,11 @@ extension GameScene: GameEngineDelegate {
 
     func playerHasFinishRace() {
         disableGameButtons()
+    }
+
+    func addCurrentPlayer(with sprite: SKSpriteNode) {
+        addChild(sprite)
+        currentPlayer = sprite
     }
 
     func addPlayer(with sprite: SKSpriteNode) {

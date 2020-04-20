@@ -99,13 +99,15 @@ class NetworkManager: NetworkManagerProtocol {
             return
         }
 
+        print("NetworkManager - GameConnection: Connecting to game...")
         API.shared.gameplay.connect(roomId: gameId, completion: { otherPlayersId in
+            print("NetworkManager - GameConnection: Connected to game")
             for otherPlayerId in otherPlayersId {
                 self.handleOtherPlayerJoinEvent(with: otherPlayerId)
             }
-        })
 
-        setupSocketSubscriptions()
+            self.setupSocketSubscriptions()
+        })
     }
 
     // MARK: - Add Players Mappings
@@ -216,6 +218,23 @@ class NetworkManager: NetworkManagerProtocol {
 
     @objc private func broadcastFinishGame(_ notification: Notification) {
         API.shared.gameplay.registerFinishLineReached()
+
+        guard let deviceStatus = deviceStatus else {
+            return
+        }
+
+        if deviceStatus == .offline {
+            if let data = notification.userInfo as? [String: SpriteComponent] {
+                guard let sprite = data["data"] else {
+                    return
+                }
+
+                NotificationCenter.default.post(
+                    name: .broadcastPlayerFinishSprite,
+                    object: self,
+                    userInfo: ["data": sprite])
+            }
+        }
     }
 
     // MARK: - Socket Subscriptions
@@ -319,7 +338,7 @@ class NetworkManager: NetworkManagerProtocol {
         let playerId = genericPlayerEventData.playerData.playerId
 
         guard let playerSprite = playersSprite[playerId] else {
-            print("NetworkManager - CreateGenericSystemEvent: No player sprite of \(playerId)")
+            print("NetworkManager - CreateGenericSystemEvent: No player sprite of \(playerId) and event \(genericPlayerEventData.type)")
             return nil
         }
 
@@ -328,6 +347,7 @@ class NetworkManager: NetworkManagerProtocol {
         }
 
         playerSprite.node.position = CGPoint(vector: genericPlayerEventData.playerData.position)
+        playerSprite.node.physicsBody?.isDynamic = true
         playerSprite.node.physicsBody?.velocity = CGVector(vector: velocity)
 
         return GenericSystemEvent(sprite: playerSprite, eventType: genericPlayerEventData.type)

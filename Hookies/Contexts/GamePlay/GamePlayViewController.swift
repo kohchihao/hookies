@@ -35,7 +35,7 @@ class GamePlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.view.isMultipleTouchEnabled = true
         if let view = self.view as? SKView {
             // Load the SKScene from 'GameScene.sks'
             if let scene = GameScene(fileNamed: viewModel.selectedMap.rawValue) {
