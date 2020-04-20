@@ -18,6 +18,7 @@ protocol PreGameLobbyViewModelRepresentable {
 class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
     weak var delegate: RoomStateViewModelDelegate?
     var lobby: Lobby
+    
 
     init() {
         guard let hostId = Auth.auth().currentUser?.uid else {
