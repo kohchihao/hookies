@@ -212,11 +212,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             finishingLine: finishingLineObject,
             bolts: boltObjects,
             powerups: powerupObjects,
-            platforms: platformObjects,
-            players: players
+            platforms: platformObjects
         )
 
         gameEngine?.delegate = self
+        gameEngine?.addPlayers(players)
 
         self.cannon = cannonObject.node
         self.finishingLine = finishingLineObject.node

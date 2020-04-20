@@ -48,8 +48,7 @@ class GameEngine {
         finishingLine: GameObject,
         bolts: [GameObject],
         powerups: [GameObject],
-        platforms: [GameObject],
-        players: [Player]
+        platforms: [GameObject]
     ) {
         startPosition = cannon.node.position
 
@@ -66,8 +65,6 @@ class GameEngine {
         initialiseFinishingLine(finishingLine)
 
         initialiseDelegates()
-        initialisePlayers(players)
-        startSystem.getReady()
         gameObjectMovementSystem.update()
     }
 
@@ -77,6 +74,13 @@ class GameEngine {
         self.userConnectionSystem?.delegate = self
         self.finishingLineSystem.delegate = self
         self.powerupSystem.delegate = self
+    }
+
+    // MARK: - Add Players
+
+    func addPlayers(_ players: [Player]) {
+        initialisePlayers(players)
+        startSystem.getReady()
     }
 
     // MARK: - Launch Current Player
