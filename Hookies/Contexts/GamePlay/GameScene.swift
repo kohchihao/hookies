@@ -331,6 +331,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         jumpButton?.state = .ButtonNodeStateHidden
         shortenButton?.state = .ButtonNodeStateDisabled
         lengthenButton?.state = .ButtonNodeStateDisabled
+        powerupButton?.state = .ButtonNodeStateDisabled
     }
 
     private func enableGameButtons() {
@@ -498,5 +499,16 @@ extension GameScene: GameEngineDelegate {
     func gameHasFinish() {
         Logger.log.show(details: "Transition to post game lobby", logType: .information)
         viewController.endGame()
+    }
+
+    func movementButton(isDisabled: Bool) {
+        let newState: ButtonNodeState = isDisabled ?
+            .ButtonNodeStateDisabled :
+            .ButtonNodeStateActive
+
+        grapplingHookButton?.state = newState
+        jumpButton?.state = newState
+        shortenButton?.state = newState
+        lengthenButton?.state = newState
     }
 }

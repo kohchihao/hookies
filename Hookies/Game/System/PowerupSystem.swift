@@ -16,6 +16,8 @@ protocol PowerupSystemProtocol {
 protocol PowerupSystemDelegate: class {
     func hasAddedTrap(sprite: SpriteComponent)
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
+    func disableMovementActions()
+    func enableMovementActions()
 }
 
 class PowerupSystem: System, PowerupSystemProtocol {
@@ -107,11 +109,11 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
         switch effect {
         case let shield as ShieldEffectComponent:
-            applyShieldEffect(shield, by: sprite)
+            applyShieldEffect(shield, on: sprite)
         case let placementEffect as PlacementEffectComponent:
-            applyPlacementEffect(placementEffect, by: sprite)
+            applyPlacementEffect(placementEffect, on: sprite)
         case let movementEffect as MovementEffectComponent:
-            applyMovementEffect(movementEffect, by: sprite)
+            applyMovementEffect(movementEffect, on: sprite)
         default:
             return
         }
@@ -135,7 +137,12 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                         userInfo: info)
     }
 
-    func activateNetTrap(at point: CGPoint, on sprite: SpriteComponent) {
+    private func add(player: SpriteComponent, with powerup: PowerupComponent) {
+        ownedPowerups[player] = powerup
+        player.parent.addComponent(powerup)
+    }
+
+    private func activateNetTrap(at point: CGPoint, on sprite: SpriteComponent) {
         guard let trap = findTrap(at: point),
             let owner = trap.parent.get(PowerupComponent.self)?.owner
             else {
@@ -151,11 +158,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         for effect in effects {
             apply(effect: effect, by: sprite)
         }
-    }
-
-    private func add(player: SpriteComponent, with powerup: PowerupComponent) {
-        ownedPowerups[player] = powerup
-        player.parent.addComponent(powerup)
     }
 
     private func activate(powerupType: PowerupType,
@@ -198,7 +200,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     }
 
     private func applyPlacementEffect(_ effect: PlacementEffectComponent,
-                                      by sprite: SpriteComponent) {
+                                      on sprite: SpriteComponent) {
         guard let effectSprite = effect.parent.get(SpriteComponent.self),
             let powerupCom = effect.parent.get(PowerupComponent.self) else {
             return
@@ -221,7 +223,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     }
 
     private func applyMovementEffect(_ effect: MovementEffectComponent,
-                                     by sprite: SpriteComponent) {
+                                     on sprite: SpriteComponent) {
         guard let initialPoint = effect.from,
             let endPoint = effect.to,
             let duration = effect.duration,
@@ -229,6 +231,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
                 return
         }
 
+        delegate?.disableMovementActions()
         if effect.stopMovement {
             sprite.node.physicsBody?.affectedByGravity = false
         }
@@ -238,11 +241,12 @@ class PowerupSystem: System, PowerupSystemProtocol {
             sprite.node.physicsBody?.affectedByGravity = true
             effectSprite.node.removeFromParent()
             effect.parent.removeComponents(MovementEffectComponent.self)
+            self.delegate?.enableMovementActions()
         })
     }
 
     private func applyShieldEffect(_ effect: ShieldEffectComponent,
-                                   by sprite: SpriteComponent) {
+                                   on sprite: SpriteComponent) {
         let shieldTexture = SKTexture(imageNamed: "shield_bubble")
         let shieldSize = CGSize(width: sprite.node.size.width * 2,
                                 height: sprite.node.size.height * 2)

@@ -588,4 +588,12 @@ extension GameEngine: PowerupSystemDelegate {
                                         rectangleOf: spriteComponent.node.size)
         delegate?.addTrap(with: spriteComponent.node)
     }
+
+    func disableMovementActions() {
+        delegate?.movementButton(isDisabled: true)
+    }
+
+    func enableMovementActions() {
+        delegate?.movementButton(isDisabled: false)
+    }
 }
