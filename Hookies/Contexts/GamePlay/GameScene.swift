@@ -11,9 +11,7 @@ import GameplayKit
 import Dispatch
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    var gameplayId: String?
     var players = [Player]()
-    private var currentPlayerId: String?
     private var currentPlayer: SKSpriteNode?
 
     private var cam: SKCameraNode?
@@ -41,8 +39,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var powerLaunch = 1_000
 
     override func didMove(to view: SKView) {
-        currentPlayerId = API.shared.user.currentUser?.uid
-
         initialiseContactDelegate()
         initialiseBackground(with: view.frame.size)
         initialiseGrapplingHookButton()
