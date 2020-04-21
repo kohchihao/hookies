@@ -31,38 +31,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         registerNotificationObservers()
     }
 
-    func collect(powerupComponent: PowerupComponent, by sprite: SpriteComponent) {
-        guard let powerupSprite = powerupComponent.parent.get(SpriteComponent.self),
-            let player = sprite.parent as? PlayerEntity else {
-                return
-        }
-        powerups.remove(powerupComponent)
-        add(player: sprite, with: powerupComponent)
-        powerupComponent.parent.removeComponents(CollectableComponent.self)
-        powerupComponent.parent.removeComponents(SpriteComponent.self)
-
-        PowerupEntity.addActivatedSpriteIfExist(powerup: powerupComponent.parent)
-        let fade = SKAction.fadeOut(withDuration: 0.5)
-        powerupSprite.node.run(fade, completion: {
-            powerupSprite.node.removeFromParent()
-        })
-        powerupComponent.setOwner(player)
-        let powerupPos = Vector(point: powerupSprite.node.position)
-        let info = [
-            "data": PowerupCollectionSystemEvent(sprite: sprite,
-                                                 powerupPos: powerupPos,
-                                                 powerupType: powerupComponent.type)
-        ]
-        NotificationCenter.default.post(name: Notification.Name.broadcastPowerupCollectionEvent,
-                                        object: nil,
-                                        userInfo: info)
-    }
-
-    func add(player: SpriteComponent, with powerup: PowerupComponent) {
-        ownedPowerups[player] = powerup
-        player.parent.addComponent(powerup)
-    }
-
     func add(powerup: PowerupComponent) {
         powerups.insert(powerup)
     }
@@ -76,18 +44,27 @@ class PowerupSystem: System, PowerupSystemProtocol {
         player.parent.removeFirstComponent(of: powerup)
     }
 
-    func activate(powerupType: PowerupType,
-                  for sprite: SpriteComponent
-    ) {
-        guard let powerup = ownedPowerups[sprite] else {
+    func collectAndBroadcast(powerupComponent: PowerupComponent, by sprite: SpriteComponent) {
+        guard let powerupSprite = powerupComponent.parent.get(SpriteComponent.self) else {
             return
         }
-        powerup.activatedTime = Date()
-        powerup.isActivated = true
-        let effects = powerup.parent.getMultiple(PowerupEffectComponent.self)
-        for effect in effects {
-            apply(effect: effect, by: sprite)
-        }
+
+        collect(powerupComponent: powerupComponent, by: sprite)
+        let powerupPos = Vector(point: powerupSprite.node.position)
+        let info = [
+            "data": PowerupCollectionSystemEvent(sprite: sprite,
+                                                 powerupPos: powerupPos,
+                                                 powerupType: powerupComponent.type)
+        ]
+        NotificationCenter.default.post(name: Notification.Name.broadcastPowerupCollectionEvent,
+                                        object: nil,
+                                        userInfo: info)
+    }
+
+    func activateAndBroadcast(powerupType: PowerupType,
+                              for sprite: SpriteComponent
+    ) {
+        activate(powerupType: powerupType, for: sprite)
         let info = [
             "data": PowerupSystemEvent(sprite: sprite,
                                        powerupEventType: .activate,
@@ -142,8 +119,9 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     func activateNetTrap(at point: CGPoint, on sprite: SpriteComponent) {
         guard let trap = findTrap(at: point),
-            let owner = sprite.parent.get(PowerupComponent.self)?.owner
+            let owner = trap.parent.get(PowerupComponent.self)?.owner
             else {
+                Logger.log.show(details: "Unable find netTrap", logType: .error)
                 return
         }
 
@@ -164,6 +142,43 @@ class PowerupSystem: System, PowerupSystemProtocol {
         NotificationCenter.default.post(name: Notification.Name.broadcastPowerupAction,
                                         object: nil,
                                         userInfo: info)
+    }
+
+    private func add(player: SpriteComponent, with powerup: PowerupComponent) {
+        ownedPowerups[player] = powerup
+        player.parent.addComponent(powerup)
+    }
+
+    private func activate(powerupType: PowerupType,
+                          for sprite: SpriteComponent
+    ) {
+        guard let powerup = ownedPowerups[sprite] else {
+            return
+        }
+
+        powerup.type = powerupType
+        powerup.isActivated = true
+        powerup.addEffectComponents(for: powerupType)
+        let effects = powerup.parent.getMultiple(PowerupEffectComponent.self)
+        for effect in effects {
+            apply(effect: effect, by: sprite)
+        }
+    }
+
+    private func collect(powerupComponent: PowerupComponent, by sprite: SpriteComponent) {
+        guard let powerupSprite = powerupComponent.parent.get(SpriteComponent.self)
+            else {
+                return
+        }
+        powerups.remove(powerupComponent)
+        add(player: sprite, with: powerupComponent)
+        powerupComponent.parent.removeComponents(SpriteComponent.self)
+
+        let fade = SKAction.fadeOut(withDuration: 0.5)
+        powerupSprite.node.run(fade, completion: {
+            powerupSprite.node.removeFromParent()
+        })
+        powerupComponent.setOwner(sprite.parent)
     }
 
     private func findTrap(at point: CGPoint) -> SpriteComponent? {
@@ -241,7 +256,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
     }
 }
 
-
 // MARK: - Networking
 
 extension PowerupSystem {
@@ -249,12 +263,12 @@ extension PowerupSystem {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(receivedPowerupCollectionAction(_:)),
-            name: .receivedHookAction,
+            name: .receviedPowerupCollectionEvent,
             object: nil)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(receivedPowerupEventAction(_:)),
-            name: .receivedUnookAction,
+            name: .receivedPowerupAction,
             object: nil)
     }
 
@@ -266,8 +280,8 @@ extension PowerupSystem {
         let positionOfCollection = CGPoint(vector: collectionEvent.powerupPos)
 
         guard let powerup = findPowerup(at: positionOfCollection),
-             let player = collectionEvent.sprite.parent as? PlayerEntity,
-             let sprite = player.get(SpriteComponent.self) else {
+            let sprite = collectionEvent.sprite.parent.get(SpriteComponent.self)
+            else {
                 return
         }
 
@@ -299,7 +313,7 @@ extension PowerupSystem {
             guard let sprite = powerup.parent.get(SpriteComponent.self) else {
                 continue
             }
-            if (sprite.node.frame.contains(point)) {
+            if sprite.node.frame.contains(point) {
                 return powerup
             }
         }

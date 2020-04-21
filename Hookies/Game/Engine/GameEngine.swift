@@ -146,7 +146,8 @@ class GameEngine {
             let playerSprite = currentPlayer.get(SpriteComponent.self) else {
             return
         }
-        powerupSystem.activate(powerupType: type, for: playerSprite)
+        powerupSystem.activateAndBroadcast(powerupType: type,
+                                           for: playerSprite)
     }
 
     // MARK: - Current Player Jump Action
@@ -183,13 +184,15 @@ class GameEngine {
 
         powerups.removeAll(where: { $0 === powerupEntity })
         spriteSystem.removePhysicsBody(to: powerupSprite)
-        powerupSystem.collect(powerupComponent: powerupComponent, by: playerSprite)
+        powerupSystem.collectAndBroadcast(powerupComponent: powerupComponent,
+                                          by: playerSprite)
         return powerupComponent.type
     }
 
     func currentPlayerContactWith(trap: SKSpriteNode) {
         guard let currentPlayer = currentPlayer,
             let currentPlayerSprite = currentPlayer.get(SpriteComponent.self) else {
+                Logger.log.show(details: "Unable to locate current player", logType: .error)
                 return
         }
         powerupSystem.activateNetTrap(at: trap.position, on: currentPlayerSprite)
@@ -271,8 +274,8 @@ class GameEngine {
     private func createPowerup(with type: PowerupType,
                                for spriteNode: SKSpriteNode
     ) -> PowerupEntity? {
-        let powerupEntity = PowerupEntity
-            .createSpecializedEntity(for: type, at: spriteNode.position)
+        let powerupEntity = PowerupEntity.create(for: type,
+                                                 at: spriteNode.position)
 
         guard let powerupSprite = powerupEntity.get(SpriteComponent.self) else {
             return nil

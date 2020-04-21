@@ -12,7 +12,6 @@ class PowerupComponent: Component {
     private(set) var parent: Entity
     var owner: PlayerEntity?
     var isActivated: Bool
-    var activatedTime: Date?
     var type: PowerupType
 
     init(parent: Entity, type: PowerupType) {
@@ -21,8 +20,18 @@ class PowerupComponent: Component {
         self.type = type
     }
 
-    func setOwner(_ player: PlayerEntity) {
-        owner = player
+    func setOwner(_ player: Entity) {
+        guard let playerEntity = player as? PlayerEntity else {
+            return
+        }
+        owner = playerEntity
+    }
+
+    func addEffectComponents(for type: PowerupType) {
+        guard let powerupEntity = parent as? PowerupEntity else {
+            return
+        }
+        powerupEntity.addEffectComponents(for: type)
     }
 }
 

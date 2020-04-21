@@ -104,9 +104,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleContactWithTrap(_ trap: SKSpriteNode) {
-        guard let playerId = currentPlayerId else {
-            return
-        }
         gameEngine?.currentPlayerContactWith(trap: trap)
     }
 

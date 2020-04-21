@@ -165,7 +165,7 @@ class NetworkManager: NetworkManagerProtocol {
                 return
             }
 
-            if (powerupEventData.playerData.playerId == currentPlayerId) {
+            if powerupEventData.playerData.playerId == currentPlayerId {
                 API.shared.gameplay.broadcastPowerupEvent(powerupEvent: powerupEventData)
             }
         }
