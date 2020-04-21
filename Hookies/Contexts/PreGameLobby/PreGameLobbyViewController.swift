@@ -109,6 +109,7 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     func subscribeToLobby(lobby: Lobby) {
+        print("Pre subscribed")
         API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
             guard error == nil else {
                 Logger.log.show(details: error.debugDescription, logType: .error)
@@ -117,6 +118,7 @@ class PreGameLobbyViewController: UIViewController {
             guard let updatedLobby = lobby else {
                 return
             }
+            print("Pre Lobby updated")
             self.viewModel.lobby = updatedLobby
             self.updateView()
             if self.viewModel.lobby.lobbyState == .start {

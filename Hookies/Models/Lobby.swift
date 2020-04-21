@@ -20,7 +20,7 @@ struct Lobby {
         lobbyId = RandomIDGenerator.getRandomID(length: Constants.lobbyIdLength)
         self.hostId = hostId
         self.playersId = [hostId]
-        self.costumesId = [hostId: .Pink_Monster]
+        self.costumesId = [hostId: CostumeType.getDefault()]
         self.lobbyState = .open
     }
 
@@ -51,7 +51,9 @@ struct Lobby {
             return
         }
         playersId.append(playerId)
-        updateCostumeId(playerId: playerId, costumeType: CostumeType.getDefault())
+        if !self.costumesId.keys.contains(playerId) {
+            updateCostumeId(playerId: playerId, costumeType: CostumeType.getDefault())
+        }
         if playersId.count == Constants.maxPlayerCount {
             lobbyState = .full
         }
@@ -90,7 +92,6 @@ struct Lobby {
             }
         case .empty:
             self.playersId = [hostId]
-            self.costumesId = [hostId: CostumeType.getDefault()]
         }
         self.lobbyState = lobbyState
     }
