@@ -76,7 +76,11 @@ extension EndSystem {
                 return
             }
 
+            Logger.log.show(details: "Recevied End Game Event", logType: .information)
+
             delegate?.gameEnded(rankings: rankings)
+
+            NotificationCenter.default.removeObserver(self)
         }
     }
 }
