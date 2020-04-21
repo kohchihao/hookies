@@ -27,6 +27,7 @@ class GameplayStore: SocketRoom {
     }
 
     func broadcastPowerupCollection(powerupCollection: PowerupCollectionData) {
+        Logger.log.show(details: "Broadcasted collection event", logType: .information)
         socket.emit("powerupCollected", powerupCollection)
     }
 
