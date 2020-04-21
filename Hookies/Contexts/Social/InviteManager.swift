@@ -58,7 +58,7 @@ struct InviteManager {
     ) {
         self.getInvites(inviteIds: sender.outgoingInvites, completion: { invites in
             guard !invites.map({ $0.toUserId }).contains(invite.toUserId) else {
-                Logger.log.show(details: "invite to this player already exists", logType: .alert)
+                Logger.log.show(details: "invite to this player already exists", logType: .alert).display(.alert)
                 return completion(false)
             }
             self.getInvites(inviteIds: sender.incomingInvites, completion: { invites in
