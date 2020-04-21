@@ -167,7 +167,6 @@ class Logger {
 
     private var rootWindow: UIWindow!
 
-    // show alert.
     func showAlert(
         title: String,
         message: String,
