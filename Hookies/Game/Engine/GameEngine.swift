@@ -568,8 +568,8 @@ extension GameEngine: UserConnectionSystemDelegate {
 // MARK: - EndSystemDelegate
 
 extension GameEngine: EndSystemDelegate {
-    func gameEnded(rankings: [SpriteComponent]) {
-        delegate?.gameHasFinish()
+    func gameEnded(rankings: [Player]) {
+        delegate?.gameHasFinish(rankings: rankings)
     }
 }
 
