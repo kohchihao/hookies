@@ -12,7 +12,7 @@ import UIKit
 
 protocol GameViewNavigationDelegate: class {
     // TODO: Add Ranking of Players
-    func gameDidEnd(gamePlayId: String)
+    func gameDidEnd(gamePlayId: String, rankings: [Player])
 }
 
 class GamePlayViewController: UIViewController {
@@ -58,8 +58,9 @@ class GamePlayViewController: UIViewController {
         }
     }
 
-    func endGame() {
-        navigationDelegate?.gameDidEnd(gamePlayId: viewModel.gameplayId)
+    func endGame(rankings: [Player]) {
+        Logger.log.show(details: "\(rankings)", logType: .information)
+        navigationDelegate?.gameDidEnd(gamePlayId: viewModel.gameplayId, rankings: rankings)
     }
 
     override var prefersStatusBarHidden: Bool {

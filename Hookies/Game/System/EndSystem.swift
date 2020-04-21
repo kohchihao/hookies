@@ -15,7 +15,7 @@ protocol EndSystemProtocol {
 }
 
 protocol EndSystemDelegate: AnyObject {
-    func gameEnded(rankings: [SpriteComponent])
+    func gameEnded(rankings: [Player])
 }
 
 class EndSystem: System, EndSystemProtocol {
@@ -63,7 +63,7 @@ extension EndSystem {
             let hasAllRankings = rankings.count == totalNumberOfPlayers
             if hasAllRankings {
                 NotificationCenter.default.post(
-                name: .receivedGameEndEvent,
+                name: .broadcastPlayerRankings,
                 object: self,
                 userInfo: ["data": rankings])
             }
@@ -71,7 +71,7 @@ extension EndSystem {
     }
 
     @objc private func receivedGameEndEvent(_ notification: Notification) {
-        if let data = notification.userInfo as? [String: [SpriteComponent]] {
+        if let data = notification.userInfo as? [String: [Player]] {
             guard let rankings = data["data"] else {
                 return
             }

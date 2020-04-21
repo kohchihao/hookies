@@ -499,8 +499,8 @@ extension GameScene: GameEngineDelegate {
         disconnectPlayer()
     }
 
-    func gameHasFinish() {
+    func gameHasFinish(rankings: [Player]) {
         Logger.log.show(details: "Transition to post game lobby", logType: .information)
-        viewController.endGame()
+        viewController.endGame(rankings: rankings)
     }
 }
