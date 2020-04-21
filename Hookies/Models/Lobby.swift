@@ -57,6 +57,13 @@ struct Lobby {
         }
     }
 
+    mutating func updatePlayers(playersId: [String]) {
+        guard playersId.contains(hostId) else {
+            return
+        }
+        self.playersId = playersId
+    }
+
     mutating func updateCostumeId(playerId: String, costumeType: CostumeType) {
         if playersId.contains(playerId) {
             self.costumesId[playerId] = costumeType

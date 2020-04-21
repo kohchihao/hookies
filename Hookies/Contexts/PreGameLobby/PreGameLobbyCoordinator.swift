@@ -14,10 +14,9 @@ class PreGameLobbyCoordinator: Coordinator {
     var coordinators: [Coordinator] = []
     weak var coordinatorDelegate: CoordinatorDelegate?
 
-    private var viewModel: PreGameLobbyViewModel
-
     // MARK: - PRIVATE PROPERTIES
     private let navigator: NavigatorRepresentable
+    private var viewModel: PreGameLobbyViewModel
 
     // MARK: - INIT
     init(with navigator: NavigatorRepresentable) {
@@ -73,6 +72,12 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
         let socialCoordinator = SocialCoodinator(with: navigator, lobbyId: lobbyId)
         socialCoordinator.coordinatorDelegate = self
         socialCoordinator.start()
+    }
+
+    func didPressPostButton(in: PreGameLobbyViewController, lobbyId: String, players: [Player], ranking: [String]) {
+        let postGameLobbyCoordinator = PostGameLobbyCoordinator(with: navigator, gamePlayId: lobbyId, players: [])
+        postGameLobbyCoordinator.coordinatorDelegate = self
+        postGameLobbyCoordinator.start()
     }
 }
 
