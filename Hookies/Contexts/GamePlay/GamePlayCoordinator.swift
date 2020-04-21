@@ -30,6 +30,7 @@ class GamePlayCoordinator: Coordinator {
 
     // MARK: - START
     func start() {
+        print("start")
         coordinatorDelegate?.coordinatorDidStart(self)
         navigator.transition(to: viewController(), as: .push)
     }

@@ -13,7 +13,7 @@ protocol PostGameLobbyViewModelDelegate: class {
 }
 
 protocol PostGameLobbyViewModelRepresentable {
-    var lobby: Lobby? { get }
+    var lobby: Lobby? { get set }
     var lobbyId: String { get }
     var players: [Player] { get }
     var delegate: PostGameLobbyViewModelDelegate? { get set }
@@ -24,7 +24,7 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
     var lobby: Lobby?
     var lobbyId: String
     var players: [Player] = []
-    var delegate: PostGameLobbyViewModelDelegate?
+    weak var delegate: PostGameLobbyViewModelDelegate?
 
     init(lobbyId: String, players: [Player]) {
         self.lobbyId = lobbyId
@@ -42,11 +42,8 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
                 self.delegate?.lobbyLoaded(isLoaded: false)
                 return
             }
-            lobby.updatePlayers(playersId: self.players.map({ $0.playerId }))
-            if self.players.count == Constants.maxPlayerCount {
-                lobby.updateLobbyState(lobbyState: .full)
-            } else {
-                lobby.updateLobbyState(lobbyState: .open)
+            if lobby.lobbyState == .start {
+                lobby.updateLobbyState(lobbyState: .empty)
             }
             API.shared.lobby.save(lobby: lobby)
             self.lobby = lobby

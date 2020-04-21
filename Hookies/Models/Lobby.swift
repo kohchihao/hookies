@@ -88,6 +88,8 @@ struct Lobby {
             guard !playersId.isEmpty && playersId.count <= Constants.maxPlayerCount else {
                 return
             }
+        case .empty:
+            self.playersId = [hostId]
         }
         self.lobbyState = lobbyState
     }

@@ -18,9 +18,7 @@ class PostGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PostGameLobbyViewNavigationDelegate?
     private var viewModel: PostGameLobbyViewModelRepresentable
     private var playerViews: [LobbyPlayerView] = []
-    private var continueButtonEnabled: Bool {
-        self.viewModel.lobby != nil
-    }
+
     @IBOutlet var continueButton: RoundButton!
 
     // MARK: - INIT
@@ -37,7 +35,7 @@ class PostGameLobbyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        continueButton.isEnabled = continueButtonEnabled
+        continueButton.isHidden = true
         self.viewModel.updateLobby()
         setupPlayerView()
     }
@@ -105,20 +103,67 @@ class PostGameLobbyViewController: UIViewController {
     }
 
     @IBAction private func continueButtonPressed(_ sender: UIButton) {
-        guard let lobby = self.viewModel.lobby else {
+        guard var lobby = self.viewModel.lobby else {
             return
         }
+        guard let currentPlayerId = API.shared.user.currentUser?.uid else {
+            return
+        }
+        if currentPlayerId == lobby.hostId {
+            lobby.updateLobbyState(lobbyState: .open)
+        } else {
+            guard lobby.lobbyState == .open else {
+                Logger.log.show(details: "Lobby is not open", logType: .error)
+                return
+            }
+            lobby.addPlayer(playerId: currentPlayerId)
+            if lobby.playersId.count >= Constants.maxPlayerCount {
+                lobby.updateLobbyState(lobbyState: .full)
+            } else {
+                lobby.updateLobbyState(lobbyState: .open)
+            }
+        }
+        API.shared.lobby.save(lobby: lobby)
         navigationDelegate?.didPressContinueButton(in: self, lobby: lobby)
     }
 
     @IBAction private func returnHomeButtonPressed(_sender: UIButton) {
         navigationDelegate?.didPressReturnHomeButton(in: self)
     }
+
+    func subscribeToLobby(lobby: Lobby) {
+        API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
+            guard error == nil else {
+                Logger.log.show(details: error.debugDescription, logType: .error)
+                return
+            }
+            guard var updatedLobby = lobby else {
+                return
+            }
+            self.viewModel.lobby = updatedLobby
+            if updatedLobby.lobbyState == .open {
+                self.continueButton.isHidden = false
+            }
+        })
+    }
+
+    deinit {
+        API.shared.lobby.unsubscribeFromLobby()
+    }
 }
 
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
     func lobbyLoaded(isLoaded: Bool) {
-        self.continueButton.isEnabled = isLoaded
         updatePlayerViews()
+        guard let lobby = self.viewModel.lobby else {
+            return
+        }
+        subscribeToLobby(lobby: lobby)
+        guard let currentUserId = API.shared.user.currentUser?.uid else {
+            return
+        }
+        if currentUserId == lobby.hostId {
+            self.continueButton.isHidden = false
+        }
     }
 }
