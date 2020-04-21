@@ -132,7 +132,6 @@ class PostGameLobbyViewController: UIViewController {
     }
 
     func subscribeToLobby(lobby: Lobby) {
-        print("Post Subscribe")
         API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
             guard error == nil else {
                 Logger.log.show(details: error.debugDescription, logType: .error)
@@ -141,7 +140,6 @@ class PostGameLobbyViewController: UIViewController {
             guard let updatedLobby = lobby else {
                 return
             }
-            print("Post Lobby updated")
             self.viewModel.lobby = updatedLobby
             if updatedLobby.lobbyState == .open {
                 self.continueButton.isHidden = false
