@@ -9,6 +9,21 @@
 struct PowerupSystemEvent {
     let sprite: SpriteComponent
     let powerupEventType: PowerupEventType
-    let powerupPos: Vector
     let powerupType: PowerupType
+    let powerupPos: Vector
+
+    init(sprite: SpriteComponent,
+         powerupEventType: PowerupEventType,
+         powerupType: PowerupType,
+         powerupPos: Vector? = nil
+    ) {
+        self.sprite = sprite
+        self.powerupType = powerupType
+        self.powerupEventType = powerupEventType
+        if powerupPos == nil {
+            self.powerupPos = Vector(point: sprite.node.position)
+        } else {
+            self.powerupPos = powerupPos!
+        }
+    }
 }
