@@ -399,6 +399,8 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func subscribeToGameEndEvent() {
         API.shared.gameplay.subscribeToGameEndEvent(listener: { rankings in
+            Logger.log.show(details: "Subscribe to game end event", logType: .information)
+
             var playerRankings = [Player]()
 
             for userId in rankings {
@@ -414,7 +416,10 @@ class NetworkManager: NetworkManagerProtocol {
                 object: self,
                 userInfo: ["data": playerRankings])
 
+            NotificationCenter.default.post(name: .broadcastUnregisterObserver, object: self)
+
             API.shared.gameplay.close()
+            Logger.log.show(details: "Closed Game Connection", logType: .information)
         })
     }
 
@@ -489,5 +494,16 @@ class NetworkManager: NetworkManagerProtocol {
         NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
 
         otherPlayersId.insert(playerId)
+    }
+
+    // MARK: - Reset Network Manger
+
+    private func reset() {
+        gameId = nil
+        currentPlayerId = nil
+        deviceStatus = nil
+        otherPlayersId.removeAll()
+        playersSprite.removeAll()
+        players.removeAll()
     }
 }

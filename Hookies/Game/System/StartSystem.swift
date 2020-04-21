@@ -37,11 +37,7 @@ class StartSystem: System, StartSystemProtocol {
     weak var delegate: StartSystemDelegate?
 
     init() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(receivedOtherPlayerJoinEvent(_:)),
-            name: .receivedOtherPlayerJoinEvent,
-            object: nil)
+        registerNotificationObservers()
     }
 
     func add(player: Player, with sprite: SpriteComponent) {
@@ -69,6 +65,18 @@ class StartSystem: System, StartSystemProtocol {
 
 // MARK: - Networking
 extension StartSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedOtherPlayerJoinEvent(_:)),
+            name: .receivedOtherPlayerJoinEvent,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
+            object: nil)
+    }
 
     private func broadcast() {
         NotificationCenter.default.post(
@@ -79,5 +87,9 @@ extension StartSystem {
 
     @objc private func receivedOtherPlayerJoinEvent(_ notification: Notification) {
         totalNumberOfPlayers += 1
+    }
+
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }

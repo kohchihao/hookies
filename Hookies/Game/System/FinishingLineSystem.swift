@@ -113,6 +113,11 @@ extension FinishingLineSystem {
             selector: #selector(receivedReachedFinishLineAction(_:)),
             name: .receivedReachedFinishLineAction,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
+            object: nil)
     }
 
     private func broadcastReachedFinishLine(with sprite: SpriteComponent) {
@@ -139,5 +144,9 @@ extension FinishingLineSystem {
             }
             _ = stop(player: sprite, at: sprite.node.position, with: velocity)
         }
+    }
+
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }

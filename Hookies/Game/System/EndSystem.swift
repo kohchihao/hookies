@@ -46,6 +46,11 @@ extension EndSystem {
             selector: #selector(receivedGameEndEvent(_:)),
             name: .receivedGameEndEvent,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
+            object: nil)
     }
 
     @objc private func broadcastPlayerFinishSprite(_ notification: Notification) {
@@ -79,8 +84,10 @@ extension EndSystem {
             Logger.log.show(details: "Recevied End Game Event", logType: .information)
 
             delegate?.gameEnded(rankings: rankings)
-
-            NotificationCenter.default.removeObserver(self)
         }
+    }
+
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }
