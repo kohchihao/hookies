@@ -26,13 +26,13 @@ class NetworkManager: NetworkManagerProtocol {
     private var players = [String: Player]()
 
     private init() {
-        setUpDeviceStatus()
         registerNotificationObservers()
         Logger.log.traceableFunctionName = true
     }
 
     func set(gameId: String) {
         self.gameId = gameId
+        setUpDeviceStatus()
     }
 
     // MARK: - Setup current device connection status
@@ -427,6 +427,7 @@ class NetworkManager: NetworkManagerProtocol {
 
             API.shared.gameplay.close()
             Logger.log.show(details: "Closed Game Connection", logType: .information)
+            self.reset()
         })
     }
 
@@ -507,7 +508,7 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func reset() {
         gameId = nil
-        currentPlayerId = nil
+        currentPlayer = nil
         deviceStatus = nil
         otherPlayersId.removeAll()
         playersSprite.removeAll()
