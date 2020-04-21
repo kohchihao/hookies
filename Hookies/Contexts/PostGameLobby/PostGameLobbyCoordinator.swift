@@ -19,9 +19,9 @@ class PostGameLobbyCoordinator: Coordinator {
     private var viewModel: PostGameLobbyViewModel
 
     // MARK: - INIT
-    init(with navigator: NavigatorRepresentable, gamePlayId: String, players: [Player]) {
+    init(with navigator: NavigatorRepresentable, gamePlayId: String, ranking: [Player]) {
         self.navigator = navigator
-        self.viewModel = PostGameLobbyViewModel(lobbyId: gamePlayId, players: players)
+        self.viewModel = PostGameLobbyViewModel(lobbyId: gamePlayId, players: ranking)
     }
 
     // MARK: - START

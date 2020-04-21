@@ -75,7 +75,7 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
     }
 
     func didPressPostButton(in: PreGameLobbyViewController, lobbyId: String, players: [Player]) {
-        let postGameLobbyCoordinator = PostGameLobbyCoordinator(with: navigator, gamePlayId: lobbyId, players: players)
+        let postGameLobbyCoordinator = PostGameLobbyCoordinator(with: navigator, gamePlayId: lobbyId, ranking: players)
         postGameLobbyCoordinator.coordinatorDelegate = self
         postGameLobbyCoordinator.start()
     }
