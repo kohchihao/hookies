@@ -117,6 +117,24 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
     }
 
+    func activateNetTrapAndBroadcast(at point: CGPoint, on sprite: SpriteComponent) {
+        guard let trap = findTrap(at: point) else {
+            Logger.log.show(details: "Unable find netTrap", logType: .error)
+            return
+        }
+
+        activateNetTrap(at: point, on: sprite)
+        let info = [
+            "data": PowerupSystemEvent(sprite: sprite,
+                                       powerupEventType: .netTrapped,
+                                       powerupType: .netTrap,
+                                       powerupPos: Vector(point: trap.node.position))
+        ]
+        NotificationCenter.default.post(name: Notification.Name.broadcastPowerupAction,
+                                        object: nil,
+                                        userInfo: info)
+    }
+
     func activateNetTrap(at point: CGPoint, on sprite: SpriteComponent) {
         guard let trap = findTrap(at: point),
             let owner = trap.parent.get(PowerupComponent.self)?.owner
@@ -133,15 +151,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         for effect in effects {
             apply(effect: effect, by: sprite)
         }
-        let info = [
-            "data": PowerupSystemEvent(sprite: sprite,
-                                       powerupEventType: .netTrapped,
-                                       powerupType: .netTrap,
-                                       powerupPos: Vector(point: trap.node.position))
-        ]
-        NotificationCenter.default.post(name: Notification.Name.broadcastPowerupAction,
-                                        object: nil,
-                                        userInfo: info)
     }
 
     private func add(player: SpriteComponent, with powerup: PowerupComponent) {

@@ -195,7 +195,7 @@ class GameEngine {
                 Logger.log.show(details: "Unable to locate current player", logType: .error)
                 return
         }
-        powerupSystem.activateNetTrap(at: trap.position, on: currentPlayerSprite)
+        powerupSystem.activateAndBroadcast(at: trap.position, on: currentPlayerSprite)
     }
 
     // MARK: - Update
