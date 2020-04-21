@@ -13,7 +13,7 @@ protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
     func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String, players: [Player])
     func didPressFriendButton(in: PreGameLobbyViewController, lobbyId: String)
-    func didPressPostButton(in: PreGameLobbyViewController, lobbyId: String, players: [Player], ranking: [String])
+    func didPressPostButton(in: PreGameLobbyViewController, lobbyId: String, players: [Player])
 }
 
 class PreGameLobbyViewController: UIViewController {
@@ -278,7 +278,8 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     @IBAction private func postButtonPressed(_ sender: UIButton) {
-        navigationDelegate?.didPressPostButton(in: self, lobbyId: self.viewModel.lobby.lobbyId, players: [], ranking: [])
+        let players = self.createPlayers(with: self.viewModel.lobby)
+        navigationDelegate?.didPressPostButton(in: self, lobbyId: self.viewModel.lobby.lobbyId, players: players)
     }
 }
 

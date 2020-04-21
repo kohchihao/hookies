@@ -17,6 +17,7 @@ protocol PostGameLobbyViewModelRepresentable {
     var lobbyId: String { get }
     var players: [Player] { get }
     var delegate: PostGameLobbyViewModelDelegate? { get set }
+    func updateLobby()
 }
 
 class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
@@ -28,10 +29,9 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
     init(lobbyId: String, players: [Player]) {
         self.lobbyId = lobbyId
         self.players = players
-        updateLobby()
     }
 
-    private func updateLobby() {
+    func updateLobby() {
         API.shared.lobby.get(lobbyId: lobbyId, completion: { lobby, error in
             guard error == nil else {
                 Logger.log.show(details: error.debugDescription, logType: .error)

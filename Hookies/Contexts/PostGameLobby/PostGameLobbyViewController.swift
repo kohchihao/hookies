@@ -38,6 +38,7 @@ class PostGameLobbyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         continueButton.isEnabled = continueButtonEnabled
+        self.viewModel.updateLobby()
         setupPlayerView()
     }
 
@@ -82,11 +83,31 @@ class PostGameLobbyViewController: UIViewController {
         }
     }
 
+    private func updatePlayerViews() {
+        guard self.viewModel.players.count <= self.playerViews.count else {
+            return
+        }
+        var index = 0
+        for player in self.viewModel.players {
+            API.shared.user.get(withUid: player.playerId, completion: { user, error in
+                guard error == nil else {
+                    Logger.log.show(details: error.debugDescription, logType: .error)
+                    return
+                }
+                guard let user = user else {
+                    return
+                }
+                self.playerViews[index].updateUsernameLabel(username: user.username)
+                self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
+                index += 1
+            })
+        }
+    }
+
     @IBAction private func continueButtonPressed(_ sender: UIButton) {
         guard let lobby = self.viewModel.lobby else {
             return
         }
-        print(lobby)
         navigationDelegate?.didPressContinueButton(in: self, lobby: lobby)
     }
 
@@ -98,5 +119,6 @@ class PostGameLobbyViewController: UIViewController {
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
     func lobbyLoaded(isLoaded: Bool) {
         self.continueButton.isEnabled = isLoaded
+        updatePlayerViews()
     }
 }

@@ -74,8 +74,8 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
         socialCoordinator.start()
     }
 
-    func didPressPostButton(in: PreGameLobbyViewController, lobbyId: String, players: [Player], ranking: [String]) {
-        let postGameLobbyCoordinator = PostGameLobbyCoordinator(with: navigator, gamePlayId: lobbyId, players: [])
+    func didPressPostButton(in: PreGameLobbyViewController, lobbyId: String, players: [Player]) {
+        let postGameLobbyCoordinator = PostGameLobbyCoordinator(with: navigator, gamePlayId: lobbyId, players: players)
         postGameLobbyCoordinator.coordinatorDelegate = self
         postGameLobbyCoordinator.start()
     }
