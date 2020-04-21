@@ -119,15 +119,15 @@ class PostGameLobbyViewController: UIViewController {
             lobby.addPlayer(playerId: currentPlayerId)
             if lobby.playersId.count >= Constants.maxPlayerCount {
                 lobby.updateLobbyState(lobbyState: .full)
-            } else {
-                lobby.updateLobbyState(lobbyState: .open)
             }
         }
         API.shared.lobby.save(lobby: lobby)
+        API.shared.lobby.unsubscribeFromLobby()
         navigationDelegate?.didPressContinueButton(in: self, lobby: lobby)
     }
 
     @IBAction private func returnHomeButtonPressed(_sender: UIButton) {
+        API.shared.lobby.unsubscribeFromLobby()
         navigationDelegate?.didPressReturnHomeButton(in: self)
     }
 
@@ -137,7 +137,7 @@ class PostGameLobbyViewController: UIViewController {
                 Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
-            guard var updatedLobby = lobby else {
+            guard let updatedLobby = lobby else {
                 return
             }
             self.viewModel.lobby = updatedLobby

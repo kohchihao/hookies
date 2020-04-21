@@ -51,7 +51,7 @@ struct Lobby {
             return
         }
         playersId.append(playerId)
-        updateCostumeId(playerId: playerId, costumeType: .Pink_Monster)
+        updateCostumeId(playerId: playerId, costumeType: CostumeType.getDefault())
         if playersId.count == Constants.maxPlayerCount {
             lobbyState = .full
         }
@@ -90,6 +90,7 @@ struct Lobby {
             }
         case .empty:
             self.playersId = [hostId]
+            self.costumesId = [hostId: CostumeType.getDefault()]
         }
         self.lobbyState = lobbyState
     }
