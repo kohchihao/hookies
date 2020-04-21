@@ -406,7 +406,8 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func subscribeToGameEndEvent() {
         API.shared.gameplay.subscribeToGameEndEvent(listener: { rankings in
-            Logger.log.show(details: "Subscribe to game end event", logType: .information)
+            API.shared.gameplay.close()
+            Logger.log.show(details: "Closed Game Connection", logType: .information)
 
             var playerRankings = [Player]()
 
@@ -425,8 +426,6 @@ class NetworkManager: NetworkManagerProtocol {
 
             NotificationCenter.default.post(name: .broadcastUnregisterObserver, object: self)
 
-            API.shared.gameplay.close()
-            Logger.log.show(details: "Closed Game Connection", logType: .information)
             self.reset()
         })
     }
