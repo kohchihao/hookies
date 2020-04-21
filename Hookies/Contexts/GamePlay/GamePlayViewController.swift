@@ -59,7 +59,6 @@ class GamePlayViewController: UIViewController {
     }
 
     func endGame(rankings: [Player]) {
-        Logger.log.show(details: "\(rankings)", logType: .information)
         navigationDelegate?.gameDidEnd(gamePlayId: viewModel.gameplayId, rankings: rankings)
     }
 

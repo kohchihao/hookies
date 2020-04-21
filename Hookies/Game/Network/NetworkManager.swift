@@ -412,7 +412,7 @@ class NetworkManager: NetworkManagerProtocol {
                 object: self,
                 userInfo: ["data": playerRankings])
 
-            // TODO: Close game session
+            API.shared.gameplay.close()
         })
     }
 
