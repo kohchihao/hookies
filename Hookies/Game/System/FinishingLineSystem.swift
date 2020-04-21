@@ -67,14 +67,15 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
                 return
             }
 
-            let hasPlayerStop = velocity.dx <= 0.0 && velocity.dy <= 0.0
+            let hasPlayerStop = velocity.dx <= 0.5 && velocity.dy <= 0.5
 
             if !hasPlayerStop {
-                let oppositeForce = CGVector(dx: -1.5 * velocity.dx, dy: -1.5 * velocity.dy)
+                let oppositeForce = CGVector(dx: -velocity.dx, dy: -velocity.dy)
                 sprite.node.physicsBody?.applyForce(oppositeForce)
             } else {
                 sprite.node.physicsBody?.velocity = CGVector.zero
                 sprite.node.physicsBody?.restitution = 0
+                sprite.node.physicsBody?.isDynamic = false
 
                 playersState[sprite] = .stopped
             }

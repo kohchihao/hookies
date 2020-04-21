@@ -149,7 +149,7 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func createPlayerEventData(from playerAction: GenericSystemEvent) -> GenericPlayerEventData? {
         guard let currentPlayerId = currentPlayer?.playerId else {
-            Logger.log.show(details: "currentPlayerId is nil", logType: .error)
+            Logger.log.show(details: "currentPlayerId is nil of \(playerAction.eventType)", logType: .error)
             return nil
         }
 
