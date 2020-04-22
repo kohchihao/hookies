@@ -35,12 +35,7 @@ extension SpriteComponent {
 
         let distance = Vector(point: node.position).distance(to: Vector(point: sprite2.node.position))
 
-        let path = CGMutablePath()
-        path.move(to: node.position)
-        path.addLine(to: sprite2.node.position)
-        path.addLine(to: CGPoint(x: sprite2.node.position.x + 1, y: sprite2.node.position.y + 1))
-        path.addLine(to: CGPoint(x: node.position.x - 1, y: node.position.y - 1))
-        path.closeSubpath()
+        let path = makePath(to: sprite2)
 
         let currLine = SKShapeNode(path: path)
         currLine.strokeColor = SKColor.white
@@ -54,12 +49,19 @@ extension SpriteComponent {
         return currLine
     }
 
-    func makeAnchor(from sprite: SpriteComponent) -> SKNode {
-        let anchor = SKNode()
-        anchor.position = sprite.node.position
-        anchor.physicsBody = SKPhysicsBody()
-        anchor.physicsBody?.isDynamic = false
+    func makePath(to sprite2: SpriteComponent) -> CGMutablePath {
+        let path = CGMutablePath()
+        path.move(to: node.position)
+        path.addLine(to: sprite2.node.position)
+        path.addLine(to: CGPoint(x: sprite2.node.position.x + 1, y: sprite2.node.position.y + 1))
+        path.addLine(to: CGPoint(x: node.position.x - 1, y: node.position.y - 1))
+        path.closeSubpath()
+        return path
+    }
 
-        return anchor
+    func distance(to sprite2: SpriteComponent) -> CGFloat {
+        let sprite1Pos = Vector(point: node.position)
+        let sprite2Pos = Vector(point: sprite2.node.position)
+        return CGFloat(sprite1Pos.distance(to: sprite2Pos))
     }
 }

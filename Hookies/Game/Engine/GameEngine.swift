@@ -254,7 +254,8 @@ class GameEngine {
     }
 
     private func addNewRandomPowerup(for spriteNode: SKSpriteNode) {
-        let availablePowerups = [PowerupType.netTrap, PowerupType.shield]
+        let availablePowerups = [PowerupType.netTrap, PowerupType.shield,
+                                 PowerupType.playerHook]
 //        let randType = PowerupType.allCases.randomElement() ?? .playerHook
         let randType = availablePowerups.randomElement() ?? PowerupType.shield
         addNewPowerup(with: randType, for: spriteNode)
@@ -414,6 +415,7 @@ class GameEngine {
         deadlockSystem = DeadlockSystem(sprite: sprite, hook: hook)
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
+        hookSystem?.add(player: sprite)
 
         delegate?.addCurrentPlayer(with: sprite.node)
     }
@@ -430,6 +432,7 @@ class GameEngine {
 
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
+        hookSystem?.add(player: sprite)
 
         delegate?.addPlayer(with: sprite.node)
     }
@@ -537,6 +540,11 @@ extension GameEngine: HookSystemDelegate {
         delegate?.playerDidUnhook(from: hookDelegateModel)
     }
 
+    func hookPlayerApplied(to sprite: SpriteComponent,
+                           with line: SKShapeNode) {
+        delegate?.playerHookToPlayer(with: line)
+    }
+
     private func createHookDelegateModel(from hook: HookComponent) -> HookDelegateModel? {
         guard let line = hook.line,
             let anchorLineJointPin = hook.anchorLineJointPin,
@@ -589,11 +597,19 @@ extension GameEngine: PowerupSystemDelegate {
         delegate?.addTrap(with: spriteComponent.node)
     }
 
-    func disableMovementActions() {
-        delegate?.movementButton(isDisabled: true)
+    func hookPlayer(from anchorSprite: SpriteComponent) {
+        hookSystem?.hookAndPullPlayer(from: anchorSprite)
     }
+}
 
-    func enableMovementActions() {
-        delegate?.movementButton(isDisabled: false)
+extension GameEngine: MovementControlDelegate {
+    func movement(isDisabled: Bool, for sprite: SpriteComponent) {
+        guard let player = sprite.parent as? PlayerEntity else {
+            return
+        }
+        if player === currentPlayer {
+            Logger.log.show(details: "Disable movement", logType: .information)
+            delegate?.movementButton(isDisabled: isDisabled)
+        }
     }
 }

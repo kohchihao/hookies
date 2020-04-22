@@ -82,10 +82,10 @@ extension PowerupEntity {
     }
 
     private func addPlayerHookComponents() {
-        let movementEffect = MovementEffectComponent(parent: self)
         let playerHookEffect = PlayerHookEffectComponent(parent: self)
-        addComponent(movementEffect)
+        let hookComponent = HookComponent(parent: self)
         addComponent(playerHookEffect)
+        addComponent(hookComponent)
     }
 
     private func addShieldComponents() {

@@ -332,6 +332,8 @@ class NetworkManager: NetworkManagerProtocol {
                 name = .receivedLengthenRopeAction
             case .shortenRope:
                 name = .receivedShortenRopeAction
+            case .hookPlayer:
+                name = .receivedHookPlayerAction
             }
             NotificationCenter.default.post(name: name, object: self, userInfo: notificationData)
         })

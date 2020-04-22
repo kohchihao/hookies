@@ -31,6 +31,8 @@
 		1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* AuthViewController.xib */; };
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
+		112B6191244FCF8C00B60D72 /* HookPlayerSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6190244FCF8C00B60D72 /* HookPlayerSystemEvent.swift */; };
+		112B6195244FDA7C00B60D72 /* MovementControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */; };
 		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
 		11593D772431EAD000462BE6 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11593D762431EAD000462BE6 /* CGPoint+Extension.swift */; };
 		1160C5EE244485F1007BE5DA /* SocketRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160C5ED244485F1007BE5DA /* SocketRoom.swift */; };
@@ -247,6 +249,8 @@
 		1127C585241606CD00A78AA0 /* AuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
+		112B6190244FCF8C00B60D72 /* HookPlayerSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookPlayerSystemEvent.swift; sourceTree = "<group>"; };
+		112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementControlDelegate.swift; sourceTree = "<group>"; };
 		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
 		11593D762431EAD000462BE6 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		1160C5ED244485F1007BE5DA /* SocketRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketRoom.swift; sourceTree = "<group>"; };
@@ -781,6 +785,8 @@
 				2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */,
 				2B64FD7E244613C000C848C4 /* PowerupSystemEvent.swift */,
 				2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */,
+				112B6190244FCF8C00B60D72 /* HookPlayerSystemEvent.swift */,
+				112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1464,6 +1470,7 @@
 				11CC84EB2439E8B9006D3A8F /* UserStore.swift in Sources */,
 				11CC84AF2439E81A006D3A8F /* JumpButton.swift in Sources */,
 				11CC84A52439E7D1006D3A8F /* PlayerEntity.swift in Sources */,
+				112B6195244FDA7C00B60D72 /* MovementControlDelegate.swift in Sources */,
 				11CC84492439E748006D3A8F /* System.swift in Sources */,
 				11CC85232439E9BF006D3A8F /* Lobby.swift in Sources */,
 				11593D772431EAD000462BE6 /* CGPoint+Extension.swift in Sources */,
@@ -1476,6 +1483,7 @@
 				11CC84792439E799006D3A8F /* BounceComponent.swift in Sources */,
 				11CC84442439E748006D3A8F /* UserConnectionSystem.swift in Sources */,
 				11CC850F2439E920006D3A8F /* MapsViewModel.swift in Sources */,
+				112B6191244FCF8C00B60D72 /* HookPlayerSystemEvent.swift in Sources */,
 				11CC85292439E9C4006D3A8F /* User.swift in Sources */,
 				2B4E43A12446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift in Sources */,
 				11CC84FE2439E8E5006D3A8F /* FriendTableViewCell.swift in Sources */,

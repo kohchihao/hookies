@@ -511,4 +511,8 @@ extension GameScene: GameEngineDelegate {
         shortenButton?.state = newState
         lengthenButton?.state = newState
     }
+
+    func playerHookToPlayer(with line: SKShapeNode) {
+        addChild(line)
+    }
 }

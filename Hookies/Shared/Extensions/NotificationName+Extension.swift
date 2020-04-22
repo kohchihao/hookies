@@ -33,6 +33,7 @@ extension Notification.Name {
     static let receivedUnookAction = Notification.Name("receivedUnookAction")
     static let receivedShortenRopeAction = Notification.Name("receivedShortenRopeAction")
     static let receivedLengthenRopeAction = Notification.Name("receivedLengthenRopeAction")
+    static let receivedHookPlayerAction = Notification.Name("receivedHookPlayerAction")
 
     // Cannon
     static let receivedLaunchAction = Notification.Name("receivedLaunchAction")

@@ -26,15 +26,17 @@ protocol HookSystemProtocol {
     func boostVelocity(to entity: Entity)
 }
 
-protocol HookSystemDelegate: AnyObject {
+protocol HookSystemDelegate: AnyObject, MovementControlDelegate {
     func hookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
     func adjustHookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
     func unhookActionApplied(hook: HookComponent)
+    func hookPlayerApplied(with line: SKShapeNode)
 }
 
 class HookSystem: System, HookSystemProtocol {
     private var hooks: Set<HookComponent>
     private var bolts: [SpriteComponent]
+    private var players = [SpriteComponent]()
     private let minRopeLength = 100.0
 
     weak var delegate: HookSystemDelegate?
@@ -44,6 +46,11 @@ class HookSystem: System, HookSystemProtocol {
         self.bolts = bolts
 
         registerNotificationObservers()
+    }
+
+    // MARK: - Add Player
+    func add(player: SpriteComponent) {
+        players.append(player)
     }
 
     // MARK: - Hook
@@ -88,6 +95,50 @@ class HookSystem: System, HookSystemProtocol {
         delegate?.hookActionApplied(sprite: sprite, velocity: velocity, hook: hook)
 
         return true
+    }
+
+    func hookAndPullPlayer(from anchorSprite: SpriteComponent) {
+        hookAndPull(from: anchorSprite)
+
+        let data = [
+            "data": GenericSystemEvent(sprite: anchorSprite,
+                                       eventType: .hookPlayer)
+        ]
+        NotificationCenter.default.post(name: Notification.Name.broadcastGenericPlayerAction,
+                                        object: nil,
+                                        userInfo: data)
+    }
+
+    private func hookAndPull(from anchorSprite: SpriteComponent) {
+        guard let sprite = nearestSpriteInFront(of: anchorSprite) else {
+            Logger.log.show(details: "No sprite found in the front", logType: .warning)
+            return
+        }
+        let line = anchorSprite.makeLine(to: sprite)
+        delegate?.movement(isDisabled: true, for: sprite)
+        delegate?.hookPlayerApplied(with: line)
+        sprite.node.physicsBody?.affectedByGravity = false
+
+        let duration = TimeInterval(3.0)
+        let followAnchor = SKAction.customAction(withDuration: duration) { node, _ in
+            let newPath = anchorSprite.makePath(to: sprite)
+            line.path = newPath
+
+            let dx = anchorSprite.node.position.x - node.position.x
+            let dy = anchorSprite.node.position.y - node.position.y
+            let angle = atan2(dx, dy)
+            let speedPerFrame = CGFloat(15)
+            if abs(dx) > speedPerFrame * 5 {
+                node.position.x += sin(angle) * speedPerFrame
+            }
+            node.position.y += cos(angle) * speedPerFrame
+        }
+
+        sprite.node.run(followAnchor, completion: {
+            line.removeFromParent()
+            sprite.node.physicsBody?.affectedByGravity = true
+            self.delegate?.movement(isDisabled: false, for: sprite)
+        })
     }
 
     // MARK: - Unhook
@@ -371,6 +422,32 @@ class HookSystem: System, HookSystemProtocol {
         return closestBolt
     }
 
+    // MARK: - Closest Front Player
+
+    private func nearestSpriteInFront(of sprite: SpriteComponent) -> SpriteComponent? {
+        var nearestSprite: SpriteComponent?
+        var nearestDistance = CGFloat.greatestFiniteMagnitude
+        let spritePos = sprite.node.position
+        let maxHookDistance = UIScreen.main.bounds.width
+
+        for currentSprite in players {
+            if currentSprite === sprite {
+                continue
+            }
+            let currentEucDist = currentSprite.distance(to: sprite)
+            let currentXDist = currentSprite.node.position.x - spritePos.x
+            if currentXDist <= 0 || currentEucDist > maxHookDistance {
+                continue
+            }
+
+            if currentEucDist < nearestDistance {
+                nearestDistance = currentEucDist
+                nearestSprite = currentSprite
+            }
+        }
+        return nearestSprite
+    }
+
     // MARK: - Create Joint
 
     private func makeJointPinToLine(from node: SKNode, toLine line: SKShapeNode) -> SKPhysicsJointPin? {
@@ -412,6 +489,11 @@ extension HookSystem {
             selector: #selector(receivedLengthenRopeAction(_:)),
             name: .receivedLengthenRopeAction,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receivedHookPlayerAction(_:)),
+            name: .receivedHookPlayerAction,
+            object: nil)
     }
 
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
@@ -420,6 +502,15 @@ extension HookSystem {
             name: .broadcastGenericPlayerAction,
             object: self,
             userInfo: ["data": genericSystemEvent])
+    }
+
+    @objc private func receivedHookPlayerAction(_ notification: Notification) {
+        guard let data = notification.userInfo as? [String: GenericSystemEvent],
+            let genericSystemEvent = data["data"] else {
+                return
+        }
+        let sprite = genericSystemEvent.sprite
+        hookAndPull(from: sprite)
     }
 
     @objc private func receivedHookAction(_ notification: Notification) {
