@@ -156,6 +156,7 @@
 		11CC85342439E9EB006D3A8F /* HealthSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC852F2439E9EB006D3A8F /* HealthSystemTests.swift */; };
 		11CC85352439E9EB006D3A8F /* ClosestBoltSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85302439E9EB006D3A8F /* ClosestBoltSystemTests.swift */; };
 		11CC85362439E9EB006D3A8F /* SpriteSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85312439E9EB006D3A8F /* SpriteSystemTests.swift */; };
+		11D3D2A62450159500B6BBC2 /* StealPowerupEffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D3D2A52450159500B6BBC2 /* StealPowerupEffectComponent.swift */; };
 		2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */; };
 		2B4CCD442435AC4F0086DEC6 /* HookDelegateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */; };
 		2B4E43A12446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */; };
@@ -373,6 +374,7 @@
 		11CC852F2439E9EB006D3A8F /* HealthSystemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthSystemTests.swift; sourceTree = "<group>"; };
 		11CC85302439E9EB006D3A8F /* ClosestBoltSystemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystemTests.swift; sourceTree = "<group>"; };
 		11CC85312439E9EB006D3A8F /* SpriteSystemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpriteSystemTests.swift; sourceTree = "<group>"; };
+		11D3D2A52450159500B6BBC2 /* StealPowerupEffectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StealPowerupEffectComponent.swift; sourceTree = "<group>"; };
 		2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngineDelegate.swift; sourceTree = "<group>"; };
 		2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookDelegateModel.swift; sourceTree = "<group>"; };
 		2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupCollectionSystemEvent.swift; sourceTree = "<group>"; };
@@ -648,6 +650,7 @@
 				11CC84822439E7A8006D3A8F /* ShieldEffectComponent.swift */,
 				11CC84852439E7A8006D3A8F /* ThiefEffectComponent.swift */,
 				112B6196244FF6D900B60D72 /* CutRopeEffectComponent.swift */,
+				11D3D2A52450159500B6BBC2 /* StealPowerupEffectComponent.swift */,
 			);
 			path = PowerupEffectsComponent;
 			sourceTree = "<group>";
@@ -1555,6 +1558,7 @@
 				2B64FD7F244613C000C848C4 /* PowerupSystemEvent.swift in Sources */,
 				11CC848D2439E7A8006D3A8F /* PlacementEffectComponent.swift in Sources */,
 				11CC85032439E8E5006D3A8F /* LobbyPlayerView.swift in Sources */,
+				11D3D2A62450159500B6BBC2 /* StealPowerupEffectComponent.swift in Sources */,
 				1127C56C2415E55A00A78AA0 /* HomeCoordinator.swift in Sources */,
 				11CC84C02439E832006D3A8F /* SpriteType.swift in Sources */,
 				1127C5672415E47500A78AA0 /* Navigator.swift in Sources */,

@@ -23,4 +23,5 @@ protocol GameEngineDelegate: AnyObject {
     func addNotActivatedPowerup(_ sprite: SKSpriteNode)
     func addTrap(with sprite: SKSpriteNode)
     func movementButton(isDisabled: Bool)
+    func setPowerupButton(to type: PowerupType?)
 }

@@ -364,10 +364,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handlePowerupBtnTouch() {
-        guard let powerupType = powerupButton?.powerupType else {
-            return
-        }
-        gameEngine?.currentPlayerPowerupAction(with: powerupType)
     }
 
     private func handleGrapplingHookBtnTouchBegan() {
@@ -375,7 +371,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handlePowerupBtnTouchEnd() {
+        guard let powerupType = powerupButton?.powerupType else {
+            return
+        }
         powerupButton?.clearPowerup()
+        gameEngine?.currentPlayerPowerupAction(with: powerupType)
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
@@ -510,5 +510,13 @@ extension GameScene: GameEngineDelegate {
 
     func playerHookToPlayer(with line: SKShapeNode) {
         addChild(line)
+    }
+
+    func setPowerupButton(to type: PowerupType?) {
+        if let type = type {
+            powerupButton?.setPowerup(to: type)
+        } else {
+            powerupButton?.clearPowerup()
+        }
     }
 }

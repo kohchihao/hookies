@@ -18,6 +18,7 @@ protocol PowerupSystemDelegate: class, MovementControlDelegate {
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
     func hook(from anchorSprite: SpriteComponent)
     func forceUnhookFor(player: SpriteComponent)
+    func setPowerup(for sprite: SpriteComponent, to type: PowerupType?)
 }
 
 class PowerupSystem: System, PowerupSystemProtocol {
@@ -28,6 +29,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
     // Powerups that are collectible on the map
     private var powerups = Set<PowerupComponent>()
     private var netTraps = Set<SpriteComponent>()
+
+    var players: [SpriteComponent] {
+        return Array(ownedPowerups.keys)
+    }
 
     init() {
         registerNotificationObservers()
@@ -86,16 +91,20 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                         userInfo: info)
     }
 
-    func steal(powerup: PowerupComponent,
-               from player1: SpriteComponent,
+    func steal(from player1: SpriteComponent,
                by player2: SpriteComponent
     ) {
         guard let powerupToSteal = player1.parent.get(PowerupComponent.self) else {
-                return
+            Logger.log.show(details: "No powerup to steal", logType: .alert)
+            return
         }
 
+        Logger.log.show(details: "Steal \(powerupToSteal.type.stringValue)",
+                        logType: .alert)
         removePowerup(from: player1)
+        delegate?.setPowerup(for: player1, to: nil)
         add(player: player2, with: powerupToSteal)
+        delegate?.setPowerup(for: player2, to: powerupToSteal.type)
     }
 
     func activateNetTrapAndBroadcast(at point: CGPoint, on sprite: SpriteComponent) {
@@ -121,6 +130,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private func add(player: SpriteComponent, with powerup: PowerupComponent) {
         ownedPowerups[player]?.append(powerup)
         player.parent.addComponent(powerup)
+        powerup.setOwner(player.parent)
     }
 
     // MARK: - Activate Net Trap
@@ -177,6 +187,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
             applyPlayerHookEffect(playerHookEffect, by: sprite)
         case let cutRopeEffect as CutRopeEffectComponent:
             applyCutRopeEffect(cutRopeEffect, by: sprite)
+        case let thiefEffect as ThiefEffectComponent:
+            applyThiefEffect(thiefEffect, on: sprite)
+        case let stealEffect as StealPowerupEffectComponent:
+            applyStealPowerupEffect(stealEffect, by: sprite)
         default:
             return
         }
@@ -190,14 +204,13 @@ class PowerupSystem: System, PowerupSystemProtocol {
                 return
         }
         powerups.remove(powerupComponent)
-        add(player: sprite, with: powerupComponent)
         powerupComponent.parent.removeComponents(SpriteComponent.self)
+        add(player: sprite, with: powerupComponent)
 
         let fade = SKAction.fadeOut(withDuration: 0.5)
         powerupSprite.node.run(fade, completion: {
             powerupSprite.node.removeFromParent()
         })
-        powerupComponent.setOwner(sprite.parent)
     }
 
     // MARK: - Find Trap
@@ -220,6 +233,22 @@ class PowerupSystem: System, PowerupSystemProtocol {
     }
 
     // MARK: - Apply Effects
+
+    private func applyStealPowerupEffect(_ effect: StealPowerupEffectComponent,
+                                         by sprite: SpriteComponent) {
+        guard let nearestSprite = sprite.nearestSpriteInFront(from: players) else {
+            Logger.log.show(details: "No players in front to steal powerup",
+                            logType: .warning)
+            return
+        }
+        steal(from: nearestSprite, by: sprite)
+        effect.parent.removeComponents(StealPowerupEffectComponent.self)
+    }
+
+    private func applyThiefEffect(_ effect: ThiefEffectComponent,
+                                  on sprite: SpriteComponent) {
+
+    }
 
     private func applyCutRopeEffect(_ effect: CutRopeEffectComponent,
                                     by sprite: SpriteComponent) {

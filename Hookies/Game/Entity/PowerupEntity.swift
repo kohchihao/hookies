@@ -82,6 +82,8 @@ extension PowerupEntity {
 
     private func addStealComponents() {
         let thiefEffect = ThiefEffectComponent(parent: self)
+        let stealPowerupEffect = StealPowerupEffectComponent(parent: self)
         addComponent(thiefEffect)
+        addComponent(stealPowerupEffect)
     }
 }
