@@ -10,4 +10,7 @@ import Foundation
 import SpriteKit
 
 class PlacementEffectComponent: PowerupEffectComponent {
+    init(parent: Entity) {
+        super.init(parent: parent, isNegativeEffect: false)
+    }
 }

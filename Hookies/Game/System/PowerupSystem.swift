@@ -23,7 +23,7 @@ protocol PowerupSystemProtocol {
 protocol PowerupSystemDelegate: class, MovementControlDelegate {
     func hasAddedTrap(sprite: SpriteComponent)
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
-    func hook(from anchorSprite: SpriteComponent)
+    func hook(_ sprite: SpriteComponent, from anchorSprite: SpriteComponent)
     func forceUnhookFor(player: SpriteComponent)
     func indicateSteal(from sprite: SpriteComponent,
                        by sprite: SpriteComponent,
@@ -122,7 +122,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     // MARK: - Steal Powerup
 
     private func steal(from player1: SpriteComponent,
-               by player2: SpriteComponent
+                       by player2: SpriteComponent
     ) {
         guard let powerupToSteal = player1.parent.get(PowerupComponent.self) else {
             Logger.log.show(details: "No powerup to steal", logType: .warning)
@@ -180,18 +180,19 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
     }
 
-    private func apply(effect: PowerupEffectComponent, on sprite: SpriteComponent) {
-        if !(effect is ShieldEffectComponent) && isProtected(spriteComponent: sprite) {
+    private func apply(effect: PowerupEffectComponent,
+                       on sprite: SpriteComponent) {
+        if isProtected(spriteComponent: sprite, from: effect) {
             return
         }
 
         switch effect {
         case let shield as ShieldEffectComponent:
             applyShieldEffect(shield, on: sprite)
-        case let placementEffect as PlacementEffectComponent:
-            applyPlacementEffect(placementEffect, on: sprite)
         case let movementEffect as MovementEffectComponent:
             applyMovementEffect(movementEffect, on: sprite)
+        case let placementEffect as PlacementEffectComponent:
+            applyPlacementEffect(placementEffect, by: sprite)
         case let playerHookEffect as PlayerHookEffectComponent:
             applyPlayerHookEffect(playerHookEffect, by: sprite)
         case let cutRopeEffect as CutRopeEffectComponent:
@@ -231,12 +232,14 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: - isProtected
 
-    private func isProtected(spriteComponent: SpriteComponent) -> Bool {
+    private func isProtected(spriteComponent: SpriteComponent,
+                             from effect: PowerupEffectComponent
+    ) -> Bool {
         guard let powerup = ownedPowerups[spriteComponent]?.first else {
             return false
         }
         let hasShieldEffect = powerup.parent.get(ShieldEffectComponent.self) != nil
-        return powerup.isActivated && hasShieldEffect
+        return effect.isNegativeEffect && powerup.isActivated && hasShieldEffect
     }
 
     // MARK: - Apply Effects
@@ -248,39 +251,55 @@ class PowerupSystem: System, PowerupSystemProtocol {
                             logType: .warning)
             return
         }
+        guard !isProtected(spriteComponent: nearestSprite, from: effect) else {
+            Logger.log.show(details: "Cannot steal from shielded player.",
+                            logType: .warning)
+            return
+        }
         steal(from: nearestSprite, by: sprite)
         effect.parent.removeComponents(StealPowerupEffectComponent.self)
     }
 
     private func applyCutRopeEffect(_ effect: CutRopeEffectComponent,
                                     by sprite: SpriteComponent) {
-        effect.parent.removeComponents(CutRopeEffectComponent.self)
-        removePowerup(from: sprite)
-
-        var players = Array(ownedPowerups.keys)
-        players.removeAll(where: { $0 === sprite })
+        let players = Array(ownedPowerups.keys).filter({
+            $0 !== sprite && !isProtected(spriteComponent: $0, from: effect)
+        })
 
         for player in players {
             delegate?.forceUnhookFor(player: player)
         }
+        effect.parent.removeComponents(CutRopeEffectComponent.self)
+        removePowerup(from: sprite)
     }
 
     private func applyPlayerHookEffect(_ effect: PlayerHookEffectComponent,
                                        by sprite: SpriteComponent) {
-        delegate?.hook(from: sprite)
+        guard let nearestSprite = sprite.nearestSpriteInFront(from: players) else {
+            Logger.log.show(details: "No players to hook in front.", logType: .warning)
+            return
+        }
+        guard !isProtected(spriteComponent: nearestSprite, from: effect) else {
+            Logger.log.show(details: "Cannot hook onto shielded player",
+                            logType: .warning)
+            return
+        }
+
+        delegate?.hook(nearestSprite, from: sprite)
         removePowerup(from: sprite)
         effect.parent.removeComponents(PlayerHookEffectComponent.self)
     }
 
     private func applyPlacementEffect(_ effect: PlacementEffectComponent,
-                                      on sprite: SpriteComponent) {
+                                      by sprite: SpriteComponent) {
         guard let effectSprite = effect.parent.get(SpriteComponent.self),
             let powerupCom = effect.parent.get(PowerupComponent.self) else {
             return
         }
         switch powerupCom.type {
         case .netTrap:
-            let movementComponent = MovementEffectComponent(parent: effect.parent)
+            let movementComponent = MovementEffectComponent(parent: effect.parent,
+                                                            isNegativeEffect: true)
             movementComponent.duration = 5.0
             movementComponent.from = sprite.node.position
             movementComponent.to = sprite.node.position
