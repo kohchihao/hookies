@@ -14,10 +14,11 @@ protocol GameEngineDelegate: AnyObject {
     func playerDidUnhook(from hook: HookDelegateModel)
     func playerIsStuck()
     func playerHasFinishRace()
+    func addCurrentPlayer(with sprite: SKSpriteNode)
     func addPlayer(with sprite: SKSpriteNode)
     func currentPlayerIsReconnected()
     func currentPlayerIsDisconnected()
-    func gameHasFinish()
+    func gameHasFinish(rankings: [Player])
     func addNotActivatedPowerup(_ sprite: SKSpriteNode)
     func addTrap(with sprite: SKSpriteNode)
 }

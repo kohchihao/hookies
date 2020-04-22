@@ -12,20 +12,20 @@ struct RequestManager {
     static func checkUsersExist(fromUserId: String, toUserId: String, completion: @escaping (Bool) -> Void) {
         API.shared.user.get(withUid: fromUserId, completion: { sender, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return completion(false)
             }
             guard sender != nil else {
-                print("Sender of request not found")
+                Logger.log.show(details: "Sender of request not found", logType: .error)
                 return completion(false)
             }
             API.shared.user.get(withUid: toUserId, completion: { recipient, error in
                 guard error == nil else {
-                    print(error.debugDescription)
+                    Logger.log.show(details: error.debugDescription, logType: .error)
                     return completion(false)
                 }
                 guard recipient != nil else {
-                    print("Recipient of request not found")
+                    Logger.log.show(details: "Recipient of request not found", logType: .error)
                     return completion(false)
                 }
                 return completion(true)
@@ -40,20 +40,20 @@ struct RequestManager {
     ) {
         API.shared.social.get(userId: fromUserId, completion: { senderSocial, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return completion(false, nil, nil)
             }
             guard let senderSocial = senderSocial else {
-                print("Sender of request does not have social")
+                Logger.log.show(details: "Sender of request does not have social", logType: .error)
                 return completion(false, nil, nil)
             }
             API.shared.social.get(userId: toUserId, completion: { recipientSocial, error in
                 guard error == nil else {
-                    print(error.debugDescription)
+                    Logger.log.show(details: error.debugDescription, logType: .error)
                     return completion(false, nil, nil)
                 }
                 guard let recipientSocial = recipientSocial else {
-                    print("Recipient of request does not have social")
+                    Logger.log.show(details: "Recipient of request does not have social", logType: .error)
                     return completion(false, nil, nil)
                 }
                 return completion(true, senderSocial, recipientSocial)
@@ -68,7 +68,7 @@ struct RequestManager {
             dispatch.enter()
             API.shared.request.get(requestId: requestId, completion: { request, error in
                 guard error == nil else {
-                    print(error.debugDescription)
+                    Logger.log.show(details: error.debugDescription, logType: .error)
                     return
                 }
                 guard let request = request else {
@@ -91,22 +91,22 @@ struct RequestManager {
     ) {
         self.getRequests(requestIds: sender.outgoingRequests, completion: { requests in
             guard !requests.map({ $0.toUserId }).contains(request.toUserId) else {
-                print("request already exists")
+                Logger.log.show(details: "request already exists", logType: .alert)
                 return completion(false)
             }
             self.getRequests(requestIds: sender.incomingRequests, completion: { requests in
                 guard !requests.map({ $0.fromUserId }).contains(request.toUserId) else {
-                    print("request already exists")
+                    Logger.log.show(details: "request already exists", logType: .alert)
                     return completion(false)
                 }
                 self.getRequests(requestIds: recipient.outgoingRequests, completion: { recipientRequests in
                     guard !recipientRequests.map({ $0.toUserId }).contains(request.fromUserId) else {
-                        print("request already exists")
+                        Logger.log.show(details: "request already exists", logType: .alert)
                         return completion(false)
                     }
                     self.getRequests(requestIds: recipient.incomingRequests, completion: { recipientRequests in
                         guard !recipientRequests.map({ $0.fromUserId }).contains(request.fromUserId) else {
-                            print("request already exists")
+                            Logger.log.show(details: "request already exists", logType: .alert)
                             return completion(false)
                         }
                         return completion(true)
@@ -132,7 +132,7 @@ struct RequestManager {
                 guard !sender.friends.contains(request.toUserId)
                     && !recipient.friends.contains(request.fromUserId)
                     else {
-                        print("Users are already friends")
+                        Logger.log.show(details: "Users are already friends", logType: .alert)
                         return
                 }
                 self.checkRequestIsNotRepeated(request: request, sender: sender, recipient: recipient) { notRepeated in
@@ -152,11 +152,11 @@ struct RequestManager {
     static func getRequest(requestId: String, completion: @escaping (Request?) -> Void) {
         API.shared.request.get(requestId: requestId, completion: { request, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return completion(nil)
             }
             guard let request = request else {
-                print("request not found")
+                Logger.log.show(details: "request not found", logType: .error)
                 return completion(nil)
             }
             return completion(request)

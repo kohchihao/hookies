@@ -72,4 +72,10 @@ struct Vector {
     static func - (lhs: Vector, rhs: Vector) -> Vector {
         return Vector(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
+
+    func angle(from vector2: Vector) -> Double {
+        let diff = self - vector2
+        let angle = atan2(abs(diff.y), abs(diff.x))
+        return angle
+    }
 }
