@@ -59,10 +59,11 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: Remove Powerup
     func removePowerup(from player: SpriteComponent) {
-        guard let removedPowerup = ownedPowerups[player]?.removeFirst() else {
+        guard let powerupToRemove = ownedPowerups[player]?.first else {
             return
         }
-        player.parent.removeFirstComponent(of: removedPowerup)
+        ownedPowerups[player]?.removeFirst()
+        player.parent.removeFirstComponent(of: powerupToRemove)
     }
 
     // MARK: - Collect Powerup
@@ -139,7 +140,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     // MARK: Add player's Powerup
 
     private func add(player: SpriteComponent, with powerup: PowerupComponent) {
-        ownedPowerups[player]?.removeAll()
+        removePowerup(from: player)
         ownedPowerups[player]?.append(powerup)
         player.parent.addComponent(powerup)
         powerup.setOwner(player.parent)
@@ -181,6 +182,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
         for effect in effects {
             apply(effect: effect, on: sprite)
         }
+        removePowerup(from: sprite)
     }
 
     private func apply(effect: PowerupEffectComponent,
