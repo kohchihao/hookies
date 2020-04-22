@@ -20,25 +20,36 @@ class BotSystem: System, BotSystemProtocol {
     
     private var bots = [SpriteComponent : BotComponent]()
     weak var delegate: BotSystemDelegate?
+    private var timer: Timer?
+    private var timeElapsed: Double = 0
     
-    init(bots: [SpriteComponent : BotEntity]) {
-        
+    init(bots: [SpriteComponent : BotComponent]) {
+        self.bots = bots
         
         registerNotificationObservers()
     }
 
     func start() {
-        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(emit), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: Constants.botTimeStep, target: self, selector: #selector(emit), userInfo: nil, repeats: true)
     }
 
     @objc private func emit() {
         for bot in bots {
-            guard let action = bot.value.instruction.first else {
-                return
+            guard let instruction = bot.value.getNextInstruction(timeElapsed: timeElapsed) else {
+                continue
             }
-            broadcast(with: bot.key, of: action)
+            broadcast(with: bot.key, of: instruction.action)
         }
-        
+        self.timeElapsed += Constants.botTimeStep
+    }
+
+    func stop() {
+        self.timer?.invalidate()
+        self.timer = nil
+    }
+
+    func add(spriteComponent: SpriteComponent, botComponent: BotComponent) {
+        self.bots[spriteComponent] = botComponent
     }
 
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {

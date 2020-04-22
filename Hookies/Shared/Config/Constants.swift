@@ -18,4 +18,6 @@ struct Constants {
     static let maxPlayerCount = 4
 
     static let powerupRespawnDelay = 2.0
+
+    static let botTimeStep = 1.0
 }

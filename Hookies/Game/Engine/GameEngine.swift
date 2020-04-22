@@ -27,6 +27,7 @@ class GameEngine {
     private var userConnectionSystem: UserConnectionSystem?
     private var startSystem = StartSystem()
     private var endSystem: EndSystem?
+    private var botSystem: BotSystem?
 
     // MARK: - Entity
 
@@ -428,6 +429,14 @@ class GameEngine {
 
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
+
+        if player.playerType == .bot {
+            let botEntity = BotEntity()
+            guard let botComponent = botEntity.get(BotComponent.self) else {
+                return
+            }
+            botSystem?.add(spriteComponent: sprite, botComponent: botComponent)
+        }
 
         delegate?.addPlayer(with: sprite.node)
     }

@@ -8,13 +8,30 @@
 
 import Foundation
 
+struct BotInstruction {
+    var timeSteps: Int
+    var action: GenericPlayerEvent
+}
+
 class BotComponent: Component {
     private(set) var parent: Entity
-    var instruction: [GenericPlayerEvent]
+    var instructions: [BotInstruction]
 
-    init(parent: Entity, instruction: [GenericPlayerEvent]) {
+    init(parent: Entity, instructions: [BotInstruction]) {
         self.parent = parent
-        self.instruction = instruction
+        self.instructions = instructions
+    }
+
+    func getNextInstruction(timeElapsed: Double) -> BotInstruction? {
+        let nextInstruction = instructions.first
+        guard let instructionTimeStep = nextInstruction?.timeSteps else {
+            return nil
+        }
+        guard Double(instructionTimeStep) * Constants.botTimeStep <= timeElapsed else {
+            return nil
+        }
+        self.instructions.removeFirst()
+        return nextInstruction
     }
 }
 
