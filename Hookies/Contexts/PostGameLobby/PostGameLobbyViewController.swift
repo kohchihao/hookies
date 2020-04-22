@@ -86,7 +86,7 @@ class PostGameLobbyViewController: UIViewController {
             return
         }
         var index = 0
-        for player in self.viewModel.players {
+        for player in self.viewModel.players.reversed() {
             API.shared.user.get(withUid: player.playerId, completion: { user, error in
                 guard error == nil else {
                     Logger.log.show(details: error.debugDescription, logType: .error)
@@ -154,6 +154,7 @@ class PostGameLobbyViewController: UIViewController {
 
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
     func lobbyLoaded(isLoaded: Bool) {
+        print(self.viewModel.players)
         updatePlayerViews()
         guard let lobby = self.viewModel.lobby else {
             return
