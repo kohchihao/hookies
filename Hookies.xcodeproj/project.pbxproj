@@ -33,6 +33,7 @@
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
 		112B6191244FCF8C00B60D72 /* HookPlayerSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6190244FCF8C00B60D72 /* HookPlayerSystemEvent.swift */; };
 		112B6195244FDA7C00B60D72 /* MovementControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */; };
+		112B6197244FF6D900B60D72 /* CutRopeEffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6196244FF6D900B60D72 /* CutRopeEffectComponent.swift */; };
 		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
 		11593D772431EAD000462BE6 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11593D762431EAD000462BE6 /* CGPoint+Extension.swift */; };
 		1160C5EE244485F1007BE5DA /* SocketRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160C5ED244485F1007BE5DA /* SocketRoom.swift */; };
@@ -76,7 +77,6 @@
 		11CC848B2439E7A8006D3A8F /* MovementEffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84842439E7A8006D3A8F /* MovementEffectComponent.swift */; };
 		11CC848C2439E7A8006D3A8F /* ThiefEffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84852439E7A8006D3A8F /* ThiefEffectComponent.swift */; };
 		11CC848D2439E7A8006D3A8F /* PlacementEffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84862439E7A8006D3A8F /* PlacementEffectComponent.swift */; };
-		11CC848E2439E7A8006D3A8F /* SliceEffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84872439E7A8006D3A8F /* SliceEffectComponent.swift */; };
 		11CC84972439E7C0006D3A8F /* PowerupEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84912439E7C0006D3A8F /* PowerupEntity.swift */; };
 		11CC84A12439E7D1006D3A8F /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC849B2439E7D0006D3A8F /* Entity.swift */; };
 		11CC84A22439E7D1006D3A8F /* FinishingLineEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC849C2439E7D0006D3A8F /* FinishingLineEntity.swift */; };
@@ -250,6 +250,7 @@
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
 		112B6190244FCF8C00B60D72 /* HookPlayerSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookPlayerSystemEvent.swift; sourceTree = "<group>"; };
 		112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementControlDelegate.swift; sourceTree = "<group>"; };
+		112B6196244FF6D900B60D72 /* CutRopeEffectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutRopeEffectComponent.swift; sourceTree = "<group>"; };
 		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
 		11593D762431EAD000462BE6 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		1160C5ED244485F1007BE5DA /* SocketRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketRoom.swift; sourceTree = "<group>"; };
@@ -293,7 +294,6 @@
 		11CC84842439E7A8006D3A8F /* MovementEffectComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovementEffectComponent.swift; sourceTree = "<group>"; };
 		11CC84852439E7A8006D3A8F /* ThiefEffectComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThiefEffectComponent.swift; sourceTree = "<group>"; };
 		11CC84862439E7A8006D3A8F /* PlacementEffectComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementEffectComponent.swift; sourceTree = "<group>"; };
-		11CC84872439E7A8006D3A8F /* SliceEffectComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliceEffectComponent.swift; sourceTree = "<group>"; };
 		11CC84912439E7C0006D3A8F /* PowerupEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerupEntity.swift; sourceTree = "<group>"; };
 		11CC849B2439E7D0006D3A8F /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		11CC849C2439E7D0006D3A8F /* FinishingLineEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishingLineEntity.swift; sourceTree = "<group>"; };
@@ -646,8 +646,8 @@
 				11CC84832439E7A8006D3A8F /* PlayerHookEffectComponent.swift */,
 				11CC84812439E7A8006D3A8F /* PowerupEffectComponent.swift */,
 				11CC84822439E7A8006D3A8F /* ShieldEffectComponent.swift */,
-				11CC84872439E7A8006D3A8F /* SliceEffectComponent.swift */,
 				11CC84852439E7A8006D3A8F /* ThiefEffectComponent.swift */,
+				112B6196244FF6D900B60D72 /* CutRopeEffectComponent.swift */,
 			);
 			path = PowerupEffectsComponent;
 			sourceTree = "<group>";
@@ -1422,7 +1422,6 @@
 				785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */,
 				11CC85222439E9BF006D3A8F /* Invite.swift in Sources */,
 				11CC84CD2439E88A006D3A8F /* User+FirestoreModel.swift in Sources */,
-				11CC848E2439E7A8006D3A8F /* SliceEffectComponent.swift in Sources */,
 				1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */,
 				11CC84A22439E7D1006D3A8F /* FinishingLineEntity.swift in Sources */,
 				119A3E3E242C73230064B034 /* Constants.swift in Sources */,
@@ -1563,6 +1562,7 @@
 				113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */,
 				785B79E324237659001D7028 /* JoinGameViewController.swift in Sources */,
 				2BA5F93A24434CE7009AF93C /* PlayerType.swift in Sources */,
+				112B6197244FF6D900B60D72 /* CutRopeEffectComponent.swift in Sources */,
 				11CC84882439E7A8006D3A8F /* PowerupEffectComponent.swift in Sources */,
 				11CC84E72439E8B9006D3A8F /* SocialStore.swift in Sources */,
 				11CC84802439E79F006D3A8F /* RotateComponent.swift in Sources */,

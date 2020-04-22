@@ -26,7 +26,6 @@ class PowerupEntity: Entity {
 
 extension PowerupEntity {
     func addEffectComponents(for type: PowerupType) {
-        removeComponents(PowerupEffectComponent.self)
         addComponents(for: type)
         addActivatedSpriteIfExist()
     }
@@ -48,8 +47,8 @@ extension PowerupEntity {
 
     private func addComponents(for type: PowerupType) {
         switch type {
-        case .cutHook:
-            addCutHookComponents()
+        case .cutRope:
+            addCutRopeComponents()
         case .netTrap:
             addNetTrapComponents()
         case .playerHook:
@@ -61,11 +60,9 @@ extension PowerupEntity {
         }
     }
 
-    private func addCutHookComponents() {
-        let movementEffect = MovementEffectComponent(parent: self)
-        let playerHookEffect = PlayerHookEffectComponent(parent: self)
-        addComponent(movementEffect)
-        addComponent(playerHookEffect)
+    private func addCutRopeComponents() {
+        let cutRopeEffect = CutRopeEffectComponent(parent: self)
+        addComponent(cutRopeEffect)
     }
 
     private func addNetTrapComponents() {
@@ -75,9 +72,7 @@ extension PowerupEntity {
 
     private func addPlayerHookComponents() {
         let playerHookEffect = PlayerHookEffectComponent(parent: self)
-        let hookComponent = HookComponent(parent: self)
         addComponent(playerHookEffect)
-        addComponent(hookComponent)
     }
 
     private func addShieldComponents() {

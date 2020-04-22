@@ -17,6 +17,7 @@ protocol PowerupSystemDelegate: class, MovementControlDelegate {
     func hasAddedTrap(sprite: SpriteComponent)
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
     func hook(from anchorSprite: SpriteComponent)
+    func forceUnhookFor(player: SpriteComponent)
 }
 
 class PowerupSystem: System, PowerupSystemProtocol {
@@ -142,25 +143,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
     }
 
-    private func apply(effect: PowerupEffectComponent, on sprite: SpriteComponent) {
-        if !(effect is ShieldEffectComponent) && isProtected(spriteComponent: sprite) {
-            return
-        }
-
-        switch effect {
-        case let shield as ShieldEffectComponent:
-            applyShieldEffect(shield, on: sprite)
-        case let placementEffect as PlacementEffectComponent:
-            applyPlacementEffect(placementEffect, on: sprite)
-        case let movementEffect as MovementEffectComponent:
-            applyMovementEffect(movementEffect, on: sprite)
-        case let playerHookEffect as PlayerHookEffectComponent:
-            applyPlayerHookEffect(playerHookEffect, by: sprite)
-        default:
-            return
-        }
-    }
-
     // MARK: - Activate Powerup
 
     private func activate(powerupType: PowerupType,
@@ -176,6 +158,27 @@ class PowerupSystem: System, PowerupSystemProtocol {
         let effects = powerup.parent.getMultiple(PowerupEffectComponent.self)
         for effect in effects {
             apply(effect: effect, on: sprite)
+        }
+    }
+
+    private func apply(effect: PowerupEffectComponent, on sprite: SpriteComponent) {
+        if !(effect is ShieldEffectComponent) && isProtected(spriteComponent: sprite) {
+            return
+        }
+
+        switch effect {
+        case let shield as ShieldEffectComponent:
+            applyShieldEffect(shield, on: sprite)
+        case let placementEffect as PlacementEffectComponent:
+            applyPlacementEffect(placementEffect, on: sprite)
+        case let movementEffect as MovementEffectComponent:
+            applyMovementEffect(movementEffect, on: sprite)
+        case let playerHookEffect as PlayerHookEffectComponent:
+            applyPlayerHookEffect(playerHookEffect, by: sprite)
+        case let cutRopeEffect as CutRopeEffectComponent:
+            applyCutRopeEffect(cutRopeEffect, by: sprite)
+        default:
+            return
         }
     }
 
@@ -218,10 +221,24 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: - Apply Effects
 
+    private func applyCutRopeEffect(_ effect: CutRopeEffectComponent,
+                                    by sprite: SpriteComponent) {
+        effect.parent.removeComponents(CutRopeEffectComponent.self)
+        removePowerup(from: sprite)
+
+        var players = Array(ownedPowerups.keys)
+        players.removeAll(where: { $0 === sprite })
+
+        for player in players {
+            delegate?.forceUnhookFor(player: player)
+        }
+    }
+
     private func applyPlayerHookEffect(_ effect: PlayerHookEffectComponent,
                                        by sprite: SpriteComponent) {
         delegate?.hook(from: sprite)
         removePowerup(from: sprite)
+        effect.parent.removeComponents(PlayerHookEffectComponent.self)
     }
 
     private func applyPlacementEffect(_ effect: PlacementEffectComponent,

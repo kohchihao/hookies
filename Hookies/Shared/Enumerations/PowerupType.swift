@@ -13,7 +13,7 @@ enum PowerupType: String, CaseIterable, StringRepresentable {
     case playerHook = "player_hook"
     case stealPowerup = "steal_powerup"
     case shield
-    case cutHook = "cut_hook"
+    case cutRope = "cut_rope"
     case netTrap = "net_trap"
 
     var buttonString: String {
