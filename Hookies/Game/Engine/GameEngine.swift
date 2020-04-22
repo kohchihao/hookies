@@ -167,6 +167,7 @@ class GameEngine {
             return
         }
 
+        powerupSystem.removePowerup(from: sprite)
         delegate?.playerHasFinishRace()
     }
 
