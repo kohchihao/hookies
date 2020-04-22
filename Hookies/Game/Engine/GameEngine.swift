@@ -252,8 +252,7 @@ class GameEngine {
     }
 
     private func addNewRandomPowerup(for spriteNode: SKSpriteNode) {
-//        let randType = PowerupType.allCases.randomElement() ?? .shield
-        let randType = PowerupType.stealPowerup
+        let randType = PowerupType.allCases.randomElement() ?? .shield
         addNewPowerup(with: randType, for: spriteNode)
     }
 
