@@ -124,10 +124,12 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private func steal(from player1: SpriteComponent,
                        by player2: SpriteComponent
     ) {
-        guard let powerupToSteal = player1.parent.get(PowerupComponent.self) else {
+        guard let powerupToSteal = ownedPowerups[player1]?.first else {
             Logger.log.show(details: "No powerup to steal", logType: .warning)
             return
         }
+        Logger.log.show(details: "Power up stolen \(powerupToSteal.type.stringValue)",
+                        logType: .alert)
 
         removePowerup(from: player1)
         add(player: player2, with: powerupToSteal)
@@ -137,6 +139,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     // MARK: Add player's Powerup
 
     private func add(player: SpriteComponent, with powerup: PowerupComponent) {
+        ownedPowerups[player]?.removeAll()
         ownedPowerups[player]?.append(powerup)
         player.parent.addComponent(powerup)
         powerup.setOwner(player.parent)
@@ -206,7 +209,9 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: - Collect Powerup
 
-    private func collect(powerupComponent: PowerupComponent, by sprite: SpriteComponent) {
+    private func collect(powerupComponent: PowerupComponent,
+                         by sprite: SpriteComponent
+    ) {
         guard let powerupSprite = powerupComponent.parent.get(SpriteComponent.self)
             else {
                 return
@@ -388,6 +393,7 @@ extension PowerupSystem {
                 return
         }
 
+        powerup.type = collectionEvent.powerupType
         powerups.remove(powerup)
         collect(powerupComponent: powerup, by: sprite)
         delegate?.collected(powerup: powerup, by: sprite)
