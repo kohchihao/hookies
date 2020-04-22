@@ -99,8 +99,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
             return
         }
 
-        Logger.log.show(details: "Steal \(powerupToSteal.type.stringValue)",
-                        logType: .alert)
         removePowerup(from: player1)
         delegate?.setPowerup(for: player1, to: nil)
         add(player: player2, with: powerupToSteal)
@@ -187,8 +185,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
             applyPlayerHookEffect(playerHookEffect, by: sprite)
         case let cutRopeEffect as CutRopeEffectComponent:
             applyCutRopeEffect(cutRopeEffect, by: sprite)
-        case let thiefEffect as ThiefEffectComponent:
-            applyThiefEffect(thiefEffect, on: sprite)
         case let stealEffect as StealPowerupEffectComponent:
             applyStealPowerupEffect(stealEffect, by: sprite)
         default:
@@ -243,11 +239,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
         steal(from: nearestSprite, by: sprite)
         effect.parent.removeComponents(StealPowerupEffectComponent.self)
-    }
-
-    private func applyThiefEffect(_ effect: ThiefEffectComponent,
-                                  on sprite: SpriteComponent) {
-
     }
 
     private func applyCutRopeEffect(_ effect: CutRopeEffectComponent,
