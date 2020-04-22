@@ -99,18 +99,6 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     func hookAndPullPlayer(from anchorSprite: SpriteComponent) {
-        hookAndPull(from: anchorSprite)
-
-        let data = [
-            "data": GenericSystemEvent(sprite: anchorSprite,
-                                       eventType: .hookPlayer)
-        ]
-        NotificationCenter.default.post(name: Notification.Name.broadcastGenericPlayerAction,
-                                        object: nil,
-                                        userInfo: data)
-    }
-
-    private func hookAndPull(from anchorSprite: SpriteComponent) {
         guard let sprite = anchorSprite.nearestSpriteInFront(from: players) else {
             Logger.log.show(details: "No sprite found in the front", logType: .warning)
             return
@@ -464,11 +452,6 @@ extension HookSystem {
             selector: #selector(receivedLengthenRopeAction(_:)),
             name: .receivedLengthenRopeAction,
             object: nil)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(receivedHookPlayerAction(_:)),
-            name: .receivedHookPlayerAction,
-            object: nil)
     }
 
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
@@ -477,15 +460,6 @@ extension HookSystem {
             name: .broadcastGenericPlayerAction,
             object: self,
             userInfo: ["data": genericSystemEvent])
-    }
-
-    @objc private func receivedHookPlayerAction(_ notification: Notification) {
-        guard let data = notification.userInfo as? [String: GenericSystemEvent],
-            let genericSystemEvent = data["data"] else {
-                return
-        }
-        let sprite = genericSystemEvent.sprite
-        hookAndPull(from: sprite)
     }
 
     @objc private func receivedHookAction(_ notification: Notification) {

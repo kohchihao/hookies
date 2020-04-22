@@ -15,7 +15,6 @@ enum GenericPlayerEvent: String, CaseIterable, StringRepresentable {
     case unhook
     case lengthenRope
     case shortenRope
-    case hookPlayer
 
     var stringValue: String {
         return self.rawValue

@@ -32,14 +32,17 @@ class PowerupSystem: System, PowerupSystemProtocol {
         registerNotificationObservers()
     }
 
+    // MARK: Add Player
     func add(player: SpriteComponent) {
         ownedPowerups[player] = []
     }
 
+    // MARK: Add Powerup
     func add(powerup: PowerupComponent) {
         powerups.insert(powerup)
     }
 
+    // MARK: Remove Powerup
     func removePowerup(from player: SpriteComponent) {
         guard let removedPowerup = ownedPowerups[player]?.removeFirst() else {
             return
@@ -47,6 +50,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
         player.parent.removeFirstComponent(of: removedPowerup)
     }
 
+    // MARK: - Collect Powerup
     func collectAndBroadcast(powerupComponent: PowerupComponent,
                              by sprite: SpriteComponent
     ) {
@@ -66,6 +70,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                         userInfo: info)
     }
 
+    // MARK: - Activate Powerup
     func activateAndBroadcast(powerupType: PowerupType,
                               for sprite: SpriteComponent
     ) {
@@ -110,25 +115,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                         userInfo: info)
     }
 
-    private func apply(effect: PowerupEffectComponent, on sprite: SpriteComponent) {
-        if !(effect is ShieldEffectComponent) && isProtected(spriteComponent: sprite) {
-            return
-        }
-
-        switch effect {
-        case let shield as ShieldEffectComponent:
-            applyShieldEffect(shield, on: sprite)
-        case let placementEffect as PlacementEffectComponent:
-            applyPlacementEffect(placementEffect, on: sprite)
-        case let movementEffect as MovementEffectComponent:
-            applyMovementEffect(movementEffect, on: sprite)
-        case let playerHookEffect as PlayerHookEffectComponent:
-            applyPlayerHookEffect(playerHookEffect, by: sprite)
-        default:
-            return
-        }
-    }
-
     // MARK: Add player's Powerup
 
     private func add(player: SpriteComponent, with powerup: PowerupComponent) {
@@ -153,6 +139,25 @@ class PowerupSystem: System, PowerupSystemProtocol {
         let effects = trap.parent.getMultiple(PowerupEffectComponent.self)
         for effect in effects {
             apply(effect: effect, on: sprite)
+        }
+    }
+
+    private func apply(effect: PowerupEffectComponent, on sprite: SpriteComponent) {
+        if !(effect is ShieldEffectComponent) && isProtected(spriteComponent: sprite) {
+            return
+        }
+
+        switch effect {
+        case let shield as ShieldEffectComponent:
+            applyShieldEffect(shield, on: sprite)
+        case let placementEffect as PlacementEffectComponent:
+            applyPlacementEffect(placementEffect, on: sprite)
+        case let movementEffect as MovementEffectComponent:
+            applyMovementEffect(movementEffect, on: sprite)
+        case let playerHookEffect as PlayerHookEffectComponent:
+            applyPlayerHookEffect(playerHookEffect, by: sprite)
+        default:
+            return
         }
     }
 
