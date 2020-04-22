@@ -176,6 +176,10 @@
 		785B79E324237659001D7028 /* JoinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79E224237659001D7028 /* JoinGameViewController.swift */; };
 		785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 785B79E424237AE4001D7028 /* JoinGameViewController.xib */; };
 		785B79EC242527C5001D7028 /* RandomIDGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79EB242527C5001D7028 /* RandomIDGenerator.swift */; };
+		785CE3E7244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E6244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift */; };
+		785CE3E9244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E8244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift */; };
+		785CE3EB244EB3F000B1B5CD /* PostGameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3EA244EB3F000B1B5CD /* PostGameLobbyViewController.swift */; };
+		785CE3ED244EB40F00B1B5CD /* PostGameLobbyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 785CE3EC244EB40E00B1B5CD /* PostGameLobbyViewController.xib */; };
 		788007222413F37100F43B71 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 788007212413F37100F43B71 /* Actions.sks */; };
 		788007292413F37100F43B71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788007272413F37100F43B71 /* Main.storyboard */; };
 		7880072B2413F37400F43B71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7880072A2413F37400F43B71 /* Assets.xcassets */; };
@@ -400,6 +404,10 @@
 		785B79E224237659001D7028 /* JoinGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewController.swift; sourceTree = "<group>"; };
 		785B79E424237AE4001D7028 /* JoinGameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JoinGameViewController.xib; sourceTree = "<group>"; };
 		785B79EB242527C5001D7028 /* RandomIDGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomIDGenerator.swift; sourceTree = "<group>"; };
+		785CE3E6244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGameLobbyCoordinator.swift; sourceTree = "<group>"; };
+		785CE3E8244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGameLobbyViewModel.swift; sourceTree = "<group>"; };
+		785CE3EA244EB3F000B1B5CD /* PostGameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGameLobbyViewController.swift; sourceTree = "<group>"; };
+		785CE3EC244EB40E00B1B5CD /* PostGameLobbyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostGameLobbyViewController.xib; sourceTree = "<group>"; };
 		7880071A2413F37100F43B71 /* Hookies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hookies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		788007212413F37100F43B71 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		788007282413F37100F43B71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -536,6 +544,7 @@
 				785B79DD242375CA001D7028 /* JoinGame */,
 				7859AF9D24339A1100B60968 /* Social */,
 				D9FF1A62241E0D5800E7965F /* PreGameLobby */,
+				785CE3E5244EB39F00B1B5CD /* PostGameLobby */,
 				1127C55D2415E2E800A78AA0 /* Auth */,
 				1127C55C2415E2E100A78AA0 /* Home */,
 			);
@@ -851,6 +860,17 @@
 				785B79EB242527C5001D7028 /* RandomIDGenerator.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		785CE3E5244EB39F00B1B5CD /* PostGameLobby */ = {
+			isa = PBXGroup;
+			children = (
+				785CE3E6244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift */,
+				785CE3E8244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift */,
+				785CE3EA244EB3F000B1B5CD /* PostGameLobbyViewController.swift */,
+				785CE3EC244EB40E00B1B5CD /* PostGameLobbyViewController.xib */,
+			);
+			path = PostGameLobby;
 			sourceTree = "<group>";
 		};
 		788007112413F37100F43B71 = {
@@ -1283,6 +1303,7 @@
 				785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
+				785CE3ED244EB40F00B1B5CD /* PostGameLobbyViewController.xib in Resources */,
 				D9FF1A6A241E0DE600E7965F /* PreGameLobbyViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1511,6 +1532,7 @@
 				111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */,
 				11CC85122439E921006D3A8F /* MapsCoordinator.swift in Sources */,
 				11CC844A2439E748006D3A8F /* CannonSystem.swift in Sources */,
+				785CE3E7244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift in Sources */,
 				11CC851E2439E991006D3A8F /* RequestManager.swift in Sources */,
 				11CC84D12439E88A006D3A8F /* Invite+FirestoreModel.swift in Sources */,
 				D9DB89A5244DA58B00A86DFC /* LengthenButton.swift in Sources */,
@@ -1523,6 +1545,7 @@
 				11CC84DF2439E8A0006D3A8F /* UserConnectionState.swift in Sources */,
 				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
 				785B79E124237647001D7028 /* JoinGameViewModel.swift in Sources */,
+				785CE3E9244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift in Sources */,
 				11CC84CC2439E88A006D3A8F /* FirestoreModel.swift in Sources */,
 				11CC851B2439E991006D3A8F /* SocialViewModel.swift in Sources */,
 				11CC848B2439E7A8006D3A8F /* MovementEffectComponent.swift in Sources */,
@@ -1534,6 +1557,7 @@
 				2BA5F941244354CF009AF93C /* NetworkManager.swift in Sources */,
 				11CC84A62439E7D1006D3A8F /* BoltEntity.swift in Sources */,
 				119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */,
+				785CE3EB244EB3F000B1B5CD /* PostGameLobbyViewController.swift in Sources */,
 				11CC84AD2439E81A006D3A8F /* ButtonNode.swift in Sources */,
 				11CC84B12439E81A006D3A8F /* Signal.swift in Sources */,
 				11CC84E02439E8A0006D3A8F /* PowerupEventData.swift in Sources */,

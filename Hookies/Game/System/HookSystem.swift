@@ -452,6 +452,11 @@ extension HookSystem {
             selector: #selector(receivedLengthenRopeAction(_:)),
             name: .receivedLengthenRopeAction,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
+            object: nil)
     }
 
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
@@ -520,5 +525,9 @@ extension HookSystem {
 
             _ = adjustLength(from: sprite.parent, type: .lengthen, position: sprite.node.position, velocity: velocity)
         }
+    }
+
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }

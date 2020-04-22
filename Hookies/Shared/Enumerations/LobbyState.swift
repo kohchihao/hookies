@@ -12,6 +12,7 @@ enum LobbyState: String, CaseIterable {
     case open
     case full
     case start
+    case empty
 }
 
 extension LobbyState: StringRepresentable {

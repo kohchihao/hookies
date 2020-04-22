@@ -54,4 +54,7 @@ extension Notification.Name {
     // End
     static let broadcastPlayerFinishSprite = Notification.Name("broadcastPlayerFinishSprite")
     static let receivedGameEndEvent = Notification.Name("receivedGameEndEvent")
+
+    // System
+    static let broadcastUnregisterObserver = Notification.Name("broadcastUnregisterObserver")
 }

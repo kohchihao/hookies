@@ -349,6 +349,11 @@ extension PowerupSystem {
             selector: #selector(receivedPowerupEventAction(_:)),
             name: .receivedPowerupAction,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
+            object: nil)
     }
 
     @objc private func receivedPowerupCollectionAction(_ notification: Notification) {
@@ -395,5 +400,9 @@ extension PowerupSystem {
             }
         }
         return nil
+    }
+
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }
