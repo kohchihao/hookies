@@ -29,6 +29,15 @@ enum PowerupType: String, CaseIterable, StringRepresentable {
         return node
     }
 
+    var buttonNode: SKSpriteNode {
+        let texture = SKTexture(imageNamed: self.buttonString)
+        let sizeOfPowerup = CGSize(width: 50, height: 50)
+        let powerupDisplay = SKSpriteNode(texture: texture,
+                                          color: .clear,
+                                          size: sizeOfPowerup)
+        return powerupDisplay
+    }
+
     var stringValue: String {
         return rawValue
     }

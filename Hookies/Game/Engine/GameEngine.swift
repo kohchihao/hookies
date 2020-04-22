@@ -252,7 +252,8 @@ class GameEngine {
     }
 
     private func addNewRandomPowerup(for spriteNode: SKSpriteNode) {
-        let randType = PowerupType.allCases.randomElement() ?? .shield
+//        let randType = PowerupType.allCases.randomElement() ?? .shield
+        let randType = PowerupType.stealPowerup
         addNewPowerup(with: randType, for: spriteNode)
     }
 
@@ -599,12 +600,17 @@ extension GameEngine: PowerupSystemDelegate {
         _ = hookSystem?.unhook(entity: player.parent)
     }
 
-    func setPowerup(for sprite: SpriteComponent, to type: PowerupType?) {
-        guard let playerSprite = currentPlayer?.get(SpriteComponent.self) else {
+    func indicateSteal(from sprite1: SpriteComponent,
+                       by sprite2: SpriteComponent,
+                       with powerup: PowerupComponent
+    ) {
+        guard let currentPlayerSprite = currentPlayer?.get(SpriteComponent.self) else {
             return
         }
-        if playerSprite === sprite {
-            delegate?.setPowerupButton(to: type)
+        if currentPlayerSprite === sprite1 {
+            delegate?.hasPowerupStolen(powerup: powerup.type)
+        } else if currentPlayerSprite === sprite2 {
+            delegate?.hasStolen(powerup: powerup.type)
         }
     }
 }

@@ -18,7 +18,9 @@ protocol PowerupSystemDelegate: class, MovementControlDelegate {
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
     func hook(from anchorSprite: SpriteComponent)
     func forceUnhookFor(player: SpriteComponent)
-    func setPowerup(for sprite: SpriteComponent, to type: PowerupType?)
+    func indicateSteal(from sprite: SpriteComponent,
+                       by sprite: SpriteComponent,
+                       with powerup: PowerupComponent)
 }
 
 class PowerupSystem: System, PowerupSystemProtocol {
@@ -95,14 +97,13 @@ class PowerupSystem: System, PowerupSystemProtocol {
                by player2: SpriteComponent
     ) {
         guard let powerupToSteal = player1.parent.get(PowerupComponent.self) else {
-            Logger.log.show(details: "No powerup to steal", logType: .alert)
+            Logger.log.show(details: "No powerup to steal", logType: .warning)
             return
         }
 
         removePowerup(from: player1)
-        delegate?.setPowerup(for: player1, to: nil)
         add(player: player2, with: powerupToSteal)
-        delegate?.setPowerup(for: player2, to: powerupToSteal.type)
+        delegate?.indicateSteal(from: player1, by: player2, with: powerupToSteal)
     }
 
     func activateNetTrapAndBroadcast(at point: CGPoint, on sprite: SpriteComponent) {
