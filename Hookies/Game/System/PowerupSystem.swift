@@ -292,6 +292,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
             return
         }
 
+        delegate?.forceUnhookFor(player: nearestSprite)
         delegate?.hook(nearestSprite, from: sprite)
         removePowerup(from: sprite)
         effect.parent.removeComponents(PlayerHookEffectComponent.self)
