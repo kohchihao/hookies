@@ -595,7 +595,9 @@ extension GameEngine: PowerupSystemDelegate {
 
     func hook(_ sprite: SpriteComponent,
               from anchorSprite: SpriteComponent) {
-        hookSystem?.hookAndPull(sprite, from: anchorSprite)
+        if !finishingLineSystem.hasPlayerFinish(player: sprite) {
+            hookSystem?.hookAndPull(sprite, from: anchorSprite)
+        }
     }
 
     func forceUnhookFor(player: SpriteComponent) {
