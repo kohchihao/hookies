@@ -252,9 +252,7 @@ class GameEngine {
     }
 
     private func addNewRandomPowerup(for spriteNode: SKSpriteNode) {
-        let availablePowerups = [PowerupType.netTrap, PowerupType.shield]
-//        let randType = PowerupType.allCases.randomElement() ?? .playerHook
-        let randType = availablePowerups.randomElement() ?? PowerupType.shield
+        let randType = PowerupType.allCases.randomElement() ?? .shield
         addNewPowerup(with: randType, for: spriteNode)
     }
 
@@ -272,9 +270,7 @@ class GameEngine {
     private func createPowerup(with type: PowerupType,
                                for spriteNode: SKSpriteNode
     ) -> PowerupEntity? {
-        let powerupEntity = PowerupEntity.create(for: type,
-                                                 at: spriteNode.position)
-
+        let powerupEntity = PowerupEntity(for: type)
         guard let powerupSprite = powerupEntity.get(SpriteComponent.self) else {
             return nil
         }
@@ -412,6 +408,8 @@ class GameEngine {
         deadlockSystem = DeadlockSystem(sprite: sprite, hook: hook)
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
+        hookSystem?.add(player: sprite)
+        powerupSystem.add(player: sprite)
 
         delegate?.addCurrentPlayer(with: sprite.node)
     }
@@ -428,6 +426,8 @@ class GameEngine {
 
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
+        hookSystem?.add(player: sprite)
+        powerupSystem.add(player: sprite)
 
         delegate?.addPlayer(with: sprite.node)
     }
@@ -535,6 +535,10 @@ extension GameEngine: HookSystemDelegate {
         delegate?.playerDidUnhook(from: hookDelegateModel)
     }
 
+    func hookPlayerApplied(with line: SKShapeNode) {
+        delegate?.playerHookToPlayer(with: line)
+    }
+
     private func createHookDelegateModel(from hook: HookComponent) -> HookDelegateModel? {
         guard let line = hook.line,
             let anchorLineJointPin = hook.anchorLineJointPin,
@@ -585,5 +589,39 @@ extension GameEngine: PowerupSystemDelegate {
         _ = spriteSystem.setPhysicsBody(to: spriteComponent, of: .netTrap,
                                         rectangleOf: spriteComponent.node.size)
         delegate?.addTrap(with: spriteComponent.node)
+    }
+
+    func hook(from anchorSprite: SpriteComponent) {
+        hookSystem?.hookAndPullPlayer(from: anchorSprite)
+    }
+
+    func forceUnhookFor(player: SpriteComponent) {
+        _ = hookSystem?.unhook(entity: player.parent)
+    }
+
+    func indicateSteal(from sprite1: SpriteComponent,
+                       by sprite2: SpriteComponent,
+                       with powerup: PowerupComponent
+    ) {
+        guard let currentPlayerSprite = currentPlayer?.get(SpriteComponent.self) else {
+            return
+        }
+        if currentPlayerSprite === sprite1 {
+            delegate?.hasPowerupStolen(powerup: powerup.type)
+        } else if currentPlayerSprite === sprite2 {
+            delegate?.hasStolen(powerup: powerup.type)
+        }
+    }
+}
+
+extension GameEngine: MovementControlDelegate {
+    func movement(isDisabled: Bool, for sprite: SpriteComponent) {
+        guard let player = sprite.parent as? PlayerEntity else {
+            return
+        }
+        if player === currentPlayer {
+            Logger.log.show(details: "Disable movement", logType: .information)
+            delegate?.movementButton(isDisabled: isDisabled)
+        }
     }
 }

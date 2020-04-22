@@ -104,14 +104,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleContactWithPowerup(_ powerup: SKSpriteNode) {
+        powerups.removeAll(where: { $0 == powerup })
+        animateDisappear(of: powerup)
+    }
+
+    private func animateDisappear(of powerup: SKSpriteNode) {
         guard let powerupType = gameEngine?.currentPlayerContactWith(powerup: powerup) else {
             return
         }
-        powerups.removeAll(where: { $0 == powerup })
-        let texture = SKTexture(imageNamed: powerupType.buttonString)
-        let sizeOfPowerup = CGSize(width: 50, height: 50)
-        let powerupDisplay = SKSpriteNode(texture: texture, color: .clear,
-                                          size: sizeOfPowerup)
+
+        let powerupDisplay = powerupType.buttonNode
         powerupDisplay.position = powerup.position
         powerupDisplay.zPosition = 0
         addChild(powerupDisplay)
@@ -327,6 +329,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         jumpButton?.state = .ButtonNodeStateHidden
         shortenButton?.state = .ButtonNodeStateDisabled
         lengthenButton?.state = .ButtonNodeStateDisabled
+        powerupButton?.state = .ButtonNodeStateDisabled
     }
 
     private func enableGameButtons() {
@@ -363,10 +366,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handlePowerupBtnTouch() {
-        guard let powerupType = powerupButton?.powerupType else {
-            return
-        }
-        gameEngine?.currentPlayerPowerupAction(with: powerupType)
     }
 
     private func handleGrapplingHookBtnTouchBegan() {
@@ -374,7 +373,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handlePowerupBtnTouchEnd() {
+        guard let powerupType = powerupButton?.powerupType else {
+            return
+        }
         powerupButton?.clearPowerup()
+        gameEngine?.currentPlayerPowerupAction(with: powerupType)
     }
 
     private func handleGrapplingHookBtnTouchEnd() {
@@ -494,5 +497,73 @@ extension GameScene: GameEngineDelegate {
     func gameHasFinish(rankings: [Player]) {
         Logger.log.show(details: "Transition to post game lobby", logType: .information)
         viewController.endGame(rankings: rankings)
+    }
+
+    func movementButton(isDisabled: Bool) {
+        let newState: ButtonNodeState = isDisabled ?
+            .ButtonNodeStateDisabled :
+            .ButtonNodeStateActive
+
+        grapplingHookButton?.state = newState
+        jumpButton?.state = newState
+        shortenButton?.state = newState
+        lengthenButton?.state = newState
+    }
+
+    func playerHookToPlayer(with line: SKShapeNode) {
+        addChild(line)
+    }
+
+    func hasPowerupStolen(powerup: PowerupType) {
+        guard let powerupButton = powerupButton else {
+            return
+        }
+
+        powerupButton.clearPowerup()
+        let node = powerup.buttonNode
+        node.position = powerupButton.position
+
+        let finalPos = CGPoint(x: node.position.x - 100.0, y: node.position.y)
+        let animate = SKAction.sequence([SKAction.move(to: finalPos, duration: 1),
+                                         SKAction.fadeOut(withDuration: 0.5)])
+
+        let message = SKLabelNode(text: "Stolen!")
+        message.fontName = "AvenirNext-Bold"
+        message.fontColor = .red
+        message.fontSize = 50
+        message.position = CGPoint(x: node.position.x, y: node.position.y - 70)
+
+        cam?.addChild(node)
+        cam?.addChild(message)
+        node.run(animate, completion: {
+            node.removeFromParent()
+            message.removeFromParent()
+        })
+    }
+
+    func hasStolen(powerup: PowerupType) {
+        guard let powerupButton = powerupButton else {
+            return
+        }
+        let node = powerup.buttonNode
+        node.position = CGPoint(x: powerupButton.position.x + 100,
+                                y: powerupButton.position.y)
+
+        let finalPos = powerupButton.position
+        let animate = SKAction.move(to: finalPos, duration: 1)
+
+        let message = SKLabelNode(text: "Retrieved!")
+        message.fontName = "AvenirNext-Bold"
+        message.fontColor = .green
+        message.fontSize = 50
+        message.position = CGPoint(x: node.position.x, y: node.position.y - 70)
+
+        cam?.addChild(node)
+        cam?.addChild(message)
+        node.run(animate, completion: {
+            node.removeFromParent()
+            message.removeFromParent()
+            powerupButton.setPowerup(to: powerup)
+        })
     }
 }

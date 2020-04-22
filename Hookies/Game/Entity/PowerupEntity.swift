@@ -15,26 +15,17 @@ class PowerupEntity: Entity {
         self.components = components
     }
 
-    convenience init() {
+    convenience init(for type: PowerupType) {
         self.init(components: [])
+        let powerupSprite = SpriteComponent(parent: self)
+        let powerupComponent = PowerupComponent(parent: self, type: type)
+        addComponent(powerupSprite)
+        addComponent(powerupComponent)
     }
 }
 
 extension PowerupEntity {
-    static func create(for type: PowerupType,
-                       at position: CGPoint
-    ) -> PowerupEntity {
-        let powerup = PowerupEntity()
-        let powerupSprite = SpriteComponent(parent: powerup)
-        let powerupComponent = PowerupComponent(parent: powerup,
-                                                type: type)
-        powerup.addComponent(powerupSprite)
-        powerup.addComponent(powerupComponent)
-        return powerup
-    }
-
     func addEffectComponents(for type: PowerupType) {
-        removeComponents(PowerupEffectComponent.self)
         addComponents(for: type)
         addActivatedSpriteIfExist()
     }
@@ -56,8 +47,8 @@ extension PowerupEntity {
 
     private func addComponents(for type: PowerupType) {
         switch type {
-        case .cutHook:
-            addCutHookComponents()
+        case .cutRope:
+            addCutRopeComponents()
         case .netTrap:
             addNetTrapComponents()
         case .playerHook:
@@ -69,11 +60,9 @@ extension PowerupEntity {
         }
     }
 
-    private func addCutHookComponents() {
-        let movementEffect = MovementEffectComponent(parent: self)
-        let playerHookEffect = PlayerHookEffectComponent(parent: self)
-        addComponent(movementEffect)
-        addComponent(playerHookEffect)
+    private func addCutRopeComponents() {
+        let cutRopeEffect = CutRopeEffectComponent(parent: self)
+        addComponent(cutRopeEffect)
     }
 
     private func addNetTrapComponents() {
@@ -82,9 +71,7 @@ extension PowerupEntity {
     }
 
     private func addPlayerHookComponents() {
-        let movementEffect = MovementEffectComponent(parent: self)
         let playerHookEffect = PlayerHookEffectComponent(parent: self)
-        addComponent(movementEffect)
         addComponent(playerHookEffect)
     }
 
@@ -94,7 +81,7 @@ extension PowerupEntity {
     }
 
     private func addStealComponents() {
-        let thiefEffect = ThiefEffectComponent(parent: self)
-        addComponent(thiefEffect)
+        let stealPowerupEffect = StealPowerupEffectComponent(parent: self)
+        addComponent(stealPowerupEffect)
     }
 }

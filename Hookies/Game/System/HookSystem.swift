@@ -24,17 +24,20 @@ protocol HookSystemProtocol {
     func unhook(entity: Entity) -> Bool
     func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector)
     func boostVelocity(to entity: Entity)
+    func hookAndPullPlayer(from anchorSprite: SpriteComponent)
 }
 
-protocol HookSystemDelegate: AnyObject {
+protocol HookSystemDelegate: AnyObject, MovementControlDelegate {
     func hookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
     func adjustHookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
     func unhookActionApplied(hook: HookComponent)
+    func hookPlayerApplied(with line: SKShapeNode)
 }
 
 class HookSystem: System, HookSystemProtocol {
     private var hooks: Set<HookComponent>
     private var bolts: [SpriteComponent]
+    private var players = [SpriteComponent]()
     private let minRopeLength = 100.0
 
     weak var delegate: HookSystemDelegate?
@@ -44,6 +47,11 @@ class HookSystem: System, HookSystemProtocol {
         self.bolts = bolts
 
         registerNotificationObservers()
+    }
+
+    // MARK: - Add Player
+    func add(player: SpriteComponent) {
+        players.append(player)
     }
 
     // MARK: - Hook
@@ -88,6 +96,38 @@ class HookSystem: System, HookSystemProtocol {
         delegate?.hookActionApplied(sprite: sprite, velocity: velocity, hook: hook)
 
         return true
+    }
+
+    func hookAndPullPlayer(from anchorSprite: SpriteComponent) {
+        guard let sprite = anchorSprite.nearestSpriteInFront(from: players) else {
+            Logger.log.show(details: "No sprite found in the front", logType: .warning)
+            return
+        }
+        let line = anchorSprite.makeLine(to: sprite)
+        delegate?.movement(isDisabled: true, for: sprite)
+        delegate?.hookPlayerApplied(with: line)
+        sprite.node.physicsBody?.affectedByGravity = false
+
+        let duration = TimeInterval(2.0)
+        let followAnchor = SKAction.customAction(withDuration: duration) { node, _ in
+            let newPath = anchorSprite.makePath(to: sprite)
+            line.path = newPath
+
+            let dx = anchorSprite.node.position.x - node.position.x
+            let dy = anchorSprite.node.position.y - node.position.y
+            let angle = atan2(dx, dy)
+            let speedPerFrame = CGFloat(15)
+            if abs(dx) > speedPerFrame * 5 {
+                node.position.x += sin(angle) * speedPerFrame
+            }
+            node.position.y += cos(angle) * speedPerFrame
+        }
+
+        sprite.node.run(followAnchor, completion: {
+            line.removeFromParent()
+            sprite.node.physicsBody?.affectedByGravity = true
+            self.delegate?.movement(isDisabled: false, for: sprite)
+        })
     }
 
     // MARK: - Unhook

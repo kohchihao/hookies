@@ -11,40 +11,64 @@ import CoreGraphics
 import SpriteKit
 
 protocol PowerupSystemProtocol {
+    func add(player: SpriteComponent)
+    func add(powerup: PowerupComponent)
+    func removePowerup(from player: SpriteComponent)
+    func collectAndBroadcast(powerupComponent: PowerupComponent,
+                             by sprite: SpriteComponent)
+    func activateNetTrapAndBroadcast(at point: CGPoint,
+                                     on sprite: SpriteComponent)
 }
 
-protocol PowerupSystemDelegate: class {
+protocol PowerupSystemDelegate: class, MovementControlDelegate {
     func hasAddedTrap(sprite: SpriteComponent)
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
+    func hook(from anchorSprite: SpriteComponent)
+    func forceUnhookFor(player: SpriteComponent)
+    func indicateSteal(from sprite: SpriteComponent,
+                       by sprite: SpriteComponent,
+                       with powerup: PowerupComponent)
 }
 
 class PowerupSystem: System, PowerupSystemProtocol {
     weak var delegate: PowerupSystemDelegate?
 
     // Key: sprite of player, Value: powerup of player
-    private var ownedPowerups = [SpriteComponent: PowerupComponent]()
+    private var ownedPowerups = [SpriteComponent: [PowerupComponent]]()
     // Powerups that are collectible on the map
     private var powerups = Set<PowerupComponent>()
     private var netTraps = Set<SpriteComponent>()
+
+    var players: [SpriteComponent] {
+        return Array(ownedPowerups.keys)
+    }
 
     init() {
         registerNotificationObservers()
     }
 
+    // MARK: Add Player
+    func add(player: SpriteComponent) {
+        ownedPowerups[player] = []
+    }
+
+    // MARK: Add Powerup
     func add(powerup: PowerupComponent) {
         powerups.insert(powerup)
     }
 
-    func remove(powerup: PowerupComponent, from player: SpriteComponent) {
-        guard let powerupIndex = ownedPowerups.index(forKey: player) else {
-                return
+    // MARK: Remove Powerup
+    func removePowerup(from player: SpriteComponent) {
+        guard let removedPowerup = ownedPowerups[player]?.removeFirst() else {
+            return
         }
-
-        ownedPowerups.remove(at: powerupIndex)
-        player.parent.removeFirstComponent(of: powerup)
+        player.parent.removeFirstComponent(of: removedPowerup)
     }
 
-    func collectAndBroadcast(powerupComponent: PowerupComponent, by sprite: SpriteComponent) {
+    // MARK: - Collect Powerup
+    func collectAndBroadcast(powerupComponent: PowerupComponent,
+                             by sprite: SpriteComponent
+    ) {
         guard let powerupSprite = powerupComponent.parent.get(SpriteComponent.self) else {
             return
         }
@@ -61,10 +85,11 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                         userInfo: info)
     }
 
+    // MARK: - Activate Powerup
     func activateAndBroadcast(powerupType: PowerupType,
                               for sprite: SpriteComponent
     ) {
-        activate(powerupType: powerupType, for: sprite)
+        activate(powerupType: powerupType, by: sprite)
         let info = [
             "data": PowerupSystemEvent(sprite: sprite,
                                        powerupEventType: .activate,
@@ -75,49 +100,8 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                         userInfo: info)
     }
 
-    func deactivate(powerup: PowerupComponent, for sprite: SpriteComponent) {
-        guard let powerupIndex = ownedPowerups.index(forKey: sprite) else {
-                return
-        }
-
-        let playerPowerups = sprite.parent.getMultiple(PowerupComponent.self)
-        if let indexToRemove = playerPowerups.firstIndex(of: powerup) {
-            ownedPowerups.remove(at: powerupIndex)
-            sprite.parent.components.remove(at: indexToRemove)
-        }
-    }
-
-    func steal(powerup: PowerupComponent,
-               from player1: SpriteComponent,
-               by player2: SpriteComponent
-    ) {
-        guard let powerupToSteal = player1.parent.get(PowerupComponent.self) else {
-                return
-        }
-
-        remove(powerup: powerupToSteal, from: player1)
-        add(player: player2, with: powerupToSteal)
-    }
-
-    func apply(effect: PowerupEffectComponent,
-               by sprite: SpriteComponent) {
-        if !(effect is ShieldEffectComponent) && isProtected(spriteComponent: sprite) {
-            return
-        }
-
-        switch effect {
-        case let shield as ShieldEffectComponent:
-            applyShieldEffect(shield, by: sprite)
-        case let placementEffect as PlacementEffectComponent:
-            applyPlacementEffect(placementEffect, by: sprite)
-        case let movementEffect as MovementEffectComponent:
-            applyMovementEffect(movementEffect, by: sprite)
-        default:
-            return
-        }
-    }
-
-    func activateNetTrapAndBroadcast(at point: CGPoint, on sprite: SpriteComponent) {
+    func activateNetTrapAndBroadcast(at point: CGPoint,
+                                     on sprite: SpriteComponent) {
         guard let trap = findTrap(at: point) else {
             Logger.log.show(details: "Unable find netTrap", logType: .error)
             return
@@ -135,7 +119,32 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                         userInfo: info)
     }
 
-    func activateNetTrap(at point: CGPoint, on sprite: SpriteComponent) {
+    // MARK: - Steal Powerup
+
+    private func steal(from player1: SpriteComponent,
+               by player2: SpriteComponent
+    ) {
+        guard let powerupToSteal = player1.parent.get(PowerupComponent.self) else {
+            Logger.log.show(details: "No powerup to steal", logType: .warning)
+            return
+        }
+
+        removePowerup(from: player1)
+        add(player: player2, with: powerupToSteal)
+        delegate?.indicateSteal(from: player1, by: player2, with: powerupToSteal)
+    }
+
+    // MARK: Add player's Powerup
+
+    private func add(player: SpriteComponent, with powerup: PowerupComponent) {
+        ownedPowerups[player]?.append(powerup)
+        player.parent.addComponent(powerup)
+        powerup.setOwner(player.parent)
+    }
+
+    // MARK: - Activate Net Trap
+
+    private func activateNetTrap(at point: CGPoint, on sprite: SpriteComponent) {
         guard let trap = findTrap(at: point),
             let owner = trap.parent.get(PowerupComponent.self)?.owner
             else {
@@ -149,19 +158,16 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
         let effects = trap.parent.getMultiple(PowerupEffectComponent.self)
         for effect in effects {
-            apply(effect: effect, by: sprite)
+            apply(effect: effect, on: sprite)
         }
     }
 
-    private func add(player: SpriteComponent, with powerup: PowerupComponent) {
-        ownedPowerups[player] = powerup
-        player.parent.addComponent(powerup)
-    }
+    // MARK: - Activate Powerup
 
     private func activate(powerupType: PowerupType,
-                          for sprite: SpriteComponent
+                          by sprite: SpriteComponent
     ) {
-        guard let powerup = ownedPowerups[sprite] else {
+        guard let powerup = ownedPowerups[sprite]?.first else {
             return
         }
 
@@ -170,9 +176,34 @@ class PowerupSystem: System, PowerupSystemProtocol {
         powerup.addEffectComponents(for: powerupType)
         let effects = powerup.parent.getMultiple(PowerupEffectComponent.self)
         for effect in effects {
-            apply(effect: effect, by: sprite)
+            apply(effect: effect, on: sprite)
         }
     }
+
+    private func apply(effect: PowerupEffectComponent, on sprite: SpriteComponent) {
+        if !(effect is ShieldEffectComponent) && isProtected(spriteComponent: sprite) {
+            return
+        }
+
+        switch effect {
+        case let shield as ShieldEffectComponent:
+            applyShieldEffect(shield, on: sprite)
+        case let placementEffect as PlacementEffectComponent:
+            applyPlacementEffect(placementEffect, on: sprite)
+        case let movementEffect as MovementEffectComponent:
+            applyMovementEffect(movementEffect, on: sprite)
+        case let playerHookEffect as PlayerHookEffectComponent:
+            applyPlayerHookEffect(playerHookEffect, by: sprite)
+        case let cutRopeEffect as CutRopeEffectComponent:
+            applyCutRopeEffect(cutRopeEffect, by: sprite)
+        case let stealEffect as StealPowerupEffectComponent:
+            applyStealPowerupEffect(stealEffect, by: sprite)
+        default:
+            return
+        }
+    }
+
+    // MARK: - Collect Powerup
 
     private func collect(powerupComponent: PowerupComponent, by sprite: SpriteComponent) {
         guard let powerupSprite = powerupComponent.parent.get(SpriteComponent.self)
@@ -180,15 +211,16 @@ class PowerupSystem: System, PowerupSystemProtocol {
                 return
         }
         powerups.remove(powerupComponent)
-        add(player: sprite, with: powerupComponent)
         powerupComponent.parent.removeComponents(SpriteComponent.self)
+        add(player: sprite, with: powerupComponent)
 
         let fade = SKAction.fadeOut(withDuration: 0.5)
         powerupSprite.node.run(fade, completion: {
             powerupSprite.node.removeFromParent()
         })
-        powerupComponent.setOwner(sprite.parent)
     }
+
+    // MARK: - Find Trap
 
     private func findTrap(at point: CGPoint) -> SpriteComponent? {
         for trap in netTraps where trap.node.frame.contains(point) {
@@ -197,8 +229,51 @@ class PowerupSystem: System, PowerupSystemProtocol {
         return nil
     }
 
+    // MARK: - isProtected
+
+    private func isProtected(spriteComponent: SpriteComponent) -> Bool {
+        guard let powerup = ownedPowerups[spriteComponent]?.first else {
+            return false
+        }
+        let hasShieldEffect = powerup.parent.get(ShieldEffectComponent.self) != nil
+        return powerup.isActivated && hasShieldEffect
+    }
+
+    // MARK: - Apply Effects
+
+    private func applyStealPowerupEffect(_ effect: StealPowerupEffectComponent,
+                                         by sprite: SpriteComponent) {
+        guard let nearestSprite = sprite.nearestSpriteInFront(from: players) else {
+            Logger.log.show(details: "No players in front to steal powerup",
+                            logType: .warning)
+            return
+        }
+        steal(from: nearestSprite, by: sprite)
+        effect.parent.removeComponents(StealPowerupEffectComponent.self)
+    }
+
+    private func applyCutRopeEffect(_ effect: CutRopeEffectComponent,
+                                    by sprite: SpriteComponent) {
+        effect.parent.removeComponents(CutRopeEffectComponent.self)
+        removePowerup(from: sprite)
+
+        var players = Array(ownedPowerups.keys)
+        players.removeAll(where: { $0 === sprite })
+
+        for player in players {
+            delegate?.forceUnhookFor(player: player)
+        }
+    }
+
+    private func applyPlayerHookEffect(_ effect: PlayerHookEffectComponent,
+                                       by sprite: SpriteComponent) {
+        delegate?.hook(from: sprite)
+        removePowerup(from: sprite)
+        effect.parent.removeComponents(PlayerHookEffectComponent.self)
+    }
+
     private func applyPlacementEffect(_ effect: PlacementEffectComponent,
-                                      by sprite: SpriteComponent) {
+                                      on sprite: SpriteComponent) {
         guard let effectSprite = effect.parent.get(SpriteComponent.self),
             let powerupCom = effect.parent.get(PowerupComponent.self) else {
             return
@@ -217,18 +292,19 @@ class PowerupSystem: System, PowerupSystemProtocol {
         default:
             return
         }
+        removePowerup(from: sprite)
         effect.parent.removeComponents(PlacementEffectComponent.self)
     }
 
     private func applyMovementEffect(_ effect: MovementEffectComponent,
-                                     by sprite: SpriteComponent) {
+                                     on sprite: SpriteComponent) {
         guard let initialPoint = effect.from,
             let endPoint = effect.to,
-            let duration = effect.duration,
-            let effectSprite = effect.parent.get(SpriteComponent.self) else {
+            let duration = effect.duration else {
                 return
         }
 
+        delegate?.movement(isDisabled: true, for: sprite)
         if effect.stopMovement {
             sprite.node.physicsBody?.affectedByGravity = false
         }
@@ -236,13 +312,14 @@ class PowerupSystem: System, PowerupSystemProtocol {
         let action = SKAction.move(to: endPoint, duration: duration)
         sprite.node.run(action, completion: {
             sprite.node.physicsBody?.affectedByGravity = true
-            effectSprite.node.removeFromParent()
+            effect.parent.get(SpriteComponent.self)?.node.removeFromParent()
             effect.parent.removeComponents(MovementEffectComponent.self)
+            self.delegate?.movement(isDisabled: false, for: sprite)
         })
     }
 
     private func applyShieldEffect(_ effect: ShieldEffectComponent,
-                                   by sprite: SpriteComponent) {
+                                   on sprite: SpriteComponent) {
         let shieldTexture = SKTexture(imageNamed: "shield_bubble")
         let shieldSize = CGSize(width: sprite.node.size.width * 2,
                                 height: sprite.node.size.height * 2)
@@ -253,15 +330,8 @@ class PowerupSystem: System, PowerupSystemProtocol {
         DispatchQueue.main.asyncAfter(deadline: .now() + effect.duration) {
             effect.parent.removeComponents(ShieldEffectComponent.self)
             shieldNode.removeFromParent()
+            self.removePowerup(from: sprite)
         }
-    }
-
-    private func isProtected(spriteComponent: SpriteComponent) -> Bool {
-        guard let powerup = ownedPowerups[spriteComponent] else {
-            return false
-        }
-        let hasShieldEffect = powerup.parent.get(ShieldEffectComponent.self) != nil
-        return powerup.isActivated && hasShieldEffect
     }
 }
 
@@ -308,12 +378,10 @@ extension PowerupSystem {
         let playerSprite = powerupEvent.sprite
         switch powerupEvent.powerupEventType {
         case .activate:
-            activate(powerupType: powerupEvent.powerupType, for: playerSprite)
+            activate(powerupType: powerupEvent.powerupType, by: playerSprite)
         case .netTrapped:
             let eventPos = CGPoint(vector: powerupEvent.powerupPos)
             activateNetTrap(at: eventPos, on: playerSprite)
-        case.deactivate:
-            return
         }
     }
 

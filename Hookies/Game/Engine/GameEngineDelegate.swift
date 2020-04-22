@@ -14,6 +14,7 @@ protocol GameEngineDelegate: AnyObject {
     func playerDidUnhook(from hook: HookDelegateModel)
     func playerIsStuck()
     func playerHasFinishRace()
+    func playerHookToPlayer(with line: SKShapeNode)
     func addCurrentPlayer(with sprite: SKSpriteNode)
     func addPlayer(with sprite: SKSpriteNode)
     func currentPlayerIsReconnected()
@@ -21,4 +22,7 @@ protocol GameEngineDelegate: AnyObject {
     func gameHasFinish(rankings: [Player])
     func addNotActivatedPowerup(_ sprite: SKSpriteNode)
     func addTrap(with sprite: SKSpriteNode)
+    func movementButton(isDisabled: Bool)
+    func hasPowerupStolen(powerup: PowerupType)
+    func hasStolen(powerup: PowerupType)
 }
