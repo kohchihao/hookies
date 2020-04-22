@@ -15,24 +15,16 @@ class PowerupEntity: Entity {
         self.components = components
     }
 
-    convenience init() {
+    convenience init(for type: PowerupType) {
         self.init(components: [])
+        let powerupSprite = SpriteComponent(parent: self)
+        let powerupComponent = PowerupComponent(parent: self, type: type)
+        addComponent(powerupSprite)
+        addComponent(powerupComponent)
     }
 }
 
 extension PowerupEntity {
-    static func create(for type: PowerupType,
-                       at position: CGPoint
-    ) -> PowerupEntity {
-        let powerup = PowerupEntity()
-        let powerupSprite = SpriteComponent(parent: powerup)
-        let powerupComponent = PowerupComponent(parent: powerup,
-                                                type: type)
-        powerup.addComponent(powerupSprite)
-        powerup.addComponent(powerupComponent)
-        return powerup
-    }
-
     func addEffectComponents(for type: PowerupType) {
         removeComponents(PowerupEffectComponent.self)
         addComponents(for: type)

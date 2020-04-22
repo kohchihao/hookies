@@ -273,9 +273,7 @@ class GameEngine {
     private func createPowerup(with type: PowerupType,
                                for spriteNode: SKSpriteNode
     ) -> PowerupEntity? {
-        let powerupEntity = PowerupEntity.create(for: type,
-                                                 at: spriteNode.position)
-
+        let powerupEntity = PowerupEntity(for: type)
         guard let powerupSprite = powerupEntity.get(SpriteComponent.self) else {
             return nil
         }
@@ -414,6 +412,7 @@ class GameEngine {
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
         hookSystem?.add(player: sprite)
+        powerupSystem.add(player: sprite)
 
         delegate?.addCurrentPlayer(with: sprite.node)
     }
@@ -431,6 +430,7 @@ class GameEngine {
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
         hookSystem?.add(player: sprite)
+        powerupSystem.add(player: sprite)
 
         delegate?.addPlayer(with: sprite.node)
     }
@@ -594,7 +594,7 @@ extension GameEngine: PowerupSystemDelegate {
         delegate?.addTrap(with: spriteComponent.node)
     }
 
-    func hookPlayer(from anchorSprite: SpriteComponent) {
+    func hook(from anchorSprite: SpriteComponent) {
         hookSystem?.hookAndPullPlayer(from: anchorSprite)
     }
 }

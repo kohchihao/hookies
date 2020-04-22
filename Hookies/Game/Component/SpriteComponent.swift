@@ -64,4 +64,28 @@ extension SpriteComponent {
         let sprite2Pos = Vector(point: sprite2.node.position)
         return CGFloat(sprite1Pos.distance(to: sprite2Pos))
     }
+
+    func nearestSpriteInFront(from others: [SpriteComponent]) -> SpriteComponent? {
+        var nearestSprite: SpriteComponent?
+        var nearestDistance = CGFloat.greatestFiniteMagnitude
+        let spritePos = node.position
+        let maxHookDistance = UIScreen.main.bounds.width
+
+        for currentSprite in others {
+            if currentSprite === self {
+                continue
+            }
+            let currentEucDist = currentSprite.distance(to: self)
+            let currentXDist = currentSprite.node.position.x - spritePos.x
+            if currentXDist <= 0 || currentEucDist > maxHookDistance {
+                continue
+            }
+
+            if currentEucDist < nearestDistance {
+                nearestDistance = currentEucDist
+                nearestSprite = currentSprite
+            }
+        }
+        return nearestSprite
+    }
 }

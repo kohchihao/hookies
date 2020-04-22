@@ -24,6 +24,7 @@ protocol HookSystemProtocol {
     func unhook(entity: Entity) -> Bool
     func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector)
     func boostVelocity(to entity: Entity)
+    func hookAndPullPlayer(from anchorSprite: SpriteComponent)
 }
 
 protocol HookSystemDelegate: AnyObject, MovementControlDelegate {
@@ -110,7 +111,7 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     private func hookAndPull(from anchorSprite: SpriteComponent) {
-        guard let sprite = nearestSpriteInFront(of: anchorSprite) else {
+        guard let sprite = anchorSprite.nearestSpriteInFront(from: players) else {
             Logger.log.show(details: "No sprite found in the front", logType: .warning)
             return
         }
@@ -420,32 +421,6 @@ class HookSystem: System, HookSystemProtocol {
         }
 
         return closestBolt
-    }
-
-    // MARK: - Closest Front Player
-
-    private func nearestSpriteInFront(of sprite: SpriteComponent) -> SpriteComponent? {
-        var nearestSprite: SpriteComponent?
-        var nearestDistance = CGFloat.greatestFiniteMagnitude
-        let spritePos = sprite.node.position
-        let maxHookDistance = UIScreen.main.bounds.width
-
-        for currentSprite in players {
-            if currentSprite === sprite {
-                continue
-            }
-            let currentEucDist = currentSprite.distance(to: sprite)
-            let currentXDist = currentSprite.node.position.x - spritePos.x
-            if currentXDist <= 0 || currentEucDist > maxHookDistance {
-                continue
-            }
-
-            if currentEucDist < nearestDistance {
-                nearestDistance = currentEucDist
-                nearestSprite = currentSprite
-            }
-        }
-        return nearestSprite
     }
 
     // MARK: - Create Joint
