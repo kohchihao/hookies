@@ -11,6 +11,13 @@ import CoreGraphics
 import SpriteKit
 
 protocol PowerupSystemProtocol {
+    func add(player: SpriteComponent)
+    func add(powerup: PowerupComponent)
+    func removePowerup(from player: SpriteComponent)
+    func collectAndBroadcast(powerupComponent: PowerupComponent,
+                             by sprite: SpriteComponent)
+    func activateNetTrapAndBroadcast(at point: CGPoint,
+                                     on sprite: SpriteComponent)
 }
 
 protocol PowerupSystemDelegate: class, MovementControlDelegate {
@@ -93,20 +100,8 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                         userInfo: info)
     }
 
-    func steal(from player1: SpriteComponent,
-               by player2: SpriteComponent
-    ) {
-        guard let powerupToSteal = player1.parent.get(PowerupComponent.self) else {
-            Logger.log.show(details: "No powerup to steal", logType: .warning)
-            return
-        }
-
-        removePowerup(from: player1)
-        add(player: player2, with: powerupToSteal)
-        delegate?.indicateSteal(from: player1, by: player2, with: powerupToSteal)
-    }
-
-    func activateNetTrapAndBroadcast(at point: CGPoint, on sprite: SpriteComponent) {
+    func activateNetTrapAndBroadcast(at point: CGPoint,
+                                     on sprite: SpriteComponent) {
         guard let trap = findTrap(at: point) else {
             Logger.log.show(details: "Unable find netTrap", logType: .error)
             return
@@ -122,6 +117,21 @@ class PowerupSystem: System, PowerupSystemProtocol {
         NotificationCenter.default.post(name: Notification.Name.broadcastPowerupAction,
                                         object: nil,
                                         userInfo: info)
+    }
+
+    // MARK: - Steal Powerup
+
+    private func steal(from player1: SpriteComponent,
+               by player2: SpriteComponent
+    ) {
+        guard let powerupToSteal = player1.parent.get(PowerupComponent.self) else {
+            Logger.log.show(details: "No powerup to steal", logType: .warning)
+            return
+        }
+
+        removePowerup(from: player1)
+        add(player: player2, with: powerupToSteal)
+        delegate?.indicateSteal(from: player1, by: player2, with: powerupToSteal)
     }
 
     // MARK: Add player's Powerup
