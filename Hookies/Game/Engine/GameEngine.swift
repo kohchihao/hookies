@@ -538,8 +538,7 @@ extension GameEngine: HookSystemDelegate {
         delegate?.playerDidUnhook(from: hookDelegateModel)
     }
 
-    func hookPlayerApplied(to sprite: SpriteComponent,
-                           with line: SKShapeNode) {
+    func hookPlayerApplied(with line: SKShapeNode) {
         delegate?.playerHookToPlayer(with: line)
     }
 
