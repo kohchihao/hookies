@@ -158,7 +158,6 @@
 		11CC85362439E9EB006D3A8F /* SpriteSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85312439E9EB006D3A8F /* SpriteSystemTests.swift */; };
 		2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */; };
 		2B4CCD442435AC4F0086DEC6 /* HookDelegateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */; };
-		2B4CCD47243632F90086DEC6 /* GenericPlayerEventBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */; };
 		2B4E43A12446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */; };
 		2B64FD732445B36B00C848C4 /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */; };
 		2B64FD7B2445EBD400C848C4 /* GenericSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */; };
@@ -376,7 +375,6 @@
 		11CC85312439E9EB006D3A8F /* SpriteSystemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpriteSystemTests.swift; sourceTree = "<group>"; };
 		2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngineDelegate.swift; sourceTree = "<group>"; };
 		2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookDelegateModel.swift; sourceTree = "<group>"; };
-		2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEventBroadcast.swift; sourceTree = "<group>"; };
 		2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupCollectionSystemEvent.swift; sourceTree = "<group>"; };
 		2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
 		2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSystemEvent.swift; sourceTree = "<group>"; };
@@ -791,14 +789,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		2B4CCD45243632C50086DEC6 /* Broadcast */ = {
-			isa = PBXGroup;
-			children = (
-				2B4CCD46243632F90086DEC6 /* GenericPlayerEventBroadcast.swift */,
-			);
-			path = Broadcast;
-			sourceTree = "<group>";
-		};
 		2BA5F936243E2C41009AF93C /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -933,7 +923,6 @@
 			isa = PBXGroup;
 			children = (
 				2BA5F93F244354BA009AF93C /* Network */,
-				2B4CCD45243632C50086DEC6 /* Broadcast */,
 				2B4CCD422435AC1B0086DEC6 /* Model */,
 				D90876FE24299BE400B73D0E /* Engine */,
 				D90876FD24299BDD00B73D0E /* System */,
@@ -1419,7 +1408,6 @@
 			files = (
 				11CC84FC2439E8E5006D3A8F /* RoundButton.swift in Sources */,
 				11CC85012439E8E5006D3A8F /* IncomingTableViewCell.swift in Sources */,
-				2B4CCD47243632F90086DEC6 /* GenericPlayerEventBroadcast.swift in Sources */,
 				116AD648242DB7CD0070F00B /* Encoder.swift in Sources */,
 				11CC852A2439E9C4006D3A8F /* Social.swift in Sources */,
 				11CC85102439E921006D3A8F /* MapDelegate.swift in Sources */,

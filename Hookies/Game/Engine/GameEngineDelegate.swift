@@ -19,7 +19,7 @@ protocol GameEngineDelegate: AnyObject {
     func addPlayer(with sprite: SKSpriteNode)
     func currentPlayerIsReconnected()
     func currentPlayerIsDisconnected()
-    func gameHasFinish()
+    func gameHasFinish(rankings: [Player])
     func addNotActivatedPowerup(_ sprite: SKSpriteNode)
     func addTrap(with sprite: SKSpriteNode)
     func movementButton(isDisabled: Bool)

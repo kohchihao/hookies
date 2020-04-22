@@ -5,12 +5,10 @@
 //  Created by Marcus Koh on 24/3/20.
 //  Copyright © 2020 Hookies. All rights reserved.
 //
-// swiftlint:disable type_body_length
 import SpriteKit
 
 class GameEngine {
     private var gameState: GameState = .waiting
-    private var currentPlayerId: String?
     private var totalNumberOfPlayers = 0
 
     weak var delegate: GameEngineDelegate?
@@ -576,8 +574,8 @@ extension GameEngine: UserConnectionSystemDelegate {
 // MARK: - EndSystemDelegate
 
 extension GameEngine: EndSystemDelegate {
-    func gameEnded(rankings: [SpriteComponent]) {
-        delegate?.gameHasFinish()
+    func gameEnded(rankings: [Player]) {
+        delegate?.gameHasFinish(rankings: rankings)
     }
 }
 
