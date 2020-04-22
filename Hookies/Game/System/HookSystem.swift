@@ -108,7 +108,7 @@ class HookSystem: System, HookSystemProtocol {
         delegate?.hookPlayerApplied(with: line)
         sprite.node.physicsBody?.affectedByGravity = false
 
-        let duration = TimeInterval(3.0)
+        let duration = TimeInterval(2.0)
         let followAnchor = SKAction.customAction(withDuration: duration) { node, _ in
             let newPath = anchorSprite.makePath(to: sprite)
             line.path = newPath
