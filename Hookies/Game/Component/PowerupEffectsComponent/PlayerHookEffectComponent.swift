@@ -10,6 +10,4 @@ import Foundation
 import SpriteKit
 
 class PlayerHookEffectComponent: PowerupEffectComponent {
-    var hookTo: SpriteComponent?
-    var line: SKShapeNode?
 }
