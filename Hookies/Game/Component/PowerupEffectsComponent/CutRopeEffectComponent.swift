@@ -10,4 +10,7 @@ import Foundation
 
 class CutRopeEffectComponent: PowerupEffectComponent {
 
+    init(parent: Entity) {
+        super.init(parent: parent, isNegativeEffect: true)
+    }
 }

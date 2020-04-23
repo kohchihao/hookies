@@ -167,6 +167,7 @@ class GameEngine {
             return
         }
 
+        powerupSystem.removePowerup(from: sprite)
         delegate?.playerHasFinishRace()
     }
 
@@ -591,12 +592,21 @@ extension GameEngine: PowerupSystemDelegate {
         delegate?.addTrap(with: spriteComponent.node)
     }
 
-    func hook(from anchorSprite: SpriteComponent) {
-        hookSystem?.hookAndPullPlayer(from: anchorSprite)
+    func hook(_ sprite: SpriteComponent,
+              from anchorSprite: SpriteComponent) {
+        if !finishingLineSystem.hasPlayerFinish(player: sprite) {
+            hookSystem?.hookAndPull(sprite, from: anchorSprite)
+        }
     }
 
     func forceUnhookFor(player: SpriteComponent) {
-        _ = hookSystem?.unhook(entity: player.parent)
+        guard let sprite = player.parent.get(SpriteComponent.self),
+            let velocity = sprite.node.physicsBody?.velocity else {
+            return
+        }
+        _ = hookSystem?.unhook(entity: player.parent,
+                               at: sprite.node.position,
+                               with: velocity)
     }
 
     func indicateSteal(from sprite1: SpriteComponent,

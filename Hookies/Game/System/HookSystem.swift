@@ -22,9 +22,12 @@ typealias LeftBoltDisplacement = Double
 protocol HookSystemProtocol {
     func hook(from hook: Entity) -> Bool
     func unhook(entity: Entity) -> Bool
+    func unhook(entity: Entity, at position: CGPoint,
+                with velocity: CGVector) -> Bool
     func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector)
     func boostVelocity(to entity: Entity)
-    func hookAndPullPlayer(from anchorSprite: SpriteComponent)
+    func hookAndPull(_ sprite: SpriteComponent,
+                     from anchorSprite: SpriteComponent)
 }
 
 protocol HookSystemDelegate: AnyObject, MovementControlDelegate {
@@ -98,7 +101,7 @@ class HookSystem: System, HookSystemProtocol {
         return true
     }
 
-    func hookAndPullPlayer(from anchorSprite: SpriteComponent) {
+    func hookAndPull(_ sprite: SpriteComponent, from anchorSprite: SpriteComponent) {
         guard let sprite = anchorSprite.nearestSpriteInFront(from: players) else {
             Logger.log.show(details: "No sprite found in the front", logType: .warning)
             return
@@ -143,7 +146,7 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     /// Unhook for multiplayer
-    private func unhook(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
+    func unhook(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
         guard let sprite = entity.get(SpriteComponent.self),
             let hook = entity.get(HookComponent.self)
             else {
