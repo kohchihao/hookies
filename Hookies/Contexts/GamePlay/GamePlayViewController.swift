@@ -58,6 +58,11 @@ class GamePlayViewController: UIViewController {
 
     func endGame(rankings: [Player]) {
         navigationDelegate?.gameDidEnd(gamePlayId: viewModel.gameplayId, rankings: rankings)
+        self.removeFromParent()
+        self.dismiss(animated: true, completion: nil)
+        if let view = self.view as? SKView {
+            view.presentScene(nil)
+        }
     }
 
     override var prefersStatusBarHidden: Bool {
