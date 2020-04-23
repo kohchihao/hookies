@@ -32,6 +32,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var countdownLabel: SKLabelNode?
     private var count = 5
 
+    private var bots: [SKSpriteNode] = []
+
     private var gameEngine: GameEngine?
 
     weak var viewController: GamePlayViewController!
@@ -77,21 +79,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
      // MARK: - Collision Detection
 
     func didBegin(_ contact: SKPhysicsContact) {
-        guard has(contact: contact, with: currentPlayer) else {
-                return
+        if has(contact: contact, with: currentPlayer) {
+            if has(contact: contact, with: finishingLine) {
+                gameEngine?.stopCurrentPlayer()
+            }
+
+            for powerup in powerups where has(contact: contact, with: powerup) {
+                handleContactWithPowerup(powerup)
+            }
+
+            for trap in traps where has(contact: contact, with: trap) {
+                handleContactWithTrap(trap)
+            }
+        } else {
+            for bot in bots {
+                if has(contact: contact, with: bot) {
+                    if has(contact: contact, with: finishingLine) {
+                        print("finish line")
+                        gameEngine?.stopPlayer(playerNode: bot)
+                    }
+
+                    for trap in traps where has(contact: contact, with: trap) {
+                        print("trap")
+                        handleContactWithTrap(between: bot, trap: trap)
+                    }
+                }
+            }
         }
 
-        if has(contact: contact, with: finishingLine) {
-            gameEngine?.stopCurrentPlayer()
-        }
-
-        for powerup in powerups where has(contact: contact, with: powerup) {
-            handleContactWithPowerup(powerup)
-        }
-
-        for trap in traps where has(contact: contact, with: trap) {
-            handleContactWithTrap(trap)
-        }
     }
 
     private func has(contact: SKPhysicsContact, with node: SKSpriteNode?) -> Bool {
@@ -101,6 +116,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private func handleContactWithTrap(_ trap: SKSpriteNode) {
         gameEngine?.currentPlayerContactWith(trap: trap)
+    }
+
+    private func handleContactWithTrap(between player: SKSpriteNode, trap: SKSpriteNode) {
+        print("handle trap")
+        gameEngine?.contactBetween(playerNode: player, trap: trap)
     }
 
     private func handleContactWithPowerup(_ powerup: SKSpriteNode) {
@@ -486,6 +506,10 @@ extension GameScene: GameEngineDelegate {
 
     func addPlayer(with sprite: SKSpriteNode) {
         addChild(sprite)
+    }
+
+    func addBot(with sprite: SKSpriteNode) {
+        bots.append(sprite)
     }
 
     func currentPlayerIsReconnected() {

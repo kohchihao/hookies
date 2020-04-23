@@ -45,6 +45,10 @@ class BotSystem: System, BotSystemProtocol {
         self.timeElapsed += Constants.botTimeStep
     }
 
+    func stopBot(botSprite: SpriteComponent) {
+        broadcast(with: botSprite, of: .reachedFinishedLine)
+    }
+
     func stop() {
         self.timer?.invalidate()
         self.timer = nil

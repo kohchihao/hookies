@@ -40,6 +40,10 @@ struct BotInstruction {
         case .hooksALot:
             var isHook = true
             for timeStep in 1...maxTimeSteps {
+                if timeStep.isMultiple(of: 10) {
+                    instructions.append(BotInstruction(timeSteps: timeStep, action: .jumpAction))
+                    continue
+                }
                 addHookInstruction(timeStep: timeStep, isHook: isHook)
                 isHook.toggle()
             }
@@ -47,6 +51,10 @@ struct BotInstruction {
             var isHook = true
             let timeStepInterval = 3
             for timeStep in 1...maxTimeSteps {
+                if timeStep.isMultiple(of: 10) {
+                    instructions.append(BotInstruction(timeSteps: timeStep, action: .jumpAction))
+                    continue
+                }
                 guard timeStep.isMultiple(of: timeStepInterval) else {
                     continue
                 }
@@ -57,6 +65,10 @@ struct BotInstruction {
             var isHook = true
             let hookInterval = 2
             for timeStep in 1...maxTimeSteps {
+                if timeStep.isMultiple(of: 10) {
+                    instructions.append(BotInstruction(timeSteps: timeStep, action: .jumpAction))
+                    continue
+                }
                 guard timeStep.isMultiple(of: hookInterval) else {
                     addChangeLengthInstruction(timeStep: timeStep, isShorten: true)
                     continue
@@ -68,6 +80,10 @@ struct BotInstruction {
             var isHook = true
             let hookInterval = 2
             for timeStep in 1...maxTimeSteps {
+                if timeStep.isMultiple(of: 10) {
+                    instructions.append(BotInstruction(timeSteps: timeStep, action: .jumpAction))
+                    continue
+                }
                 guard timeStep.isMultiple(of: hookInterval) else {
                     addChangeLengthInstruction(timeStep: timeStep, isShorten: false)
                     continue

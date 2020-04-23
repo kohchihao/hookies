@@ -125,11 +125,6 @@ class PreGameLobbyViewController: UIViewController {
         })
     }
 
-//    override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-//        API.shared.lobby.unsubscribeFromLobby()
-//    }
-
     deinit {
         API.shared.lobby.unsubscribeFromLobby()
     }

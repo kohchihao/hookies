@@ -33,6 +33,7 @@ class GameEngine {
 
     private var currentPlayer: PlayerEntity?
     private var otherPlayers = [String: PlayerEntity]()
+    private var bots = [String: PlayerEntity]()
     private var platforms = [PlatformEntity]()
     private var bolts = [BoltEntity]()
     private var powerups = [PowerupEntity]()
@@ -167,10 +168,21 @@ class GameEngine {
         if !hasStop {
             return
         }
-        botSystem?.stop()
 
         powerupSystem.removePowerup(from: sprite)
         delegate?.playerHasFinishRace()
+    }
+
+    func stopPlayer(playerNode: SKSpriteNode) {
+        for bot in bots {
+            guard let botSprite = bot.value.get(SpriteComponent.self) else {
+                continue
+            }
+            if botSprite.node == playerNode {
+                botSystem?.stopBot(botSprite: botSprite)
+                break
+            }
+        }
     }
 
     // MARK: - Contact with Powerups
@@ -197,6 +209,20 @@ class GameEngine {
                 return
         }
         powerupSystem.activateNetTrapAndBroadcast(at: trap.position, on: currentPlayerSprite)
+    }
+
+    func contactBetween(playerNode: SKSpriteNode, trap: SKSpriteNode) {
+        for bot in bots {
+            print("player: \(bot)")
+            guard let botSprite = bot.value.get(SpriteComponent.self) else {
+                continue
+            }
+            if botSprite.node == playerNode {
+                print("activate trap")
+                powerupSystem.activateNetTrapAndBroadcast(at: trap.position, on: botSprite)
+                break
+            }
+        }
     }
 
     // MARK: - Update
@@ -435,6 +461,7 @@ class GameEngine {
         if player.playerType == .bot {
             if let botType = player.botType {
                 addBot(sprite: sprite, botType: botType)
+                bots[player.playerId] = playerEntity
             }
         }
 
@@ -495,7 +522,11 @@ class GameEngine {
         guard let botComponent = botEntity.get(BotComponent.self) else {
             return
         }
-        botSystem?.add(spriteComponent: sprite, botComponent: botComponent)
+        guard let botSystem = self.botSystem else {
+            return
+        }
+        botSystem.add(spriteComponent: sprite, botComponent: botComponent)
+        delegate?.addBot(with: sprite.node)
     }
 
     func initialiseBotSystem(_ players: [Player]) {
@@ -609,6 +640,7 @@ extension GameEngine: UserConnectionSystemDelegate {
 
 extension GameEngine: EndSystemDelegate {
     func gameEnded(rankings: [Player]) {
+        botSystem?.stop()
         delegate?.gameHasFinish(rankings: rankings)
     }
 }
