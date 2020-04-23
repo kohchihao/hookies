@@ -92,7 +92,7 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Unhook
 
-    /// Unook for single player
+    /// Unhook for single player
     func unhook(entity: Entity) -> Bool {
         guard let sprite = entity.get(SpriteComponent.self), let velocity = sprite.node.physicsBody?.velocity else {
             return false
@@ -399,8 +399,8 @@ extension HookSystem {
             object: nil)
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(receivedUnookAction(_:)),
-            name: .receivedUnookAction,
+            selector: #selector(receivedUnhookAction(_:)),
+            name: .receivedUnhookAction,
             object: nil)
         NotificationCenter.default.addObserver(
             self,
@@ -437,7 +437,7 @@ extension HookSystem {
         }
     }
 
-    @objc private func receivedUnookAction(_ notification: Notification) {
+    @objc private func receivedUnhookAction(_ notification: Notification) {
         if let data = notification.userInfo as? [String: GenericSystemEvent] {
             guard let genericSystemEvent = data["data"] else {
                 return

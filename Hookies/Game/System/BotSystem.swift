@@ -9,31 +9,33 @@
 import Foundation
 
 protocol BotSystemDelegate: class {
-    
+
 }
 
 protocol BotSystemProtocol {
     func start()
+    func stop()
+    func add(spriteComponent: SpriteComponent, botComponent: BotComponent)
 }
 
 class BotSystem: System, BotSystemProtocol {
-    
-    private var bots = [SpriteComponent : BotComponent]()
+
+    private(set) var bots = [SpriteComponent: BotComponent]()
     weak var delegate: BotSystemDelegate?
     private var timer: Timer?
     private var timeElapsed: Double = 0
-    
-    init(bots: [SpriteComponent : BotComponent]) {
-        self.bots = bots
-        
-        registerNotificationObservers()
+
+    init() {
+        print("bot system created")
     }
+
+    // swiftlint:disable line_length
 
     func start() {
-        self.timer = Timer.scheduledTimer(timeInterval: Constants.botTimeStep, target: self, selector: #selector(emit), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: Constants.botTimeStep, target: self, selector: #selector(update), userInfo: nil, repeats: true)
     }
 
-    @objc private func emit() {
+    @objc private func update() {
         for bot in bots {
             guard let instruction = bot.value.getNextInstruction(timeElapsed: timeElapsed) else {
                 continue
@@ -58,19 +60,5 @@ class BotSystem: System, BotSystemProtocol {
             name: .broadcastGenericPlayerAction,
             object: self,
             userInfo: ["data": genericSystemEvent])
-    }
-}
-
-extension BotSystem {
-    private func registerNotificationObservers() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(receivedGameStartEvent(_:)),
-            name: .receivedReachedFinishLineAction,
-            object: nil)
-    }
-
-    @objc private func receivedGameStartEvent(_ notification: Notification) {
-        
     }
 }

@@ -15,10 +15,11 @@ class BotEntity: Entity {
         self.components = components
     }
 
-    convenience init() {
+    convenience init(botType: BotType) {
         self.init(components: [])
-    
-        let bot = BotComponent(parent: self, instruction: [])
+
+        let instruction = BotInstruction.getInstructions(botType: botType)
+        let bot = BotComponent(parent: self, instructions: instruction)
 
         addComponent(bot)
     }

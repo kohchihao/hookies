@@ -235,6 +235,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         )
 
         gameEngine?.delegate = self
+        gameEngine?.initialiseBotSystem(players)
         gameEngine?.addPlayers(players)
 
         self.cannon = cannonObject.node
@@ -300,7 +301,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enableGameButtons()
         countdownLabel?.removeFromParent()
         viewController.hidePowerSlider()
-        launchCurrentPlayer()
+        launchLocalPlayers()
         gameEngine?.startGame()
     }
 
@@ -311,11 +312,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return CGVector(dx: dx, dy: dy)
     }
 
-    // MARK: - Launch player
+    // MARK: - Launch local player and bots
 
-    private func launchCurrentPlayer() {
+    private func launchLocalPlayers() {
         let velocity = getLaunchVelocity()
         gameEngine?.launchCurrentPlayer(with: velocity)
+        gameEngine?.launchBots(with: velocity)
 
         cannon?.removeFromParent()
     }

@@ -31,7 +31,7 @@ extension Notification.Name {
 
     // Hook
     static let receivedHookAction = Notification.Name("receivedHookAction")
-    static let receivedUnookAction = Notification.Name("receivedUnookAction")
+    static let receivedUnhookAction = Notification.Name("receivedUnhookAction")
     static let receivedShortenRopeAction = Notification.Name("receivedShortenRopeAction")
     static let receivedLengthenRopeAction = Notification.Name("receivedLengthenRopeAction")
 

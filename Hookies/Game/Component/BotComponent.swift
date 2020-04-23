@@ -8,11 +8,6 @@
 
 import Foundation
 
-struct BotInstruction {
-    var timeSteps: Int
-    var action: GenericPlayerEvent
-}
-
 class BotComponent: Component {
     private(set) var parent: Entity
     var instructions: [BotInstruction]

@@ -14,8 +14,9 @@ struct Player {
     let playerType: PlayerType
     private(set) var costumeType: CostumeType
     private(set) var botType: BotType?
+    private(set) var isHost: Bool
 
-    init?(playerId: String, playerType: PlayerType, costumeType: CostumeType, isCurrentPlayer: Bool) {
+    init?(playerId: String, playerType: PlayerType, costumeType: CostumeType, isCurrentPlayer: Bool, isHost: Bool) {
         if playerType != .human {
             return nil
         }
@@ -24,6 +25,7 @@ struct Player {
         self.playerType = playerType
         self.costumeType = costumeType
         self.isCurrentPlayer = isCurrentPlayer
+        self.isHost = isHost
     }
 
     init?(playerId: String, playerType: PlayerType, costumeType: CostumeType, botType: BotType) {
@@ -36,6 +38,7 @@ struct Player {
         self.costumeType = costumeType
         self.botType = botType
         self.isCurrentPlayer = false
+        self.isHost = false
     }
 }
 

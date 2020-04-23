@@ -167,7 +167,7 @@ class GameEngine {
         if !hasStop {
             return
         }
-
+        botSystem?.stop()
         delegate?.playerHasFinishRace()
     }
 
@@ -431,11 +431,9 @@ class GameEngine {
         startSystem.add(player: player, with: sprite)
 
         if player.playerType == .bot {
-            let botEntity = BotEntity()
-            guard let botComponent = botEntity.get(BotComponent.self) else {
-                return
+            if let botType = player.botType {
+                addBot(sprite: sprite, botType: botType)
             }
-            botSystem?.add(spriteComponent: sprite, botComponent: botComponent)
         }
 
         delegate?.addPlayer(with: sprite.node)
@@ -486,6 +484,35 @@ class GameEngine {
             }
         }
         return nil
+    }
+
+    // MARK: - Bots
+
+    private func addBot(sprite: SpriteComponent, botType: BotType) {
+        let botEntity = BotEntity(botType: botType)
+        guard let botComponent = botEntity.get(BotComponent.self) else {
+            return
+        }
+        botSystem?.add(spriteComponent: sprite, botComponent: botComponent)
+    }
+
+    func initialiseBotSystem(_ players: [Player]) {
+        for player in players {
+            if player.isCurrentPlayer && player.isHost {
+                self.botSystem = BotSystem()
+                return
+            }
+        }
+    }
+
+    func launchBots(with velocity: CGVector) {
+        guard let bots = botSystem?.bots else {
+            return
+        }
+        botSystem?.start()
+        for bot in bots {
+            cannonSystem.launch(player: bot.key, with: velocity)
+        }
     }
 }
 

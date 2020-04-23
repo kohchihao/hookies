@@ -23,6 +23,7 @@ class NetworkManager: NetworkManagerProtocol {
     private(set) var deviceStatus: DeviceStatus?
     private var otherPlayersId = Set<String>()
     private var playersSprite = [String: SpriteComponent]()
+    private var playersId = [SpriteComponent: String]()
     private var players = [String: Player]()
 
     private init() {
@@ -123,6 +124,7 @@ class NetworkManager: NetworkManagerProtocol {
             for (player, sprite) in playersMapping {
                 playersSprite[player.playerId] = sprite
                 players[player.playerId] = player
+                playersId[sprite] = player.playerId
 
                 if player.isCurrentPlayer {
                     currentPlayer = player
@@ -142,22 +144,23 @@ class NetworkManager: NetworkManagerProtocol {
             guard let genericPlayerEventData = createPlayerEventData(from: genericPlayerAction) else {
                 return
             }
-
+            if genericPlayerEventData.playerData.playerId != currentPlayer?.playerId {
+                sendGenericPlayerEventNotification(genericPlayerEventData: genericPlayerEventData)
+            }
             API.shared.gameplay.boardcastGenericPlayerEvent(playerEvent: genericPlayerEventData)
         }
     }
 
     private func createPlayerEventData(from playerAction: GenericSystemEvent) -> GenericPlayerEventData? {
-        guard let currentPlayerId = currentPlayer?.playerId else {
-            Logger.log.show(details: "currentPlayerId is nil", logType: .error)
-            return nil
+        guard let playerId = playersId[playerAction.sprite] else {
+            Logger.log.show(details: "playerId is nil", logType: .error)
+                        return nil
         }
-
         let position = Vector(point: playerAction.sprite.node.position)
         let velocity = Vector(vector: playerAction.sprite.node.physicsBody?.velocity)
 
         return GenericPlayerEventData(
-            playerId: currentPlayerId,
+            playerId: playerId,
             position: position,
             velocity: velocity,
             type: playerAction.eventType)
@@ -353,32 +356,35 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func subscribeToGenericPlayerEvent() {
         API.shared.gameplay.subscribeToGenericPlayerEvent(listener: { genericPlayerEventData in
-            guard let genericSystemEvent = self.createGenericSystemEvent(from: genericPlayerEventData) else {
-                return
-            }
-
-            let notificationData = ["data": genericSystemEvent]
-            var name: Notification.Name
-            switch genericPlayerEventData.type {
-            case .shotFromCannon:
-                name = .receivedLaunchAction
-            case .jumpAction:
-                name = .receivedJumpAction
-            case .playerDied:
-                name = .receivedRespawnAction
-            case .reachedFinishedLine:
-                name = .receivedReachedFinishLineAction
-            case .hook:
-                name = .receivedHookAction
-            case .unhook:
-                name = .receivedUnookAction
-            case .lengthenRope:
-                name = .receivedLengthenRopeAction
-            case .shortenRope:
-                name = .receivedShortenRopeAction
-            }
-            NotificationCenter.default.post(name: name, object: self, userInfo: notificationData)
+            self.sendGenericPlayerEventNotification(genericPlayerEventData: genericPlayerEventData)
         })
+    }
+
+    private func sendGenericPlayerEventNotification(genericPlayerEventData: GenericPlayerEventData) {
+        guard let genericSystemEvent = self.createGenericSystemEvent(from: genericPlayerEventData) else {
+            return
+        }
+        let notificationData = ["data": genericSystemEvent]
+        var name: Notification.Name
+        switch genericPlayerEventData.type {
+        case .shotFromCannon:
+            name = .receivedLaunchAction
+        case .jumpAction:
+            name = .receivedJumpAction
+        case .playerDied:
+            name = .receivedRespawnAction
+        case .reachedFinishedLine:
+            name = .receivedReachedFinishLineAction
+        case .hook:
+            name = .receivedHookAction
+        case .unhook:
+            name = .receivedUnhookAction
+        case .lengthenRope:
+            name = .receivedLengthenRopeAction
+        case .shortenRope:
+            name = .receivedShortenRopeAction
+        }
+        NotificationCenter.default.post(name: name, object: self, userInfo: notificationData)
     }
 
     private func createGenericSystemEvent(from genericPlayerEventData: GenericPlayerEventData) -> GenericSystemEvent? {
