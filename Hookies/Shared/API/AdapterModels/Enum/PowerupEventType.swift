@@ -8,7 +8,6 @@
 
 enum PowerupEventType: String, CaseIterable, StringRepresentable {
     case activate
-    case deactivate
     case netTrapped
 
     var stringValue: String {

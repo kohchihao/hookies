@@ -106,6 +106,11 @@ extension DeadlockSystem {
             selector: #selector(receivedJumpAction(_:)),
             name: .receivedJumpAction,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
+            object: nil)
     }
 
     /// Broadcast
@@ -129,5 +134,9 @@ extension DeadlockSystem {
             }
             resolveDeadlock(for: sprite, at: sprite.node.position, with: velocity)
         }
+    }
+
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }

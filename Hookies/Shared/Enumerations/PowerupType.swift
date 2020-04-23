@@ -13,7 +13,7 @@ enum PowerupType: String, CaseIterable, StringRepresentable {
     case playerHook = "player_hook"
     case stealPowerup = "steal_powerup"
     case shield
-    case cutHook = "cut_hook"
+    case cutRope = "cut_rope"
     case netTrap = "net_trap"
 
     var buttonString: String {
@@ -27,6 +27,15 @@ enum PowerupType: String, CaseIterable, StringRepresentable {
                                 color: .clear,
                                 size: size)
         return node
+    }
+
+    var buttonNode: SKSpriteNode {
+        let texture = SKTexture(imageNamed: self.buttonString)
+        let sizeOfPowerup = CGSize(width: 50, height: 50)
+        let powerupDisplay = SKSpriteNode(texture: texture,
+                                          color: .clear,
+                                          size: sizeOfPowerup)
+        return powerupDisplay
     }
 
     var stringValue: String {

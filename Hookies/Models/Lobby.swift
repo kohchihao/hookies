@@ -20,7 +20,7 @@ struct Lobby {
         lobbyId = RandomIDGenerator.getRandomID(length: Constants.lobbyIdLength)
         self.hostId = hostId
         self.playersId = [hostId]
-        self.costumesId = [hostId: .Pink_Monster]
+        self.costumesId = [hostId: CostumeType.getDefault()]
         self.lobbyState = .open
     }
 
@@ -51,10 +51,19 @@ struct Lobby {
             return
         }
         playersId.append(playerId)
-        updateCostumeId(playerId: playerId, costumeType: .Pink_Monster)
+        if !self.costumesId.keys.contains(playerId) {
+            updateCostumeId(playerId: playerId, costumeType: CostumeType.getDefault())
+        }
         if playersId.count == Constants.maxPlayerCount {
             lobbyState = .full
         }
+    }
+
+    mutating func updatePlayers(playersId: [String]) {
+        guard playersId.contains(hostId) else {
+            return
+        }
+        self.playersId = playersId
     }
 
     mutating func updateCostumeId(playerId: String, costumeType: CostumeType) {
@@ -81,6 +90,8 @@ struct Lobby {
             guard !playersId.isEmpty && playersId.count <= Constants.maxPlayerCount else {
                 return
             }
+        case .empty:
+            self.playersId = [hostId]
         }
         self.lobbyState = lobbyState
     }

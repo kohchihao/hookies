@@ -30,6 +30,7 @@ class GamePlayCoordinator: Coordinator {
 
     // MARK: - START
     func start() {
+        print("start")
         coordinatorDelegate?.coordinatorDidStart(self)
         navigator.transition(to: viewController(), as: .push)
     }
@@ -48,11 +49,11 @@ extension GamePlayCoordinator: GameViewNavigationDelegate {
     func gameDidEnd(gamePlayId: String, rankings: [Player]) {
         Logger.log.show(details: "\(rankings)", logType: .information)
 
-//        let postGameLobbyCoordinator = PostGameLobbyCoordinator(
-//            with: navigator,
-//            gamePlayId: gamePlayId,
-//            rankings: rankings)
-//        postGameLobbyCoordinator.coordinatorDelegate = self
-//        postGameLobbyCoordinator.start()
+        let postGameLobbyCoordinator = PostGameLobbyCoordinator(
+            with: navigator,
+            gamePlayId: gamePlayId,
+            ranking: rankings)
+        postGameLobbyCoordinator.coordinatorDelegate = self
+        postGameLobbyCoordinator.start()
     }
 }

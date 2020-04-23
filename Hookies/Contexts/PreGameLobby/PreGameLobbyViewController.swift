@@ -8,12 +8,12 @@
 
 import Foundation
 import SpriteKit
-import GameplayKit
 
 protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
     func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String, players: [Player])
     func didPressFriendButton(in: PreGameLobbyViewController, lobbyId: String)
+    func didPressPostButton(in: PreGameLobbyViewController, lobbyId: String, players: [Player])
 }
 
 class PreGameLobbyViewController: UIViewController {
@@ -125,6 +125,11 @@ class PreGameLobbyViewController: UIViewController {
         })
     }
 
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        API.shared.lobby.unsubscribeFromLobby()
+//    }
+
     deinit {
         API.shared.lobby.unsubscribeFromLobby()
     }
@@ -148,6 +153,7 @@ class PreGameLobbyViewController: UIViewController {
         saveLobby(lobby: viewModel.lobby)
         createGameplaySession(with: viewModel.lobby)
         let players = createPlayers(with: viewModel.lobby)
+        API.shared.lobby.unsubscribeFromLobby()
         navigationDelegate?.didPressStartButton(
             in: self,
             withSelectedMapType: selectedMapType,
@@ -250,6 +256,7 @@ class PreGameLobbyViewController: UIViewController {
             var otherPlayersViewIndex = 1
             var index: Int
             for player in players {
+
                 if player.uid == self.viewModel.lobby.hostId {
                     index = 0
                 } else {

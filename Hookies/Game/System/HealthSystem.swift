@@ -112,7 +112,11 @@ extension HealthSystem {
         selector: #selector(receivedRespawnAction(_:)),
         name: .receivedRespawnAction,
         object: nil)
-
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
+            object: nil)
     }
 
     /// Broadcast
@@ -133,5 +137,9 @@ extension HealthSystem {
             let sprite = genericSystemEvent.sprite
             _ = respawnPlayer(for: sprite, at: sprite.node.position)
         }
+    }
+
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }

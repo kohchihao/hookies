@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
-import UIKit
 
 protocol PreGameLobbyViewModelRepresentable {
     var delegate: RoomStateViewModelDelegate? { get set }
@@ -20,7 +18,7 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
     var lobby: Lobby
 
     init() {
-        guard let hostId = Auth.auth().currentUser?.uid else {
+        guard let hostId = API.shared.user.currentUser?.uid else {
             fatalError("Host is not logged in")
         }
         self.lobby = Lobby(hostId: hostId)

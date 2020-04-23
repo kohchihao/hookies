@@ -27,13 +27,13 @@ class NetworkManager: NetworkManagerProtocol {
     private var players = [String: Player]()
 
     private init() {
-        setUpDeviceStatus()
         registerNotificationObservers()
         Logger.log.traceableFunctionName = true
     }
 
     func set(gameId: String) {
         self.gameId = gameId
+        setUpDeviceStatus()
     }
 
     // MARK: - Setup current device connection status
@@ -153,7 +153,7 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func createPlayerEventData(from playerAction: GenericSystemEvent) -> GenericPlayerEventData? {
         guard let playerId = playersId[playerAction.sprite] else {
-            Logger.log.show(details: "playerId is nil", logType: .error)
+           Logger.log.show(details: "currentPlayerId is nil of \(playerAction.eventType)", logType: .error)
                         return nil
         }
         let position = Vector(point: playerAction.sprite.node.position)
@@ -412,6 +412,9 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func subscribeToGameEndEvent() {
         API.shared.gameplay.subscribeToGameEndEvent(listener: { rankings in
+            API.shared.gameplay.close()
+            Logger.log.show(details: "Closed Game Connection", logType: .information)
+
             var playerRankings = [Player]()
 
             for userId in rankings {
@@ -427,7 +430,9 @@ class NetworkManager: NetworkManagerProtocol {
                 object: self,
                 userInfo: ["data": playerRankings])
 
-            API.shared.gameplay.close()
+            NotificationCenter.default.post(name: .broadcastUnregisterObserver, object: self)
+
+            self.reset()
         })
     }
 
@@ -502,5 +507,16 @@ class NetworkManager: NetworkManagerProtocol {
         NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
 
         otherPlayersId.insert(playerId)
+    }
+
+    // MARK: - Reset Network Manger
+
+    private func reset() {
+        gameId = nil
+        currentPlayer = nil
+        deviceStatus = nil
+        otherPlayersId.removeAll()
+        playersSprite.removeAll()
+        players.removeAll()
     }
 }
