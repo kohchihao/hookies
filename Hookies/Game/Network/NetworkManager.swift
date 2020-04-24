@@ -96,6 +96,11 @@ class NetworkManager: NetworkManagerProtocol {
             selector: #selector(broadcastPlayerRankings(_:)),
             name: .broadcastPlayerRankings,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastBotJoinEvent(_:)),
+            name: .broadcastBotJoinEvent,
+            object: nil)
     }
 
     // MARK: - Game Connection
@@ -279,6 +284,12 @@ class NetworkManager: NetworkManagerProtocol {
                 object: self,
                 userInfo: ["data": playerRankings])
         }
+    }
+
+    // MARK: - Broadcast Bot Join Event
+
+    @objc private func broadcastBotJoinEvent(_ notification: Notification) {
+        NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
     }
 
     // MARK: - Socket Subscriptions

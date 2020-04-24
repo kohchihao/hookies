@@ -57,8 +57,11 @@ class BotSystem: System, BotSystemProtocol {
 
     func add(spriteComponent: SpriteComponent, botComponent: BotComponent) {
         self.bots[spriteComponent] = botComponent
+        broadcastJoin()
     }
 }
+
+// MARK: Network
 
 extension BotSystem {
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
@@ -67,5 +70,12 @@ extension BotSystem {
             name: .broadcastGenericPlayerAction,
             object: self,
             userInfo: ["data": genericSystemEvent])
+    }
+
+    private func broadcastJoin() {
+        NotificationCenter.default.post(
+            name: .broadcastBotJoinEvent,
+            object: self
+        )
     }
 }

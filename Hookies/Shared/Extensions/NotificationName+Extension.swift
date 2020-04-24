@@ -17,6 +17,7 @@ extension Notification.Name {
     static let broadcastPowerupAction = Notification.Name("broadcastPowerupAction")
     static let broadcastFinishGameEvent = Notification.Name("broadcastFinishGameEvent")
     static let broadcastPlayerRankings = Notification.Name("broadcastPlayerRankings")
+    static let broadcastBotJoinEvent = Notification.Name("broadcastBotJoinEvent")
 
     // MARK: - NetworkManager to Systems
 
