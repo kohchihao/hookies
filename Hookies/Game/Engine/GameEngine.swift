@@ -193,7 +193,7 @@ class GameEngine {
                     break
                 } else {
                     botSystem?.stopBot(botSprite: playerSprite)
-                    
+                    finishingLineSystem.stop(player: playerSprite)
                     break
                 }
             }

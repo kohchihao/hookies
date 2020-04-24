@@ -47,7 +47,6 @@ class BotSystem: System, BotSystemProtocol {
 
     func stopBot(botSprite: SpriteComponent) {
         self.bots = self.bots.filter({ $0.key != botSprite })
-        broadcast(with: botSprite, of: .reachedFinishedLine)
     }
 
     func stopTimer() {
@@ -57,7 +56,7 @@ class BotSystem: System, BotSystemProtocol {
 
     func add(spriteComponent: SpriteComponent, botComponent: BotComponent) {
         self.bots[spriteComponent] = botComponent
-        broadcastJoin()
+        broadcastJoin(with: spriteComponent)
     }
 }
 
@@ -72,10 +71,10 @@ extension BotSystem {
             userInfo: ["data": genericSystemEvent])
     }
 
-    private func broadcastJoin() {
+    private func broadcastJoin(with sprite: SpriteComponent) {
         NotificationCenter.default.post(
             name: .broadcastBotJoinEvent,
-            object: self
-        )
+            object: self,
+            userInfo: ["data": sprite])
     }
 }

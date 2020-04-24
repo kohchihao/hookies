@@ -27,7 +27,7 @@ class EndSystem: System, EndSystemProtocol {
 
     init(totalPlayers: Int) {
         totalNumberOfPlayers = totalPlayers
-
+        Logger.log.show(details: "Total: \(totalPlayers)", logType: .alert)
         registerNotificationObservers()
     }
 }

@@ -289,7 +289,17 @@ class NetworkManager: NetworkManagerProtocol {
     // MARK: - Broadcast Bot Join Event
 
     @objc private func broadcastBotJoinEvent(_ notification: Notification) {
-        NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
+        if let data = notification.userInfo as? [String: SpriteComponent] {
+            guard let sprite = data["data"] else {
+                return
+            }
+            guard let gameId = gameId, let botId = playersId[sprite] else {
+                return
+            }
+
+            //API.shared.gameplay.botJoinRoom(roomId: gameId, userId: botId)
+            NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
+        }
     }
 
     // MARK: - Socket Subscriptions
@@ -523,5 +533,6 @@ class NetworkManager: NetworkManagerProtocol {
         otherPlayersId.removeAll()
         playersSprite.removeAll()
         players.removeAll()
+        playersId.removeAll()
     }
 }
