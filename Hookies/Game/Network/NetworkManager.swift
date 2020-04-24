@@ -119,6 +119,13 @@ class NetworkManager: NetworkManagerProtocol {
             }
 
             self.setupSocketSubscriptions()
+            // TODO: fix this shit
+            if self.currentPlayer!.isHost {
+                for player in self.players where player.value.playerType == .bot {
+                    API.shared.gameplay.botJoinRoom(roomId: gameId, userId: player.value.playerId)
+                    NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
+                }
+            }
         })
     }
 
