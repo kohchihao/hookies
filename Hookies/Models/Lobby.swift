@@ -71,6 +71,7 @@ struct Lobby {
         if lobbyState == .full && playersId.count < Constants.maxPlayerCount {
             lobbyState = .open
         }
+    }
 
     mutating func updatePlayers(playersId: [String]) {
         guard playersId.contains(hostId) else {
@@ -107,10 +108,11 @@ struct Lobby {
             guard !playersId.isEmpty && playersId.count <= Constants.maxPlayerCount else {
                 return
             }
-        default:
-            break
         case .empty:
             self.playersId = [hostId]
+        default:
+            break
         self.lobbyState = lobbyState
+        }
     }
 }

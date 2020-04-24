@@ -322,11 +322,6 @@ class PreGameLobbyViewController: UIViewController {
     @IBAction private func onFriendButtonPressed(_ sender: UIButton) {
         navigationDelegate?.didPressFriendButton(in: self, lobbyId: self.viewModel.lobby.lobbyId)
     }
-
-    @IBAction private func postButtonPressed(_ sender: UIButton) {
-        let players = self.createPlayers(with: self.viewModel.lobby)
-        navigationDelegate?.didPressPostButton(in: self, lobbyId: self.viewModel.lobby.lobbyId, players: players)
-    }
 }
 
 extension PreGameLobbyViewController: RoomStateViewModelDelegate {
