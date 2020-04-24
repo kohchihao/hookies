@@ -178,24 +178,18 @@ class NetworkManager: NetworkManagerProtocol {
                 return
             }
 
-            guard let currentPlayerId = currentPlayer?.playerId else {
-                return
-            }
-
-            if powerupEventData.playerData.playerId == currentPlayerId {
-                API.shared.gameplay.broadcastPowerupEvent(powerupEvent: powerupEventData)
-            }
+            API.shared.gameplay.broadcastPowerupEvent(powerupEvent: powerupEventData)
         }
     }
 
     private func createPowerupEventData(from powerupSystemEvent: PowerupSystemEvent) -> PowerupEventData? {
-        guard let currentPlayerId = currentPlayer?.playerId else {
-            Logger.log.show(details: "currentPlayerId is nil", logType: .error)
+        guard let playerId = playersId[powerupSystemEvent.sprite] else {
+            Logger.log.show(details: "playerId is nil", logType: .error)
             return nil
         }
 
         return PowerupEventData(
-            playerId: currentPlayerId,
+            playerId: playerId,
             node: powerupSystemEvent.sprite.node,
             eventType: powerupSystemEvent.powerupEventType,
             powerupType: powerupSystemEvent.powerupType,

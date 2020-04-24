@@ -32,7 +32,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var countdownLabel: SKLabelNode?
     private var count = 5
 
-    private var bots: [SKSpriteNode] = []
+    private var localPlayers: [SKSpriteNode] = []
 
     private var gameEngine: GameEngine?
 
@@ -79,41 +79,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
      // MARK: - Collision Detection
 
     func didBegin(_ contact: SKPhysicsContact) {
-        if has(contact: contact, with: currentPlayer) {
-            if has(contact: contact, with: finishingLine) {
-                gameEngine?.stopCurrentPlayer()
-            }
-
-            for powerup in powerups where has(contact: contact, with: powerup) {
-                handleContactWithPowerup(powerup)
-            }
-
-            for trap in traps where has(contact: contact, with: trap) {
-                handleContactWithTrap(trap)
-            }
-        } else {
-            for bot in bots {
-                if has(contact: contact, with: bot) {
-                    if has(contact: contact, with: finishingLine) {
-                        gameEngine?.stopPlayer(playerNode: bot)
-                    }
-
-                    for trap in traps where has(contact: contact, with: trap) {
-                        handleContactWithTrap(between: bot, trap: trap)
+        for player in localPlayers {
+            if has(contact: contact, with: player) {
+                if has(contact: contact, with: finishingLine) {
+                    gameEngine?.stopLocalPlayer(playerNode: player)
+                    return
+                }
+                for trap in traps where has(contact: contact, with: trap) {
+                    handleContactWithTrap(between: player, trap: trap)
+                    return
+                }
+                if player == currentPlayer {
+                    for powerup in powerups where has(contact: contact, with: powerup) {
+                        handleContactWithPowerup(powerup)
+                        return
                     }
                 }
             }
         }
-
     }
 
     private func has(contact: SKPhysicsContact, with node: SKSpriteNode?) -> Bool {
         return contact.bodyA.node == node ||
             contact.bodyB.node == node
-    }
-
-    private func handleContactWithTrap(_ trap: SKSpriteNode) {
-        gameEngine?.currentPlayerContactWith(trap: trap)
     }
 
     private func handleContactWithTrap(between player: SKSpriteNode, trap: SKSpriteNode) {
@@ -335,8 +323,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private func launchLocalPlayers() {
         let velocity = getLaunchVelocity()
-        gameEngine?.launchCurrentPlayer(with: velocity)
-        gameEngine?.launchBots(with: velocity)
+        gameEngine?.launchLocalPlayers(with: velocity)
+//        gameEngine?.launchBots(with: velocity)
 
         cannon?.removeFromParent()
     }
@@ -499,14 +487,15 @@ extension GameScene: GameEngineDelegate {
     func addCurrentPlayer(with sprite: SKSpriteNode) {
         addChild(sprite)
         currentPlayer = sprite
+        localPlayers.append(sprite)
     }
 
     func addPlayer(with sprite: SKSpriteNode) {
         addChild(sprite)
     }
 
-    func addBot(with sprite: SKSpriteNode) {
-        bots.append(sprite)
+    func addLocalPlayer(with sprite: SKSpriteNode) {
+        localPlayers.append(sprite)
     }
 
     func currentPlayerIsReconnected() {

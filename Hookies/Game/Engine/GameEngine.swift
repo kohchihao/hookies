@@ -32,8 +32,8 @@ class GameEngine {
     // MARK: - Entity
 
     private var currentPlayer: PlayerEntity?
+    private var localPlayers = [String: PlayerEntity]()
     private var otherPlayers = [String: PlayerEntity]()
-    private var bots = [String: PlayerEntity]()
     private var platforms = [PlatformEntity]()
     private var bolts = [BoltEntity]()
     private var powerups = [PowerupEntity]()
@@ -87,12 +87,13 @@ class GameEngine {
 
     // MARK: - Launch Current Player
 
-    func launchCurrentPlayer(with velocity: CGVector) {
-        guard let sprite = currentPlayer?.get(SpriteComponent.self) else {
-            return
+    func launchLocalPlayers(with velocity: CGVector) {
+        for player in localPlayers {
+            guard let sprite = player.value.get(SpriteComponent.self) else {
+                return
+            }
+            cannonSystem.launch(player: sprite, with: velocity)
         }
-
-        cannonSystem.launch(player: sprite, with: velocity)
     }
 
     // MARK: - Current Player Hook Action
@@ -173,14 +174,22 @@ class GameEngine {
         delegate?.playerHasFinishRace()
     }
 
-    func stopPlayer(playerNode: SKSpriteNode) {
-        for bot in bots {
-            guard let botSprite = bot.value.get(SpriteComponent.self) else {
+    func stopLocalPlayer(playerNode: SKSpriteNode) {
+        for player in localPlayers {
+            guard let playerSprite = player.value.get(SpriteComponent.self) else {
                 continue
             }
-            if botSprite.node == playerNode {
-                botSystem?.stopBot(botSprite: botSprite)
-                break
+            if playerSprite.node == playerNode {
+                guard let currentPlayer = currentPlayer else {
+                    return
+                }
+                if player.value === currentPlayer {
+                    stopCurrentPlayer()
+                    break
+                } else {
+                    botSystem?.stopBot(botSprite: playerSprite)
+                    break
+                }
             }
         }
     }
@@ -202,22 +211,13 @@ class GameEngine {
         return powerupComponent.type
     }
 
-    func currentPlayerContactWith(trap: SKSpriteNode) {
-        guard let currentPlayer = currentPlayer,
-            let currentPlayerSprite = currentPlayer.get(SpriteComponent.self) else {
-                Logger.log.show(details: "Unable to locate current player", logType: .error)
-                return
-        }
-        powerupSystem.activateNetTrapAndBroadcast(at: trap.position, on: currentPlayerSprite)
-    }
-
     func contactBetween(playerNode: SKSpriteNode, trap: SKSpriteNode) {
-        for bot in bots {
-            guard let botSprite = bot.value.get(SpriteComponent.self) else {
+        for player in localPlayers {
+            guard let playerSprite = player.value.get(SpriteComponent.self) else {
                 continue
             }
-            if botSprite.node == playerNode {
-                powerupSystem.activateNetTrapAndBroadcast(at: trap.position, on: botSprite)
+            if playerSprite.node == playerNode {
+                powerupSystem.activateNetTrapAndBroadcast(at: trap.position, on: playerSprite)
                 break
             }
         }
@@ -226,8 +226,7 @@ class GameEngine {
     // MARK: - Update
 
     func update(time: TimeInterval) {
-        checkCurrentPlayerHealth()
-        checkBotHealth()
+        checkLocalPlayerHealth()
         updateClosestBolt()
         checkDeadlock()
         finishingLineSystem.bringPlayersToStop()
@@ -398,19 +397,9 @@ class GameEngine {
 
     // MARK: - Health
 
-    private func checkCurrentPlayerHealth() {
-        guard let sprite = currentPlayer?.get(SpriteComponent.self), let healthSystem = healthSystem else {
-            return
-        }
-
-        if !healthSystem.isPlayerAlive(for: sprite) {
-            _ = healthSystem.respawnPlayer(for: sprite)
-        }
-    }
-
-    private func checkBotHealth() {
-        for bot in bots {
-            guard let sprite = bot.value.get(SpriteComponent.self), let healthSystem = healthSystem else {
+    private func checkLocalPlayerHealth() {
+        for player in localPlayers {
+            guard let sprite = player.value.get(SpriteComponent.self), let healthSystem = healthSystem else {
                 continue
             }
 
@@ -444,6 +433,7 @@ class GameEngine {
         _ = spriteSystem.setPhysicsBody(to: sprite, of: .player1, rectangleOf: sprite.node.size)
 
         currentPlayer = playerEntity
+        localPlayers[player.playerId] = playerEntity
 
         deadlockSystem = DeadlockSystem(sprite: sprite, hook: hook)
         finishingLineSystem.add(player: sprite)
@@ -472,7 +462,7 @@ class GameEngine {
         if player.playerType == .bot {
             if let botType = player.botType {
                 addBot(sprite: sprite, botType: botType)
-                bots[player.playerId] = playerEntity
+                localPlayers[player.playerId] = playerEntity
             }
         }
 
@@ -537,7 +527,7 @@ class GameEngine {
             return
         }
         botSystem.add(spriteComponent: sprite, botComponent: botComponent)
-        delegate?.addBot(with: sprite.node)
+        delegate?.addLocalPlayer(with: sprite.node)
     }
 
     func initialiseBotSystem(_ players: [Player]) {
@@ -546,16 +536,6 @@ class GameEngine {
                 self.botSystem = BotSystem()
                 return
             }
-        }
-    }
-
-    func launchBots(with velocity: CGVector) {
-        guard let bots = botSystem?.bots else {
-            return
-        }
-        botSystem?.start()
-        for bot in bots {
-            cannonSystem.launch(player: bot.key, with: velocity)
         }
     }
 }
@@ -569,6 +549,7 @@ extension GameEngine: StartSystemDelegate {
 
     func startGame() {
         gameState = .start
+        botSystem?.start()
     }
 
     private func startCountdown() {
