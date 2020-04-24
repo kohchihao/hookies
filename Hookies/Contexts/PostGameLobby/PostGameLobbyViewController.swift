@@ -21,7 +21,7 @@ class PostGameLobbyViewController: UIViewController {
 
     @IBOutlet private var continueButton: RoundButton!
     @IBOutlet private var hostStatusLabel: UILabel!
-    
+
     // MARK: - INIT
     init(with viewModel: PostGameLobbyViewModelRepresentable) {
         self.viewModel = viewModel
@@ -32,6 +32,10 @@ class PostGameLobbyViewController: UIViewController {
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
 
     override func viewDidLoad() {
