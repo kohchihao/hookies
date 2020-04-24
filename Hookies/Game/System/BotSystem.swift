@@ -46,6 +46,7 @@ class BotSystem: System, BotSystemProtocol {
     }
 
     func stopBot(botSprite: SpriteComponent) {
+        self.bots = self.bots.filter({ $0.key != botSprite })
         broadcast(with: botSprite, of: .reachedFinishedLine)
     }
 
