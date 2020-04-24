@@ -86,20 +86,27 @@ class PostGameLobbyViewController: UIViewController {
             return
         }
         var index = 0
-        for player in self.viewModel.players.reversed() {
-            API.shared.user.get(withUid: player.playerId, completion: { user, error in
-                guard error == nil else {
-                    Logger.log.show(details: error.debugDescription, logType: .error)
-                    return
-                }
-                guard let user = user else {
-                    return
-                }
-                self.playerViews[index].updateUsernameLabel(username: user.username)
-                self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
-                index += 1
-            })
+        for player in self.viewModel.players {
+            updatePlayerViewWithUsername(player: player, index: index)
+            index += 1
         }
+    }
+
+    private func updatePlayerViewWithUsername(player: Player, index: Int) {
+        guard self.playerViews.indices.contains(index) else {
+            return
+        }
+        API.shared.user.get(withUid: player.playerId, completion: { user, error in
+            guard error == nil else {
+                Logger.log.show(details: error.debugDescription, logType: .error)
+                return
+            }
+            guard let user = user else {
+                return
+            }
+            self.playerViews[index].updateUsernameLabel(username: user.username)
+            self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
+        })
     }
 
     @IBAction private func continueButtonPressed(_ sender: UIButton) {
@@ -154,7 +161,6 @@ class PostGameLobbyViewController: UIViewController {
 
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
     func lobbyLoaded(isLoaded: Bool) {
-        print(self.viewModel.players)
         updatePlayerViews()
         guard let lobby = self.viewModel.lobby else {
             return
