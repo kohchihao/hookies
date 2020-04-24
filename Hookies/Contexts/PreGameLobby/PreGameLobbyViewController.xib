@@ -34,33 +34,33 @@
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-bn-hYX" userLabel="selectedMapLabel">
-                    <rect key="frame" x="210.5" y="55" width="179" height="38.5"/>
+                    <rect key="frame" x="197" y="59" width="201" height="38.5"/>
                     <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ct4-FD-g13" userLabel="Left arrow">
-                    <rect key="frame" x="640" y="36" width="128" height="77"/>
+                    <rect key="frame" x="676" y="40" width="102" height="77"/>
                     <state key="normal" image="Arrow_Left"/>
                     <connections>
                         <action selector="prevCostume" destination="-1" eventType="touchUpInside" id="5ZB-ej-IJG"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L8c-8D-NHy" userLabel="Right arrow">
-                    <rect key="frame" x="896" y="36" width="128" height="77"/>
+                    <rect key="frame" x="921.5" y="40" width="102.5" height="77"/>
                     <state key="normal" image="Arrow_Right"/>
                     <connections>
                         <action selector="nextCostume" destination="-1" eventType="touchUpInside" id="JhL-S3-l1A"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhH-f1-AWI" userLabel="Costume Id">
-                    <rect key="frame" x="768" y="55" width="128" height="38.5"/>
+                    <rect key="frame" x="778" y="59" width="143.5" height="38.5"/>
                     <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09n-Jd-dJd" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="461" y="143.5" width="102" height="38.5"/>
+                    <rect key="frame" x="461" y="147.5" width="102" height="38.5"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="20"/>
                     <state key="normal" title="Friends">
@@ -76,19 +76,19 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5t-UX-zdb">
-                    <rect key="frame" x="512" y="55" width="128" height="38.5"/>
+                    <rect key="frame" x="532.5" y="59" width="143.5" height="38.5"/>
                     <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lobby ID: " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VFq-33-f6L">
-                    <rect key="frame" x="409.5" y="55" width="102.5" height="38.5"/>
+                    <rect key="frame" x="418" y="59" width="114.5" height="38.5"/>
                     <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCv-SN-bcb" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="461" y="242" width="102" height="38.5"/>
+                    <rect key="frame" x="461" y="246" width="102" height="38.5"/>
                     <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="20"/>
                     <state key="normal" title="Start Game">
@@ -104,13 +104,13 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Map: " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yin-cm-VvN">
-                    <rect key="frame" x="67" y="55" width="143.5" height="38.5"/>
+                    <rect key="frame" x="36.5" y="59" width="160.5" height="38.5"/>
                     <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pxw-Sd-UG5" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="210.5" y="143.5" width="102.5" height="38.5"/>
+                    <rect key="frame" x="197" y="147.5" width="102.5" height="38.5"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="20"/>
                     <state key="normal" title="Select Map">
@@ -125,16 +125,25 @@
                         <action selector="onSelectMapClicked:" destination="-1" eventType="touchUpInside" id="ban-on-P5V"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Character:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7pY-bT-UqU">
+                    <rect key="frame" x="778" y="31" width="143.5" height="38"/>
+                    <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
-                <constraint firstItem="L8c-8D-NHy" firstAttribute="top" secondItem="Jre-8K-DKd" secondAttribute="top" constant="36" id="0LJ-nq-ljl"/>
+                <constraint firstItem="L8c-8D-NHy" firstAttribute="top" secondItem="Jre-8K-DKd" secondAttribute="top" constant="40" id="0LJ-nq-ljl"/>
+                <constraint firstItem="7pY-bT-UqU" firstAttribute="height" secondItem="EhH-f1-AWI" secondAttribute="height" id="25C-HZ-Qmt"/>
                 <constraint firstItem="yin-cm-VvN" firstAttribute="height" secondItem="Mqv-bn-hYX" secondAttribute="height" id="2R0-ue-Ovt"/>
                 <constraint firstItem="pxw-Sd-UG5" firstAttribute="centerY" secondItem="09n-Jd-dJd" secondAttribute="centerY" id="6jE-6i-7Ne"/>
-                <constraint firstItem="EhH-f1-AWI" firstAttribute="width" secondItem="Jre-8K-DKd" secondAttribute="width" multiplier="0.125" id="7kV-IU-bsM"/>
+                <constraint firstItem="EhH-f1-AWI" firstAttribute="width" secondItem="Jre-8K-DKd" secondAttribute="width" multiplier="0.14" id="7kV-IU-bsM"/>
                 <constraint firstItem="BKC-SP-KeM" firstAttribute="leading" secondItem="Jre-8K-DKd" secondAttribute="leading" id="9Y1-o5-uXP"/>
                 <constraint firstItem="EhH-f1-AWI" firstAttribute="centerY" secondItem="L8c-8D-NHy" secondAttribute="centerY" id="ABc-u5-ccP"/>
+                <constraint firstItem="EhH-f1-AWI" firstAttribute="top" secondItem="7pY-bT-UqU" secondAttribute="bottom" constant="-10" id="AYO-Hz-gnk"/>
                 <constraint firstItem="ct4-FD-g13" firstAttribute="height" secondItem="L8c-8D-NHy" secondAttribute="height" id="AYQ-36-AMo"/>
+                <constraint firstItem="7pY-bT-UqU" firstAttribute="centerX" secondItem="EhH-f1-AWI" secondAttribute="centerX" id="Ber-zK-ip9"/>
                 <constraint firstItem="Mqv-bn-hYX" firstAttribute="height" secondItem="E5t-UX-zdb" secondAttribute="height" id="GSn-fL-jEA"/>
                 <constraint firstItem="wCv-SN-bcb" firstAttribute="width" secondItem="pxw-Sd-UG5" secondAttribute="width" id="Gaj-VI-9Bn"/>
                 <constraint firstItem="EhH-f1-AWI" firstAttribute="leading" secondItem="ct4-FD-g13" secondAttribute="trailing" id="GyU-SJ-2xV"/>
@@ -148,6 +157,7 @@
                 <constraint firstItem="pxw-Sd-UG5" firstAttribute="height" secondItem="Jre-8K-DKd" secondAttribute="height" multiplier="0.05" id="MjQ-eU-wg1"/>
                 <constraint firstItem="yin-cm-VvN" firstAttribute="centerY" secondItem="Mqv-bn-hYX" secondAttribute="centerY" id="Nah-aG-qJG"/>
                 <constraint firstItem="wCv-SN-bcb" firstAttribute="centerX" secondItem="09n-Jd-dJd" secondAttribute="centerX" id="OpV-ud-UFT"/>
+                <constraint firstItem="7pY-bT-UqU" firstAttribute="width" secondItem="EhH-f1-AWI" secondAttribute="width" id="RrS-0y-tCu"/>
                 <constraint firstItem="VFq-33-f6L" firstAttribute="leading" secondItem="Mqv-bn-hYX" secondAttribute="trailing" constant="20" id="Svz-jx-71T"/>
                 <constraint firstItem="BKC-SP-KeM" firstAttribute="top" secondItem="Jre-8K-DKd" secondAttribute="top" id="UVs-Hl-aet"/>
                 <constraint firstItem="Jre-8K-DKd" firstAttribute="trailing" secondItem="BKC-SP-KeM" secondAttribute="trailing" id="Ucj-Xs-Zma"/>
@@ -160,7 +170,7 @@
                 <constraint firstItem="EhH-f1-AWI" firstAttribute="height" secondItem="Jre-8K-DKd" secondAttribute="height" multiplier="0.05" id="hBf-Ej-J7t"/>
                 <constraint firstItem="E5t-UX-zdb" firstAttribute="width" secondItem="EhH-f1-AWI" secondAttribute="width" id="mGY-73-9Dt"/>
                 <constraint firstItem="wCv-SN-bcb" firstAttribute="top" secondItem="09n-Jd-dJd" secondAttribute="bottom" constant="60" id="nz3-z9-0rp"/>
-                <constraint firstItem="L8c-8D-NHy" firstAttribute="width" secondItem="Jre-8K-DKd" secondAttribute="width" multiplier="0.125" id="qpq-F4-tnz"/>
+                <constraint firstItem="L8c-8D-NHy" firstAttribute="width" secondItem="Jre-8K-DKd" secondAttribute="width" multiplier="0.1" id="qpq-F4-tnz"/>
                 <constraint firstItem="yin-cm-VvN" firstAttribute="width" secondItem="Mqv-bn-hYX" secondAttribute="width" multiplier="0.8" id="qwR-lU-FfL"/>
                 <constraint firstItem="VFq-33-f6L" firstAttribute="width" secondItem="E5t-UX-zdb" secondAttribute="width" multiplier="0.8" id="sem-iK-sce"/>
                 <constraint firstItem="09n-Jd-dJd" firstAttribute="top" secondItem="E5t-UX-zdb" secondAttribute="bottom" constant="50" id="vek-BT-4nH"/>

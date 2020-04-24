@@ -20,17 +20,17 @@ class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
     private var viewModel: PreGameLobbyViewModelRepresentable
     private var playerViews: [LobbyPlayerView] = []
-    private var startButtonEnabled: Bool {
+    private var startButtonHidden: Bool {
         guard let currentUser = API.shared.user.currentUser else {
-            return false
+            return true
         }
-        return self.viewModel.lobby.hostId == currentUser.uid && viewModel.lobby.selectedMapType != nil
+        return self.viewModel.lobby.hostId != currentUser.uid || viewModel.lobby.selectedMapType == nil
     }
-    private var selectMapEnabled: Bool {
+    private var selectMapHidden: Bool {
         guard let currentUser = API.shared.user.currentUser else {
-            return false
+            return true
         }
-        return self.viewModel.lobby.hostId == currentUser.uid
+        return self.viewModel.lobby.hostId != currentUser.uid
     }
 
     @IBOutlet private var selectedMapLabel: UILabel!
@@ -81,7 +81,7 @@ class PreGameLobbyViewController: UIViewController {
         viewModel.delegate = self
         saveLobby(lobby: viewModel.lobby)
         subscribeToLobby(lobby: viewModel.lobby)
-        selectMapButton.isEnabled = selectMapEnabled
+        selectMapButton.isHidden = selectMapHidden
     }
 
     private func setupPlayerView() {
@@ -224,7 +224,7 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func updateView() {
-        startGameButton.isEnabled = startButtonEnabled
+        startGameButton.isHidden = startButtonHidden
         selectedMapLabel.text = viewModel.lobby.selectedMapType.map { $0.rawValue }
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
         updatePlayerViews()
@@ -235,7 +235,7 @@ class PreGameLobbyViewController: UIViewController {
         guard let userId = API.shared.user.currentUser?.uid else {
             return
         }
-        costumeIdLabel.text = viewModel.lobby.costumesId[userId].map { $0.rawValue }
+        costumeIdLabel.text = viewModel.lobby.costumesId[userId].map({ $0.rawValue })?.replacingOccurrences(of: "_", with: " ")
     }
 
     @IBAction private func nextCostume() {
