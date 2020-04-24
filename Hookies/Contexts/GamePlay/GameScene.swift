@@ -95,12 +95,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             for bot in bots {
                 if has(contact: contact, with: bot) {
                     if has(contact: contact, with: finishingLine) {
-                        print("finish line")
                         gameEngine?.stopPlayer(playerNode: bot)
                     }
 
                     for trap in traps where has(contact: contact, with: trap) {
-                        print("trap")
                         handleContactWithTrap(between: bot, trap: trap)
                     }
                 }
@@ -119,7 +117,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handleContactWithTrap(between player: SKSpriteNode, trap: SKSpriteNode) {
-        print("handle trap")
         gameEngine?.contactBetween(playerNode: player, trap: trap)
     }
 

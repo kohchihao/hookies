@@ -97,7 +97,6 @@ class PostGameLobbyViewController: UIViewController {
                     username = user.username
                 } else if player.playerId.contains(Constants.botPrefix) {
                     username = String(player.playerId.prefix(Constants.botUsernameLength))
-                    print(username)
                 } else {
                     return
                 }
@@ -160,7 +159,6 @@ class PostGameLobbyViewController: UIViewController {
 
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
     func lobbyLoaded(isLoaded: Bool) {
-        print(self.viewModel.players)
         updatePlayerViews()
         guard let lobby = self.viewModel.lobby else {
             return

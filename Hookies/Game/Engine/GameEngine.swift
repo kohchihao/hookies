@@ -213,12 +213,10 @@ class GameEngine {
 
     func contactBetween(playerNode: SKSpriteNode, trap: SKSpriteNode) {
         for bot in bots {
-            print("player: \(bot)")
             guard let botSprite = bot.value.get(SpriteComponent.self) else {
                 continue
             }
             if botSprite.node == playerNode {
-                print("activate trap")
                 powerupSystem.activateNetTrapAndBroadcast(at: trap.position, on: botSprite)
                 break
             }
