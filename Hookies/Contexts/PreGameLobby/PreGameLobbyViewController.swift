@@ -144,7 +144,9 @@ class PreGameLobbyViewController: UIViewController {
             self.viewModel.lobby = updatedLobby
             self.updateView()
             if updatedLobby.lobbyState == .empty {
-                API.shared.lobby.delete(lobbyId: self.viewModel.lobby.lobbyId)
+                if API.shared.user.currentUser?.uid == self.viewModel.lobby.hostId {
+                    API.shared.lobby.delete(lobbyId: self.viewModel.lobby.lobbyId)
+                }
                 self.leaveLobby()
             }
             if self.viewModel.lobby.lobbyState == .start {
@@ -153,17 +155,15 @@ class PreGameLobbyViewController: UIViewController {
         })
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         API.shared.lobby.unsubscribeFromLobby()
         API.shared.lobby.close()
-        print("viewDidDisappear")
     }
 
     deinit {
         API.shared.lobby.unsubscribeFromLobby()
         API.shared.lobby.close()
-        print("deinitialized")
     }
 
     @IBAction private func onSelectMapClicked(_ sender: UIButton) {
@@ -321,6 +321,20 @@ class PreGameLobbyViewController: UIViewController {
 
     @IBAction private func onFriendButtonPressed(_ sender: UIButton) {
         navigationDelegate?.didPressFriendButton(in: self, lobbyId: self.viewModel.lobby.lobbyId)
+    }
+
+    @IBAction private func onReturnHomeButtonPressed(_ sender: UIButton) {
+        guard let currentPlayerId = API.shared.user.currentUser?.uid else {
+            return
+        }
+        if currentPlayerId == self.viewModel.lobby.hostId {
+            self.viewModel.lobby.updateLobbyState(lobbyState: .empty)
+            API.shared.lobby.save(lobby: self.viewModel.lobby)
+        } else {
+            self.viewModel.lobby.removePlayer(playerId: currentPlayerId)
+            API.shared.lobby.save(lobby: self.viewModel.lobby)
+            leaveLobby()
+        }
     }
 }
 

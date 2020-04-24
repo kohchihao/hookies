@@ -111,6 +111,7 @@ class PostGameLobbyViewController: UIViewController {
         }
         if currentPlayerId == lobby.hostId {
             lobby.updateLobbyState(lobbyState: .open)
+            print(lobby)
         } else {
             guard lobby.lobbyState == .open else {
                 Logger.log.show(details: "Lobby is not open", logType: .error)

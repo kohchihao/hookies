@@ -79,7 +79,7 @@ struct Lobby {
         }
         self.playersId = playersId
     }
-        
+
     mutating func updateCostumeId(playerId: String, costumeType: CostumeType) {
         if playersId.contains(playerId) {
             self.costumesId[playerId] = costumeType
@@ -110,9 +110,7 @@ struct Lobby {
             }
         case .empty:
             self.playersId = [hostId]
-        default:
-            break
-        self.lobbyState = lobbyState
         }
+        self.lobbyState = lobbyState
     }
 }
