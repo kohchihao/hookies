@@ -44,6 +44,11 @@ extension CannonSystem {
             selector: #selector(receivedLaunchAction(_:)),
             name: .receivedLaunchAction,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
+            object: nil)
     }
 
     private func broadcast(with sprite: SpriteComponent) {
@@ -67,5 +72,9 @@ extension CannonSystem {
 
             launch(otherPlayer: sprite, with: velocity)
         }
+    }
+
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }

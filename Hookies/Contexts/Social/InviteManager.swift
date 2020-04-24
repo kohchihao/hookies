@@ -17,7 +17,7 @@ struct InviteManager {
             dispatch.enter()
             API.shared.invite.get(inviteId: inviteId, completion: { invite, error in
                 guard error == nil else {
-                    print(error.debugDescription)
+                    Logger.log.show(details: error.debugDescription, logType: .error)
                     return
                 }
                 guard let invite = invite else {
@@ -35,15 +35,15 @@ struct InviteManager {
     static func checkRecipientIsNotInLobby(invite: Invite, completion: @escaping (Bool) -> Void) {
         API.shared.lobby.get(lobbyId: invite.lobbyId, completion: { lobby, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return completion(false)
             }
             guard let lobby = lobby else {
-                print("lobby not found")
+                Logger.log.show(details: "lobby not found", logType: .error)
                 return completion(false)
             }
             guard !lobby.playersId.contains(invite.toUserId) else {
-                print("Recipient is already in the lobby")
+                Logger.log.show(details: "Recipient is already in the lobby", logType: .alert)
                 return completion(false)
             }
             return completion(true)
@@ -58,26 +58,26 @@ struct InviteManager {
     ) {
         self.getInvites(inviteIds: sender.outgoingInvites, completion: { invites in
             guard !invites.map({ $0.toUserId }).contains(invite.toUserId) else {
-                print("invite to this player already exists")
+                Logger.log.show(details: "invite to this player already exists", logType: .alert).display(.alert)
                 return completion(false)
             }
             self.getInvites(inviteIds: sender.incomingInvites, completion: { invites in
                 guard !invites.map({ $0.fromUserId }).contains(invite.toUserId) else {
-                    print("there is an existing invite from this player")
+                    Logger.log.show(details: "there is an existing invite from this player", logType: .alert)
                     return completion(false)
                 }
                 self.getInvites(inviteIds: recipient.outgoingInvites, completion: { recipientInvites in
                     guard !recipientInvites.map({ $0.toUserId }).contains(invite.fromUserId) else {
-                        print("there is an existing invite from this player")
+                        Logger.log.show(details: "there is an existing invite from this player", logType: .alert)
                         return completion(false)
                     }
                     self.getInvites(inviteIds: recipient.incomingInvites, completion: { recipientInvites in
                         guard !recipientInvites.map({ $0.fromUserId }).contains(invite.fromUserId) else {
-                            print("invite already exists")
+                            Logger.log.show(details: "invite already exists", logType: .alert)
                             return completion(false)
                         }
                         guard !invites.map({ $0.lobbyId }).contains(invite.lobbyId) else {
-                            print("invite from this lobby id already exists")
+                            Logger.log.show(details: "invite from this lobby id already exists", logType: .alert)
                             return completion(false)
                         }
                         return completion(true)
@@ -125,11 +125,11 @@ struct InviteManager {
     static func getInvite(inviteId: String, completion: @escaping (Invite?) -> Void) {
         API.shared.invite.get(inviteId: inviteId, completion: { invite, error in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return completion(nil)
             }
             guard let invite = invite else {
-                print("invite not found")
+                Logger.log.show(details: "invite not found", logType: .error)
                 return completion(nil)
             }
             return completion(invite)

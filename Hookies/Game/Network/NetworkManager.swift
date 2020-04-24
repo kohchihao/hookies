@@ -19,19 +19,20 @@ class NetworkManager: NetworkManagerProtocol {
     static let shared = NetworkManager()
 
     private(set) var gameId: String?
-    private(set) var currentPlayerId: String?
+    private(set) var currentPlayer: Player?
     private(set) var deviceStatus: DeviceStatus?
     private var otherPlayersId = Set<String>()
     private var playersSprite = [String: SpriteComponent]()
+    private var players = [String: Player]()
 
     private init() {
-        currentPlayerId = API.shared.user.currentUser?.uid
-        setUpDeviceStatus()
         registerNotificationObservers()
+        Logger.log.traceableFunctionName = true
     }
 
     func set(gameId: String) {
         self.gameId = gameId
+        setUpDeviceStatus()
     }
 
     // MARK: - Setup current device connection status
@@ -89,23 +90,30 @@ class NetworkManager: NetworkManagerProtocol {
             selector: #selector(broadcastFinishGame(_:)),
             name: .broadcastFinishGameEvent,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastPlayerRankings(_:)),
+            name: .broadcastPlayerRankings,
+            object: nil)
     }
 
     // MARK: - Game Connection
 
     @objc private func gameConnection(_ notification: Notification) {
         guard let gameId = gameId else {
-            print("NetworkManager - GameConnection: gameId is nil")
+            Logger.log.show(details: "gameId is nil", logType: .error)
             return
         }
 
+        Logger.log.show(details: "Connecting to game...", logType: .information)
         API.shared.gameplay.connect(roomId: gameId, completion: { otherPlayersId in
+            Logger.log.show(details: "Connected to game", logType: .information)
             for otherPlayerId in otherPlayersId {
                 self.handleOtherPlayerJoinEvent(with: otherPlayerId)
             }
-        })
 
-        setupSocketSubscriptions()
+            self.setupSocketSubscriptions()
+        })
     }
 
     // MARK: - Add Players Mappings
@@ -114,6 +122,11 @@ class NetworkManager: NetworkManagerProtocol {
         if let playersMapping = notification.userInfo as? [Player: SpriteComponent] {
             for (player, sprite) in playersMapping {
                 playersSprite[player.playerId] = sprite
+                players[player.playerId] = player
+
+                if player.isCurrentPlayer {
+                    currentPlayer = player
+                }
             }
         }
     }
@@ -135,8 +148,8 @@ class NetworkManager: NetworkManagerProtocol {
     }
 
     private func createPlayerEventData(from playerAction: GenericSystemEvent) -> GenericPlayerEventData? {
-        guard let currentPlayerId = currentPlayerId else {
-            print("NetworkManager - CreatePlayerEventData: currentPlayerId is nil")
+        guard let currentPlayerId = currentPlayer?.playerId else {
+            Logger.log.show(details: "currentPlayerId is nil of \(playerAction.eventType)", logType: .error)
             return nil
         }
 
@@ -162,13 +175,19 @@ class NetworkManager: NetworkManagerProtocol {
                 return
             }
 
-            API.shared.gameplay.broadcastPowerupEvent(powerupEvent: powerupEventData)
+            guard let currentPlayerId = currentPlayer?.playerId else {
+                return
+            }
+
+            if powerupEventData.playerData.playerId == currentPlayerId {
+                API.shared.gameplay.broadcastPowerupEvent(powerupEvent: powerupEventData)
+            }
         }
     }
 
     private func createPowerupEventData(from powerupSystemEvent: PowerupSystemEvent) -> PowerupEventData? {
-        guard let currentPlayerId = currentPlayerId else {
-            print("NetworkManager - CreatePowerupEventData: currentPlayerId is nil")
+        guard let currentPlayerId = currentPlayer?.playerId else {
+            Logger.log.show(details: "currentPlayerId is nil", logType: .error)
             return nil
         }
 
@@ -200,8 +219,8 @@ class NetworkManager: NetworkManagerProtocol {
     private func createPowerupCollectionData(
         from powerupCollectionSystemEvent: PowerupCollectionSystemEvent
     ) -> PowerupCollectionData? {
-        guard let currentPlayerId = currentPlayerId else {
-            print("NetworkManager - createPowerupCollectionData: currentPlayerId is nil")
+        guard let currentPlayerId = currentPlayer?.playerId else {
+            Logger.log.show(details: "currentPlayerId is nil", logType: .error)
             return nil
         }
 
@@ -216,6 +235,53 @@ class NetworkManager: NetworkManagerProtocol {
 
     @objc private func broadcastFinishGame(_ notification: Notification) {
         API.shared.gameplay.registerFinishLineReached()
+
+        guard let deviceStatus = deviceStatus else {
+            return
+        }
+
+        if deviceStatus == .offline {
+            if let data = notification.userInfo as? [String: SpriteComponent] {
+                guard let sprite = data["data"] else {
+                    return
+                }
+
+                NotificationCenter.default.post(
+                    name: .broadcastPlayerFinishSprite,
+                    object: self,
+                    userInfo: ["data": sprite])
+            }
+        }
+    }
+
+    // MARK: - Broadcast
+
+    @objc private func broadcastPlayerRankings(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: [SpriteComponent]] {
+            guard let rankings = data["data"] else {
+                return
+            }
+
+            var playerRankings = [Player]()
+
+            for ranking in rankings {
+                guard let playerSpriteMapping = playersSprite.first(where: { $0.value == ranking }) else {
+                    Logger.log.show(details: "Failed to get player sprite mapping", logType: .error)
+                    return
+                }
+
+                guard let player = players[playerSpriteMapping.key] else {
+                    return
+                }
+
+                playerRankings.append(player)
+            }
+
+            NotificationCenter.default.post(
+                name: .receivedGameEndEvent,
+                object: self,
+                userInfo: ["data": playerRankings])
+        }
     }
 
     // MARK: - Socket Subscriptions
@@ -319,7 +385,9 @@ class NetworkManager: NetworkManagerProtocol {
         let playerId = genericPlayerEventData.playerData.playerId
 
         guard let playerSprite = playersSprite[playerId] else {
-            print("NetworkManager - CreateGenericSystemEvent: No player sprite of \(playerId)")
+            Logger.log.show(
+                details: "No player sprite of \(playerId) and event \(genericPlayerEventData.type)",
+                logType: .error)
             return nil
         }
 
@@ -328,6 +396,7 @@ class NetworkManager: NetworkManagerProtocol {
         }
 
         playerSprite.node.position = CGPoint(vector: genericPlayerEventData.playerData.position)
+        playerSprite.node.physicsBody?.isDynamic = true
         playerSprite.node.physicsBody?.velocity = CGVector(vector: velocity)
 
         return GenericSystemEvent(sprite: playerSprite, eventType: genericPlayerEventData.type)
@@ -337,20 +406,27 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func subscribeToGameEndEvent() {
         API.shared.gameplay.subscribeToGameEndEvent(listener: { rankings in
-            var rankingsSprite = [SpriteComponent]()
+            API.shared.gameplay.close()
+            Logger.log.show(details: "Closed Game Connection", logType: .information)
+
+            var playerRankings = [Player]()
 
             for userId in rankings {
-                guard let playerSprite = self.playersSprite[userId] else {
+                guard let player = self.players[userId] else {
                     return
                 }
 
-                rankingsSprite.append(playerSprite)
+                playerRankings.append(player)
             }
 
             NotificationCenter.default.post(
                 name: .receivedGameEndEvent,
                 object: self,
-                userInfo: ["data": rankingsSprite])
+                userInfo: ["data": playerRankings])
+
+            NotificationCenter.default.post(name: .broadcastUnregisterObserver, object: self)
+
+            self.reset()
         })
     }
 
@@ -373,7 +449,7 @@ class NetworkManager: NetworkManagerProtocol {
         let playerId = powerupEventData.playerData.playerId
 
         guard let playerSprite = playersSprite[playerId] else {
-            print("NetworkManager - createPowerupSystemEvent: No player sprite of \(playerId)")
+            Logger.log.show(details: "No player sprite of \(playerId)", logType: .error)
             return nil
         }
 
@@ -382,8 +458,8 @@ class NetworkManager: NetworkManagerProtocol {
         return PowerupSystemEvent(
             sprite: playerSprite,
             powerupEventType: powerupEventData.eventType,
-            powerupPos: powerupEventData.eventPos,
-            powerupType: powerupEventData.type)
+            powerupType: powerupEventData.type,
+            powerupPos: powerupEventData.eventPos)
     }
 
     // MARK: Powerup Collection
@@ -407,7 +483,7 @@ class NetworkManager: NetworkManagerProtocol {
         let playerId = powerupCollectionData.playerData.playerId
 
         guard let playerSprite = playersSprite[playerId] else {
-            print("NetworkManager - createPowerCollectionSystemEvent: No player sprite of \(playerId)")
+            Logger.log.show(details: "No player sprite of \(playerId)", logType: .error)
             return nil
         }
 
@@ -425,5 +501,16 @@ class NetworkManager: NetworkManagerProtocol {
         NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
 
         otherPlayersId.insert(playerId)
+    }
+
+    // MARK: - Reset Network Manger
+
+    private func reset() {
+        gameId = nil
+        currentPlayer = nil
+        deviceStatus = nil
+        otherPlayersId.removeAll()
+        playersSprite.removeAll()
+        players.removeAll()
     }
 }

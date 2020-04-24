@@ -12,7 +12,10 @@ import SpriteKit
 class PowerupEffectComponent: Component {
     private(set) var parent: Entity
 
-    init(parent: Entity) {
+    var isNegativeEffect: Bool // Whether the has negative effect on user
+
+    init(parent: Entity, isNegativeEffect: Bool) {
         self.parent = parent
+        self.isNegativeEffect = isNegativeEffect
     }
 }

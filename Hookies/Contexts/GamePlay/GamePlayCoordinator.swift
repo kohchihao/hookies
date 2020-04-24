@@ -18,23 +18,26 @@ class GamePlayCoordinator: Coordinator {
     private let navigator: NavigatorRepresentable
     private let mapType: MapType
     private let gameplayId: String
+    private let players: [Player]
 
     // MARK: - INIT
-    init(with navigator: NavigatorRepresentable, mapType: MapType, gameplayId: String) {
+    init(with navigator: NavigatorRepresentable, mapType: MapType, gameplayId: String, players: [Player]) {
         self.navigator = navigator
         self.mapType = mapType
         self.gameplayId = gameplayId
+        self.players = players
     }
 
     // MARK: - START
     func start() {
+        print("start")
         coordinatorDelegate?.coordinatorDidStart(self)
         navigator.transition(to: viewController(), as: .push)
     }
 
     // MARK: - FUNCTIONS
     private func viewController() -> GamePlayViewController {
-        let viewModel = GamePlayViewModel(withSelectedMap: mapType, and: gameplayId)
+        let viewModel = GamePlayViewModel(withSelectedMap: mapType, and: gameplayId, players: players)
         let viewController = GamePlayViewController(with: viewModel)
         viewController.navigationDelegate = self
         return viewController
@@ -43,7 +46,14 @@ class GamePlayCoordinator: Coordinator {
 
 // MARK: - GameViewNavigationDelegate
 extension GamePlayCoordinator: GameViewNavigationDelegate {
-    func gameDidEnd(gamePlayId: String) {
-        // TODO: Create Post Lobby Coordinator
+    func gameDidEnd(gamePlayId: String, rankings: [Player]) {
+        Logger.log.show(details: "\(rankings)", logType: .information)
+
+        let postGameLobbyCoordinator = PostGameLobbyCoordinator(
+            with: navigator,
+            gamePlayId: gamePlayId,
+            ranking: rankings)
+        postGameLobbyCoordinator.coordinatorDelegate = self
+        postGameLobbyCoordinator.start()
     }
 }

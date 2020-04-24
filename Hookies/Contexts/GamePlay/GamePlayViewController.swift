@@ -11,8 +11,7 @@ import SpriteKit
 import UIKit
 
 protocol GameViewNavigationDelegate: class {
-    // TODO: Add Ranking of Players
-    func gameDidEnd(gamePlayId: String)
+    func gameDidEnd(gamePlayId: String, rankings: [Player])
 }
 
 class GamePlayViewController: UIViewController {
@@ -35,12 +34,11 @@ class GamePlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.view.isMultipleTouchEnabled = true
         if let view = self.view as? SKView {
             // Load the SKScene from 'GameScene.sks'
             if let scene = GameScene(fileNamed: viewModel.selectedMap.rawValue) {
-                scene.gameplayId = viewModel.gameplayId
-//                scene.players = viewMode.players
+                scene.players = viewModel.players
 
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
@@ -58,8 +56,13 @@ class GamePlayViewController: UIViewController {
         }
     }
 
-    func endGame() {
-        navigationDelegate?.gameDidEnd(gamePlayId: viewModel.gameplayId)
+    func endGame(rankings: [Player]) {
+        navigationDelegate?.gameDidEnd(gamePlayId: viewModel.gameplayId, rankings: rankings)
+        self.removeFromParent()
+        self.dismiss(animated: true, completion: nil)
+        if let view = self.view as? SKView {
+            view.presentScene(nil)
+        }
     }
 
     override var prefersStatusBarHidden: Bool {

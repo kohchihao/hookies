@@ -11,4 +11,8 @@ import CoreGraphics
 
 class ShieldEffectComponent: PowerupEffectComponent {
     let duration = 3.0
+
+    init(parent: Entity) {
+        super.init(parent: parent, isNegativeEffect: false)
+    }
 }

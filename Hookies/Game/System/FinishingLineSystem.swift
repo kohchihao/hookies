@@ -13,14 +13,6 @@ protocol FinishingLineSystemProtocol {
     func bringPlayersToStop()
 }
 
-protocol FinishingLineSystemDelegate: AnyObject {
-    func gameEnded(rankings: [SpriteComponent])
-}
-
-enum FinishingLineSystemError: Error {
-    case spriteDoesNotExist
-}
-
 enum PlayerState {
     case moving
     case stopping
@@ -31,8 +23,6 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
     private let finishingLine: SpriteComponent
     private var players: Set<SpriteComponent>
     private var playersState: [SpriteComponent: PlayerState]
-
-    weak var delegate: FinishingLineSystemDelegate?
 
     init(finishingLine: SpriteComponent, players: Set<SpriteComponent>) {
         self.finishingLine = finishingLine
@@ -67,7 +57,7 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         }
 
         broadcastReachedFinishLine(with: player)
-        broadcastFinishGame()
+        broadcastFinishGame(with: player)
         return stop(player: player, at: player.node.position, with: velocity)
     }
 
@@ -85,6 +75,7 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
             } else {
                 sprite.node.physicsBody?.velocity = CGVector.zero
                 sprite.node.physicsBody?.restitution = 0
+                sprite.node.physicsBody?.isDynamic = false
 
                 playersState[sprite] = .stopped
             }
@@ -125,8 +116,8 @@ extension FinishingLineSystem {
             object: nil)
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(receivedGameEndEvent(_:)),
-            name: .receivedGameEndEvent,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
             object: nil)
     }
 
@@ -138,8 +129,8 @@ extension FinishingLineSystem {
             userInfo: ["data": genericSystemEvent])
     }
 
-    private func broadcastFinishGame() {
-        NotificationCenter.default.post(name: .broadcastFinishGameEvent, object: self)
+    private func broadcastFinishGame(with sprite: SpriteComponent) {
+        NotificationCenter.default.post(name: .broadcastFinishGameEvent, object: self, userInfo: ["data": sprite])
     }
 
     @objc private func receivedReachedFinishLineAction(_ notification: Notification) {
@@ -156,13 +147,7 @@ extension FinishingLineSystem {
         }
     }
 
-    @objc private func receivedGameEndEvent(_ notification: Notification) {
-        if let data = notification.userInfo as? [String: [SpriteComponent]] {
-            guard let rankings = data["data"] else {
-                return
-            }
-
-            delegate?.gameEnded(rankings: rankings)
-        }
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }

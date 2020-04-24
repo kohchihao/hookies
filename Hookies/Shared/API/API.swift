@@ -14,7 +14,9 @@ class API {
     static let shared = API()
 
     private let db: Firestore
-    private let socketManager = SocketManager(socketURL: Config.socketURL)
+    private let socketManager = SocketManager(
+        socketURL: Config.socketURL,
+        config: [.reconnects(true), .reconnectAttempts(-1)])
     let user: UserStore
     let gameplay: GameplayStore
     let lobby: LobbyStore

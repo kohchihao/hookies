@@ -14,10 +14,9 @@ class PreGameLobbyCoordinator: Coordinator {
     var coordinators: [Coordinator] = []
     weak var coordinatorDelegate: CoordinatorDelegate?
 
-    private var viewModel: PreGameLobbyViewModel
-
     // MARK: - PRIVATE PROPERTIES
     private let navigator: NavigatorRepresentable
+    private var viewModel: PreGameLobbyViewModel
 
     // MARK: - INIT
     init(with navigator: NavigatorRepresentable) {
@@ -54,8 +53,17 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
         mapsCoordinator.start()
     }
 
-    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String) {
-        let gamePlayCoordinator = GamePlayCoordinator(with: navigator, mapType: mapType, gameplayId: gameplayId)
+    func didPressStartButton(
+        in: PreGameLobbyViewController,
+        withSelectedMapType mapType: MapType,
+        gameplayId: String,
+        players: [Player]
+    ) {
+        let gamePlayCoordinator = GamePlayCoordinator(
+            with: navigator,
+            mapType: mapType,
+            gameplayId: gameplayId,
+            players: players)
         gamePlayCoordinator.coordinatorDelegate = self
         gamePlayCoordinator.start()
     }

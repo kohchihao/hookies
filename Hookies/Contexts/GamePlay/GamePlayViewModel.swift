@@ -11,15 +11,18 @@ import Foundation
 protocol GamePlayViewModelRepresentable {
     var selectedMap: MapType { get set }
     var gameplayId: String { get }
+    var players: [Player] { get }
 }
 
 class GamePlayViewModel: GamePlayViewModelRepresentable {
     var selectedMap: MapType
     let gameplayId: String
+    var players: [Player]
 
-    init(withSelectedMap selectedMap: MapType, and gameplayId: String) {
+    init(withSelectedMap selectedMap: MapType, and gameplayId: String, players: [Player]) {
         self.selectedMap = selectedMap
         self.gameplayId = gameplayId
+        self.players = players
     }
 
 }

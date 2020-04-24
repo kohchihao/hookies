@@ -55,7 +55,11 @@ extension UserConnectionSystem {
             selector: #selector(receivedCurrentPlayerDisconnectedEvent(_:)),
             name: .receivedCurrentPlayerDisconnectedEvent,
             object: nil)
-
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastUnregisterObserver(_:)),
+            name: .broadcastUnregisterObserver,
+            object: nil)
     }
 
     @objc private func receivedOtherPlayerRejoinEvent(_ notification: Notification) {
@@ -84,5 +88,9 @@ extension UserConnectionSystem {
 
     @objc private func receivedCurrentPlayerDisconnectedEvent(_ notification: Notification) {
         delegate?.userDisconnected()
+    }
+
+    @objc private func broadcastUnregisterObserver(_ notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
     }
 }

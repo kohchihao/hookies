@@ -8,11 +8,10 @@
 
 import Foundation
 import SpriteKit
-import GameplayKit
 
 protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
-    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String)
+    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String, players: [Player])
     func didPressFriendButton(in: PreGameLobbyViewController, lobbyId: String)
     func leaveLobby()
 }
@@ -135,7 +134,7 @@ class PreGameLobbyViewController: UIViewController {
     func subscribeToLobby(lobby: Lobby) {
         API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
             guard error == nil else {
-                print(error.debugDescription)
+                Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
             guard let updatedLobby = lobby else {
@@ -185,10 +184,12 @@ class PreGameLobbyViewController: UIViewController {
         }
         saveLobby(lobby: viewModel.lobby)
         createGameplaySession(with: viewModel.lobby)
+        let players = createPlayers(with: viewModel.lobby)
+        API.shared.lobby.unsubscribeFromLobby()
         navigationDelegate?.didPressStartButton(
             in: self,
             withSelectedMapType: selectedMapType,
-            gameplayId: viewModel.lobby.lobbyId)
+            gameplayId: viewModel.lobby.lobbyId, players: players)
     }
 
     private func leaveLobby() {
@@ -198,6 +199,28 @@ class PreGameLobbyViewController: UIViewController {
     private func createGameplaySession(with lobby: Lobby) {
         let gameplay = Gameplay(gameId: lobby.lobbyId, gameState: .waiting, playersId: lobby.playersId)
         API.shared.gameplay.saveGameState(gameplay: gameplay)
+    }
+
+    private func createPlayers(with lobby: Lobby) -> [Player] {
+        var players: [Player] = []
+        guard let currentId = API.shared.user.currentUser?.uid else {
+            Logger.log.show(details: "current player not found", logType: .error)
+            return players
+        }
+        let hostId = lobby.hostId
+        let hostCostume = lobby.costumesId[lobby.hostId] ?? CostumeType.getDefault()
+        guard let host = Player(playerId: hostId, playerType: .human, costumeType: hostCostume, isCurrentPlayer: currentId == hostId) else {
+            return players
+        }
+        players.append(host)
+        for playerId in lobby.playersId.filter({ $0 != lobby.hostId }) {
+            let costume = lobby.costumesId[playerId] ?? CostumeType.getDefault()
+            guard let player = Player(playerId: playerId, playerType: .human, costumeType: costume, isCurrentPlayer: currentId == playerId) else {
+                continue
+            }
+            players.append(player)
+        }
+        return players
     }
 
     private func updateView() {
@@ -248,7 +271,7 @@ class PreGameLobbyViewController: UIViewController {
             var players = players
             players.sort(by: { $0.username < $1.username })
             guard players.count <= Constants.maxPlayerCount && players.count <= self.playerViews.count else {
-                print("max number of players exceeded")
+                Logger.log.show(details: "max number of players exceeded", logType: .error)
                 return
             }
             for playerView in self.playerViews {
@@ -257,6 +280,7 @@ class PreGameLobbyViewController: UIViewController {
             var otherPlayersViewIndex = 1
             var index: Int
             for player in players {
+
                 if player.uid == self.viewModel.lobby.hostId {
                     index = 0
                 } else {
@@ -297,6 +321,11 @@ class PreGameLobbyViewController: UIViewController {
 
     @IBAction private func onFriendButtonPressed(_ sender: UIButton) {
         navigationDelegate?.didPressFriendButton(in: self, lobbyId: self.viewModel.lobby.lobbyId)
+    }
+
+    @IBAction private func postButtonPressed(_ sender: UIButton) {
+        let players = self.createPlayers(with: self.viewModel.lobby)
+        navigationDelegate?.didPressPostButton(in: self, lobbyId: self.viewModel.lobby.lobbyId, players: players)
     }
 }
 
