@@ -150,7 +150,8 @@ class NetworkManager: NetworkManagerProtocol {
                 return
             }
             if genericPlayerEventData.playerData.playerId != currentPlayer?.playerId {
-                sendGenericPlayerEventNotification(genericPlayerEventData: genericPlayerEventData)
+                let name = self.convertPlayerEventToNotificationName(playerEvent: genericPlayerEventData.type)
+                NotificationCenter.default.post(name: name, object: self, userInfo: data)
             }
             API.shared.gameplay.boardcastGenericPlayerEvent(playerEvent: genericPlayerEventData)
         }
@@ -361,17 +362,18 @@ class NetworkManager: NetworkManagerProtocol {
 
     private func subscribeToGenericPlayerEvent() {
         API.shared.gameplay.subscribeToGenericPlayerEvent(listener: { genericPlayerEventData in
-            self.sendGenericPlayerEventNotification(genericPlayerEventData: genericPlayerEventData)
+            guard let genericSystemEvent = self.createGenericSystemEvent(from: genericPlayerEventData) else {
+                return
+            }
+            let notificationData = ["data": genericSystemEvent]
+            let name = self.convertPlayerEventToNotificationName(playerEvent: genericPlayerEventData.type)
+            NotificationCenter.default.post(name: name, object: self, userInfo: notificationData)
         })
     }
 
-    private func sendGenericPlayerEventNotification(genericPlayerEventData: GenericPlayerEventData) {
-        guard let genericSystemEvent = self.createGenericSystemEvent(from: genericPlayerEventData) else {
-            return
-        }
-        let notificationData = ["data": genericSystemEvent]
+    private func convertPlayerEventToNotificationName(playerEvent: GenericPlayerEvent) -> Notification.Name {
         var name: Notification.Name
-        switch genericPlayerEventData.type {
+        switch playerEvent {
         case .shotFromCannon:
             name = .receivedLaunchAction
         case .jumpAction:
@@ -389,7 +391,7 @@ class NetworkManager: NetworkManagerProtocol {
         case .shortenRope:
             name = .receivedShortenRopeAction
         }
-        NotificationCenter.default.post(name: name, object: self, userInfo: notificationData)
+        return name
     }
 
     private func createGenericSystemEvent(from genericPlayerEventData: GenericPlayerEventData) -> GenericSystemEvent? {

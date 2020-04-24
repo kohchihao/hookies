@@ -162,9 +162,9 @@ class GameEngine {
         deadlockSystem?.resolveDeadlock()
     }
 
-    // MARK: - Current Player Finsh Race
+    // MARK: - Local Player Finish Race
 
-    func stopCurrentPlayer() {
+    private func stopCurrentPlayer() {
         guard let sprite = currentPlayer?.get(SpriteComponent.self) else {
             return
         }
@@ -193,7 +193,7 @@ class GameEngine {
                     break
                 } else {
                     botSystem?.stopBot(botSprite: playerSprite)
-                    
+                    _ = finishingLineSystem.stop(player: playerSprite)
                     break
                 }
             }
