@@ -10,6 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostGameLobbyViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
                 <outlet property="continueButton" destination="Y9r-Ha-p8Y" id="IUp-pM-5Uh"/>
+                <outlet property="hostStatusLabel" destination="Mwp-me-meX" id="z9x-yz-ZPP"/>
                 <outlet property="view" destination="iN0-l3-epB" id="3uZ-Vg-iOC"/>
             </connections>
         </placeholder>
@@ -18,29 +19,11 @@
             <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="home_background" translatesAutoresizingMaskIntoConstraints="NO" id="Ue0-Cw-aOU">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_background" translatesAutoresizingMaskIntoConstraints="NO" id="Ue0-Cw-aOU">
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sSB-Xe-oTv" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="793" y="20" width="100" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <state key="normal" title="Return Home">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="10"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="returnHomeButtonPressedWith_sender:" destination="-1" eventType="touchUpInside" id="ubC-Dd-J8B"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y9r-Ha-p8Y" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="923" y="19" width="80" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y9r-Ha-p8Y" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
+                    <rect key="frame" x="876" y="20" width="102.5" height="38.5"/>
                     <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <state key="normal" title="Continue">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -54,8 +37,47 @@
                         <action selector="continueButtonPressed:" destination="-1" eventType="touchUpInside" id="9eb-W2-D88"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mwp-me-meX">
+                    <rect key="frame" x="850.5" y="20" width="153.5" height="38.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sSB-Xe-oTv" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
+                    <rect key="frame" x="733.5" y="20" width="102.5" height="38.5"/>
+                    <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="Return Home">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="returnHomeButtonPressedWith_sender:" destination="-1" eventType="touchUpInside" id="ubC-Dd-J8B"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Ue0-Cw-aOU" secondAttribute="trailing" id="2gq-BJ-KeL"/>
+                <constraint firstItem="Y9r-Ha-p8Y" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" multiplier="0.05" id="2kd-Fc-KFO"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Ue0-Cw-aOU" secondAttribute="bottom" id="B7v-h2-Z8b"/>
+                <constraint firstItem="Y9r-Ha-p8Y" firstAttribute="leading" secondItem="sSB-Xe-oTv" secondAttribute="trailing" constant="40" id="BnW-sw-YlC"/>
+                <constraint firstItem="sSB-Xe-oTv" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" multiplier="0.05" id="Bwi-9J-unx"/>
+                <constraint firstItem="Mwp-me-meX" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" multiplier="0.05" id="Cze-ds-WEq"/>
+                <constraint firstItem="sSB-Xe-oTv" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.1" id="RC8-fp-4yQ"/>
+                <constraint firstItem="Ue0-Cw-aOU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="UkN-Fc-Kfe"/>
+                <constraint firstItem="Y9r-Ha-p8Y" firstAttribute="centerX" secondItem="Mwp-me-meX" secondAttribute="centerX" id="Vx9-G9-rX7"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Mwp-me-meX" secondAttribute="trailing" constant="20" id="W1N-On-4fl"/>
+                <constraint firstItem="Mwp-me-meX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="cTw-6m-VRG"/>
+                <constraint firstItem="Y9r-Ha-p8Y" firstAttribute="centerY" secondItem="Mwp-me-meX" secondAttribute="centerY" id="idc-D2-Dhr"/>
+                <constraint firstItem="sSB-Xe-oTv" firstAttribute="centerY" secondItem="Y9r-Ha-p8Y" secondAttribute="centerY" id="lGh-7B-cjZ"/>
+                <constraint firstItem="Ue0-Cw-aOU" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="m0s-j0-1na"/>
+                <constraint firstItem="Mwp-me-meX" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.15" id="ngo-vE-duA"/>
+                <constraint firstItem="Y9r-Ha-p8Y" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.1" id="uSf-3x-AHD"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="140.625" y="94.53125"/>
         </view>

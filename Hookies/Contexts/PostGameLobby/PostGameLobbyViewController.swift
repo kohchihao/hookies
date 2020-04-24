@@ -19,7 +19,8 @@ class PostGameLobbyViewController: UIViewController {
     private var viewModel: PostGameLobbyViewModelRepresentable
     private var playerViews: [LobbyPlayerView] = []
 
-    @IBOutlet var continueButton: RoundButton!
+    @IBOutlet private var continueButton: RoundButton!
+    @IBOutlet private var hostStatusLabel: UILabel!
 
     // MARK: - INIT
     init(with viewModel: PostGameLobbyViewModelRepresentable) {
@@ -31,6 +32,10 @@ class PostGameLobbyViewController: UIViewController {
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
 
     override func viewDidLoad() {
@@ -86,20 +91,27 @@ class PostGameLobbyViewController: UIViewController {
             return
         }
         var index = 0
-        for player in self.viewModel.players.reversed() {
-            API.shared.user.get(withUid: player.playerId, completion: { user, error in
-                guard error == nil else {
-                    Logger.log.show(details: error.debugDescription, logType: .error)
-                    return
-                }
-                guard let user = user else {
-                    return
-                }
-                self.playerViews[index].updateUsernameLabel(username: user.username)
-                self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
-                index += 1
-            })
+        for player in self.viewModel.players {
+            updatePlayerViewWithUsername(player: player, index: index)
+            index += 1
         }
+    }
+
+    private func updatePlayerViewWithUsername(player: Player, index: Int) {
+        guard self.playerViews.indices.contains(index) else {
+            return
+        }
+        API.shared.user.get(withUid: player.playerId, completion: { user, error in
+            guard error == nil else {
+                Logger.log.show(details: error.debugDescription, logType: .error)
+                return
+            }
+            guard let user = user else {
+                return
+            }
+            self.playerViews[index].updateUsernameLabel(username: user.username)
+            self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
+        })
     }
 
     @IBAction private func continueButtonPressed(_ sender: UIButton) {
@@ -128,6 +140,20 @@ class PostGameLobbyViewController: UIViewController {
     }
 
     @IBAction private func returnHomeButtonPressed(_sender: UIButton) {
+        guard let currentPlayer = API.shared.user.currentUser else {
+            return
+        }
+        if currentPlayer.uid == self.viewModel.lobby?.hostId {
+            guard let lobbyId = self.viewModel.lobby?.lobbyId else {
+                return
+            }
+            API.shared.lobby.delete(lobbyId: lobbyId)
+        }
+//        for player in self.viewModel.players {
+//            if player.isHost && player.isCurrentPlayer {
+//                API.shared.lobby.delete(lobbyId: self.viewModel.lobby)
+//            }
+//        }
         API.shared.lobby.unsubscribeFromLobby()
         navigationDelegate?.didPressReturnHomeButton(in: self)
     }
@@ -141,11 +167,48 @@ class PostGameLobbyViewController: UIViewController {
             guard let updatedLobby = lobby else {
                 return
             }
+            print(updatedLobby)
             self.viewModel.lobby = updatedLobby
-            if updatedLobby.lobbyState == .open {
-                self.continueButton.isHidden = false
+            switch updatedLobby.lobbyState {
+            case .open:
+                self.hostHasContinued()
+            case .full:
+                self.lobbyIsFull()
+            case .start:
+                self.gameHasStarted()
+            default:
+                return
             }
         })
+    }
+
+    private func waitingForHost() {
+        self.continueButton.isHidden = true
+        self.hostStatusLabel.isHidden = false
+        self.hostStatusLabel.text = "Waiting for host"
+    }
+
+    private func hostHasContinued() {
+        self.continueButton.isHidden = false
+        self.hostStatusLabel.isHidden = true
+    }
+
+    private func hostHasLeft() {
+        self.continueButton.isHidden = true
+        self.hostStatusLabel.isHidden = false
+        self.hostStatusLabel.text = "Host has left"
+    }
+
+    private func lobbyIsFull() {
+        self.continueButton.isHidden = true
+        self.hostStatusLabel.isHidden = false
+        self.hostStatusLabel.text = "Lobby is full"
+    }
+
+    private func gameHasStarted() {
+        self.continueButton.isHidden = true
+        self.hostStatusLabel.isHidden = false
+        self.hostStatusLabel.text = "Game has started"
     }
 
     deinit {
@@ -155,7 +218,6 @@ class PostGameLobbyViewController: UIViewController {
 
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
     func lobbyLoaded(isLoaded: Bool) {
-        print(self.viewModel.players)
         updatePlayerViews()
         guard let lobby = self.viewModel.lobby else {
             return
@@ -166,6 +228,9 @@ extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
         }
         if currentUserId == lobby.hostId {
             self.continueButton.isHidden = false
+            self.hostStatusLabel.isHidden = true
+        } else {
+            waitingForHost()
         }
     }
 }
