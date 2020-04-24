@@ -227,6 +227,7 @@ class GameEngine {
 
     func update(time: TimeInterval) {
         checkCurrentPlayerHealth()
+        checkBotHealth()
         updateClosestBolt()
         checkDeadlock()
         finishingLineSystem.bringPlayersToStop()
@@ -404,6 +405,18 @@ class GameEngine {
 
         if !healthSystem.isPlayerAlive(for: sprite) {
             _ = healthSystem.respawnPlayer(for: sprite)
+        }
+    }
+
+    private func checkBotHealth() {
+        for bot in bots {
+            guard let sprite = bot.value.get(SpriteComponent.self), let healthSystem = healthSystem else {
+                continue
+            }
+
+            if !healthSystem.isPlayerAlive(for: sprite) {
+                _ = healthSystem.respawnPlayer(for: sprite)
+            }
         }
     }
 
