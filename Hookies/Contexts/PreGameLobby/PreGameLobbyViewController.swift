@@ -20,6 +20,7 @@ class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
     private var viewModel: PreGameLobbyViewModelRepresentable
     private var playerViews: [LobbyPlayerView] = []
+    private var isOnline = true
     private var startButtonHidden: Bool {
         guard let currentUser = API.shared.user.currentUser else {
             return true
@@ -45,29 +46,7 @@ class PreGameLobbyViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: PreGameLobbyViewController.name, bundle: nil)
         NetworkManager.shared.set(gameId: self.viewModel.lobby.lobbyId)
-        API.shared.lobby.connect(roomId: self.viewModel.lobby.lobbyId, completion: { otherUsers in
-            print("other users: \(otherUsers)")
-        })
-        API.shared.lobby.subscribeToRoomConnection(roomId: self.viewModel.lobby.lobbyId, listener: { connectionState in
-            switch connectionState {
-            case .connected:
-                print("room \(connectionState)")
-            case .disconnected:
-                print("room \(connectionState)")
-                self.leaveLobby()
-            }
-        })
-        API.shared.lobby.subscribeToPlayersConnection(listener: { userConnection in
-            switch userConnection.state {
-            case .connected:
-                print(userConnection)
-            case .disconnected:
-                print("\(userConnection.uid) disconnected")
-                self.viewModel.lobby.removePlayer(playerId: userConnection.uid)
-                API.shared.lobby.save(lobby: self.viewModel.lobby)
-                self.updateView()
-            }
-        })
+        connectToSocket()
     }
 
     @available(*, unavailable)
@@ -82,6 +61,28 @@ class PreGameLobbyViewController: UIViewController {
         saveLobby(lobby: viewModel.lobby)
         subscribeToLobby(lobby: viewModel.lobby)
         selectMapButton.isHidden = selectMapHidden
+    }
+
+    private func connectToSocket() {
+        API.shared.lobby.connect(roomId: self.viewModel.lobby.lobbyId, completion: { _ in })
+        API.shared.lobby.subscribeToRoomConnection(roomId: self.viewModel.lobby.lobbyId, listener: { connectionState in
+            switch connectionState {
+            case .connected:
+                self.isOnline = true
+            case .disconnected:
+                self.isOnline = false
+            }
+        })
+        API.shared.lobby.subscribeToPlayersConnection(listener: { userConnection in
+            switch userConnection.state {
+            case .connected:
+                break
+            case .disconnected:
+                self.viewModel.lobby.removePlayer(playerId: userConnection.uid)
+                API.shared.lobby.save(lobby: self.viewModel.lobby)
+                self.updateView()
+            }
+        })
     }
 
     private func setupPlayerView() {
@@ -267,56 +268,42 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func updatePlayerViews() {
-        getPlayers(playersId: self.viewModel.lobby.playersId, completion: { players in
-            var players = players
-            players.sort(by: { $0.username < $1.username })
-            guard players.count <= Constants.maxPlayerCount && players.count <= self.playerViews.count else {
-                Logger.log.show(details: "max number of players exceeded", logType: .error)
+        let playersId = self.viewModel.lobby.playersId.sorted(by: { $0 < $1 })
+        guard playersId.count <= Constants.maxPlayerCount && playersId.count <= self.playerViews.count else {
+            Logger.log.show(details: "max number of players exceeded", logType: .error)
+            return
+        }
+        var index: Int
+        var otherPlayersViewIndex = 1
+        for playerId in self.viewModel.lobby.playersId {
+            if playerId == self.viewModel.lobby.hostId {
+                index = 0
+            } else {
+                index = otherPlayersViewIndex
+                otherPlayersViewIndex += 1
+            }
+
+            guard let costumeType = self.viewModel.lobby.costumesId[playerId] else {
                 return
             }
-            for playerView in self.playerViews {
-                playerView.resetView()
-            }
-            var otherPlayersViewIndex = 1
-            var index: Int
-            for player in players {
-
-                if player.uid == self.viewModel.lobby.hostId {
-                    index = 0
-                } else {
-                    index = otherPlayersViewIndex
-                    otherPlayersViewIndex += 1
-                }
-                self.playerViews[index].updateUsernameLabel(username: player.username)
-                guard let costumeType = self.viewModel.lobby.costumesId[player.uid] else {
-                    return
-                }
-                self.playerViews[index].addPlayerImage(costumeType: costumeType)
-            }
-        })
+            updatePlayerViewWithUsername(playerId: playerId, index: index)
+            self.playerViews[index].addPlayerImage(costumeType: costumeType)
+        }
     }
 
-    private func getPlayers(playersId: [String], completion: @escaping ([User]) -> Void) {
-        let dispatch = DispatchGroup()
-        var players: [User] = []
-        for playerId in playersId {
-            dispatch.enter()
+    private func updatePlayerViewWithUsername(playerId: String, index: Int) {
+        if isOnline {
             API.shared.user.get(withUid: playerId, completion: { user, error in
                 guard error == nil else {
+                    Logger.log.show(details: error.debugDescription, logType: .error)
                     return
                 }
                 guard let user = user else {
                     return
                 }
-                if !players.contains(user) {
-                    players.append(user)
-                }
-                dispatch.leave()
+                self.playerViews[index].updateUsernameLabel(username: user.username)
             })
         }
-        dispatch.notify(queue: .main, execute: {
-            completion(players)
-        })
     }
 
     @IBAction private func onFriendButtonPressed(_ sender: UIButton) {
