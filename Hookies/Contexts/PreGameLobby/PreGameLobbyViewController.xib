@@ -6,6 +6,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Hookies-Normal.ttf">
+            <string>font1980202001</string>
+        </array>
+        <array key="Hookies-Thin.ttf">
+            <string>font1980202002</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PreGameLobbyViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
@@ -26,8 +34,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-bn-hYX" userLabel="selectedMapLabel">
-                    <rect key="frame" x="210.5" y="64" width="179" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="210.5" y="55" width="179" height="38.5"/>
+                    <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -46,14 +54,15 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhH-f1-AWI" userLabel="Costume Id">
-                    <rect key="frame" x="768" y="36" width="128" height="77"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="768" y="55" width="128" height="38.5"/>
+                    <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09n-Jd-dJd" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="461" y="135" width="102" height="38.5"/>
+                    <rect key="frame" x="461" y="143.5" width="102" height="38.5"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="20"/>
                     <state key="normal" title="Friends">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -67,20 +76,21 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5t-UX-zdb">
-                    <rect key="frame" x="512" y="64" width="128" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="512" y="55" width="128" height="38.5"/>
+                    <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lobby ID: " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VFq-33-f6L">
-                    <rect key="frame" x="409.5" y="64" width="102.5" height="21"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                    <rect key="frame" x="409.5" y="55" width="102.5" height="38.5"/>
+                    <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCv-SN-bcb" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="461" y="233.5" width="102" height="38"/>
+                    <rect key="frame" x="461" y="242" width="102" height="38.5"/>
                     <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="20"/>
                     <state key="normal" title="Start Game">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -94,14 +104,15 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Map: " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yin-cm-VvN">
-                    <rect key="frame" x="67" y="64" width="143.5" height="21"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                    <rect key="frame" x="67" y="55" width="143.5" height="38.5"/>
+                    <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pxw-Sd-UG5" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="210.5" y="135" width="102.5" height="38.5"/>
+                    <rect key="frame" x="210.5" y="143.5" width="102.5" height="38.5"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="20"/>
                     <state key="normal" title="Select Map">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -146,7 +157,7 @@
                 <constraint firstItem="VFq-33-f6L" firstAttribute="centerY" secondItem="E5t-UX-zdb" secondAttribute="centerY" id="XtY-7t-dJz"/>
                 <constraint firstItem="09n-Jd-dJd" firstAttribute="centerX" secondItem="Jre-8K-DKd" secondAttribute="centerX" id="bQq-1F-q9c"/>
                 <constraint firstItem="Jre-8K-DKd" firstAttribute="trailing" secondItem="L8c-8D-NHy" secondAttribute="trailing" id="fhl-vL-sBv"/>
-                <constraint firstItem="EhH-f1-AWI" firstAttribute="height" secondItem="Jre-8K-DKd" secondAttribute="height" multiplier="0.1" id="hBf-Ej-J7t"/>
+                <constraint firstItem="EhH-f1-AWI" firstAttribute="height" secondItem="Jre-8K-DKd" secondAttribute="height" multiplier="0.05" id="hBf-Ej-J7t"/>
                 <constraint firstItem="E5t-UX-zdb" firstAttribute="width" secondItem="EhH-f1-AWI" secondAttribute="width" id="mGY-73-9Dt"/>
                 <constraint firstItem="wCv-SN-bcb" firstAttribute="top" secondItem="09n-Jd-dJd" secondAttribute="bottom" constant="60" id="nz3-z9-0rp"/>
                 <constraint firstItem="L8c-8D-NHy" firstAttribute="width" secondItem="Jre-8K-DKd" secondAttribute="width" multiplier="0.125" id="qpq-F4-tnz"/>
@@ -158,7 +169,7 @@
                 <constraint firstItem="L8c-8D-NHy" firstAttribute="leading" secondItem="EhH-f1-AWI" secondAttribute="trailing" id="wNn-FB-uxb"/>
                 <constraint firstItem="ct4-FD-g13" firstAttribute="leading" secondItem="E5t-UX-zdb" secondAttribute="trailing" id="yf2-tB-17q"/>
                 <constraint firstItem="Mqv-bn-hYX" firstAttribute="width" secondItem="E5t-UX-zdb" secondAttribute="width" multiplier="1.4" id="ytX-Z0-8kY"/>
-                <constraint firstItem="E5t-UX-zdb" firstAttribute="height" secondItem="EhH-f1-AWI" secondAttribute="height" multiplier="0.272727" id="z08-Bp-gDe"/>
+                <constraint firstItem="E5t-UX-zdb" firstAttribute="height" secondItem="EhH-f1-AWI" secondAttribute="height" id="z08-Bp-gDe"/>
                 <constraint firstItem="wCv-SN-bcb" firstAttribute="height" secondItem="pxw-Sd-UG5" secondAttribute="height" id="zTK-WI-8zz"/>
                 <constraint firstItem="ct4-FD-g13" firstAttribute="width" secondItem="L8c-8D-NHy" secondAttribute="width" id="zda-9Q-LLv"/>
             </constraints>
