@@ -32,7 +32,7 @@ class GameEngine {
     // MARK: - Entity
 
     private var currentPlayer: PlayerEntity?
-    private var localPlayers = [String: PlayerEntity]()
+    private var localPlayers: [PlayerEntity] = []
     private var otherPlayers = [String: PlayerEntity]()
     private var platforms = [PlatformEntity]()
     private var bolts = [BoltEntity]()
@@ -47,7 +47,8 @@ class GameEngine {
         finishingLine: GameObject,
         bolts: [GameObject],
         powerups: [GameObject],
-        platforms: [GameObject]
+        platforms: [GameObject],
+        hasBot: Bool
     ) {
         startPosition = cannon.node.position
 
@@ -62,6 +63,10 @@ class GameEngine {
 
         initialiseCannon(cannon)
         initialiseFinishingLine(finishingLine)
+
+        if hasBot {
+            self.botSystem = BotSystem()
+        }
 
         initialiseDelegates()
         gameObjectMovementSystem.update()
@@ -89,7 +94,7 @@ class GameEngine {
 
     func launchLocalPlayers(with velocity: CGVector) {
         for player in localPlayers {
-            guard let sprite = player.value.get(SpriteComponent.self) else {
+            guard let sprite = player.get(SpriteComponent.self) else {
                 return
             }
             cannonSystem.launch(player: sprite, with: velocity)
@@ -176,18 +181,19 @@ class GameEngine {
 
     func stopLocalPlayer(playerNode: SKSpriteNode) {
         for player in localPlayers {
-            guard let playerSprite = player.value.get(SpriteComponent.self) else {
+            guard let playerSprite = player.get(SpriteComponent.self) else {
                 continue
             }
             if playerSprite.node == playerNode {
                 guard let currentPlayer = currentPlayer else {
                     return
                 }
-                if player.value === currentPlayer {
+                if player === currentPlayer {
                     stopCurrentPlayer()
                     break
                 } else {
                     botSystem?.stopBot(botSprite: playerSprite)
+                    
                     break
                 }
             }
@@ -213,7 +219,7 @@ class GameEngine {
 
     func contactBetween(playerNode: SKSpriteNode, trap: SKSpriteNode) {
         for player in localPlayers {
-            guard let playerSprite = player.value.get(SpriteComponent.self) else {
+            guard let playerSprite = player.get(SpriteComponent.self) else {
                 continue
             }
             if playerSprite.node == playerNode {
@@ -399,7 +405,7 @@ class GameEngine {
 
     private func checkLocalPlayerHealth() {
         for player in localPlayers {
-            guard let sprite = player.value.get(SpriteComponent.self), let healthSystem = healthSystem else {
+            guard let sprite = player.get(SpriteComponent.self), let healthSystem = healthSystem else {
                 continue
             }
 
@@ -433,7 +439,7 @@ class GameEngine {
         _ = spriteSystem.setPhysicsBody(to: sprite, of: .player1, rectangleOf: sprite.node.size)
 
         currentPlayer = playerEntity
-        localPlayers[player.playerId] = playerEntity
+        localPlayers.append(playerEntity)
 
         deadlockSystem = DeadlockSystem(sprite: sprite, hook: hook)
         finishingLineSystem.add(player: sprite)
@@ -462,7 +468,7 @@ class GameEngine {
         if player.playerType == .bot {
             if let botType = player.botType {
                 addBot(sprite: sprite, botType: botType)
-                localPlayers[player.playerId] = playerEntity
+                localPlayers.append(playerEntity)
             }
         }
 
@@ -528,15 +534,6 @@ class GameEngine {
         }
         botSystem.add(spriteComponent: sprite, botComponent: botComponent)
         delegate?.addLocalPlayer(with: sprite.node)
-    }
-
-    func initialiseBotSystem(_ players: [Player]) {
-        for player in players {
-            if player.isCurrentPlayer && player.isHost {
-                self.botSystem = BotSystem()
-                return
-            }
-        }
     }
 }
 
@@ -632,7 +629,7 @@ extension GameEngine: UserConnectionSystemDelegate {
 
 extension GameEngine: EndSystemDelegate {
     func gameEnded(rankings: [Player]) {
-        botSystem?.stop()
+        botSystem?.stopTimer()
         delegate?.gameHasFinish(rankings: rankings)
     }
 }

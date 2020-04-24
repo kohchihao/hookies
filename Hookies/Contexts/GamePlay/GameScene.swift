@@ -233,16 +233,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         let powerupNodes = getGameNodes(of: .powerup)
 
+        let hasBot = players.contains(where: { $0.isCurrentPlayer && $0.isHost })
+
         gameEngine = GameEngine(
             cannon: cannonObject,
             finishingLine: finishingLineObject,
             bolts: boltObjects,
             powerups: powerupObjects,
-            platforms: platformObjects
+            platforms: platformObjects,
+            hasBot: hasBot
         )
 
         gameEngine?.delegate = self
-        gameEngine?.initialiseBotSystem(players)
         gameEngine?.addPlayers(players)
 
         self.cannon = cannonObject.node
@@ -324,7 +326,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func launchLocalPlayers() {
         let velocity = getLaunchVelocity()
         gameEngine?.launchLocalPlayers(with: velocity)
-//        gameEngine?.launchBots(with: velocity)
 
         cannon?.removeFromParent()
     }

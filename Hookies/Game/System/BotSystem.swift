@@ -14,7 +14,7 @@ protocol BotSystemDelegate: class {
 
 protocol BotSystemProtocol {
     func start()
-    func stop()
+    func stopTimer()
     func add(spriteComponent: SpriteComponent, botComponent: BotComponent)
 }
 
@@ -50,7 +50,7 @@ class BotSystem: System, BotSystemProtocol {
         broadcast(with: botSprite, of: .reachedFinishedLine)
     }
 
-    func stop() {
+    func stopTimer() {
         self.timer?.invalidate()
         self.timer = nil
     }
@@ -58,7 +58,9 @@ class BotSystem: System, BotSystemProtocol {
     func add(spriteComponent: SpriteComponent, botComponent: BotComponent) {
         self.bots[spriteComponent] = botComponent
     }
+}
 
+extension BotSytem {
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: eventType)
         NotificationCenter.default.post(

@@ -30,7 +30,7 @@ class StartSystem: System, StartSystemProtocol {
     }
 
     private var expectedNumberOfPlayers: Int {
-        return players.filter({ $0.key.playerType == .human }).count
+        return players.count
     }
 
     private var players: [Player: SpriteComponent] = [:]
