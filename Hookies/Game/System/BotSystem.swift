@@ -60,7 +60,7 @@ class BotSystem: System, BotSystemProtocol {
     }
 }
 
-extension BotSytem {
+extension BotSystem {
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: eventType)
         NotificationCenter.default.post(
