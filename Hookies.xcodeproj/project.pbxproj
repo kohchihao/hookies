@@ -169,6 +169,10 @@
 		2BA5F941244354CF009AF93C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F940244354CF009AF93C /* NetworkManager.swift */; };
 		2BA5F943244364E4009AF93C /* DeviceStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F942244364E4009AF93C /* DeviceStatus.swift */; };
 		2BAACCBB244D78C6008D4659 /* EndSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAACCBA244D78C6008D4659 /* EndSystem.swift */; };
+		7856D6412452F80B0012E403 /* Hookies-Normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D63D2452F80B0012E403 /* Hookies-Normal.ttf */; };
+		7856D6422452F80B0012E403 /* Hookies-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D63E2452F80B0012E403 /* Hookies-Thin.ttf */; };
+		7856D6432452F80B0012E403 /* Hookies-Short.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D63F2452F80B0012E403 /* Hookies-Short.ttf */; };
+		7856D6442452F80B0012E403 /* Hookies-Tall.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D6402452F80B0012E403 /* Hookies-Tall.ttf */; };
 		785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */; };
 		785B79DA2423581B001D7028 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785B79D92423581B001D7028 /* GameKit.framework */; };
 		785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79DE24237636001D7028 /* JoinGameCoordinator.swift */; };
@@ -392,6 +396,10 @@
 		2BAACCBA244D78C6008D4659 /* EndSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndSystem.swift; sourceTree = "<group>"; };
 		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		784096012438583B00D2CAB4 /* InviteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteManager.swift; sourceTree = "<group>"; };
+		7856D63D2452F80B0012E403 /* Hookies-Normal.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Normal.ttf"; sourceTree = "<group>"; };
+		7856D63E2452F80B0012E403 /* Hookies-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Thin.ttf"; sourceTree = "<group>"; };
+		7856D63F2452F80B0012E403 /* Hookies-Short.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Short.ttf"; sourceTree = "<group>"; };
+		7856D6402452F80B0012E403 /* Hookies-Tall.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Tall.ttf"; sourceTree = "<group>"; };
 		7859AF9E24339A4000B60968 /* SocialCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialCoordinator.swift; sourceTree = "<group>"; };
 		7859AFA024339A5700B60968 /* SocialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewModel.swift; sourceTree = "<group>"; };
 		7859AFA224339A6B00B60968 /* SocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
@@ -830,6 +838,17 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		7856D6342452F3440012E403 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				7856D63D2452F80B0012E403 /* Hookies-Normal.ttf */,
+				7856D63F2452F80B0012E403 /* Hookies-Short.ttf */,
+				7856D6402452F80B0012E403 /* Hookies-Tall.ttf */,
+				7856D63E2452F80B0012E403 /* Hookies-Thin.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		7859AF9D24339A1100B60968 /* Social */ = {
 			isa = PBXGroup;
 			children = (
@@ -911,6 +930,7 @@
 				788007212413F37100F43B71 /* Actions.sks */,
 				788007272413F37100F43B71 /* Main.storyboard */,
 				7880072A2413F37400F43B71 /* Assets.xcassets */,
+				7856D6342452F3440012E403 /* Fonts */,
 				7880072C2413F37400F43B71 /* LaunchScreen.storyboard */,
 				1127C5592415E18800A78AA0 /* GoogleService-Info.plist */,
 				7880072F2413F37400F43B71 /* Info.plist */,
@@ -1288,6 +1308,7 @@
 				11CC85062439E8E5006D3A8F /* IncomingTableViewCell.xib in Resources */,
 				7880072B2413F37400F43B71 /* Assets.xcassets in Resources */,
 				11CC851A2439E991006D3A8F /* SocialViewController.xib in Resources */,
+				7856D6422452F80B0012E403 /* Hookies-Thin.ttf in Resources */,
 				11CC85112439E921006D3A8F /* MapsViewController.xib in Resources */,
 				11CC84FD2439E8E5006D3A8F /* OutgoingRequestTableViewCell.xib in Resources */,
 				11CC85022439E8E5006D3A8F /* FriendTableViewCell.xib in Resources */,
@@ -1296,6 +1317,7 @@
 				7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */,
 				788007222413F37100F43B71 /* Actions.sks in Resources */,
 				D92F9405241D2E8A0021DBE4 /* DeadlockMap.sks in Resources */,
+				7856D6412452F80B0012E403 /* Hookies-Normal.ttf in Resources */,
 				D923C13C241A42B5004AB20A /* CannotDieMap.sks in Resources */,
 				11CC84FF2439E8E5006D3A8F /* OutgoingTableViewCell.xib in Resources */,
 				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
@@ -1304,7 +1326,9 @@
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
 				785CE3ED244EB40F00B1B5CD /* PostGameLobbyViewController.xib in Resources */,
+				7856D6432452F80B0012E403 /* Hookies-Short.ttf in Resources */,
 				D9FF1A6A241E0DE600E7965F /* PreGameLobbyViewController.xib in Resources */,
+				7856D6442452F80B0012E403 /* Hookies-Tall.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
