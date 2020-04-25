@@ -42,6 +42,7 @@ lobbies.on('connection', socket => {
 games.on('connection', socket => {
 	let currentGame;
 	let currentUser;
+	let bots = [];
 	console.log('connected to game');
 
 	socket.on('joinRoom', (data, ack) => {
@@ -58,6 +59,18 @@ games.on('connection', socket => {
 		ack(Array.from(currentGame.getIdOfUsers()));
 		socket.to(currentGame.id).emit("joinedRoom", currentUser.id)
 	});
+
+	socket.on('botJoinRoom', (data) => {
+		currentGame = gameManager.addRoomIfDoesNotExist(data.roomId);
+		console.log('Bot have joined', data.user)
+		let botUser = new User(data.user)
+		bots.push(botUser)
+		currentGame.addUser(botUser);
+		socket.join(currentGame.id);
+		socket.to(currentGame.id).emit("joinedRoom", botUser.id)
+	});
+
+		
 
 	socket.on('powerupCollected', (data) => {
 		console.log("powerup collected", data);
@@ -84,6 +97,21 @@ games.on('connection', socket => {
 		gameManager.registerGameEndedFor(currentGame, currentUser);
 		if (currentGame.hasEnded) {
 			console.log("game ended");
+			games.to(currentGame.id).emit('gameEnded', currentGame.rankings.map(u => u.id));
+		}
+	});
+
+	socket.on('registerBotFinishGame', (data) => {
+		console.log("register bot finish game for ", data.user);
+		let botUser;
+		bots.forEach((bot) => {
+			if (bot.id === data.user) {
+				botUser = bot 
+			}
+		})
+		gameManager.registerGameEndedFor(currentGame, botUser);
+		if (currentGame.hasEnded) {
+			console.log("bot game ended");
 			games.to(currentGame.id).emit('gameEnded', currentGame.rankings.map(u => u.id));
 		}
 	});
