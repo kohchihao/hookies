@@ -18,7 +18,7 @@ protocol PreGameLobbyViewModelRepresentable {
     func prepareGame()
     func addBot()
     func leaveLobby()
-    func disconnect()
+    func closeLobbyConnection()
 }
 
 class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
@@ -46,8 +46,7 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
     }
 
     deinit {
-        API.shared.lobby.unsubscribeFromLobby()
-        API.shared.lobby.close()
+        closeLobbyConnection()
     }
 
     func updateSelectedMapType(selectedMapType: MapType) {
@@ -100,8 +99,10 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
             case .connected:
                 break
             case .disconnected:
-                self.lobby.removePlayer(playerId: userConnection.uid)
-                API.shared.lobby.save(lobby: self.lobby)
+                if self.isHost {
+                    self.lobby.removePlayer(playerId: userConnection.uid)
+                    API.shared.lobby.save(lobby: self.lobby)
+                }
             }
         })
     }
@@ -110,7 +111,7 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
         API.shared.lobby.save(lobby: lobby)
     }
 
-    func disconnect() {
+    func closeLobbyConnection() {
         API.shared.lobby.unsubscribeFromLobby()
         API.shared.lobby.close()
     }
@@ -144,21 +145,18 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
     // MARK: Start Game
 
     func prepareGame() {
-        lobby.updateLobbyState(lobbyState: .start)
-        saveLobby(lobby: lobby)
+        if API.shared.user.currentUser?.uid == lobby.hostId {
+            lobby.updateLobbyState(lobbyState: .start)
+            saveLobby(lobby: lobby)
+        } else {
+            Logger.log.show(details: "Host not found", logType: .error).display(.toast)
+        }
+
     }
 
     func startGame() {
-        if isHost {
-            createGameplaySession()
-        }
         let players = createPlayers()
         delegate?.startGame(with: players)
-    }
-
-    private func createGameplaySession() {
-        let gameplay = Gameplay(gameId: lobby.lobbyId, gameState: .waiting, playersId: lobby.playersId)
-        API.shared.gameplay.saveGameState(gameplay: gameplay)
     }
 
     // swiftlint:disable line_length

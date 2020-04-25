@@ -23,9 +23,6 @@ class PreGameLobbyViewController: UIViewController {
     private var startButtonHidden: Bool {
         return self.viewModel.lobby.hostId != API.shared.user.currentUser?.uid || self.viewModel.lobby.selectedMapType == nil
     }
-//    private var friendsButtonHidden: Bool {
-//        !viewModel.isOnline
-//    }
 
     @IBOutlet private var selectedMapLabel: UILabel!
     @IBOutlet private var gameSessionIdLabel: UILabel!
@@ -61,13 +58,8 @@ class PreGameLobbyViewController: UIViewController {
         updateView()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        viewModel.disconnect()
-    }
-
     deinit {
-        viewModel.disconnect()
+        viewModel.closeLobbyConnection()
     }
 
     private func setupPlayerView() {
@@ -192,7 +184,7 @@ extension PreGameLobbyViewController: RoomStateViewModelDelegate {
             Logger.log.show(details: "Map not selected.", logType: .error)
             return
         }
-        API.shared.lobby.unsubscribeFromLobby()
+        viewModel.closeLobbyConnection()
         navigationDelegate?.didPressStartButton(
             in: self,
             withSelectedMapType: selectedMapType,
@@ -205,7 +197,6 @@ extension PreGameLobbyViewController: RoomStateViewModelDelegate {
 
     func updateView() {
         startGameButton.isHidden = startButtonHidden
-//        friendsButton.isHidden = friendsButtonHidden
         selectedMapLabel.text = viewModel.lobby.selectedMapType.map { $0.rawValue }
         gameSessionIdLabel.text = viewModel.lobby.lobbyId
         updatePlayerViews()
@@ -213,6 +204,7 @@ extension PreGameLobbyViewController: RoomStateViewModelDelegate {
     }
 
     func leaveLobby() {
+        viewModel.closeLobbyConnection()
         navigationDelegate?.leaveLobby()
     }
 }

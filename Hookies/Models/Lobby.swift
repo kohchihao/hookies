@@ -67,8 +67,6 @@ struct Lobby {
 
     mutating func removePlayer(playerId: String) {
         guard playerId != hostId else {
-            playersId = []
-            costumesId = [:]
             lobbyState = .empty
             return
         }
