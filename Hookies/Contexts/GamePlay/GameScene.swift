@@ -582,7 +582,7 @@ extension GameScene: GameEngineDelegate {
                                 y: powerupButton.position.y)
 
         let finalPos = powerupButton.position
-        let animate = SKAction.move(to: finalPos, duration: 5)
+        let animate = SKAction.move(to: finalPos, duration: 1)
 
         let message = SKLabelNode(text: "Retrieved!")
         message.fontName = "AvenirNext-Bold"
