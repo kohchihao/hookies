@@ -58,4 +58,7 @@ extension Notification.Name {
 
     // System
     static let broadcastUnregisterObserver = Notification.Name("broadcastUnregisterObserver")
+
+    // Any System
+    static let broadcastGameConnectedEvent = Notification.Name("broadcastGameConnectedEvent")
 }

@@ -119,14 +119,13 @@ class NetworkManager: NetworkManagerProtocol {
             }
 
             self.setupSocketSubscriptions()
-            // TODO: fix this shit
-            if self.currentPlayer!.isHost {
-                for player in self.players where player.value.playerType == .bot {
-                    API.shared.gameplay.botJoinRoom(roomId: gameId, userId: player.value.playerId)
-                    NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
-                }
-            }
+
+            NotificationCenter.default.post(name: .broadcastGameConnectedEvent, object: self)
         })
+
+        if deviceStatus == .offline {
+            NotificationCenter.default.post(name: .broadcastGameConnectedEvent, object: self)
+        }
     }
 
     // MARK: - Add Players Mappings
@@ -264,7 +263,7 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
-    // MARK: - Broadcast
+    // MARK: - Broadcast Player Rankings
 
     @objc private func broadcastPlayerRankings(_ notification: Notification) {
         if let data = notification.userInfo as? [String: [SpriteComponent]] {
@@ -305,7 +304,7 @@ class NetworkManager: NetworkManagerProtocol {
                 return
             }
 
-            //API.shared.gameplay.botJoinRoom(roomId: gameId, userId: botId)
+            API.shared.gameplay.botJoinRoom(roomId: gameId, userId: botId)
             NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
         }
     }

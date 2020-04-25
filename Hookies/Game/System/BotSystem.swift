@@ -26,13 +26,17 @@ class BotSystem: System, BotSystemProtocol {
     private var timeElapsed: Double = 0
 
     init() {
-        print("bot system created")
+        Logger.log.show(details: "bot system created", logType: .information)
+        registerNotificationObservers()
     }
 
-    // swiftlint:disable line_length
-
     func start() {
-        self.timer = Timer.scheduledTimer(timeInterval: Constants.botTimeStep, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(
+            timeInterval: Constants.botTimeStep,
+            target: self,
+            selector: #selector(update),
+            userInfo: nil,
+            repeats: true)
     }
 
     @objc private func update() {
@@ -56,13 +60,20 @@ class BotSystem: System, BotSystemProtocol {
 
     func add(spriteComponent: SpriteComponent, botComponent: BotComponent) {
         self.bots[spriteComponent] = botComponent
-        broadcastJoin(with: spriteComponent)
     }
 }
 
-// MARK: Network
+// MARK: Networking
 
 extension BotSystem {
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastGameConnectedEvent(_:)),
+            name: .broadcastGameConnectedEvent,
+            object: nil)
+    }
+
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: eventType)
         NotificationCenter.default.post(
@@ -76,5 +87,11 @@ extension BotSystem {
             name: .broadcastBotJoinEvent,
             object: self,
             userInfo: ["data": sprite])
+    }
+
+    @objc private func broadcastGameConnectedEvent(_ notification: Notification) {
+        for (sprite, _) in bots {
+            broadcastJoin(with: sprite)
+        }
     }
 }
