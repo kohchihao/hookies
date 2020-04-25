@@ -12,16 +12,11 @@ protocol System {
 }
 
 extension System {
-    func getSprite(for entity: Entity) -> SpriteComponent? {
-        for component in entity.components {
-            if let sprite = component as? SpriteComponent {
-                return sprite
-            }
-        }
 
-        return nil
-    }
-
+    /// Gets a compoennt from an entity
+    /// - Parameters:
+    ///     - _: the component type to get
+    ///     - entity: the entity to get the component from
     func get<ComponentType: Component>(_: ComponentType.Type,
                                        for entity: Entity
     ) -> ComponentType? {
