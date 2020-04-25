@@ -31,10 +31,6 @@ class GameplayStore: SocketRoom {
         socket.emit("powerupCollected", powerupCollection)
     }
 
-    func broadcastHookAction(hookAction: HookActionData) {
-        socket.emit("hookActionChanged", hookAction)
-    }
-
     func boardcastGenericPlayerEvent(playerEvent: GenericPlayerEventData) {
         socket.emit("genericPlayerEventDetected", playerEvent)
     }
@@ -66,18 +62,6 @@ class GameplayStore: SocketRoom {
             }
             let model = DictionaryModel(data: powerupData)
             if let result = PowerupEventData(data: model) {
-                listener(result)
-            }
-        }
-    }
-
-    func subscribeToHookAction(listener: @escaping (HookActionData) -> Void) {
-        socket.on("hookActionChanged") { data, _ in
-            guard !data.isEmpty, let hookData = data[0] as? [String: Any] else {
-                return
-            }
-            let model = DictionaryModel(data: hookData)
-            if let result = HookActionData(data: model) {
                 listener(result)
             }
         }
