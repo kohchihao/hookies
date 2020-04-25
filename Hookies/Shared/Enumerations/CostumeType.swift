@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Represent the type of costume in the game
 enum CostumeType: String, CaseIterable {
     case Pink_Monster
     case Owlet_Monster
@@ -17,14 +18,18 @@ enum CostumeType: String, CaseIterable {
     case Pink_Man
     case Virtual_Guy
 
+    /// Gets the default costume of the game (.Pink_Monster)
     static func getDefault() -> CostumeType? {
         CostumeType.allCases.first
     }
 
+    /// Gets a random costume
     static func getRandom() -> CostumeType? {
         CostumeType.allCases.randomElement()
     }
 
+    /// Gets the next costime from the current costume
+    /// - Parameter currentCostume: the current costume type
     static func nextCostume(currentCostume: CostumeType?) -> CostumeType? {
         let costumes = CostumeType.allCases
         guard let currentCostume = currentCostume else {
@@ -38,6 +43,8 @@ enum CostumeType: String, CaseIterable {
         return costumes[nextIndex]
     }
 
+    /// Gets the previous costume from the current costume
+    /// - Parameter currentCostume: the current costume type
     static func prevCostume(currentCostume: CostumeType?) -> CostumeType? {
         let costumes = CostumeType.allCases
         guard let currentCostume = currentCostume else {
@@ -53,6 +60,7 @@ enum CostumeType: String, CaseIterable {
 }
 
 extension CostumeType: StringRepresentable {
+    /// The string value of the CostumeType
     var stringValue: String {
         return self.rawValue
     }
