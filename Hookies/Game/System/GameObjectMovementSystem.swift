@@ -202,7 +202,6 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
 
     // MARK: - Setting Translation
 
-
     /// Set the translation for a particular sprite.
     /// - Parameters:
     ///   - sprite: The sprite component to translate
@@ -229,7 +228,6 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
 
     // MARK: - Setting Bounce
 
-
     /// Set the bounce for a particular sprite
     /// - Parameters:
     ///   - sprite: The sprite component to set
@@ -246,7 +244,6 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         bounce.restitution = restitution
         spriteToBounce[sprite] = bounce
     }
-
 
     /// Set the translation on a rectangle path
     /// - Parameters:

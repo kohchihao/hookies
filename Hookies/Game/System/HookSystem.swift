@@ -54,7 +54,6 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Add Player
 
-
     /// Add the player to the system that can hook.
     /// - Parameter player: The player sprite
     func add(player: SpriteComponent) {
@@ -109,7 +108,6 @@ class HookSystem: System, HookSystemProtocol {
 
         return true
     }
-
 
     /// To hook and pull back the other player's sprite.
     /// - Parameters:
@@ -246,7 +244,6 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Rope Checks
 
-
     /// Checks if the rope is shorter than a minimum threshold.
     /// - Parameter entity: The player's entity to check
     func isShorterThanMin(for entity: Entity) -> Bool {
@@ -370,7 +367,6 @@ class HookSystem: System, HookSystemProtocol {
         return (aboveBoltDisplacement, belowBoltDisplacement)
     }
 
-
     /// Checks if the sprite is colliding with any platform
     /// - Parameter sprite: The sprite to check
     private func isCollidingWithPlatform(sprite: SpriteComponent) -> Bool {
@@ -393,7 +389,6 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Add Initial Velocity
 
-
     /// Apply initial velocity back to the sprite.
     /// - Parameters:
     ///   - sprite: The sprite to apply on
@@ -403,7 +398,6 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     // MARK: - Booster
-
 
     /// Boost the entity velocity.
     /// - Parameter entity: The entity to boost
@@ -452,7 +446,6 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     // MARK: - Create Joint
-
 
     /// Make a joint pin to the line.
     /// - Parameters:

@@ -89,6 +89,7 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
             guard let spriteNode = contactedBody.node as? SKSpriteNode else {
                 return false
             }
+            // Checks if the contacted bodies is a moving platform or stationary platform
             if spriteNode.name == GameObjectType.platform.rawValue
                 || spriteNode.name == GameObjectType.platformMovable.rawValue {
                 if let touchCount = contactedPlatforms[spriteNode] {

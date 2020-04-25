@@ -53,7 +53,6 @@ class BotSystem: System, BotSystemProtocol {
         self.timeElapsed += Constants.botTimeStep
     }
 
-
     /// Stop the bot entirely.
     /// - Parameter botSprite: The sprite of the bot
     func stopBot(botSprite: SpriteComponent) {
@@ -61,7 +60,6 @@ class BotSystem: System, BotSystemProtocol {
         broadcast(with: botSprite, of: .reachedFinishedLine)
         broadcastBotEvent(with: botSprite, of: .broadcastBotGameEndEvent)
     }
-
 
     /// Stop the timer for the bot system.
     func stopTimer() {

@@ -26,7 +26,6 @@ class UserConnectionSystem: System, UserConnectionSystemProtocol {
         registerNotificationObservers()
     }
 
-
     /// Set the sprite to non-dynamic.
     /// - Parameter sprite: The sprite to set
     private func disconnect(sprite: SpriteComponent) {

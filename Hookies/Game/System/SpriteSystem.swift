@@ -38,7 +38,6 @@ protocol SpriteSystemProtocol {
 
 class SpriteSystem: System, SpriteSystemProtocol {
 
-
     /// Set the sprite with its attribute.
     /// - Parameters:
     ///   - sprite: The sprite component to set
@@ -59,7 +58,6 @@ class SpriteSystem: System, SpriteSystemProtocol {
         return sprite
     }
 
-
     /// Set the sprite attributes.
     /// - Parameters:
     ///   - sprite: The sprite component to set
@@ -68,7 +66,6 @@ class SpriteSystem: System, SpriteSystemProtocol {
         sprite.node = node
         return sprite
     }
-
 
     /// Set the physics body for the sprite.
     /// - Parameters:
@@ -81,7 +78,6 @@ class SpriteSystem: System, SpriteSystemProtocol {
         sprite.node.physicsBody = SKPhysicsBody()
         return setPhysicsBodyProperties(to: sprite, of: type)
     }
-
 
     /// Set the rectangle physics body for the sprite
     /// - Parameters:
@@ -96,7 +92,6 @@ class SpriteSystem: System, SpriteSystemProtocol {
         sprite.node.physicsBody = SKPhysicsBody(rectangleOf: size)
         return setPhysicsBodyProperties(to: sprite, of: type)
     }
-
 
     /// Set the circular physics body for the sprite
     /// - Parameters:
@@ -127,7 +122,6 @@ class SpriteSystem: System, SpriteSystemProtocol {
 
         return setPhysicsBodyProperties(to: sprite, of: type)
     }
-
 
     /// Remove the physics body for the sprite.
     /// - Parameter sprite: The sprite to remove the physics body

@@ -68,7 +68,6 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         return stop(player: player, at: player.node.position, with: velocity)
     }
 
-
     /// Gradually slow down the player.
     func bringPlayersToStop() {
         for (sprite, state) in playersState where state == .stopping {
@@ -90,7 +89,6 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
             }
         }
     }
-
 
     /// Checks if the player has crossed the finishing line.
     /// - Parameter player: The player's sprite

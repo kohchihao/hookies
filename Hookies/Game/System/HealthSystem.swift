@@ -81,7 +81,6 @@ class HealthSystem: System, HealthSystemProtocol {
         return sprite
     }
 
-
     /// Respawn the sprite to the closest platform
     /// - Parameter sprite: The sprite to respawn
     func respawnPlayerToClosestPlatform(for sprite: SpriteComponent) -> SpriteComponent? {
@@ -98,7 +97,6 @@ class HealthSystem: System, HealthSystemProtocol {
         sprite.node.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
         return sprite
     }
-
 
     /// Finds the closest non moving platform.
     /// - Parameter position: The position given
