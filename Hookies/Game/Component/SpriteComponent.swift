@@ -31,7 +31,6 @@ extension SpriteComponent: Hashable {
 
 extension SpriteComponent {
 
-
     /// Make a line to the sprite.
     /// - Parameter sprite2: The sprite at the end of the line
     func makeLine(to sprite2: SpriteComponent) -> SKShapeNode {
@@ -65,7 +64,6 @@ extension SpriteComponent {
         return path
     }
 
-
     /// Calculate the distance between the sprites.
     /// - Parameter sprite2: The other sprite to calculate to
     private func distance(to sprite2: SpriteComponent) -> CGFloat {
@@ -73,7 +71,6 @@ extension SpriteComponent {
         let sprite2Pos = Vector(point: sprite2.node.position)
         return CGFloat(sprite1Pos.distance(to: sprite2Pos))
     }
-
 
     /// Get the nearest sprite in front of the sprite.
     /// - Parameter others: The other sprite components to check
