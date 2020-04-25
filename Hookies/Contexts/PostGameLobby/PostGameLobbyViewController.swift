@@ -93,6 +93,7 @@ class PostGameLobbyViewController: UIViewController {
         var index = 0
         for player in self.viewModel.players {
             updatePlayerViewWithUsername(player: player, index: index)
+            self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
             index += 1
         }
     }
@@ -110,7 +111,6 @@ class PostGameLobbyViewController: UIViewController {
                 return
             }
             self.playerViews[index].updateUsernameLabel(username: user.username)
-            self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
         })
     }
 
@@ -144,10 +144,11 @@ class PostGameLobbyViewController: UIViewController {
             return
         }
         if currentPlayer.uid == self.viewModel.lobby?.hostId {
-            guard let lobbyId = self.viewModel.lobby?.lobbyId else {
+            guard let lobby = self.viewModel.lobby else {
                 return
             }
-            API.shared.lobby.delete(lobbyId: lobbyId)
+            lobby.updateLobbyState(lobbyState: .empty)
+            API.shared.lobby.save(lobby: lobby)
         }
 //        for player in self.viewModel.players {
 //            if player.isHost && player.isCurrentPlayer {
