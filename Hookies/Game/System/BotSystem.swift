@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Bot System manages the bot along with its instructions.
+
 protocol BotSystemDelegate: class {
 
 }
@@ -30,6 +32,8 @@ class BotSystem: System, BotSystemProtocol {
         registerNotificationObservers()
     }
 
+
+    /// Start the timer for the bot system.
     func start() {
         self.timer = Timer.scheduledTimer(
             timeInterval: Constants.botTimeStep,
@@ -49,17 +53,27 @@ class BotSystem: System, BotSystemProtocol {
         self.timeElapsed += Constants.botTimeStep
     }
 
+
+    /// Stop the bot entirely.
+    /// - Parameter botSprite: The sprite of the bot
     func stopBot(botSprite: SpriteComponent) {
         self.bots = self.bots.filter({ $0.key != botSprite })
         broadcast(with: botSprite, of: .reachedFinishedLine)
         broadcastBotEvent(with: botSprite, of: .broadcastBotGameEndEvent)
     }
 
+
+    /// Stop the timer for the bot system.
     func stopTimer() {
         self.timer?.invalidate()
         self.timer = nil
     }
 
+
+    /// Add the bot's sprite to the system
+    /// - Parameters:
+    ///   - spriteComponent: The sprite of the bot
+    ///   - botComponent: The bot component
     func add(spriteComponent: SpriteComponent, botComponent: BotComponent) {
         self.bots[spriteComponent] = botComponent
     }
@@ -76,6 +90,7 @@ extension BotSystem {
             object: nil)
     }
 
+    /// Broadcast to Notification center.
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: eventType)
         NotificationCenter.default.post(

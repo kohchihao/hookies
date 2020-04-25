@@ -10,7 +10,7 @@ import Foundation
 import CoreGraphics
 import SpriteKit
 
-/// Moves all the game object within the world.
+/// Game Object Movement System helps to moves all the game object within the world.
 
 protocol GameObjectMovementSystemProtocol {
     func remove(rotate: RotateComponent) -> RotateComponent?
@@ -61,6 +61,9 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
 
     // MARK: - Remove components
 
+    /// Remove the rotate component from the system.
+    /// - Parameters:
+    ///   - rotate: The rotate component to remove
     func remove(rotate: RotateComponent) -> RotateComponent? {
         guard let index = spriteToRotate.firstIndex(where: { $0.value == rotate }) else {
             return nil
@@ -68,6 +71,9 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         return spriteToRotate.remove(at: index).value
     }
 
+    /// Remove the translate component from the system.
+    /// - Parameters:
+    ///   - translate: The translate component to remove
     func remove(translate: NonPhysicsTranslateComponent) -> NonPhysicsTranslateComponent? {
         guard let index = spriteToTranslate.firstIndex(where: { $0.value == translate }) else {
             return nil
@@ -75,6 +81,9 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         return spriteToTranslate.remove(at: index).value
     }
 
+    /// Remove the bounce component from the system.
+    /// - Parameters:
+    ///   - bounce: The bounce component to remove
     func remove(bounce: BounceComponent) -> BounceComponent? {
         guard let index = spriteToBounce.firstIndex(where: { $0.value == bounce }) else {
             return nil
@@ -82,6 +91,7 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         return spriteToBounce.remove(at: index).value
     }
 
+    /// Remove all the components from the system.
     func removeAll() {
         spriteToRotate.removeAll()
         spriteToTranslate.removeAll()
@@ -90,6 +100,7 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
 
     // MARK: - Update
 
+    /// Set all the game objects in motion.
     func update() {
         setSpriteBounce()
         let rotateGroup = addRotateAction()
@@ -112,6 +123,7 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         }
     }
 
+    /// Add all the rotation action.
     private func addRotateAction() -> [SpriteComponent: [SKAction]] {
         var rotateGroup = [SpriteComponent: [SKAction]]()
         for (sprite, rotate) in spriteToRotate {
@@ -126,6 +138,7 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         return rotateGroup
     }
 
+    /// Add all the translation action.
     private func addTranslateAction() -> ([SpriteComponent: [SKAction]], [SpriteComponent: [SKAction]]) {
         var translateGroup = [SpriteComponent: [SKAction]]()
         var reverseTranslateGroup = [SpriteComponent: [SKAction]]()
@@ -157,6 +170,7 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         return (translateGroup, reverseTranslateGroup)
     }
 
+    /// Add all the bounce restitution.
     private func setSpriteBounce() {
         for (sprite, bounce) in spriteToBounce {
             sprite.node.physicsBody?.restitution = CGFloat(bounce.restitution)
@@ -165,6 +179,12 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
 
     // MARK: - Setting Rotation
 
+    /// Set the rotation for a particular sprite.
+    /// - Parameters:
+    ///   - sprite: The sprite component to rotate
+    ///   - rotate: The rotate component
+    ///   - duration: The duration for the component to rotate
+    ///   - angle: The angle for the component to rotate
     func setRotation(
         to sprite: SpriteComponent,
         with rotate: RotateComponent,
@@ -182,6 +202,14 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
 
     // MARK: - Setting Translation
 
+
+    /// Set the translation for a particular sprite.
+    /// - Parameters:
+    ///   - sprite: The sprite component to translate
+    ///   - translate: The translate component
+    ///   - path: The path to translate
+    ///   - moveInfinitely: Sets the sprite on an infinite loop
+    ///   - speed: The speed the sprite translate
     func setTranslation(
         to sprite: SpriteComponent,
         with translate: NonPhysicsTranslateComponent,
@@ -201,6 +229,12 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
 
     // MARK: - Setting Bounce
 
+
+    /// Set the bounce for a particular sprite
+    /// - Parameters:
+    ///   - sprite: The sprite component to set
+    ///   - bounce: The bounce component
+    ///   - restitution: The restitution of the bounce
     func setBounce(
         to sprite: SpriteComponent,
         with bounce: BounceComponent,
@@ -213,6 +247,15 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         spriteToBounce[sprite] = bounce
     }
 
+
+    /// Set the translation on a rectangle path
+    /// - Parameters:
+    ///   - sprite: The sprite component to translate
+    ///   - translate: The translate component
+    ///   - moveInfinitely: Sets the sprite on an infinite loop
+    ///   - speed: The speed the sprite translate
+    ///   - width: The width of the rectangle path
+    ///   - height: The height of the rectangle path
     func setTranslationRectangle(
         to sprite: SpriteComponent,
         with translate: NonPhysicsTranslateComponent,
@@ -229,6 +272,13 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         self.setTranslation(to: sprite, with: translate, withPath: path, moveInfinitely: moveInfinitely, speed: speed)
     }
 
+    /// Set the translation on a circular path
+    /// - Parameters:
+    ///   - sprite: The sprite component to translate
+    ///   - translate: The translate component
+    ///   - moveInfinitely: Sets the sprite on an infinite loop
+    ///   - speed: The speed the sprite translate
+    ///   - radius: The radius of the circular path
     func setTranslationCircle(
         to sprite: SpriteComponent,
         with translate: NonPhysicsTranslateComponent,
@@ -244,6 +294,13 @@ class GameObjectMovementSystem: System, GameObjectMovementSystemProtocol {
         self.setTranslation(to: sprite, with: translate, withPath: path, moveInfinitely: moveInfinitely, speed: speed)
     }
 
+    /// Set the translation on a straight path
+    /// - Parameters:
+    ///   - sprite: The sprite component to translate
+    ///   - translate: The translate component
+    ///   - moveInfinitely: Sets the sprite on an infinite loop
+    ///   - speed: The speed the sprite translate
+    ///   - endingAt: The end of the straight path
     func setTranslationLine(
         to sprite: SpriteComponent,
         with translate: NonPhysicsTranslateComponent,

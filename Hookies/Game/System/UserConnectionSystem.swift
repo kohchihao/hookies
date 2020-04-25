@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// User Connection System manages the player's connectivity.
+
 protocol UserConnectionSystemProtocol {
 
 }
@@ -24,10 +26,15 @@ class UserConnectionSystem: System, UserConnectionSystemProtocol {
         registerNotificationObservers()
     }
 
+
+    /// Set the sprite to non-dynamic.
+    /// - Parameter sprite: The sprite to set
     private func disconnect(sprite: SpriteComponent) {
         sprite.node.physicsBody?.isDynamic = false
     }
 
+    /// Set the sprite to dynamic.
+    /// - Parameter sprite: The sprite to set
     private func reconnect(sprite: SpriteComponent) {
         sprite.node.physicsBody?.isDynamic = true
     }

@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-/// Only manages the creating and updating of sprite attributes
+/// Sprite system manages the creating and updating of sprite attributes.
 
 protocol SpriteSystemProtocol {
     func set(
@@ -37,6 +37,14 @@ protocol SpriteSystemProtocol {
 }
 
 class SpriteSystem: System, SpriteSystemProtocol {
+
+
+    /// Set the sprite with its attribute.
+    /// - Parameters:
+    ///   - sprite: The sprite component to set
+    ///   - type: The type of sprite
+    ///   - imageName: The image of the sprite
+    ///   - position: The position of the sprite
     func set(
         sprite: SpriteComponent,
         of type: SpriteType,
@@ -51,11 +59,21 @@ class SpriteSystem: System, SpriteSystemProtocol {
         return sprite
     }
 
+
+    /// Set the sprite attributes.
+    /// - Parameters:
+    ///   - sprite: The sprite component to set
+    ///   - node: The node to set to the sprite
     func set(sprite: SpriteComponent, to node: SKSpriteNode) -> SpriteComponent {
         sprite.node = node
         return sprite
     }
 
+
+    /// Set the physics body for the sprite.
+    /// - Parameters:
+    ///   - sprite: The sprite component to set
+    ///   - type: The type of sprite
     func setPhysicsBody(
         to sprite: SpriteComponent,
         of type: SpriteType
@@ -64,6 +82,12 @@ class SpriteSystem: System, SpriteSystemProtocol {
         return setPhysicsBodyProperties(to: sprite, of: type)
     }
 
+
+    /// Set the rectangle physics body for the sprite
+    /// - Parameters:
+    ///   - sprite: The sprite component to set
+    ///   - type: The type of sprite
+    ///   - size: The size of the rectangle
     func setPhysicsBody(
         to sprite: SpriteComponent,
         of type: SpriteType,
@@ -73,6 +97,12 @@ class SpriteSystem: System, SpriteSystemProtocol {
         return setPhysicsBodyProperties(to: sprite, of: type)
     }
 
+
+    /// Set the circular physics body for the sprite
+    /// - Parameters:
+    ///   - sprite: The sprite component to set
+    ///   - type: The type of sprite
+    ///   - radius: The radius of the ciruclar
     func setPhysicsBody(
         to sprite: SpriteComponent,
         of type: SpriteType,
@@ -82,6 +112,11 @@ class SpriteSystem: System, SpriteSystemProtocol {
         return setPhysicsBodyProperties(to: sprite, of: type)
     }
 
+    /// Set the circular physics body for the sprite.
+    /// - Parameters:
+    ///   - sprite: The sprite component to set
+    ///   - type: The type of sprite
+    ///   - radius: The radius of the ciruclar
     func setPhysicsBody(
         to sprite: SpriteComponent,
         of type: SpriteType,
@@ -93,6 +128,9 @@ class SpriteSystem: System, SpriteSystemProtocol {
         return setPhysicsBodyProperties(to: sprite, of: type)
     }
 
+
+    /// Remove the physics body for the sprite.
+    /// - Parameter sprite: The sprite to remove the physics body
     func removePhysicsBody(to sprite: SpriteComponent) {
         sprite.node.physicsBody = nil
     }

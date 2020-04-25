@@ -8,6 +8,8 @@
 
 import SpriteKit
 
+/// Cannon System launches the player.
+
 protocol CannonSystemProtocol {
     func launch(player: SpriteComponent, with velocity: CGVector)
 }
@@ -20,7 +22,10 @@ class CannonSystem: System, CannonSystemProtocol {
         registerNotificationObservers()
     }
 
-    /// Launch for single player
+    /// Launch for single player.
+    /// - Parameters:
+    ///   - player: The player's sprite
+    ///   - velocity: The velocity to launch the player
     func launch(player: SpriteComponent, with velocity: CGVector) {
         player.node.physicsBody?.isDynamic = true
         player.node.physicsBody?.applyImpulse(velocity)
@@ -29,6 +34,9 @@ class CannonSystem: System, CannonSystemProtocol {
     }
 
     /// Launch for multiplayer
+    /// - Parameters:
+    ///   - otherPlayer: The other player's sprite
+    ///   - velocity: The velocity to launch the player
     private func launch(otherPlayer: SpriteComponent, with velocity: CGVector) {
         otherPlayer.node.physicsBody?.isDynamic = true
         otherPlayer.node.physicsBody?.velocity = velocity
@@ -51,6 +59,7 @@ extension CannonSystem {
             object: nil)
     }
 
+    /// Broadcast to Notification Center
     private func broadcast(with sprite: SpriteComponent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .shotFromCannon)
         NotificationCenter.default.post(
