@@ -83,6 +83,6 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
 
 extension PreGameLobbyCoordinator: MapDelegate {
     func onSelected(for map: MapType) {
-        viewModel.delegate?.updateSelectedMap(mapType: map)
+        viewModel.updateSelectedMapType(selectedMapType: map)
     }
 }
