@@ -31,7 +31,6 @@
 		1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1127C585241606CD00A78AA0 /* AuthViewController.xib */; };
 		1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */; };
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
-		112B6191244FCF8C00B60D72 /* HookPlayerSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6190244FCF8C00B60D72 /* HookPlayerSystemEvent.swift */; };
 		112B6195244FDA7C00B60D72 /* MovementControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */; };
 		112B6197244FF6D900B60D72 /* CutRopeEffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6196244FF6D900B60D72 /* CutRopeEffectComponent.swift */; };
 		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
@@ -177,11 +176,11 @@
 		785CE3E0244D6C3700B1B5CD /* BotSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3DF244D6C3600B1B5CD /* BotSystem.swift */; };
 		785CE3E2244D997100B1B5CD /* BotComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E1244D997100B1B5CD /* BotComponent.swift */; };
 		785CE3E4244D997F00B1B5CD /* BotEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E3244D997F00B1B5CD /* BotEntity.swift */; };
-		785CE3EF2450915100B1B5CD /* BotInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3EE2450915100B1B5CD /* BotInstruction.swift */; };
 		785CE3E7244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E6244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift */; };
 		785CE3E9244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E8244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift */; };
 		785CE3EB244EB3F000B1B5CD /* PostGameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3EA244EB3F000B1B5CD /* PostGameLobbyViewController.swift */; };
 		785CE3ED244EB40F00B1B5CD /* PostGameLobbyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 785CE3EC244EB40E00B1B5CD /* PostGameLobbyViewController.xib */; };
+		785CE3EF2450915100B1B5CD /* BotInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3EE2450915100B1B5CD /* BotInstruction.swift */; };
 		788007222413F37100F43B71 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 788007212413F37100F43B71 /* Actions.sks */; };
 		788007292413F37100F43B71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788007272413F37100F43B71 /* Main.storyboard */; };
 		7880072B2413F37400F43B71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7880072A2413F37400F43B71 /* Assets.xcassets */; };
@@ -254,7 +253,6 @@
 		1127C585241606CD00A78AA0 /* AuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthViewController.xib; sourceTree = "<group>"; };
 		1127C58924161B6400A78AA0 /* UIViewController+ErrorToaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorToaster.swift"; sourceTree = "<group>"; };
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
-		112B6190244FCF8C00B60D72 /* HookPlayerSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookPlayerSystemEvent.swift; sourceTree = "<group>"; };
 		112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementControlDelegate.swift; sourceTree = "<group>"; };
 		112B6196244FF6D900B60D72 /* CutRopeEffectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutRopeEffectComponent.swift; sourceTree = "<group>"; };
 		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
@@ -407,11 +405,11 @@
 		785CE3DF244D6C3600B1B5CD /* BotSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotSystem.swift; sourceTree = "<group>"; };
 		785CE3E1244D997100B1B5CD /* BotComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotComponent.swift; sourceTree = "<group>"; };
 		785CE3E3244D997F00B1B5CD /* BotEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotEntity.swift; sourceTree = "<group>"; };
-		785CE3EE2450915100B1B5CD /* BotInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotInstruction.swift; sourceTree = "<group>"; };
 		785CE3E6244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGameLobbyCoordinator.swift; sourceTree = "<group>"; };
 		785CE3E8244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785CE3EA244EB3F000B1B5CD /* PostGameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGameLobbyViewController.swift; sourceTree = "<group>"; };
 		785CE3EC244EB40E00B1B5CD /* PostGameLobbyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostGameLobbyViewController.xib; sourceTree = "<group>"; };
+		785CE3EE2450915100B1B5CD /* BotInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotInstruction.swift; sourceTree = "<group>"; };
 		7880071A2413F37100F43B71 /* Hookies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hookies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		788007212413F37100F43B71 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		788007282413F37100F43B71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -795,7 +793,6 @@
 				785CE3EE2450915100B1B5CD /* BotInstruction.swift */,
 				2B64FD7E244613C000C848C4 /* PowerupSystemEvent.swift */,
 				2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */,
-				112B6190244FCF8C00B60D72 /* HookPlayerSystemEvent.swift */,
 				112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */,
 			);
 			path = Model;
@@ -1449,7 +1446,6 @@
 				785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */,
 				11CC85222439E9BF006D3A8F /* Invite.swift in Sources */,
 				11CC84CD2439E88A006D3A8F /* User+FirestoreModel.swift in Sources */,
-				11CC848E2439E7A8006D3A8F /* SliceEffectComponent.swift in Sources */,
 				785CE3EF2450915100B1B5CD /* BotInstruction.swift in Sources */,
 				1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */,
 				11CC84A22439E7D1006D3A8F /* FinishingLineEntity.swift in Sources */,
@@ -1499,7 +1495,6 @@
 				11CC84792439E799006D3A8F /* BounceComponent.swift in Sources */,
 				11CC84442439E748006D3A8F /* UserConnectionSystem.swift in Sources */,
 				11CC850F2439E920006D3A8F /* MapsViewModel.swift in Sources */,
-				112B6191244FCF8C00B60D72 /* HookPlayerSystemEvent.swift in Sources */,
 				11CC85292439E9C4006D3A8F /* User.swift in Sources */,
 				2B4E43A12446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift in Sources */,
 				11CC84FE2439E8E5006D3A8F /* FriendTableViewCell.swift in Sources */,
