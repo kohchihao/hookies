@@ -86,6 +86,7 @@ class HookSystem: System, HookSystemProtocol {
 
         let line = sprite.makeLine(to: closestBolt)
 
+        // To ensure that the joint pin between bolt-line and player-line should be created
         guard let anchorLineJointPin = makeJointPinToLine(from: closestBolt.node, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: sprite.node, toLine: line) else {
                 return false
@@ -206,6 +207,7 @@ class HookSystem: System, HookSystemProtocol {
 
         let line = sprite.makeLine(to: bolt)
 
+        // To ensure that the joint pin between bolt-line and player-line should be created
         guard let anchorLineJointPin = makeJointPinToLine(from: bolt.node, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: sprite.node, toLine: line)
             else {

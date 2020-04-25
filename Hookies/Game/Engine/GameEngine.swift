@@ -466,7 +466,6 @@ class GameEngine {
         delegate?.addPlayer(with: sprite.node)
     }
 
-
     /// Get tne SpriteType for other players based on the number of existing other player
     private func getOtherPlayerSpriteType() -> SpriteType {
         let typeIndex = numOtherPlayers + 1
