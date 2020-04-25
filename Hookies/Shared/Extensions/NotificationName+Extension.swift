@@ -17,6 +17,8 @@ extension Notification.Name {
     static let broadcastPowerupAction = Notification.Name("broadcastPowerupAction")
     static let broadcastFinishGameEvent = Notification.Name("broadcastFinishGameEvent")
     static let broadcastPlayerRankings = Notification.Name("broadcastPlayerRankings")
+    static let broadcastBotJoinEvent = Notification.Name("broadcastBotJoinEvent")
+    static let broadcastBotGameEndEvent = Notification.Name("broadcastBotGameEndEvent")
 
     // MARK: - NetworkManager to Systems
 
@@ -31,7 +33,7 @@ extension Notification.Name {
 
     // Hook
     static let receivedHookAction = Notification.Name("receivedHookAction")
-    static let receivedUnookAction = Notification.Name("receivedUnookAction")
+    static let receivedUnhookAction = Notification.Name("receivedUnhookAction")
     static let receivedShortenRopeAction = Notification.Name("receivedShortenRopeAction")
     static let receivedLengthenRopeAction = Notification.Name("receivedLengthenRopeAction")
 
@@ -57,4 +59,5 @@ extension Notification.Name {
 
     // System
     static let broadcastUnregisterObserver = Notification.Name("broadcastUnregisterObserver")
+    static let broadcastGameConnectedEvent = Notification.Name("broadcastGameConnectedEvent")
 }

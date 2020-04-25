@@ -23,6 +23,7 @@ class NetworkManager: NetworkManagerProtocol {
     private(set) var deviceStatus: DeviceStatus?
     private var otherPlayersId = Set<String>()
     private var playersSprite = [String: SpriteComponent]()
+    private var playersId = [SpriteComponent: String]()
     private var players = [String: Player]()
 
     private init() {
@@ -42,11 +43,6 @@ class NetworkManager: NetworkManagerProtocol {
         let queue = DispatchQueue(label: "DeviceConnectionMonitor")
 
         monitor.pathUpdateHandler = { pathUpdateHandler in
-            // To ensure that the device status is set only once
-            guard self.deviceStatus == nil else {
-                return
-            }
-
             if pathUpdateHandler.status == .satisfied {
                 self.deviceStatus = .online
             } else {
@@ -95,6 +91,17 @@ class NetworkManager: NetworkManagerProtocol {
             selector: #selector(broadcastPlayerRankings(_:)),
             name: .broadcastPlayerRankings,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastBotJoinEvent(_:)),
+            name: .broadcastBotJoinEvent,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastBotGameEndEvent(_:)),
+            name: .broadcastBotGameEndEvent,
+            object: nil)
+
     }
 
     // MARK: - Game Connection
@@ -113,7 +120,13 @@ class NetworkManager: NetworkManagerProtocol {
             }
 
             self.setupSocketSubscriptions()
+
+            NotificationCenter.default.post(name: .broadcastGameConnectedEvent, object: self)
         })
+
+        if deviceStatus == .offline {
+            NotificationCenter.default.post(name: .broadcastGameConnectedEvent, object: self)
+        }
     }
 
     // MARK: - Add Players Mappings
@@ -123,6 +136,7 @@ class NetworkManager: NetworkManagerProtocol {
             for (player, sprite) in playersMapping {
                 playersSprite[player.playerId] = sprite
                 players[player.playerId] = player
+                playersId[sprite] = player.playerId
 
                 if player.isCurrentPlayer {
                     currentPlayer = player
@@ -142,22 +156,24 @@ class NetworkManager: NetworkManagerProtocol {
             guard let genericPlayerEventData = createPlayerEventData(from: genericPlayerAction) else {
                 return
             }
-
+            if genericPlayerEventData.playerData.playerId != currentPlayer?.playerId {
+                let name = self.convertPlayerEventToNotificationName(playerEvent: genericPlayerEventData.type)
+                NotificationCenter.default.post(name: name, object: self, userInfo: data)
+            }
             API.shared.gameplay.boardcastGenericPlayerEvent(playerEvent: genericPlayerEventData)
         }
     }
 
     private func createPlayerEventData(from playerAction: GenericSystemEvent) -> GenericPlayerEventData? {
-        guard let currentPlayerId = currentPlayer?.playerId else {
-            Logger.log.show(details: "currentPlayerId is nil of \(playerAction.eventType)", logType: .error)
-            return nil
+        guard let playerId = playersId[playerAction.sprite] else {
+           Logger.log.show(details: "currentPlayerId is nil of \(playerAction.eventType)", logType: .error)
+                        return nil
         }
-
         let position = Vector(point: playerAction.sprite.node.position)
         let velocity = Vector(vector: playerAction.sprite.node.physicsBody?.velocity)
 
         return GenericPlayerEventData(
-            playerId: currentPlayerId,
+            playerId: playerId,
             position: position,
             velocity: velocity,
             type: playerAction.eventType)
@@ -175,24 +191,18 @@ class NetworkManager: NetworkManagerProtocol {
                 return
             }
 
-            guard let currentPlayerId = currentPlayer?.playerId else {
-                return
-            }
-
-            if powerupEventData.playerData.playerId == currentPlayerId {
-                API.shared.gameplay.broadcastPowerupEvent(powerupEvent: powerupEventData)
-            }
+            API.shared.gameplay.broadcastPowerupEvent(powerupEvent: powerupEventData)
         }
     }
 
     private func createPowerupEventData(from powerupSystemEvent: PowerupSystemEvent) -> PowerupEventData? {
-        guard let currentPlayerId = currentPlayer?.playerId else {
-            Logger.log.show(details: "currentPlayerId is nil", logType: .error)
+        guard let playerId = playersId[powerupSystemEvent.sprite] else {
+            Logger.log.show(details: "playerId is nil", logType: .error)
             return nil
         }
 
         return PowerupEventData(
-            playerId: currentPlayerId,
+            playerId: playerId,
             node: powerupSystemEvent.sprite.node,
             eventType: powerupSystemEvent.powerupEventType,
             powerupType: powerupSystemEvent.powerupType,
@@ -254,7 +264,7 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
-    // MARK: - Broadcast
+    // MARK: - Broadcast Player Rankings
 
     @objc private func broadcastPlayerRankings(_ notification: Notification) {
         if let data = notification.userInfo as? [String: [SpriteComponent]] {
@@ -281,6 +291,49 @@ class NetworkManager: NetworkManagerProtocol {
                 name: .receivedGameEndEvent,
                 object: self,
                 userInfo: ["data": playerRankings])
+        }
+    }
+
+    // MARK: - Broadcast Bot Events
+
+    @objc private func broadcastBotJoinEvent(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: SpriteComponent] {
+            guard let sprite = data["data"] else {
+                return
+            }
+            guard let gameId = gameId, let botId = playersId[sprite] else {
+                return
+            }
+
+            API.shared.gameplay.botJoinRoom(roomId: gameId, userId: botId)
+            NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
+        }
+    }
+
+    @objc private func broadcastBotGameEndEvent(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: SpriteComponent] {
+            guard let sprite = data["data"] else {
+                return
+            }
+            guard let botId = playersId[sprite] else {
+                return
+            }
+
+            API.shared.gameplay.registerBotFinishLineReached(for: botId)
+            broadcastOfflineFinishEvent(with: sprite)
+        }
+    }
+
+    private func broadcastOfflineFinishEvent(with sprite: SpriteComponent) {
+        guard let deviceStatus = deviceStatus else {
+            return
+        }
+
+        if deviceStatus == .offline {
+            NotificationCenter.default.post(
+                name: .broadcastPlayerFinishSprite,
+                object: self,
+                userInfo: ["data": sprite])
         }
     }
 
@@ -356,29 +409,33 @@ class NetworkManager: NetworkManagerProtocol {
             guard let genericSystemEvent = self.createGenericSystemEvent(from: genericPlayerEventData) else {
                 return
             }
-
             let notificationData = ["data": genericSystemEvent]
-            var name: Notification.Name
-            switch genericPlayerEventData.type {
-            case .shotFromCannon:
-                name = .receivedLaunchAction
-            case .jumpAction:
-                name = .receivedJumpAction
-            case .playerDied:
-                name = .receivedRespawnAction
-            case .reachedFinishedLine:
-                name = .receivedReachedFinishLineAction
-            case .hook:
-                name = .receivedHookAction
-            case .unhook:
-                name = .receivedUnookAction
-            case .lengthenRope:
-                name = .receivedLengthenRopeAction
-            case .shortenRope:
-                name = .receivedShortenRopeAction
-            }
+            let name = self.convertPlayerEventToNotificationName(playerEvent: genericPlayerEventData.type)
             NotificationCenter.default.post(name: name, object: self, userInfo: notificationData)
         })
+    }
+
+    private func convertPlayerEventToNotificationName(playerEvent: GenericPlayerEvent) -> Notification.Name {
+        var name: Notification.Name
+        switch playerEvent {
+        case .shotFromCannon:
+            name = .receivedLaunchAction
+        case .jumpAction:
+            name = .receivedJumpAction
+        case .playerDied:
+            name = .receivedRespawnAction
+        case .reachedFinishedLine:
+            name = .receivedReachedFinishLineAction
+        case .hook:
+            name = .receivedHookAction
+        case .unhook:
+            name = .receivedUnhookAction
+        case .lengthenRope:
+            name = .receivedLengthenRopeAction
+        case .shortenRope:
+            name = .receivedShortenRopeAction
+        }
+        return name
     }
 
     private func createGenericSystemEvent(from genericPlayerEventData: GenericPlayerEventData) -> GenericSystemEvent? {
@@ -512,5 +569,6 @@ class NetworkManager: NetworkManagerProtocol {
         otherPlayersId.removeAll()
         playersSprite.removeAll()
         players.removeAll()
+        playersId.removeAll()
     }
 }

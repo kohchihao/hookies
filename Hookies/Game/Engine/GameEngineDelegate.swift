@@ -17,6 +17,7 @@ protocol GameEngineDelegate: AnyObject {
     func playerHookToPlayer(with line: SKShapeNode)
     func addCurrentPlayer(with sprite: SKSpriteNode)
     func addPlayer(with sprite: SKSpriteNode)
+    func addLocalPlayer(with sprite: SKSpriteNode)
     func currentPlayerIsReconnected()
     func currentPlayerIsDisconnected()
     func gameHasFinish(rankings: [Player])

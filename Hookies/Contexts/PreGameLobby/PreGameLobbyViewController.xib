@@ -92,12 +92,12 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XtW-Vg-LTa">
-                    <rect key="frame" x="443" y="149" width="31" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6jk-hH-saZ">
+                    <rect key="frame" x="527" y="141" width="55" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Post"/>
+                    <state key="normal" title="Add Bot"/>
                     <connections>
-                        <action selector="postButtonPressed:" destination="-1" eventType="touchUpInside" id="h9o-o0-euH"/>
+                        <action selector="onAddBotButtonPressed:" destination="-1" eventType="touchUpInside" id="TtN-Dx-3FU"/>
                     </connections>
                 </button>
             </subviews>

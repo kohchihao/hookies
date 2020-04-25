@@ -78,6 +78,16 @@ extension SocketRoom {
         }
     }
 
+    func botJoinRoom(
+        roomId: String,
+        userId: String
+    ) {
+        self.socket.emit("botJoinRoom", [
+            "user": userId,
+            "roomId": roomId
+        ])
+    }
+
     private func decodePlayersInRoomData(data: [Any]) -> [String] {
         return data.compactMap({ $0 as? [String] })
             .flatMap({ $0 })
