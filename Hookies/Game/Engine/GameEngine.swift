@@ -164,21 +164,6 @@ class GameEngine {
 
     // MARK: - Local Player Finish Race
 
-    private func stopCurrentPlayer() {
-        guard let sprite = currentPlayer?.get(SpriteComponent.self) else {
-            return
-        }
-
-        let hasStop = finishingLineSystem.stop(player: sprite)
-
-        if !hasStop {
-            return
-        }
-
-        powerupSystem.removePowerup(from: sprite)
-        delegate?.playerHasFinishRace()
-    }
-
     func stopLocalPlayer(playerNode: SKSpriteNode) {
         for player in localPlayers {
             guard let playerSprite = player.get(SpriteComponent.self) else {
@@ -193,7 +178,6 @@ class GameEngine {
                     break
                 } else {
                     botSystem?.stopBot(botSprite: playerSprite)
-                    _ = finishingLineSystem.stop(player: playerSprite)
                     break
                 }
             }
@@ -482,6 +466,23 @@ class GameEngine {
         return SpriteType.otherPlayers[typeIndex]
     }
 
+    // MARK: - Player
+
+    private func stopCurrentPlayer() {
+        guard let sprite = currentPlayer?.get(SpriteComponent.self) else {
+            return
+        }
+
+        let hasStop = finishingLineSystem.stop(player: sprite)
+
+        if !hasStop {
+            return
+        }
+
+        powerupSystem.removePowerup(from: sprite)
+        delegate?.playerHasFinishRace()
+    }
+
     // MARK: - Deadlock Detection
 
     private func checkDeadlock() {
@@ -529,10 +530,7 @@ class GameEngine {
         guard let botComponent = botEntity.get(BotComponent.self) else {
             return
         }
-        guard let botSystem = self.botSystem else {
-            return
-        }
-        botSystem.add(spriteComponent: sprite, botComponent: botComponent)
+        botSystem?.add(spriteComponent: sprite, botComponent: botComponent)
         delegate?.addLocalPlayer(with: sprite.node)
     }
 }

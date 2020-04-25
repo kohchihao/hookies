@@ -101,6 +101,12 @@ class NetworkManager: NetworkManagerProtocol {
             selector: #selector(broadcastBotJoinEvent(_:)),
             name: .broadcastBotJoinEvent,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(broadcastBotGameEndEvent(_:)),
+            name: .broadcastBotGameEndEvent,
+            object: nil)
+
     }
 
     // MARK: - Game Connection
@@ -293,7 +299,7 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
-    // MARK: - Broadcast Bot Join Event
+    // MARK: - Broadcast Bot Events
 
     @objc private func broadcastBotJoinEvent(_ notification: Notification) {
         if let data = notification.userInfo as? [String: SpriteComponent] {
@@ -306,6 +312,19 @@ class NetworkManager: NetworkManagerProtocol {
 
             API.shared.gameplay.botJoinRoom(roomId: gameId, userId: botId)
             NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
+        }
+    }
+
+    @objc private func broadcastBotGameEndEvent(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: SpriteComponent] {
+            guard let sprite = data["data"] else {
+                return
+            }
+            guard let botId = playersId[sprite] else {
+                return
+            }
+
+            API.shared.gameplay.registerBotFinishLineReached(for: botId)
         }
     }
 
