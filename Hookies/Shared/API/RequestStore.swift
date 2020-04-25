@@ -17,7 +17,6 @@ class RequestStore {
         self.collection = requestCollection
     }
 
-
     /// Get the friend request with the given request id.
     /// - Parameters:
     ///   - requestId: The Id of the friend request.

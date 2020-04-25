@@ -163,7 +163,6 @@ class Logger {
 
     // MARK: - Logger + Display
 
-
     /// Display the log as an error message on the user's display.
     /// - Parameter type: The type of alert to display
     func display(_ type: DisplayType = .alert) {
@@ -225,13 +224,11 @@ class Logger {
         window.rootViewController?.present(alert, animated: true, completion: nil)
     }
 
-
     /// Show the error alert.
     /// - Parameter message: The message for the alert
     func showErrorAlert(message: String) {
         self.showAlert(title: "Error", message: message, actionTitles: ["Okay"], actions: nil)
     }
-
 
     /// Show the toast.
     /// - Parameter message: The message for the toast

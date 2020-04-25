@@ -21,10 +21,32 @@ protocol PowerupSystemProtocol {
 }
 
 protocol PowerupSystemDelegate: class, MovementControlDelegate {
+
+    /// Indicates that the trap has been added.
+    /// - Parameter sprite: The trap's sprite
     func hasAddedTrap(sprite: SpriteComponent)
+
+    /// Indicates that the power up has been collected
+    /// - Parameters:
+    ///   - powerup: The power up collected
+    ///   - sprite: The sprite that colelcted the power up
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
+
+    /// Hooking power up applied.
+    /// - Parameters:
+    ///   - sprite: The sprite that applied the power up
+    ///   - anchorSprite: The sprite that was affected by the power up
     func hook(_ sprite: SpriteComponent, from anchorSprite: SpriteComponent)
+
+    /// Unhook the sprite.
+    /// - Parameter player: The sprite to unhook
     func forceUnhookFor(player: SpriteComponent)
+
+    /// Indicates that steal has occurred.
+    /// - Parameters:
+    ///   - sprite: The sprite that was stolen from
+    ///   - sprite: The sprite that stole
+    ///   - powerup: The power up stolen
     func indicateSteal(from sprite: SpriteComponent,
                        by sprite: SpriteComponent,
                        with powerup: PowerupComponent)

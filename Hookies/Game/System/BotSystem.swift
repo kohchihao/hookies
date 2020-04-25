@@ -67,7 +67,6 @@ class BotSystem: System, BotSystemProtocol {
         self.timer = nil
     }
 
-
     /// Add the bot's sprite to the system
     /// - Parameters:
     ///   - spriteComponent: The sprite of the bot
