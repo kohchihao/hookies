@@ -9,6 +9,7 @@
 import Foundation
 import Firebase
 
+/// A class that is used to provide the backend API for  invitation into the game lobby.
 class InviteStore {
     private let collection: CollectionReference
 
@@ -16,6 +17,11 @@ class InviteStore {
         self.collection = inviteCollection
     }
 
+
+    /// Will get the invite of the given invite Id, if any.
+    /// - Parameters:
+    ///   - inviteId: The id of the invite
+    ///   - completion: The callback handler when the async request completes.
     func get(inviteId: String, completion: @escaping (Invite?, Error?) -> Void) {
         let ref = collection.document(inviteId)
         ref.getDocumentModel(Invite.self, completion: { invite, error in
@@ -29,11 +35,17 @@ class InviteStore {
         })
     }
 
+    /// Will save the lobby invites into the backend database.
+    /// - Parameters:
+    ///   - invite: The lobby invitation model
     func save(invite: Invite) {
         let ref = collection.document(invite.documentID)
         ref.setDataModel(invite)
     }
 
+
+    /// Will delete the lobby invitation that is on the backend database.
+    /// - Parameter invite: The lobby invitation model
     func delete(invite: Invite) {
         let ref = collection.document(invite.documentID)
         ref.delete(completion: { error in

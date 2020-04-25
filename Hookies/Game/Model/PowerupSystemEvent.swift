@@ -6,6 +6,7 @@
 //  Copyright © 2020 Hookies. All rights reserved.
 //
 
+/// The struct that represents the event that is created when the powerupEventType is triggered.
 struct PowerupSystemEvent {
     let sprite: SpriteComponent
     let powerupEventType: PowerupEventType

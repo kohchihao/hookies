@@ -25,11 +25,13 @@ class PowerupEntity: Entity {
 }
 
 extension PowerupEntity {
+    /// Will add the respective effect for the given type.
     func addEffectComponents(for type: PowerupType) {
         addComponents(for: type)
         addActivatedSpriteIfExist()
     }
 
+    /// If there exist a sprite associated to the activated sprite, then add it into the entity.
     private func addActivatedSpriteIfExist() {
         guard let powerupComponent = self.get(PowerupComponent.self) else {
             return
