@@ -62,6 +62,8 @@ class PreGameLobbyViewController: UIViewController {
         viewModel.closeLobbyConnection()
     }
 
+    // MARK: Setup View
+
     private func setupPlayerView() {
         guard Constants.maxPlayerCount > 0 else {
             return
@@ -85,6 +87,8 @@ class PreGameLobbyViewController: UIViewController {
             playerView.mainView.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
         }
     }
+
+    // MARK: Update View
 
     private func updateCostumeIdLabel() {
         guard let userId = API.shared.user.currentUser?.uid else {
@@ -149,6 +153,8 @@ class PreGameLobbyViewController: UIViewController {
         }
     }
 
+    // MARK: IBActions
+    
     @IBAction private func onSelectMapClicked(_ sender: UIButton) {
         navigationDelegate?.didPressSelectMapButton(in: self)
     }
@@ -189,10 +195,6 @@ extension PreGameLobbyViewController: RoomStateViewModelDelegate {
             in: self,
             withSelectedMapType: selectedMapType,
             gameplayId: viewModel.lobby.lobbyId, players: players)
-    }
-
-    func updateFriendsButton(isHidden: Bool) {
-        friendsButton.isHidden = isHidden
     }
 
     func updateView() {

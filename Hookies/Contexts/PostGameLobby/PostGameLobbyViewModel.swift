@@ -23,7 +23,7 @@ protocol PostGameLobbyViewModelRepresentable {
     var isHost: Bool { get }
     var delegate: PostGameLobbyViewModelDelegate? { get set }
     func subscribeToLobby()
-    func disconnect()
+    func closeLobbyConnection()
     func continueGame()
     func returnHome()
 }
@@ -41,6 +41,8 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
         self.lobbyId = lobbyId
         self.players = players
     }
+
+    // MARK: Lobby Store
 
     func subscribeToLobby() {
         API.shared.lobby.subscribeToLobby(lobbyId: lobbyId, listener: { lobby, error  in
@@ -78,9 +80,11 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
         }
     }
 
-    func disconnect() {
+    func closeLobbyConnection() {
         API.shared.lobby.unsubscribeFromLobby()
     }
+
+    // MARK: Return Home
 
     func returnHome() {
         if self.players.contains(where: { $0.isHost && $0.isCurrentPlayer }) {
@@ -93,6 +97,8 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
             delegate?.leaveLobby()
         }
     }
+
+    // MARK: Continue Game
 
     func continueGame() {
         guard var lobby = lobby else {
@@ -111,7 +117,7 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
             }
             lobby.addPlayer(playerId: currentPlayerId)
         }
-        disconnect()
+        closeLobbyConnection()
         API.shared.lobby.save(lobby: lobby)
         delegate?.continueGame(with: lobby)
     }

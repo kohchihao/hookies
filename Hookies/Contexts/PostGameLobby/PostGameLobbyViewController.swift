@@ -47,13 +47,8 @@ class PostGameLobbyViewController: UIViewController {
         self.viewModel.subscribeToLobby()
     }
 
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        viewModel.disconnect()
-//    }
-
     deinit {
-        viewModel.disconnect()
+        viewModel.closeLobbyConnection()
     }
 
     // MARK: Setup view
@@ -147,6 +142,8 @@ class PostGameLobbyViewController: UIViewController {
         }
     }
 
+    // MARK: IBActions
+
     @IBAction private func continueButtonPressed(_ sender: UIButton) {
         viewModel.continueGame()
     }
@@ -177,7 +174,7 @@ extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
     }
 
     func leaveLobby() {
-        viewModel.disconnect()
+        viewModel.closeLobbyConnection()
         navigationDelegate?.didPressReturnHomeButton(in: self)
     }
 }

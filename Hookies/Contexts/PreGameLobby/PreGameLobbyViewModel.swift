@@ -12,7 +12,6 @@ protocol PreGameLobbyViewModelRepresentable {
     var lobby: Lobby { get set }
     var isHost: Bool { get }
     var isOnline: Bool { get }
-    func updateSelectedMapType(selectedMapType: MapType)
     func nextCostume()
     func prevCostume()
     func prepareGame()
@@ -92,7 +91,7 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
                     self.leaveLobby()
                 }
             }
-            self.delegate?.updateFriendsButton(isHidden: !self.isOnline)
+            self.delegate?.updateView()
         })
         API.shared.lobby.subscribeToPlayersConnection(listener: { userConnection in
             switch userConnection.state {
@@ -187,6 +186,8 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
         return players
     }
 
+    // MARK: Leave Lobby
+
     func leaveLobby() {
         if isHost {
             lobby.updateLobbyState(lobbyState: .empty)
@@ -222,5 +223,4 @@ protocol RoomStateViewModelDelegate: class {
     func leaveLobby()
     func startGame(with players: [Player])
     func updateView()
-    func updateFriendsButton(isHidden: Bool)
 }
