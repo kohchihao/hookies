@@ -7,6 +7,8 @@
 //
 import SpriteKit
 
+/// Represents the lengthen button that is within the Game Scene.
+
 class LengthenButton: ButtonNode {
 
     // MARK: - INIT

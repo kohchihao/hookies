@@ -8,6 +8,8 @@
 
 import SpriteKit
 
+/// Represents a grappling hook button that is located on the bottom right of the device.
+
 class GrapplingHookButton: ButtonNode {
 
     // MARK: - INIT

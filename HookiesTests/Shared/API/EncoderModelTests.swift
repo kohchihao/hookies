@@ -11,19 +11,16 @@ import XCTest
 
 class EncoderModelTests: XCTestCase {
     var playerDataModel: PlayerData!
-    var hookDataModel: HookActionData!
+    var genericEvent: GenericPlayerEventData!
 
     override func setUp() {
         super.setUp()
-        playerDataModel = PlayerData(playerId: "1234", position: Vector(x: 300, y: 300),
-                                     velocity: Vector(x: 500, y: 200))
-        hookDataModel = HookActionData(playerId: "1234",
-                                       position: Vector(x: 300, y: 300),
-                                       velocity: Vector(x: 500, y: 200),
-                                       type: .activate)
     }
 
     func testDecode() {
+        playerDataModel = PlayerData(playerId: "1234",
+                                     position: Vector(x: 300, y: 300),
+                                     velocity: Vector(x: 500, y: 200))
         let expected: [String: Any] = [
             "playerId": "1234",
             "positionX": 300, "positionY": 300,
@@ -34,25 +31,31 @@ class EncoderModelTests: XCTestCase {
     }
 
     func testDecodeNestedDataAndEnum() {
+        genericEvent = GenericPlayerEventData(playerId: "1234",
+                                              position: Vector(x: 300, y: 300),
+                                              velocity: Vector(x: 500, y: 200),
+                                              type: .hook)
         let expected: [String: Any] = [
             "playerId": "1234",
             "positionX": 300, "positionY": 300,
             "velocityX": 500, "velocityY": 200,
-            "actionType": "activate"
+            "type": "hook"
         ]
-        XCTAssertTrue(NSDictionary(dictionary: hookDataModel.encoding)
+        XCTAssertTrue(NSDictionary(dictionary: genericEvent.encoding)
             .isEqual(to: expected))
     }
 
     func testEncodeNilData() {
-        playerDataModel = PlayerData(playerId: "1234",
-                                     position: Vector(x: 300, y: 300),
-                                     velocity: nil)
+        genericEvent = GenericPlayerEventData(playerId: "1234",
+                                              position: Vector(x: 300, y: 300),
+                                              velocity: nil,
+                                              type: .hook)
         let expected: [String: Any] = [
             "playerId": "1234",
-            "positionX": 300, "positionY": 300
+            "positionX": 300, "positionY": 300,
+            "type": "hook"
         ]
-        XCTAssertTrue(NSDictionary(dictionary: playerDataModel.encoding)
+        XCTAssertTrue(NSDictionary(dictionary: genericEvent.encoding)
             .isEqual(to: expected))
     }
 }

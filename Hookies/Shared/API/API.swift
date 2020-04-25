@@ -10,10 +10,14 @@ import Foundation
 import Firebase
 import SocketIO
 
+/// A singleton that provides the API for the client side code to communicate with the backend.
 class API {
     static let shared = API()
 
     private let db: Firestore
+    /// Socket Manager Attributes:
+    ///     - When disconnects, will attempt to reconnect
+    ///     - Will never give up reconnecting
     private let socketManager = SocketManager(
         socketURL: Config.socketURL,
         config: [.reconnects(true), .reconnectAttempts(-1)])
@@ -26,9 +30,6 @@ class API {
 
     private init() {
         db = Firestore.firestore()
-        let settings = FirestoreSettings()
-        settings.isPersistenceEnabled = false
-        db.settings = settings
 
         user = UserStore(userCollection: db.collection("users"))
         gameplay = GameplayStore(socketRef: socketManager.socket(forNamespace: "/games"))

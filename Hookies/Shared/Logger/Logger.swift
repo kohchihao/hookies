@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+/// Logger helps to log all the logs within the project.
+
 enum LogType {
     case success
     case error
@@ -51,6 +53,13 @@ class Logger {
 
     // MARK: - Logger
 
+    /// Show the message within the XCode logs.
+    /// - Parameters:
+    ///   - details: The details of the content to be logged
+    ///   - logType: The type of logging level
+    ///   - fileName: The file name to log
+    ///   - lineNumber: The line number to log
+    ///   - functionName: The function name to log
     @discardableResult func show(
         details: String,
         logType: LogType,
@@ -154,6 +163,8 @@ class Logger {
 
     // MARK: - Logger + Display
 
+    /// Display the log as an error message on the user's display.
+    /// - Parameter type: The type of alert to display
     func display(_ type: DisplayType = .alert) {
         switch type {
         case .alert:
@@ -167,6 +178,12 @@ class Logger {
 
     private var rootWindow: UIWindow!
 
+    /// Show the alert  on the display.
+    /// - Parameters:
+    ///   - title: The title of the alert
+    ///   - message: The message of the alert
+    ///   - actionTitles: The action button titles
+    ///   - actions: The actions
     func showAlert(
         title: String,
         message: String,
@@ -207,10 +224,14 @@ class Logger {
         window.rootViewController?.present(alert, animated: true, completion: nil)
     }
 
+    /// Show the error alert.
+    /// - Parameter message: The message for the alert
     func showErrorAlert(message: String) {
         self.showAlert(title: "Error", message: message, actionTitles: ["Okay"], actions: nil)
     }
 
+    /// Show the toast.
+    /// - Parameter message: The message for the toast
     func showToast(message: String) {
         guard rootWindow == nil else {
             return

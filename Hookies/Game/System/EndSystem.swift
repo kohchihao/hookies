@@ -8,13 +8,15 @@
 
 import Foundation
 
-/// End  systems helps to check if the game has ended
+/// End systems helps to check if the game has ended.
 
 protocol EndSystemProtocol {
 
 }
 
 protocol EndSystemDelegate: AnyObject {
+    /// Indicates that the game has ended.
+    /// - Parameter rankings: The ranking of the players
     func gameEnded(rankings: [Player])
 }
 

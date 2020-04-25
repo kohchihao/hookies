@@ -23,6 +23,10 @@ class AuthViewModel: AuthViewModelRepresentable {
         toPromptForUsername = (authState == .missingUsername)
     }
 
+    /// Will create account for the current player with the defined username
+    /// - Parameters:
+    ///   - username: The username of the current player
+    ///   - completion: The callback handler that gets triggered when the account creation is done.
     func createAccountWithUsername(username: String,
                                    completion: @escaping (User?, LocalizedError?) -> Void) {
         API.shared.user.createAccountWithUsername(username: username) { user, error in

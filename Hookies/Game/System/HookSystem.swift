@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-/// Represent entity that will be potentially hooked to another entity
+/// Hook System handles the hooking, unhooking, shortening and lengthening action for the players.
 
 enum HookSystemAction {
     case lengthen, shorten
@@ -30,10 +30,27 @@ protocol HookSystemProtocol {
                      from anchorSprite: SpriteComponent)
 }
 
-protocol HookSystemDelegate: AnyObject, MovementControlDelegate {
+protocol HookSystemDelegate: MovementControlDelegate {
+    /// Indicates that a hook has been applied by a sprite,
+    /// - Parameters:
+    ///   - sprite: The sprite that applied the hook action
+    ///   - velocity: The iniial velocity of the sprite
+    ///   - hook: The hook component for the sprte
     func hookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
+
+    /// Indicaties that an adjust hook has been applied by a sprite
+    /// - Parameters:
+    ///   - sprite: The sprite that applied the adjust action
+    ///   - velocity: The initial velocity of the sprite
+    ///   - hook: the hook compoennt for the sprite
     func adjustHookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
+
+    /// Indicates that an unhook acton has been applieed
+    /// - Parameter hook: The hook component to unhook from
     func unhookActionApplied(hook: HookComponent)
+
+    /// Indicates that a hook player action has been applied
+    /// - Parameter line: The line between the 2 players
     func hookPlayerApplied(with line: SKShapeNode)
 }
 
@@ -53,13 +70,17 @@ class HookSystem: System, HookSystemProtocol {
     }
 
     // MARK: - Add Player
+
+    /// Add the player to the system that can hook.
+    /// - Parameter player: The player sprite
     func add(player: SpriteComponent) {
         players.append(player)
     }
 
     // MARK: - Hook
 
-    /// Hook for single player
+    /// The player hooking to a bolt.
+    /// - Parameter entity: The player's entity that is hooking to a bolt
     func hook(from entity: Entity) -> Bool {
         guard let sprite = entity.get(SpriteComponent.self), let velocity = sprite.node.physicsBody?.velocity else {
             return false
@@ -69,7 +90,11 @@ class HookSystem: System, HookSystemProtocol {
         return hook(from: entity, at: sprite.node.position, with: velocity)
     }
 
-    /// Hook for multiplayer
+    /// The other player hooking to a bolt.
+    /// - Parameters:
+    ///   - entity: The other player's entity
+    ///   - position: The position of the other player
+    ///   - velocity: The velocity of the other player
     private func hook(from entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
         guard let sprite = entity.get(SpriteComponent.self),
             let hook = entity.get(HookComponent.self)
@@ -86,6 +111,7 @@ class HookSystem: System, HookSystemProtocol {
 
         let line = sprite.makeLine(to: closestBolt)
 
+        // To ensure that the joint pin between bolt-line and player-line should be created
         guard let anchorLineJointPin = makeJointPinToLine(from: closestBolt.node, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: sprite.node, toLine: line) else {
                 return false
@@ -101,17 +127,22 @@ class HookSystem: System, HookSystemProtocol {
         return true
     }
 
+    /// To hook and pull back the other player's sprite.
+    /// - Parameters:
+    ///   - sprite: The player's sprite
+    ///   - anchorSprite: The other player that is hooked to by `sprite`
     func hookAndPull(_ sprite: SpriteComponent, from anchorSprite: SpriteComponent) {
         guard let sprite = anchorSprite.nearestSpriteInFront(from: players) else {
             Logger.log.show(details: "No sprite found in the front", logType: .warning)
             return
         }
         let line = anchorSprite.makeLine(to: sprite)
-        delegate?.movement(isDisabled: true, for: sprite)
         delegate?.hookPlayerApplied(with: line)
+        delegate?.movement(isDisabled: true, for: sprite)
         sprite.node.physicsBody?.affectedByGravity = false
+        let duration = TimeInterval(Constants.pullPlayerDuration)
 
-        let duration = TimeInterval(2.0)
+        // The pull animation
         let followAnchor = SKAction.customAction(withDuration: duration) { node, _ in
             let newPath = anchorSprite.makePath(to: sprite)
             line.path = newPath
@@ -119,11 +150,10 @@ class HookSystem: System, HookSystemProtocol {
             let dx = anchorSprite.node.position.x - node.position.x
             let dy = anchorSprite.node.position.y - node.position.y
             let angle = atan2(dx, dy)
-            let speedPerFrame = CGFloat(15)
-            if abs(dx) > speedPerFrame * 5 {
-                node.position.x += sin(angle) * speedPerFrame
+            if abs(dx) > Constants.speedOfPlayerPull * 5 {
+                node.position.x += sin(angle) * Constants.speedOfPlayerPull
             }
-            node.position.y += cos(angle) * speedPerFrame
+            node.position.y += cos(angle) * Constants.speedOfPlayerPull
         }
 
         sprite.node.run(followAnchor, completion: {
@@ -135,7 +165,8 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Unhook
 
-    /// Unhook for single player
+    /// The player unhooking from a bolt.
+    /// - Parameter entity: The player's entity
     func unhook(entity: Entity) -> Bool {
         guard let sprite = entity.get(SpriteComponent.self), let velocity = sprite.node.physicsBody?.velocity else {
             return false
@@ -145,7 +176,11 @@ class HookSystem: System, HookSystemProtocol {
         return unhook(entity: entity, at: sprite.node.position, with: velocity)
     }
 
-    /// Unhook for multiplayer
+    /// The player unhooking from a bolt.
+    /// - Parameters:
+    ///   - entity: The player's entity
+    ///   - position: The player's position
+    ///   - velocity: The player's velocity
     func unhook(entity: Entity, at position: CGPoint, with velocity: CGVector) -> Bool {
         guard let sprite = entity.get(SpriteComponent.self),
             let hook = entity.get(HookComponent.self)
@@ -169,6 +204,10 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Adjust length
 
+    /// Adjusting the length of the rope
+    /// - Parameters:
+    ///   - entity: The player's entity to adjust the rope
+    ///   - type: Lengthen or shorten
     func adjustLength(from entity: Entity, type: HookSystemAction) -> Bool {
         guard let sprite = entity.get(SpriteComponent.self), let velocity = sprite.node.physicsBody?.velocity else {
             return false
@@ -206,6 +245,7 @@ class HookSystem: System, HookSystemProtocol {
 
         let line = sprite.makeLine(to: bolt)
 
+        // To ensure that the joint pin between bolt-line and player-line should be created
         guard let anchorLineJointPin = makeJointPinToLine(from: bolt.node, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: sprite.node, toLine: line)
             else {
@@ -223,6 +263,8 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Rope Checks
 
+    /// Checks if the rope is shorter than a minimum threshold.
+    /// - Parameter entity: The player's entity to check
     func isShorterThanMin(for entity: Entity) -> Bool {
         guard let sprite = entity.get(SpriteComponent.self), let hook = entity.get(HookComponent.self) else {
             return false
@@ -344,6 +386,8 @@ class HookSystem: System, HookSystemProtocol {
         return (aboveBoltDisplacement, belowBoltDisplacement)
     }
 
+    /// Checks if the sprite is colliding with any platform
+    /// - Parameter sprite: The sprite to check
     private func isCollidingWithPlatform(sprite: SpriteComponent) -> Bool {
         guard let physicsBody = sprite.node.physicsBody else {
             return false
@@ -364,12 +408,18 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Add Initial Velocity
 
+    /// Apply initial velocity back to the sprite.
+    /// - Parameters:
+    ///   - sprite: The sprite to apply on
+    ///   - velocity: The velocity to apply back
     func applyInitialVelocity(sprite: SpriteComponent, velocity: CGVector) {
         sprite.node.physicsBody?.applyImpulse(velocity)
     }
 
     // MARK: - Booster
 
+    /// Boost the entity velocity.
+    /// - Parameter entity: The entity to boost
     func boostVelocity(to entity: Entity) {
         guard let hook = entity.get(HookComponent.self) else {
             return
@@ -416,6 +466,10 @@ class HookSystem: System, HookSystemProtocol {
 
     // MARK: - Create Joint
 
+    /// Make a joint pin to the line.
+    /// - Parameters:
+    ///   - node: The node to join the line to
+    ///   - line: The line
     private func makeJointPinToLine(from node: SKNode, toLine line: SKShapeNode) -> SKPhysicsJointPin? {
         guard let nodePhysicsBody = node.physicsBody, let linePhysicsBody = line.physicsBody else {
             return nil
@@ -462,6 +516,7 @@ extension HookSystem {
             object: nil)
     }
 
+    /// Broadcast to the Notification Center
     private func broadcast(with sprite: SpriteComponent, of eventType: GenericPlayerEvent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: eventType)
         NotificationCenter.default.post(

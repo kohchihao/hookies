@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Represent the authentication state of a user
 enum AuthState {
     case notAuthenticated, missingUsername, authenticated
 }

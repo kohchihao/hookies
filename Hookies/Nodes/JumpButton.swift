@@ -7,8 +7,9 @@
 //
 
 import Foundation
-
 import SpriteKit
+
+/// Represents a jump button that is located in the center of the device.
 
 class JumpButton: ButtonNode {
 

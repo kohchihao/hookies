@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-/// Represents the closest bolt to the given position.
+/// Closest Bolt System helps to find the closest bolt.
 
 typealias PreviousClosestBoltSprite = SpriteComponent
 typealias CurrentClosestBoltSprite = SpriteComponent
@@ -28,6 +28,9 @@ class ClosestBoltSystem: System, ClosestBoltSystemProtocol {
         self.boltSpriteComponents = bolts
     }
 
+    /// Finds the closest bolt from a given position.
+    /// - Parameters:
+    ///   - position: The position of the sprite
     func findClosestBolt(to position: CGPoint) -> (PreviousClosestBoltSprite?, CurrentClosestBoltSprite?) {
         var closestDistance = Double.greatestFiniteMagnitude
         let otherEntityPosition = Vector(point: position)
@@ -38,6 +41,7 @@ class ClosestBoltSystem: System, ClosestBoltSystemProtocol {
             let boltPositionVector = Vector(point: bolt.node.position)
             let distance = boltPositionVector.distance(to: otherEntityPosition)
             closestDistance = min(Double(distance), closestDistance)
+            // Checks if the minimum selected is the distance
             if closestDistance == Double(distance) {
                 previousClosestBoltSprite = currentClosestBoltSprite
                 currentClosestBoltSprite = bolt

@@ -8,6 +8,8 @@
 
 import SpriteKit
 
+/// Finishing Line System handles if the players have reached the finishing line or not.
+
 protocol FinishingLineSystemProtocol {
     func stop(player: SpriteComponent) -> Bool
     func bringPlayersToStop()
@@ -40,17 +42,22 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         registerNotificationObservers()
     }
 
+    /// Add the player that can cross the finishing line.
+    /// - Parameter player: The player that can cross the finishing line
     func add(player: SpriteComponent) {
         players.insert(player)
         playersState[player] = .moving
     }
 
+    /// Remove the player from the system.
+    /// - Parameter player: The player to remove
     func remove(player: SpriteComponent) {
         players.remove(player)
         playersState[player] = nil
     }
 
-    /// Stop for single player
+    /// Stop for single player.
+    /// - Parameter player: The player's sprite to stop
     func stop(player: SpriteComponent) -> Bool {
         guard let velocity = player.node.physicsBody?.velocity else {
             return false
@@ -61,6 +68,7 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         return stop(player: player, at: player.node.position, with: velocity)
     }
 
+    /// Gradually slow down the player.
     func bringPlayersToStop() {
         for (sprite, state) in playersState where state == .stopping {
             guard let velocity = sprite.node.physicsBody?.velocity else {
@@ -82,6 +90,8 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         }
     }
 
+    /// Checks if the player has crossed the finishing line.
+    /// - Parameter player: The player's sprite
     func hasPlayerFinish(player: SpriteComponent) -> Bool {
         guard let state = playersState[player] else {
             return false
@@ -90,7 +100,11 @@ class FinishingLineSystem: System, FinishingLineSystemProtocol {
         return state != .moving
     }
 
-    /// Stop for multiplayer
+    /// Stop the other players.
+    /// - Parameters:
+    ///   - player: The other player's sprite
+    ///   - position: The position of the other player's sprite
+    ///   - velocity: The velocity of the player's sprite
     private func stop(player: SpriteComponent, at position: CGPoint, with velocity: CGVector) -> Bool {
         guard let systemPlayer = players.first(where: { $0 == player }) else {
             return false

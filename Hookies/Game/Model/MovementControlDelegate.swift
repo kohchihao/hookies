@@ -8,6 +8,12 @@
 
 import Foundation
 
-protocol MovementControlDelegate {
+/// All delegate that controls the movement for the given sprite.
+protocol MovementControlDelegate: AnyObject {
+
+    /// Indicates whether the movement has been disabled for the given sprite
+    /// - Parameters:
+    ///   - isDisabled: Whether the movement is disabled
+    ///   - sprite: The sprite in which the movement is manipulated.
     func movement(isDisabled: Bool, for sprite: SpriteComponent)
 }

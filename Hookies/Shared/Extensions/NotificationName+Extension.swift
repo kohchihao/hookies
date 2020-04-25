@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// All the notificaion names used in the Notification Center
 extension Notification.Name {
     // MARK: - Systems to NetworkManager
     static let gameConnectionEvent = Notification.Name("gameConnectionEvent")
