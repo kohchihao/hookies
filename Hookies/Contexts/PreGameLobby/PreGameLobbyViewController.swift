@@ -31,11 +31,11 @@ class PreGameLobbyViewController: UIViewController {
         }
         return self.viewModel.lobby.hostId != currentUser.uid || viewModel.lobby.selectedMapType == nil
     }
-    private var selectMapHidden: Bool {
+    private var isHost: Bool {
         guard let currentUser = API.shared.user.currentUser else {
             return true
         }
-        return self.viewModel.lobby.hostId != currentUser.uid
+        return self.viewModel.lobby.hostId == currentUser.uid
     }
 
     @IBOutlet private var selectedMapLabel: UILabel!
@@ -44,6 +44,7 @@ class PreGameLobbyViewController: UIViewController {
     @IBOutlet private var startGameButton: UIButton!
     @IBOutlet private var selectMapButton: UIButton!
     @IBOutlet private var friendsButton: UIButton!
+    @IBOutlet private var addBotButton: UIButton!
 
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
@@ -64,7 +65,8 @@ class PreGameLobbyViewController: UIViewController {
         viewModel.delegate = self
         saveLobby(lobby: viewModel.lobby)
         subscribeToLobby(lobby: viewModel.lobby)
-        selectMapButton.isHidden = selectMapHidden
+        selectMapButton.isHidden = !isHost
+        addBotButton.isHidden = !isHost
     }
 
     private func connectToSocket() {
@@ -199,16 +201,8 @@ class PreGameLobbyViewController: UIViewController {
             Logger.log.show(details: "current player not found", logType: .error)
             return players
         }
-        let hostId = lobby.hostId
-        guard let hostCostume = lobby.costumesId[lobby.hostId] ?? CostumeType.getDefault() else {
-            return players
-        }
-        guard let host = Player(playerId: hostId, playerType: .human, costumeType: hostCostume, isCurrentPlayer: currentId == hostId, isHost: true) else {
-            return players
-        }
-        players.append(host)
 
-        for playerId in lobby.playersId.filter({ $0 != lobby.hostId }) {
+        for playerId in lobby.playersId {
             guard let costume = lobby.costumesId[playerId] ?? CostumeType.getDefault() else {
                 continue
             }
@@ -220,7 +214,7 @@ class PreGameLobbyViewController: UIViewController {
                     players.append(bot)
                 }
             } else {
-                if let player = Player(playerId: playerId, playerType: .human, costumeType: costume, isCurrentPlayer: currentId == playerId, isHost: false) {
+                if let player = Player(playerId: playerId, playerType: .human, costumeType: costume, isCurrentPlayer: currentId == playerId, isHost: isHost) {
                     players.append(player)
                 }
             }
@@ -296,32 +290,42 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func updatePlayerViewWithUsername(playerId: String, index: Int) {
-        if isOnline {
-            API.shared.user.get(withUid: playerId, completion: { user, error in
-                guard error == nil else {
-                    Logger.log.show(details: error.debugDescription, logType: .error)
-                    return
-                }
-                guard let user = user else {
-                    do {
-                        let bot = try User(uid: playerId, username: String(playerId.prefix(Constants.botUsernameLength)))
-                        if !players.contains(bot) {
-                            players.append(bot)
-                        }
-                    } catch {
-                        dispatch.leave()
-                        return
-                    }
-                    dispatch.leave()
-                    return
-                }
-                self.playerViews[index].updateUsernameLabel(username: user.username)
-            })
-        }
+           if isOnline {
+               API.shared.user.get(withUid: playerId, completion: { user, error in
+                   guard error == nil else {
+                       Logger.log.show(details: error.debugDescription, logType: .error)
+                       return
+                   }
+                   var username: String
+                   if let user = user {
+                       username = user.username
+                   } else if playerId.contains(Constants.botPrefix) {
+                       username = String(playerId.prefix(Constants.botUsernameLength))
+                   } else {
+                       return
+                   }
+                   self.playerViews[index].updateUsernameLabel(username: username)
+               })
+           } else {
+            self.playerViews[index].updateUsernameLabel(username: String(playerId.prefix(Constants.botUsernameLength)))
+       }
     }
 
     @IBAction private func onFriendButtonPressed(_ sender: UIButton) {
         navigationDelegate?.didPressFriendButton(in: self, lobbyId: self.viewModel.lobby.lobbyId)
+    }
+
+    @IBAction private func onAddBotButtonPressed(_ sender: UIButton) {
+        guard self.viewModel.lobby.playersId.count < Constants.maxPlayerCount else {
+            return
+        }
+        let botId = "Bot" + RandomIDGenerator.getRandomID(length: 4)
+        self.viewModel.lobby.addPlayer(playerId: botId)
+        guard let costume = CostumeType.getRandom() else {
+            return
+        }
+        self.viewModel.lobby.updateCostumeId(playerId: botId, costumeType: costume)
+        API.shared.lobby.save(lobby: self.viewModel.lobby)
     }
 
     @IBAction private func onReturnHomeButtonPressed(_ sender: UIButton) {

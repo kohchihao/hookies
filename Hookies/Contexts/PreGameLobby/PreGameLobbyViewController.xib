@@ -17,6 +17,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PreGameLobbyViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
+                <outlet property="addBotButton" destination="eZa-k2-wKN" id="bYe-dy-oaW"/>
                 <outlet property="costumeIdLabel" destination="EhH-f1-AWI" id="Xqe-bs-hDT"/>
                 <outlet property="friendsButton" destination="09n-Jd-dJd" id="rqf-0Q-mZa"/>
                 <outlet property="gameSessionIdLabel" destination="E5t-UX-zdb" id="UAr-gf-YAa"/>
@@ -61,7 +62,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09n-Jd-dJd" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="461" y="157" width="102" height="38"/>
+                    <rect key="frame" x="315.5" y="157" width="102.5" height="38"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="20"/>
                     <state key="normal" title="Friends">
@@ -95,7 +96,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pxw-Sd-UG5" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                    <rect key="frame" x="147" y="157" width="102.5" height="38"/>
+                    <rect key="frame" x="65.5" y="157" width="102.5" height="38"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="20"/>
                     <state key="normal" title="Select Map">
@@ -148,12 +149,29 @@
                         <action selector="onStartClicked:" destination="-1" eventType="touchUpInside" id="Unk-8R-MBY"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eZa-k2-wKN" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
+                    <rect key="frame" x="548.5" y="157" width="102.5" height="38"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="20"/>
+                    <state key="normal" title="Add Bot">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onAddBotButtonPressed:" destination="-1" eventType="touchUpInside" id="Dex-il-jY0"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
                 <constraint firstItem="7pY-bT-UqU" firstAttribute="height" secondItem="EhH-f1-AWI" secondAttribute="height" id="25C-HZ-Qmt"/>
                 <constraint firstItem="yin-cm-VvN" firstAttribute="height" secondItem="Mqv-bn-hYX" secondAttribute="height" id="2R0-ue-Ovt"/>
                 <constraint firstItem="ogz-r1-Rwj" firstAttribute="height" secondItem="pxw-Sd-UG5" secondAttribute="height" id="5Kt-oH-oM0"/>
+                <constraint firstItem="09n-Jd-dJd" firstAttribute="leading" secondItem="pxw-Sd-UG5" secondAttribute="leading" constant="250" id="5Pl-0d-BBJ"/>
                 <constraint firstItem="pxw-Sd-UG5" firstAttribute="centerY" secondItem="09n-Jd-dJd" secondAttribute="centerY" id="6jE-6i-7Ne"/>
                 <constraint firstItem="EhH-f1-AWI" firstAttribute="width" secondItem="Jre-8K-DKd" secondAttribute="width" multiplier="0.14" id="7kV-IU-bsM"/>
                 <constraint firstItem="BKC-SP-KeM" firstAttribute="leading" secondItem="Jre-8K-DKd" secondAttribute="leading" id="9Y1-o5-uXP"/>
@@ -161,6 +179,7 @@
                 <constraint firstItem="EhH-f1-AWI" firstAttribute="top" secondItem="7pY-bT-UqU" secondAttribute="bottom" constant="-10" id="AYO-Hz-gnk"/>
                 <constraint firstItem="ct4-FD-g13" firstAttribute="height" secondItem="L8c-8D-NHy" secondAttribute="height" id="AYQ-36-AMo"/>
                 <constraint firstItem="7pY-bT-UqU" firstAttribute="centerX" secondItem="EhH-f1-AWI" secondAttribute="centerX" id="Ber-zK-ip9"/>
+                <constraint firstItem="eZa-k2-wKN" firstAttribute="height" secondItem="pxw-Sd-UG5" secondAttribute="height" id="DTb-3t-K4r"/>
                 <constraint firstItem="Mqv-bn-hYX" firstAttribute="height" secondItem="E5t-UX-zdb" secondAttribute="height" id="GSn-fL-jEA"/>
                 <constraint firstItem="wCv-SN-bcb" firstAttribute="width" secondItem="pxw-Sd-UG5" secondAttribute="width" id="Gaj-VI-9Bn"/>
                 <constraint firstItem="EhH-f1-AWI" firstAttribute="leading" secondItem="ct4-FD-g13" secondAttribute="trailing" id="GyU-SJ-2xV"/>
@@ -180,15 +199,17 @@
                 <constraint firstItem="Jre-8K-DKd" firstAttribute="trailing" secondItem="BKC-SP-KeM" secondAttribute="trailing" id="Ucj-Xs-Zma"/>
                 <constraint firstItem="ogz-r1-Rwj" firstAttribute="top" secondItem="Jre-8K-DKd" secondAttribute="top" constant="20" id="Uhk-VD-aJq"/>
                 <constraint firstItem="L8c-8D-NHy" firstAttribute="height" secondItem="Jre-8K-DKd" secondAttribute="height" multiplier="0.1" id="WXk-9u-56d"/>
-                <constraint firstItem="pxw-Sd-UG5" firstAttribute="leading" secondItem="yin-cm-VvN" secondAttribute="trailing" constant="-50" id="Wuf-cC-PC8"/>
                 <constraint firstItem="09n-Jd-dJd" firstAttribute="height" secondItem="pxw-Sd-UG5" secondAttribute="height" id="Wvx-vp-D3D"/>
                 <constraint firstItem="VFq-33-f6L" firstAttribute="centerY" secondItem="E5t-UX-zdb" secondAttribute="centerY" id="XtY-7t-dJz"/>
-                <constraint firstItem="09n-Jd-dJd" firstAttribute="centerX" secondItem="Jre-8K-DKd" secondAttribute="centerX" id="bQq-1F-q9c"/>
                 <constraint firstItem="wCv-SN-bcb" firstAttribute="centerX" secondItem="EhH-f1-AWI" secondAttribute="centerX" id="clv-Eg-0F8"/>
+                <constraint firstItem="eZa-k2-wKN" firstAttribute="width" secondItem="pxw-Sd-UG5" secondAttribute="width" id="e95-n5-EDu"/>
+                <constraint firstItem="eZa-k2-wKN" firstAttribute="centerY" secondItem="pxw-Sd-UG5" secondAttribute="centerY" id="fcF-tR-iNd"/>
                 <constraint firstItem="Jre-8K-DKd" firstAttribute="trailing" secondItem="L8c-8D-NHy" secondAttribute="trailing" id="fhl-vL-sBv"/>
                 <constraint firstItem="EhH-f1-AWI" firstAttribute="height" secondItem="Jre-8K-DKd" secondAttribute="height" multiplier="0.05" id="hBf-Ej-J7t"/>
                 <constraint firstItem="ogz-r1-Rwj" firstAttribute="width" secondItem="pxw-Sd-UG5" secondAttribute="width" id="hKs-6w-ibe"/>
+                <constraint firstItem="wCv-SN-bcb" firstAttribute="trailing" secondItem="eZa-k2-wKN" secondAttribute="trailing" constant="250" id="ljP-Zi-Wyt"/>
                 <constraint firstItem="E5t-UX-zdb" firstAttribute="width" secondItem="EhH-f1-AWI" secondAttribute="width" id="mGY-73-9Dt"/>
+                <constraint firstItem="pxw-Sd-UG5" firstAttribute="centerX" secondItem="yin-cm-VvN" secondAttribute="centerX" id="qHB-9J-0Iw"/>
                 <constraint firstItem="L8c-8D-NHy" firstAttribute="width" secondItem="Jre-8K-DKd" secondAttribute="width" multiplier="0.1" id="qpq-F4-tnz"/>
                 <constraint firstItem="yin-cm-VvN" firstAttribute="width" secondItem="Mqv-bn-hYX" secondAttribute="width" multiplier="0.8" id="qwR-lU-FfL"/>
                 <constraint firstItem="ogz-r1-Rwj" firstAttribute="leading" secondItem="Jre-8K-DKd" secondAttribute="leading" constant="20" id="rRB-Wm-2g0"/>

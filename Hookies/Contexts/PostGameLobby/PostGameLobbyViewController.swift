@@ -107,10 +107,15 @@ class PostGameLobbyViewController: UIViewController {
                 Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
-            guard let user = user else {
+            var username: String
+            if let user = user {
+                username = user.username
+            } else if player.playerId.contains(Constants.botPrefix) {
+                username = String(player.playerId.prefix(Constants.botUsernameLength))
+            } else {
                 return
             }
-            self.playerViews[index].updateUsernameLabel(username: user.username)
+            self.playerViews[index].updateUsernameLabel(username: username)
         })
     }
 
@@ -140,21 +145,13 @@ class PostGameLobbyViewController: UIViewController {
     }
 
     @IBAction private func returnHomeButtonPressed(_sender: UIButton) {
-        guard let currentPlayer = API.shared.user.currentUser else {
-            return
-        }
-        if currentPlayer.uid == self.viewModel.lobby?.hostId {
-            guard let lobby = self.viewModel.lobby else {
+        if self.viewModel.players.contains(where: { $0.isHost && $0.isCurrentPlayer }) {
+            guard var lobby = self.viewModel.lobby else {
                 return
             }
             lobby.updateLobbyState(lobbyState: .empty)
             API.shared.lobby.save(lobby: lobby)
         }
-//        for player in self.viewModel.players {
-//            if player.isHost && player.isCurrentPlayer {
-//                API.shared.lobby.delete(lobbyId: self.viewModel.lobby)
-//            }
-//        }
         API.shared.lobby.unsubscribeFromLobby()
         navigationDelegate?.didPressReturnHomeButton(in: self)
     }
