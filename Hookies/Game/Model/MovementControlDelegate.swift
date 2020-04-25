@@ -9,7 +9,7 @@
 import Foundation
 
 /// All delegate that controls the movement for the given sprite.
-protocol MovementControlDelegate: Any {
+protocol MovementControlDelegate: AnyObject {
 
     /// Indicates whether the movement has been disabled for the given sprite
     /// - Parameters:

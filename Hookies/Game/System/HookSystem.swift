@@ -30,7 +30,7 @@ protocol HookSystemProtocol {
                      from anchorSprite: SpriteComponent)
 }
 
-protocol HookSystemDelegate: AnyObject, MovementControlDelegate {
+protocol HookSystemDelegate: MovementControlDelegate {
     /// Indicates that a hook has been applied by a sprite,
     /// - Parameters:
     ///   - sprite: The sprite that applied the hook action
