@@ -199,7 +199,7 @@ class GameEngine {
     func currentPlayerContactWith(powerup: SKSpriteNode) -> PowerupType? {
         guard let playerSprite = currentPlayer?.get(SpriteComponent.self),
             let powerupEntity = findPowerupEntity(for: powerup),
-            let powerupSprite = powerupEntity.getSpriteComponent(),
+            let powerupSprite = powerupEntity.get(SpriteComponent.self),
             let powerupComponent = powerupEntity.get(PowerupComponent.self) else {
                 return nil
         }
