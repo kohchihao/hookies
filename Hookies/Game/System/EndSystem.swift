@@ -15,6 +15,8 @@ protocol EndSystemProtocol {
 }
 
 protocol EndSystemDelegate: AnyObject {
+    /// Indicates that the game has ended.
+    /// - Parameter rankings: The ranking of the players
     func gameEnded(rankings: [Player])
 }
 
