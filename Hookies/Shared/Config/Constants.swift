@@ -18,4 +18,13 @@ struct Constants {
     static let maxPlayerCount = 4
 
     static let powerupRespawnDelay = 2.0
+
+    // Time Step in seconds
+    static let botTimeStep: Double = 1.0
+
+    // Max Game Length in seconds
+    static let maxGameLength: Double = 180
+
+    static let botPrefix = "Bot"
+    static let botUsernameLength = 7
 }

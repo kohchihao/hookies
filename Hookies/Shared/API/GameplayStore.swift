@@ -43,6 +43,10 @@ class GameplayStore: SocketRoom {
         socket.emit("registerFinishGame")
     }
 
+    func registerBotFinishLineReached(for botId: String) {
+        socket.emit("registerBotFinishGame", ["user": botId])
+    }
+
     func subscribeToPowerupCollection(listener: @escaping (PowerupCollectionData) -> Void) {
         socket.on("powerupCollected") { data, _ in
             guard !data.isEmpty, let powerupData = data[0] as? [String: Any] else {
