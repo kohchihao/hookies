@@ -225,7 +225,7 @@ class Logger {
         window.isHidden = false
         window.rootViewController?.present(alert, animated: true, completion: nil)
 
-        let when = DispatchTime.now() + 3
+        let when = DispatchTime.now() + 1
         DispatchQueue.main.asyncAfter(deadline: when) {
             alert.dismiss(animated: true, completion: nil)
             window.isHidden = true
