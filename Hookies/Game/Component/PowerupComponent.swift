@@ -20,6 +20,8 @@ class PowerupComponent: Component {
         self.type = type
     }
 
+    /// Set owner of the powerup.
+    /// - Parameter player: The player's entity that own the powerup
     func setOwner(_ player: Entity) {
         guard let playerEntity = player as? PlayerEntity else {
             return
@@ -27,6 +29,8 @@ class PowerupComponent: Component {
         owner = playerEntity
     }
 
+    /// Add the effect for the component.
+    /// - Parameter type: The type of pwoerup
     func addEffectComponents(for type: PowerupType) {
         guard let powerupEntity = parent as? PowerupEntity else {
             return

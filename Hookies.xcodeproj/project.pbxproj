@@ -62,7 +62,6 @@
 		11CC844C2439E748006D3A8F /* HealthSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84402439E748006D3A8F /* HealthSystem.swift */; };
 		11CC844D2439E748006D3A8F /* GameObjectMovementSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84412439E748006D3A8F /* GameObjectMovementSystem.swift */; };
 		11CC844E2439E748006D3A8F /* ClosestBoltSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84422439E748006D3A8F /* ClosestBoltSystem.swift */; };
-		11CC84772439E799006D3A8F /* LifeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84702439E798006D3A8F /* LifeComponent.swift */; };
 		11CC84782439E799006D3A8F /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84712439E798006D3A8F /* Component.swift */; };
 		11CC84792439E799006D3A8F /* BounceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84722439E798006D3A8F /* BounceComponent.swift */; };
 		11CC847A2439E799006D3A8F /* NonPhysicsTranslateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84732439E799006D3A8F /* NonPhysicsTranslateComponent.swift */; };
@@ -177,11 +176,11 @@
 		785CE3E0244D6C3700B1B5CD /* BotSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3DF244D6C3600B1B5CD /* BotSystem.swift */; };
 		785CE3E2244D997100B1B5CD /* BotComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E1244D997100B1B5CD /* BotComponent.swift */; };
 		785CE3E4244D997F00B1B5CD /* BotEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E3244D997F00B1B5CD /* BotEntity.swift */; };
-		785CE3EF2450915100B1B5CD /* BotInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3EE2450915100B1B5CD /* BotInstruction.swift */; };
 		785CE3E7244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E6244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift */; };
 		785CE3E9244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3E8244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift */; };
 		785CE3EB244EB3F000B1B5CD /* PostGameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3EA244EB3F000B1B5CD /* PostGameLobbyViewController.swift */; };
 		785CE3ED244EB40F00B1B5CD /* PostGameLobbyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 785CE3EC244EB40E00B1B5CD /* PostGameLobbyViewController.xib */; };
+		785CE3EF2450915100B1B5CD /* BotInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CE3EE2450915100B1B5CD /* BotInstruction.swift */; };
 		788007222413F37100F43B71 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 788007212413F37100F43B71 /* Actions.sks */; };
 		788007292413F37100F43B71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788007272413F37100F43B71 /* Main.storyboard */; };
 		7880072B2413F37400F43B71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7880072A2413F37400F43B71 /* Assets.xcassets */; };
@@ -285,7 +284,6 @@
 		11CC84402439E748006D3A8F /* HealthSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthSystem.swift; sourceTree = "<group>"; };
 		11CC84412439E748006D3A8F /* GameObjectMovementSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameObjectMovementSystem.swift; sourceTree = "<group>"; };
 		11CC84422439E748006D3A8F /* ClosestBoltSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystem.swift; sourceTree = "<group>"; };
-		11CC84702439E798006D3A8F /* LifeComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LifeComponent.swift; sourceTree = "<group>"; };
 		11CC84712439E798006D3A8F /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		11CC84722439E798006D3A8F /* BounceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BounceComponent.swift; sourceTree = "<group>"; };
 		11CC84732439E799006D3A8F /* NonPhysicsTranslateComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonPhysicsTranslateComponent.swift; sourceTree = "<group>"; };
@@ -407,11 +405,11 @@
 		785CE3DF244D6C3600B1B5CD /* BotSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotSystem.swift; sourceTree = "<group>"; };
 		785CE3E1244D997100B1B5CD /* BotComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotComponent.swift; sourceTree = "<group>"; };
 		785CE3E3244D997F00B1B5CD /* BotEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotEntity.swift; sourceTree = "<group>"; };
-		785CE3EE2450915100B1B5CD /* BotInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotInstruction.swift; sourceTree = "<group>"; };
 		785CE3E6244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGameLobbyCoordinator.swift; sourceTree = "<group>"; };
 		785CE3E8244EB3DC00B1B5CD /* PostGameLobbyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGameLobbyViewModel.swift; sourceTree = "<group>"; };
 		785CE3EA244EB3F000B1B5CD /* PostGameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGameLobbyViewController.swift; sourceTree = "<group>"; };
 		785CE3EC244EB40E00B1B5CD /* PostGameLobbyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostGameLobbyViewController.xib; sourceTree = "<group>"; };
+		785CE3EE2450915100B1B5CD /* BotInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotInstruction.swift; sourceTree = "<group>"; };
 		7880071A2413F37100F43B71 /* Hookies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hookies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		788007212413F37100F43B71 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		788007282413F37100F43B71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -976,7 +974,6 @@
 				11CC84722439E798006D3A8F /* BounceComponent.swift */,
 				11CC84712439E798006D3A8F /* Component.swift */,
 				11CC84752439E799006D3A8F /* HookComponent.swift */,
-				11CC84702439E798006D3A8F /* LifeComponent.swift */,
 				11CC84732439E799006D3A8F /* NonPhysicsTranslateComponent.swift */,
 				785CE3E1244D997100B1B5CD /* BotComponent.swift */,
 				11CC84742439E799006D3A8F /* PowerupComponent.swift */,
@@ -1449,7 +1446,6 @@
 				785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */,
 				11CC85222439E9BF006D3A8F /* Invite.swift in Sources */,
 				11CC84CD2439E88A006D3A8F /* User+FirestoreModel.swift in Sources */,
-				11CC848E2439E7A8006D3A8F /* SliceEffectComponent.swift in Sources */,
 				785CE3EF2450915100B1B5CD /* BotInstruction.swift in Sources */,
 				1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */,
 				11CC84A22439E7D1006D3A8F /* FinishingLineEntity.swift in Sources */,
@@ -1468,7 +1464,6 @@
 				1198221D2434E2B10035AFC1 /* UserModelError.swift in Sources */,
 				D9DB89AA244DED3400A86DFC /* Logger.swift in Sources */,
 				11CC84C22439E832006D3A8F /* PowerupType.swift in Sources */,
-				11CC84772439E799006D3A8F /* LifeComponent.swift in Sources */,
 				2B64FD7B2445EBD400C848C4 /* GenericSystemEvent.swift in Sources */,
 				11CC84AE2439E81A006D3A8F /* PowerupButton.swift in Sources */,
 				11CC852C2439E9C4006D3A8F /* Vector.swift in Sources */,
