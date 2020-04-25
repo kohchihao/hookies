@@ -8,6 +8,7 @@
 
 import SpriteKit
 
+/// Represent all the sprite types and their properties in the game
 enum SpriteType {
     case player1
     case player2
@@ -30,6 +31,7 @@ enum SpriteType {
     case finishingLine
     case netTrap
 
+    /// All the other player type that is usable
     static let otherPlayers = [
         player2, player3, player4, player5,
         player6, player7, player8, player9,
@@ -39,6 +41,7 @@ enum SpriteType {
 }
 
 extension SpriteType {
+    /// Size of each sprite
     var size: CGSize {
         switch self {
         case .player1, .player2, .player3, .player4,
@@ -51,6 +54,7 @@ extension SpriteType {
         }
     }
 
+    /// The z-position for each sprite
     var zPosition: CGFloat {
         switch self {
         case .player1:
@@ -67,6 +71,7 @@ extension SpriteType {
         }
     }
 
+    /// The amount of friction for each sprtie
     var friction: CGFloat {
         switch self {
         case .player1, .player2, .player3, .player4,
@@ -79,6 +84,7 @@ extension SpriteType {
         }
     }
 
+    /// The amount of linear damping for each sprite
     var linearDamping: CGFloat {
         switch self {
         case .player1, .player2, .player3, .player4,
@@ -91,6 +97,7 @@ extension SpriteType {
         }
     }
 
+    /// The mass for each sprite
     var mass: CGFloat {
         switch self {
         case .player1, .player2, .player3, .player4,
@@ -103,6 +110,7 @@ extension SpriteType {
         }
     }
 
+    /// The isDynamic property value for each sprite
     var isDynamic: Bool {
         switch self {
         case .line:
@@ -112,6 +120,7 @@ extension SpriteType {
         }
     }
 
+    /// The affectedByGravity property for each sprite
     var affectedByGravity: Bool {
         switch self {
         case .player1, .player2, .player3, .player4,
@@ -124,6 +133,7 @@ extension SpriteType {
         }
     }
 
+    /// The allowRotation property value for each sprite
     var allowRotation: Bool {
         switch self {
         default:
@@ -131,6 +141,7 @@ extension SpriteType {
         }
     }
 
+    /// The category bit mask for each sprite
     var bitMask: UInt32 {
         switch self {
         case .player1:
@@ -174,6 +185,7 @@ extension SpriteType {
         }
     }
 
+    /// The collision bit mask for each sprite
     var collisionBitMask: UInt32 {
         switch self {
         case .player1:
@@ -211,6 +223,7 @@ extension SpriteType {
         }
     }
 
+    /// The contact bit mask for each sprite
     var contactTestBitMask: UInt32 {
         switch self {
         case .player1, .player2, .player3, .player4,

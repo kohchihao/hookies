@@ -8,16 +8,17 @@
 
 import Foundation
 
-/// Start systems helps to check if the game is ready to start
-
 protocol StartSystemProtocol {
     func add(player: Player, with sprite: SpriteComponent)
     func add(players: [Player], with sprites: [SpriteComponent])
 }
 
 protocol StartSystemDelegate: AnyObject {
+    /// Indicates that the game is ready to start
     func isReadyToStart()
 }
+
+/// Start systems helps to check if the game is ready to start
 
 class StartSystem: System, StartSystemProtocol {
 
@@ -40,18 +41,34 @@ class StartSystem: System, StartSystemProtocol {
         registerNotificationObservers()
     }
 
+
+    /// Add a player with its sprite component to the system
+    /// - Parameters:
+    ///   - player: the player model
+    ///   - sprite: the player's SpriteComponent
     func add(player: Player, with sprite: SpriteComponent) {
         players[player] = sprite
         broadcast()
     }
 
+    /// Add a list of players with their sprite component to the system
+    /// - Parameters:
+    ///   - players: a list of player models
+    ///   - sprites: a list player's SpriteCompnent.
+    ///              A players's SpriteComponent should be in the same order as the player's model.
     func add(players: [Player], with sprites: [SpriteComponent]) {
+        guard players.count == sprites.count else {
+            Logger.log.show(details: "Size does not match", logType: .error)
+            return
+        }
+
         for (index, player) in players.enumerated() {
             self.players[player] = sprites[index]
         }
         broadcast()
     }
 
+    /// Handles the start of the game
     func getReady() {
         if expectedNumberOfPlayers == 1 {
             delegate?.isReadyToStart()
@@ -64,6 +81,7 @@ class StartSystem: System, StartSystemProtocol {
 }
 
 // MARK: - Networking
+
 extension StartSystem {
     private func registerNotificationObservers() {
         NotificationCenter.default.addObserver(
@@ -78,6 +96,7 @@ extension StartSystem {
             object: nil)
     }
 
+    /// Broadcast to Notification Center
     private func broadcast() {
         NotificationCenter.default.post(
             name: .addPlayersMapping,

@@ -9,11 +9,19 @@
 import SpriteKit
 import Network
 
-/// Handles Network Communications
-
 protocol NetworkManagerProtocol {
     func set(gameId: String)
 }
+
+/// Handles Network Communications
+/// - Parameters:
+///     - gameId: The current game id
+///     - currentPlayer: The current player of the device
+///     - deviceStatus: The connection status of the device (online or offlne)
+///     - otherPlayersId: A set of players id
+///     - playersSprite: Mappings between all player's id to their SpriteComponent
+///     - playersId: Mappings between all players's SpriteComponent to their id
+///     - players: Mapping between all players id to their Player model
 
 class NetworkManager: NetworkManagerProtocol {
     static let shared = NetworkManager()
@@ -31,6 +39,7 @@ class NetworkManager: NetworkManagerProtocol {
         Logger.log.traceableFunctionName = true
     }
 
+    /// Sets the gameId
     func set(gameId: String) {
         self.gameId = gameId
         setUpDeviceStatus()
@@ -266,6 +275,7 @@ class NetworkManager: NetworkManagerProtocol {
 
     // MARK: - Broadcast Player Rankings
 
+    /// Handles the broadcast of the player rankings when the device is offline
     @objc private func broadcastPlayerRankings(_ notification: Notification) {
         if let data = notification.userInfo as? [String: [SpriteComponent]] {
             guard let rankings = data["data"] else {
@@ -350,6 +360,7 @@ class NetworkManager: NetworkManagerProtocol {
 
     // MARK: Room Connection (Current Player Connection)
 
+    /// Listens to  the current player connection to the game
     private func subscribeToRoomConnection() {
         guard let gameId = gameId, let deviceStatus = deviceStatus else {
             return
@@ -404,6 +415,8 @@ class NetworkManager: NetworkManagerProtocol {
 
     // MARK: Generic Player Event
 
+    /// Listens for  other players general game action.
+    /// Includes: launchng, finishing, hooking, unhooking, jumping, respawing, lengthening and shortening of rope
     private func subscribeToGenericPlayerEvent() {
         API.shared.gameplay.subscribeToGenericPlayerEvent(listener: { genericPlayerEventData in
             guard let genericSystemEvent = self.createGenericSystemEvent(from: genericPlayerEventData) else {
@@ -562,6 +575,7 @@ class NetworkManager: NetworkManagerProtocol {
 
     // MARK: - Reset Network Manger
 
+    /// Resets all of Network Manager's fields
     private func reset() {
         gameId = nil
         currentPlayer = nil

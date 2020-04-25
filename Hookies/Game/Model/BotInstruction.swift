@@ -90,7 +90,7 @@ struct BotInstruction {
                 }
                 addHookInstruction(timeStep: timeStep, isHook: isHook)
                 isHook.toggle()
-            }            
+            }
         }
         return instructions
     }
