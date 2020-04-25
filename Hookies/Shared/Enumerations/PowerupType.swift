@@ -16,10 +16,12 @@ enum PowerupType: String, CaseIterable, StringRepresentable {
     case cutRope = "cut_rope"
     case netTrap = "net_trap"
 
+    /// The String that represents the name of the powerup button image
     var buttonString: String {
         return self.rawValue + "_button"
     }
 
+    /// The node that represents this  powerup type
     var node: SKSpriteNode {
         let netTrapTexture = SKTexture(imageNamed: self.rawValue)
         let size = CGSize(width: 50, height: 50)
@@ -29,6 +31,7 @@ enum PowerupType: String, CaseIterable, StringRepresentable {
         return node
     }
 
+    /// The button node that is used by this powerup type.
     var buttonNode: SKSpriteNode {
         let texture = SKTexture(imageNamed: self.buttonString)
         let sizeOfPowerup = CGSize(width: 50, height: 50)

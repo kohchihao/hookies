@@ -9,6 +9,7 @@
 import Foundation
 import Firebase
 
+/// A class that is used to interact with the backend database related to operations on the current user.
 class UserStore {
     private let collection: CollectionReference
     private var authListener: AuthStateDidChangeListenerHandle?
@@ -38,6 +39,9 @@ class UserStore {
         }
     }
 
+    /// Will subscrbe to changes of auth status of the current player.
+    /// - Parameter listener: The callback handler which gets triggered when the async function completes.
+    ///                       Will return with the AuthState model.
     func subscribeToAuthStatus(listener: @escaping (_: AuthState) -> Void) {
         authListener = Auth.auth().addStateDidChangeListener({ auth, _  in
             guard auth.currentUser != nil else {
@@ -50,13 +54,11 @@ class UserStore {
         })
     }
 
-    func removeAuthSubscription() {
-        if let authListener = authListener {
-            Auth.auth().removeStateDidChangeListener(authListener)
-        }
-    }
-
     /// Get a user with the given uid.
+    /// - Parameters:
+    ///   - uid: The uid of the user
+    ///   - completion: The callback handler which gets triggered when the async function completes.
+    ///                 The with the User model.
     func get(withUid uid: String, completion: @escaping (_ user: User?, _ error: Error?) -> Void) {
         let ref = collection.document(uid)
         ref.getDocumentModel(User.self) { user, error in
@@ -68,6 +70,10 @@ class UserStore {
     }
 
     /// Get a user with the given username.
+    /// - Parameters:
+    ///   - username: The username of the user
+    ///   - completion: The callback handler which gets triggered when the async function completes.
+    ///                 Will return with the User model.
     func get(withUsername username: String, completion: @escaping (_ user: User?, _ error: Error?) -> Void) {
         let query = collection.whereField("username", isEqualTo: username)
         query.getModels(User.self, completion: { users, error in
@@ -82,6 +88,9 @@ class UserStore {
         })
     }
 
+    /// Will get the current user.
+    /// - Parameter completion: The callback handler which gets triggered when the async function completes.
+    ///                         The with the User model.
     func currentUser(completion: @escaping (User?, Error?) -> Void) {
         guard let currentUser = Auth.auth().currentUser else {
             return completion(nil, nil)
@@ -118,6 +127,9 @@ class UserStore {
     }
 
     /// Add a entry of `user` into the users collection.
+    /// - Parameters:
+    ///   - user: The user model to add
+    ///   - completion: The callback handler which gets triggered when the async function completes.
     private func add(user: User, completion: @escaping (_ user: User?,
         _ error: UserStoreError?) -> Void) {
 

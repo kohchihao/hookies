@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol MovementControlDelegate {
+protocol MovementControlDelegate: Any {
     func movement(isDisabled: Bool, for sprite: SpriteComponent)
 }

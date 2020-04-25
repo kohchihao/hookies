@@ -22,6 +22,10 @@ extension Query {
         }
     }
 
+    /// Add a listener to the query
+    /// - Parameters:
+    ///     - Model.Type:  The type of the model to type cast the firestore records into.
+    ///     - completion: The callback handler when the function completes.
     func addListener<Model: FirestoreModel>(_: Model.Type,
                                             listener: @escaping ([Model]?, Error?) -> Void) -> ListenerRegistration {
         return addSnapshotListener({ snapshot, error in

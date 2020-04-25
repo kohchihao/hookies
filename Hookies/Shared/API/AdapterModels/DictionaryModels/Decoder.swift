@@ -15,6 +15,9 @@ protocol Decoder {
 }
 
 extension Decoder {
+
+    /// Will typecast the value of the given key to the specified T type.
+    /// - Parameter key: The key of the dictionary.
     func value<T>(forKey key: String) throws -> T {
         guard let value = data[key] as? T else {
             throw DataError.typeCastFailed
@@ -22,6 +25,8 @@ extension Decoder {
         return value
     }
 
+    /// Will typecast the value of the given key to the specified T type, if the value does not exist, return nil.
+    /// - Parameter key: The key of the dictionary.
     func optionalValue<T>(forKey key: String) -> T? {
         return data[key] as? T
     }

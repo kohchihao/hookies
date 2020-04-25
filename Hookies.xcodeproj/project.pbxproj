@@ -8,11 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		085CFA2C7C3D713DC56EB872 /* Pods_HookiesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */; };
-		110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CE0241F3EC000840C4E /* Powerup.swift */; };
 		110B3CED2420605600840C4E /* DictionaryRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */; };
-		110B3CEF242062C300840C4E /* Powerup+DictionaryRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEE242062C300840C4E /* Powerup+DictionaryRepresentable.swift */; };
-		110B3CF42420759700840C4E /* HookPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CF32420759700840C4E /* HookPowerup.swift */; };
-		110B3CF624207AAA00840C4E /* PowerupCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CF524207AAA00840C4E /* PowerupCreator.swift */; };
 		111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111D2EF42418C8BA0083373C /* UserStoreError.swift */; };
 		1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1127C5592415E18800A78AA0 /* GoogleService-Info.plist */; };
 		1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */; };
@@ -230,11 +226,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		110B3CE0241F3EC000840C4E /* Powerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Powerup.swift; sourceTree = "<group>"; };
 		110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryRepresentable.swift; sourceTree = "<group>"; };
-		110B3CEE242062C300840C4E /* Powerup+DictionaryRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Powerup+DictionaryRepresentable.swift"; sourceTree = "<group>"; };
-		110B3CF32420759700840C4E /* HookPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookPowerup.swift; sourceTree = "<group>"; };
-		110B3CF524207AAA00840C4E /* PowerupCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupCreator.swift; sourceTree = "<group>"; };
 		111D2EF42418C8BA0083373C /* UserStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoreError.swift; sourceTree = "<group>"; };
 		1127C5592415E18800A78AA0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -489,16 +481,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		110B3CF22420756600840C4E /* Powerups */ = {
-			isa = PBXGroup;
-			children = (
-				110B3CE0241F3EC000840C4E /* Powerup.swift */,
-				110B3CF32420759700840C4E /* HookPowerup.swift */,
-				110B3CF524207AAA00840C4E /* PowerupCreator.swift */,
-			);
-			path = Powerups;
-			sourceTree = "<group>";
-		};
 		111D2EF32418C89B0083373C /* Exceptions */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,7 +625,6 @@
 				11CC85252439E9C4006D3A8F /* User.swift */,
 				11CC85282439E9C4006D3A8F /* Vector.swift */,
 				1198221B2434E2950035AFC1 /* Exceptions */,
-				110B3CF22420756600840C4E /* Powerups */,
 				2BA5F93724434C89009AF93C /* Player.swift */,
 			);
 			path = Models;
@@ -759,7 +740,6 @@
 				116AD64D242DC2C30070F00B /* DictionaryModel.swift */,
 				116AD647242DB7CD0070F00B /* Encoder.swift */,
 				116AD64B242DBC670070F00B /* Decoder.swift */,
-				110B3CEE242062C300840C4E /* Powerup+DictionaryRepresentable.swift */,
 			);
 			path = DictionaryModels;
 			sourceTree = "<group>";
@@ -1437,12 +1417,10 @@
 				11CC85102439E921006D3A8F /* MapDelegate.swift in Sources */,
 				11CC84DB2439E8A0006D3A8F /* GenericPlayerEventData.swift in Sources */,
 				11CC85002439E8E5006D3A8F /* OutgoingRequestTableViewCell.swift in Sources */,
-				110B3CE1241F3EC000840C4E /* Powerup.swift in Sources */,
 				11CC84E92439E8B9006D3A8F /* InviteStore.swift in Sources */,
 				1191BD7F24399A8800189DB8 /* PowerupEventType.swift in Sources */,
 				1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */,
 				1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */,
-				110B3CF624207AAA00840C4E /* PowerupCreator.swift in Sources */,
 				785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */,
 				11CC85222439E9BF006D3A8F /* Invite.swift in Sources */,
 				11CC84CD2439E88A006D3A8F /* User+FirestoreModel.swift in Sources */,
@@ -1454,7 +1432,6 @@
 				1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */,
 				D979D8FD244ACC3700830E8C /* StartSystem.swift in Sources */,
 				11CC851C2439E991006D3A8F /* SocialCoordinator.swift in Sources */,
-				110B3CF42420759700840C4E /* HookPowerup.swift in Sources */,
 				11CC84B22439E81A006D3A8F /* Background.swift in Sources */,
 				119C5423241691EF00F27D87 /* Query.swift in Sources */,
 				11CC84CE2439E88A006D3A8F /* Gameplay+FirestoreModel.swift in Sources */,
@@ -1570,7 +1547,6 @@
 				2BA5F93E244353F7009AF93C /* GameObject.swift in Sources */,
 				11CC84BE2439E832006D3A8F /* AuthState.swift in Sources */,
 				11CC847C2439E799006D3A8F /* HookComponent.swift in Sources */,
-				110B3CEF242062C300840C4E /* Powerup+DictionaryRepresentable.swift in Sources */,
 				11CC847B2439E799006D3A8F /* PowerupComponent.swift in Sources */,
 				D9FF1A81241E325900E7965F /* GameScene.swift in Sources */,
 				1160C5EE244485F1007BE5DA /* SocketRoom.swift in Sources */,

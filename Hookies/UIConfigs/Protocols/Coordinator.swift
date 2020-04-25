@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A Coordinator has the responsibility to navigate between screens.
 protocol Coordinator: CoordinatorDelegate {
 
     // MARK: - PROPERTIES
@@ -15,11 +16,19 @@ protocol Coordinator: CoordinatorDelegate {
     var coordinators: [Coordinator] { get set }
 
     // MARK: - FUNCTIONS
+
+    /// Will navigate to the different screen here.
     func start()
 }
 
 protocol CoordinatorDelegate: class {
+    /// To be called when the coordinator is started.
+    /// And used to inform the delegate that the give coodinator has started
+    /// - Parameter coordinator: The coordinator that started
     func coordinatorDidStart(_ coordinator: Coordinator)
+    /// To be called when the coordinator is ended.
+    /// And used to inform the delegate that the give coodinator has ended
+    /// - Parameter coordinator: The coordinator that ended
     func coordinatorDidEnd(_ coordinator: Coordinator)
 }
 
