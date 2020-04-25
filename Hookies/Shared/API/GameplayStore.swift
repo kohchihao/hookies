@@ -113,13 +113,6 @@ class GameplayStore: SocketRoom {
         }
     }
 
-    /// Will save the gameState into a persistent database.
-    /// - Parameter gameplay: The gameplay model.
-    func saveGameState(gameplay: Gameplay) {
-        let ref = collection.document(gameplay.documentID)
-        ref.setDataModel(gameplay)
-    }
-
     private func decodePlayersInRoomData(data: [Any]) -> [String] {
         return data.compactMap({ $0 as? [String] })
             .flatMap({ $0 })
