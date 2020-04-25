@@ -71,11 +71,11 @@ class SocialViewModel: SocialViewModelRepresentable {
                return
             }
             guard let toUserId = user?.uid else {
-                Logger.log.show(details: "user does not exists", logType: .error)
+                Logger.log.show(details: "User does not exists", logType: .error).display(.toast)
                 return
             }
             guard fromUserId != toUserId else {
-                Logger.log.show(details: "cannot send game invite to yourself", logType: .error)
+                Logger.log.show(details: "Cannot send game invite to yourself", logType: .error).display(.toast)
                 return
             }
             guard let lobbyId = self.lobbyId else {
@@ -97,11 +97,11 @@ class SocialViewModel: SocialViewModelRepresentable {
                 return
             }
             guard let toUserId = user?.uid else {
-                Logger.log.show(details: "user does not exists", logType: .error)
+                Logger.log.show(details: "User does not exists", logType: .error).display(.toast)
                 return
             }
             guard fromUserId != toUserId else {
-                Logger.log.show(details: "cannot send friend request to yourself", logType: .warning)
+                Logger.log.show(details: "Cannot send friend request to yourself", logType: .warning).display(.toast)
                 return
             }
             RequestManager.sendRequest(fromUserId: fromUserId, toUserId: toUserId)

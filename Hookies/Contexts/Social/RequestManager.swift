@@ -91,22 +91,22 @@ struct RequestManager {
     ) {
         self.getRequests(requestIds: sender.outgoingRequests, completion: { requests in
             guard !requests.map({ $0.toUserId }).contains(request.toUserId) else {
-                Logger.log.show(details: "request already exists", logType: .alert)
+                Logger.log.show(details: "Request already exists", logType: .alert).display(.toast)
                 return completion(false)
             }
             self.getRequests(requestIds: sender.incomingRequests, completion: { requests in
                 guard !requests.map({ $0.fromUserId }).contains(request.toUserId) else {
-                    Logger.log.show(details: "request already exists", logType: .alert)
+                    Logger.log.show(details: "Request already exists", logType: .alert).display(.toast)
                     return completion(false)
                 }
                 self.getRequests(requestIds: recipient.outgoingRequests, completion: { recipientRequests in
                     guard !recipientRequests.map({ $0.toUserId }).contains(request.fromUserId) else {
-                        Logger.log.show(details: "request already exists", logType: .alert)
+                        Logger.log.show(details: "Request already exists", logType: .alert).display(.toast)
                         return completion(false)
                     }
                     self.getRequests(requestIds: recipient.incomingRequests, completion: { recipientRequests in
                         guard !recipientRequests.map({ $0.fromUserId }).contains(request.fromUserId) else {
-                            Logger.log.show(details: "request already exists", logType: .alert)
+                            Logger.log.show(details: "Request already exists", logType: .alert).display(.toast)
                             return completion(false)
                         }
                         return completion(true)
@@ -132,7 +132,7 @@ struct RequestManager {
                 guard !sender.friends.contains(request.toUserId)
                     && !recipient.friends.contains(request.fromUserId)
                     else {
-                        Logger.log.show(details: "Users are already friends", logType: .alert)
+                        Logger.log.show(details: "Users are already friends", logType: .alert).display(.toast)
                         return
                 }
                 self.checkRequestIsNotRepeated(request: request, sender: sender, recipient: recipient) { notRepeated in

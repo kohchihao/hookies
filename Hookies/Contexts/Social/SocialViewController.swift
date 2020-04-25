@@ -73,7 +73,7 @@ class SocialViewController: UIViewController {
             return
         }
         guard !username.isEmpty else {
-            Logger.log.show(details: "username field cannot be empty", logType: .warning)
+            Logger.log.show(details: "Username field cannot be empty", logType: .warning).display(.toast)
             return
         }
         viewModel.sendRequest(username: username)
@@ -274,7 +274,7 @@ extension SocialViewController: IncomingTableViewCellDelegate {
         guard self.viewModel.lobbyId == nil else {
             Logger.log.show(
                 details: "You cannot accept a game invite when you are in the pre-game lobby",
-                logType: .warning)
+                logType: .warning).display(.toast)
             return
         }
         InviteManager.processInvite(inviteId: inviteId, completion: { invite in
