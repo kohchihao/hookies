@@ -313,17 +313,6 @@ class GameEngine {
         return powerupEntity
     }
 
-    private func respawnPowerup(_ powerup: SKSpriteNode) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.powerupRespawnDelay) {
-            let newPowerup = SKSpriteNode(texture: powerup.texture,
-                                          color: .clear,
-                                          size: powerup.size)
-            newPowerup.position = powerup.position
-            self.addNewRandomPowerup(for: newPowerup)
-            self.delegate?.addNotActivatedPowerup(newPowerup)
-        }
-    }
-
     // MARK: - Platform
 
     private func initialisePlatforms(_ platforms: [GameObject]) -> [SpriteComponent] {
