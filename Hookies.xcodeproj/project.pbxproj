@@ -42,7 +42,6 @@
 		116AD64E242DC2C30070F00B /* DictionaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116AD64D242DC2C30070F00B /* DictionaryModel.swift */; };
 		117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */; };
 		118A4A6F2424861E005B7188 /* UIViewController+Nameable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118A4A6E2424861E005B7188 /* UIViewController+Nameable.swift */; };
-		1191BD6F2435AD9A00189DB8 /* HookActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1191BD6E2435AD9A00189DB8 /* HookActionType.swift */; };
 		1191BD712435ADAD00189DB8 /* GenericPlayerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1191BD702435ADAD00189DB8 /* GenericPlayerEvent.swift */; };
 		1191BD7F24399A8800189DB8 /* PowerupEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1191BD7E24399A8800189DB8 /* PowerupEventType.swift */; };
 		1198221D2434E2B10035AFC1 /* UserModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198221C2434E2B10035AFC1 /* UserModelError.swift */; };
@@ -263,7 +262,6 @@
 		116AD64D242DC2C30070F00B /* DictionaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryModel.swift; sourceTree = "<group>"; };
 		117BA3232418EDE7001089D1 /* UIViewController+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ActivityIndicator.swift"; sourceTree = "<group>"; };
 		118A4A6E2424861E005B7188 /* UIViewController+Nameable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Nameable.swift"; sourceTree = "<group>"; };
-		1191BD6E2435AD9A00189DB8 /* HookActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookActionType.swift; sourceTree = "<group>"; };
 		1191BD702435ADAD00189DB8 /* GenericPlayerEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPlayerEvent.swift; sourceTree = "<group>"; };
 		1191BD7E24399A8800189DB8 /* PowerupEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupEventType.swift; sourceTree = "<group>"; };
 		1198221C2434E2B10035AFC1 /* UserModelError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModelError.swift; sourceTree = "<group>"; };
@@ -682,7 +680,6 @@
 		1191BD6D2435AD8E00189DB8 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
-				1191BD6E2435AD9A00189DB8 /* HookActionType.swift */,
 				1191BD702435ADAD00189DB8 /* GenericPlayerEvent.swift */,
 				1191BD7E24399A8800189DB8 /* PowerupEventType.swift */,
 			);
@@ -1540,7 +1537,6 @@
 				11CC84DC2439E8A0006D3A8F /* PlayerData.swift in Sources */,
 				D9FF1A7E241E325900E7965F /* GamePlayViewController.swift in Sources */,
 				D9FF1A82241E325900E7965F /* GamePlayViewModel.swift in Sources */,
-				1191BD6F2435AD9A00189DB8 /* HookActionType.swift in Sources */,
 				11CC84D02439E88A006D3A8F /* Social+FirestoreModel.swift in Sources */,
 				11CC84DF2439E8A0006D3A8F /* UserConnectionState.swift in Sources */,
 				1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */,
