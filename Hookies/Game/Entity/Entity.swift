@@ -43,7 +43,6 @@ extension Entity {
         return nil
     }
 
-
     /// To remove the first occurance of a component in an entity
     /// - Parameter component: the component to remove
     func removeFirstComponent(of component: Component) {
