@@ -32,8 +32,9 @@ class GameEngine {
     // MARK: - Entity
 
     private var currentPlayer: PlayerEntity?
+
+    private var numOtherPlayers = 0
     private var localPlayers: [PlayerEntity] = []
-    private var otherPlayers = [String: PlayerEntity]()
     private var platforms = [PlatformEntity]()
     private var bolts = [BoltEntity]()
     private var powerups = [PowerupEntity]()
@@ -444,6 +445,8 @@ class GameEngine {
         _ = spriteSystem.set(sprite: sprite, of: spriteType, with: player.costumeType.stringValue, at: startPosition)
         _ = spriteSystem.setPhysicsBody(to: sprite, of: spriteType, rectangleOf: sprite.node.size)
 
+        numOtherPlayers += 1
+
         finishingLineSystem.add(player: sprite)
         startSystem.add(player: player, with: sprite)
         hookSystem?.add(player: sprite)
@@ -460,7 +463,6 @@ class GameEngine {
     }
 
     private func getOtherPlayerSpriteType() -> SpriteType {
-        let numOtherPlayers = otherPlayers.count
         let typeIndex = numOtherPlayers + 1
 
         return SpriteType.otherPlayers[typeIndex]
