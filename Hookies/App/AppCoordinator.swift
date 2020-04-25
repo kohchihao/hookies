@@ -29,6 +29,7 @@ class AppCoordinator: Coordinator {
     // MARK: - FUNCTIONS
     func start() {}
 
+    /// Will subscribe to the changes in auth state of the current user
     func subscribeToAuthState() {
         API.shared.user.subscribeToAuthStatus(listener: { authState in
             switch authState {
@@ -42,13 +43,13 @@ class AppCoordinator: Coordinator {
         })
     }
 
-    func navigateToAuth(_ authState: AuthState) {
+    private func navigateToAuth(_ authState: AuthState) {
         let signInCoordinator = AuthCoordinator(with: navigator, authState: authState)
         signInCoordinator.coordinatorDelegate = self
         signInCoordinator.start()
     }
 
-    func navigateToHome() {
+    private func navigateToHome() {
         let homeCoordinator = HomeCoordinator(with: navigator)
         homeCoordinator.coordinatorDelegate = self
         homeCoordinator.start()

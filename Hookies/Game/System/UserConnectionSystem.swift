@@ -15,7 +15,9 @@ protocol UserConnectionSystemProtocol {
 }
 
 protocol UserConnectionSystemDelegate: AnyObject {
+    /// Will be triggered when the user has connected to the game.
     func userConnected()
+    /// Will be triggered when the current user has  disconnected from the game.
     func userDisconnected()
 }
 

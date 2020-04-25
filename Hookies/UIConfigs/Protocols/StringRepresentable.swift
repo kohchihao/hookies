@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// The string form of the conformed class.
 protocol StringRepresentable {
     var stringValue: String { get }
 }

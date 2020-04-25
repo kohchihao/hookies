@@ -22,11 +22,11 @@ class LobbyStore: SocketRoom {
         socket = socketRef
     }
 
-
     /// Will get the Lobby of the given lobby id.
     /// - Parameters:
     ///   - lobbyId: The id of the lobby
-    ///   - completion: The callback handler which gets triggered when the async function completes. Will return with the Lobby model.
+    ///   - completion: The callback handler which gets triggered when the async function completes.
+    ///                 Will return with the Lobby model.
     func get(lobbyId: String, completion: @escaping (Lobby?, Error?) -> Void) {
         let ref = collection.document(lobbyId)
         ref.getDocumentModel(Lobby.self, completion: { lobby, error in
@@ -43,7 +43,8 @@ class LobbyStore: SocketRoom {
     /// Will subscribe to the changes to the lobby data at the backend.
     /// - Parameters:
     ///   - lobbyId: id of the lobby.
-    ///   - listener: The callback handler which gets triggered when the async function completes. Will return with the Lobby model.
+    ///   - listener: The callback handler which gets triggered when the async function completes.
+    ///               Will return with the Lobby model.
     func subscribeToLobby(lobbyId: String, listener: @escaping (Lobby?, Error?) -> Void) {
         let ref = collection.document(lobbyId)
         lobbyListener = ref.addListener(Lobby.self, listener: { lobby, error in
@@ -55,7 +56,6 @@ class LobbyStore: SocketRoom {
     func unsubscribeFromLobby() {
         lobbyListener?.remove()
     }
-
 
     /// Will save the given lobby to the backend database.
     /// - Parameter lobby: The lobby model to save.
