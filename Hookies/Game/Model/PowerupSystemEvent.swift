@@ -7,6 +7,11 @@
 //
 
 /// The struct that represents the event that is created when the powerupEventType is triggered.
+/// - Parameters:
+///     - sprite: The SpriteComponent associated to the event
+///     - powerupEventType: The powerup event type
+///     - powerupType: The type of the powerup
+///     - powerupPos: The position of the powerup in which the event occur
 struct PowerupSystemEvent {
     let sprite: SpriteComponent
     let powerupEventType: PowerupEventType

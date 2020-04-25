@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Will used to define the name of the class
 public protocol Nameable {
     static var name: String { get }
 }
