@@ -17,7 +17,6 @@ class InviteStore {
         self.collection = inviteCollection
     }
 
-
     /// Will get the invite of the given invite Id, if any.
     /// - Parameters:
     ///   - inviteId: The id of the invite

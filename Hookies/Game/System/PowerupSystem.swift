@@ -20,7 +20,7 @@ protocol PowerupSystemProtocol {
                                      on sprite: SpriteComponent)
 }
 
-protocol PowerupSystemDelegate: class, MovementControlDelegate {
+protocol PowerupSystemDelegate: MovementControlDelegate {
 
     /// Indicates that the trap has been added.
     /// - Parameter sprite: The trap's sprite
