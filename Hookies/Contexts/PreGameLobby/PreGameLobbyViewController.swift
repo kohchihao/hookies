@@ -20,7 +20,11 @@ class PreGameLobbyViewController: UIViewController {
     weak var navigationDelegate: PreGameLobbyViewNavigationDelegate?
     private var viewModel: PreGameLobbyViewModelRepresentable
     private var playerViews: [LobbyPlayerView] = []
-    private var isOnline = true
+    private var isOnline = true {
+        didSet {
+            friendsButton.isHidden = !isOnline
+        }
+    }
     private var startButtonHidden: Bool {
         guard let currentUser = API.shared.user.currentUser else {
             return true
@@ -38,8 +42,8 @@ class PreGameLobbyViewController: UIViewController {
     @IBOutlet private var gameSessionIdLabel: UILabel!
     @IBOutlet private var costumeIdLabel: UILabel!
     @IBOutlet private var startGameButton: UIButton!
-    @IBOutlet private var socialView: UIView!
     @IBOutlet private var selectMapButton: UIButton!
+    @IBOutlet private var friendsButton: UIButton!
 
     // MARK: - INIT
     init(with viewModel: PreGameLobbyViewModelRepresentable) {
@@ -107,21 +111,6 @@ class PreGameLobbyViewController: UIViewController {
             playerView.mainView.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
             playerView.mainView.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
         }
-    }
-
-    private func setUpSocialView() {
-        let socialViewModel = SocialViewModel(lobbyId: self.viewModel.lobby.lobbyId)
-        let socialViewController = SocialViewController(with: socialViewModel)
-        self.addChild(socialViewController)
-        self.socialView.addSubview(socialViewController.view)
-        socialViewController.didMove(toParent: self)
-        socialViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        let margins = socialView.layoutMarginsGuide
-        socialViewController.view.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
-        socialViewController.view.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
-        socialViewController.view.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
-        socialViewController.view.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
-        socialView.isHidden = true
     }
 
     override var prefersStatusBarHidden: Bool {

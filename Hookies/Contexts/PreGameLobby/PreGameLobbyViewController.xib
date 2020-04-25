@@ -18,6 +18,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PreGameLobbyViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
                 <outlet property="costumeIdLabel" destination="EhH-f1-AWI" id="Xqe-bs-hDT"/>
+                <outlet property="friendsButton" destination="09n-Jd-dJd" id="rqf-0Q-mZa"/>
                 <outlet property="gameSessionIdLabel" destination="E5t-UX-zdb" id="UAr-gf-YAa"/>
                 <outlet property="selectMapButton" destination="pxw-Sd-UG5" id="UqJ-hT-EJ6"/>
                 <outlet property="selectedMapLabel" destination="Mqv-bn-hYX" id="ehg-Bk-jKM"/>
