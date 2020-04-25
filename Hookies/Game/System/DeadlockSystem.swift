@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-/// Checks if the player is stuck in a deadlock or not.
+/// Deadlock System helps to check if the player is stuck in a deadlock or not and respawn the sprite.
 
 protocol DeadlockSystemProtocol {
     func checkIfStuck() -> Bool
@@ -32,6 +32,7 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
         registerNotificationObservers()
     }
 
+    /// Checks if the player's sprite is stuck.
     func checkIfStuck() -> Bool {
         guard let physicsBody = sprite.node.physicsBody else {
             return false
@@ -47,7 +48,7 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
        return isVelocityNearlyZero || isInfiniteBouncing
     }
 
-    /// Resolve deadlock for single player
+    /// Resolve deadlock for single player.
     func resolveDeadlock() {
         guard let velocity = sprite.node.physicsBody?.velocity else {
             return
@@ -58,6 +59,10 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
     }
 
     /// Resolve deadlock for multi player
+    /// - Parameters:
+    ///   - sprite: The sprite to resolve deadlock for
+    ///   - position: The position of the sprite
+    ///   - velocity: The velocity of the sprite
     private func resolveDeadlock(for sprite: SpriteComponent, at position: CGPoint, with velocity: CGVector) {
         sprite.node.position = position
         sprite.node.physicsBody?.velocity = velocity
@@ -66,6 +71,8 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
     }
 
     /// Checks for velocity is nearly 0.
+    /// - Parameters:
+    ///   - physicsBody: The physicsBody of the sprite
     private func isVelocityNearlyZeroDeadlock(_ physicsBody: SKPhysicsBody) -> Bool {
         let playerHorizontalVelocity = physicsBody.velocity.dx
         let isVelocityNearlyZero = playerHorizontalVelocity < highestMinimumHorizontalVelocity
@@ -74,12 +81,15 @@ class DeadlockSystem: System, DeadlockSystemProtocol {
     }
 
     /// Checks for infinite bouncing.
+    /// - Parameters:
+    ///   - physicsBody: The physicsBody of the sprite
     private func isInfiniteBouncingDeadlock(_ physicsBody: SKPhysicsBody) -> Bool {
         let contactedPhysicsBodies = physicsBody.allContactedBodies()
         for contactedBody in contactedPhysicsBodies {
             guard let spriteNode = contactedBody.node as? SKSpriteNode else {
                 return false
             }
+            // Checks if the contacted bodies is a moving platform or stationary platform
             if spriteNode.name == GameObjectType.platform.rawValue
                 || spriteNode.name == GameObjectType.platformMovable.rawValue {
                 if let touchCount = contactedPlatforms[spriteNode] {
@@ -113,7 +123,7 @@ extension DeadlockSystem {
             object: nil)
     }
 
-    /// Broadcast
+    /// Broadcast to Notification Center.
     private func broadcast(with sprite: SpriteComponent) {
         let genericSystemEvent = GenericSystemEvent(sprite: sprite, eventType: .jumpAction)
         NotificationCenter.default.post(

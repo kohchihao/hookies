@@ -57,7 +57,6 @@
 		11CC844C2439E748006D3A8F /* HealthSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84402439E748006D3A8F /* HealthSystem.swift */; };
 		11CC844D2439E748006D3A8F /* GameObjectMovementSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84412439E748006D3A8F /* GameObjectMovementSystem.swift */; };
 		11CC844E2439E748006D3A8F /* ClosestBoltSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84422439E748006D3A8F /* ClosestBoltSystem.swift */; };
-		11CC84772439E799006D3A8F /* LifeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84702439E798006D3A8F /* LifeComponent.swift */; };
 		11CC84782439E799006D3A8F /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84712439E798006D3A8F /* Component.swift */; };
 		11CC84792439E799006D3A8F /* BounceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84722439E798006D3A8F /* BounceComponent.swift */; };
 		11CC847A2439E799006D3A8F /* NonPhysicsTranslateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84732439E799006D3A8F /* NonPhysicsTranslateComponent.swift */; };
@@ -275,7 +274,6 @@
 		11CC84402439E748006D3A8F /* HealthSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthSystem.swift; sourceTree = "<group>"; };
 		11CC84412439E748006D3A8F /* GameObjectMovementSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameObjectMovementSystem.swift; sourceTree = "<group>"; };
 		11CC84422439E748006D3A8F /* ClosestBoltSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystem.swift; sourceTree = "<group>"; };
-		11CC84702439E798006D3A8F /* LifeComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LifeComponent.swift; sourceTree = "<group>"; };
 		11CC84712439E798006D3A8F /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		11CC84722439E798006D3A8F /* BounceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BounceComponent.swift; sourceTree = "<group>"; };
 		11CC84732439E799006D3A8F /* NonPhysicsTranslateComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonPhysicsTranslateComponent.swift; sourceTree = "<group>"; };
@@ -953,7 +951,6 @@
 				11CC84722439E798006D3A8F /* BounceComponent.swift */,
 				11CC84712439E798006D3A8F /* Component.swift */,
 				11CC84752439E799006D3A8F /* HookComponent.swift */,
-				11CC84702439E798006D3A8F /* LifeComponent.swift */,
 				11CC84732439E799006D3A8F /* NonPhysicsTranslateComponent.swift */,
 				785CE3E1244D997100B1B5CD /* BotComponent.swift */,
 				11CC84742439E799006D3A8F /* PowerupComponent.swift */,
@@ -1441,7 +1438,6 @@
 				1198221D2434E2B10035AFC1 /* UserModelError.swift in Sources */,
 				D9DB89AA244DED3400A86DFC /* Logger.swift in Sources */,
 				11CC84C22439E832006D3A8F /* PowerupType.swift in Sources */,
-				11CC84772439E799006D3A8F /* LifeComponent.swift in Sources */,
 				2B64FD7B2445EBD400C848C4 /* GenericSystemEvent.swift in Sources */,
 				11CC84AE2439E81A006D3A8F /* PowerupButton.swift in Sources */,
 				11CC852C2439E9C4006D3A8F /* Vector.swift in Sources */,

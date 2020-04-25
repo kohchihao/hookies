@@ -7,6 +7,8 @@
 //
 import SpriteKit
 
+/// Represents the shorten button that is within the Game Scene.
+
 class ShortenButton: ButtonNode {
 
     // MARK: - INIT

@@ -8,6 +8,8 @@
 
 import SpriteKit
 
+/// The background of the game.
+
 class Background: SKSpriteNode {
 
     // MARK: - PROPERTIES

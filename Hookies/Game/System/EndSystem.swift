@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// End  systems helps to check if the game has ended
+/// End systems helps to check if the game has ended.
 
 protocol EndSystemProtocol {
 

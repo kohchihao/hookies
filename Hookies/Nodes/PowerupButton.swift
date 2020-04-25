@@ -5,8 +5,9 @@
 //  Created by Jun Wei Koh on 2/4/20.
 //  Copyright © 2020 Hookies. All rights reserved.
 //
-
 import SpriteKit
+
+/// Represents a  power up button that is located on the bottom left of the device.
 
 class PowerupButton: ButtonNode {
     private(set) var powerupType: PowerupType?
@@ -27,12 +28,17 @@ class PowerupButton: ButtonNode {
         super.init(coder: aDecoder)
     }
 
+
+    /// Set the power up for the button.
+    /// - Parameter type: The type of power up
     func setPowerup(to type: PowerupType) {
         texture = SKTexture(imageNamed: type.buttonString)
         powerupType = type
         state = .ButtonNodeStateActive
     }
 
+
+    /// Remove the power up from the button.
     func clearPowerup() {
         texture = SKTexture(imageNamed: "empty_powerup_button")
         state = .ButtonNodeStateDisabled

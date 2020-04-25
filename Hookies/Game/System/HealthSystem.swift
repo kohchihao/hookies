@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-/// A player dies only if he
+/// Health system manages the respawn and checking of player's health.
 /// Death condition
 ///  - Below fixed horizontal line
 ///  - Above fixed horizontal line
@@ -38,10 +38,16 @@ class HealthSystem: System, HealthSystemProtocol {
         registerNotificationObservers()
     }
 
+
+    /// Checks if a player is alive or not.
+    /// - Parameter sprite: The sprite to check
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool {
         return self.isPlayerAlive(for: sprite.node.position)
     }
 
+
+    /// Checks if a player is alive or not.
+    /// - Parameter position: The position to check
     func isPlayerAlive(for position: CGPoint) -> Bool {
         if position.y <= deathLowerHorizontalLine
             || position.y >= deathUpperHorizontalLine
@@ -51,7 +57,8 @@ class HealthSystem: System, HealthSystemProtocol {
         return true
     }
 
-    /// Respawn single player
+    /// Respawn the sprite
+    /// - Parameter sprite: The sprite to respawn
     func respawnPlayer(for sprite: SpriteComponent) -> SpriteComponent {
         if !isPlayerAlive(for: sprite) {
             broadcast(with: sprite)
@@ -60,7 +67,10 @@ class HealthSystem: System, HealthSystemProtocol {
         return sprite
     }
 
-    /// Respawn multiplayer
+    /// Respawn the sprite
+    /// - Parameters:
+    ///   - sprite: The sprite to respawn
+    ///   - position: The position of the sprite
     private func respawnPlayer(for sprite: SpriteComponent, at position: CGPoint) -> SpriteComponent {
         if !isPlayerAlive(for: position) {
             sprite.node.position = CGPoint(x: position.x, y: spawnHorizontalLine)
@@ -71,6 +81,8 @@ class HealthSystem: System, HealthSystemProtocol {
         return sprite
     }
 
+    /// Respawn the sprite to the closest platform
+    /// - Parameter sprite: The sprite to respawn
     func respawnPlayerToClosestPlatform(for sprite: SpriteComponent) -> SpriteComponent? {
         guard let closestPlatform = findClosestNonMovingPlatform(to: sprite.node.position),
             !isPlayerAlive(for: sprite)
@@ -86,6 +98,8 @@ class HealthSystem: System, HealthSystemProtocol {
         return sprite
     }
 
+    /// Finds the closest non moving platform.
+    /// - Parameter position: The position given
     private func findClosestNonMovingPlatform(to position: CGPoint) -> SpriteComponent? {
         var closestDistance = Double.greatestFiniteMagnitude
         let otherEntityPosition = Vector(point: position)

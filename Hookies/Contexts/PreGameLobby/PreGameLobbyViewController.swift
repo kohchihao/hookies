@@ -11,7 +11,11 @@ import SpriteKit
 
 protocol PreGameLobbyViewNavigationDelegate: class {
     func didPressSelectMapButton(in: PreGameLobbyViewController)
-    func didPressStartButton(in: PreGameLobbyViewController, withSelectedMapType mapType: MapType, gameplayId: String, players: [Player])
+    func didPressStartButton(
+        in: PreGameLobbyViewController,
+        withSelectedMapType mapType: MapType,
+        gameplayId: String,
+        players: [Player])
     func didPressFriendButton(in: PreGameLobbyViewController, lobbyId: String)
     func didPressPostButton(in: PreGameLobbyViewController, lobbyId: String, players: [Player])
 }
@@ -160,8 +164,6 @@ class PreGameLobbyViewController: UIViewController {
         API.shared.gameplay.saveGameState(gameplay: gameplay)
     }
 
-    // swiftlint:disable line_length
-
     private func createPlayers(with lobby: Lobby) -> [Player] {
         var players: [Player] = []
         guard let currentId = API.shared.user.currentUser?.uid else {
@@ -172,7 +174,13 @@ class PreGameLobbyViewController: UIViewController {
         guard let hostCostume = lobby.costumesId[lobby.hostId] ?? CostumeType.getDefault() else {
             return players
         }
-        guard let host = Player(playerId: hostId, playerType: .human, costumeType: hostCostume, isCurrentPlayer: currentId == hostId, isHost: true) else {
+        guard let host = Player(
+            playerId: hostId,
+            playerType: .human,
+            costumeType: hostCostume,
+            isCurrentPlayer: currentId == hostId,
+            isHost: true
+            ) else {
             return players
         }
         players.append(host)
@@ -189,7 +197,13 @@ class PreGameLobbyViewController: UIViewController {
                     players.append(bot)
                 }
             } else {
-                if let player = Player(playerId: playerId, playerType: .human, costumeType: costume, isCurrentPlayer: currentId == playerId, isHost: false) {
+                if let player = Player(
+                    playerId: playerId,
+                    playerType: .human,
+                    costumeType: costume,
+                    isCurrentPlayer: currentId == playerId,
+                    isHost: false
+                    ) {
                     players.append(player)
                 }
             }
@@ -279,7 +293,9 @@ class PreGameLobbyViewController: UIViewController {
                 }
                 guard let user = user else {
                     do {
-                        let bot = try User(uid: playerId, username: String(playerId.prefix(Constants.botUsernameLength)))
+                        let bot = try User(
+                            uid: playerId,
+                            username: String(playerId.prefix(Constants.botUsernameLength)))
                         if !players.contains(bot) {
                             players.append(bot)
                         }

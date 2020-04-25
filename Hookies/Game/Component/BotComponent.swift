@@ -17,6 +17,9 @@ class BotComponent: Component {
         self.instructions = instructions
     }
 
+
+    /// Get the next instruction for the bot.
+    /// - Parameter timeElapsed: The time elapsed
     func getNextInstruction(timeElapsed: Double) -> BotInstruction? {
         guard let nextInstruction = instructions.first else {
             return nil

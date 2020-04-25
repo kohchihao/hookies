@@ -15,6 +15,8 @@ protocol NavigatorRepresentable {
     func pop()
 }
 
+/// The navigator that manages the transition between view controllers.
+
 struct Navigator: NavigatorRepresentable {
 
     // MARK: - PRIVATE PROPERTIES
@@ -26,10 +28,17 @@ struct Navigator: NavigatorRepresentable {
     }
 
     // MARK: - PUBLIC NAVIGATION FUNCTIONS
+
+    /// Returns the root navigation controller
     func root() -> UINavigationController {
         return navigationController
     }
 
+
+    /// Transition between different controllers.
+    /// - Parameters:
+    ///   - viewController: The view controller to transition to.
+    ///   - type: The type of navigation
     func transition(to viewController: UIViewController, as type: NavigatorTransitionType) {
         switch type {
         case .root:
@@ -41,10 +50,12 @@ struct Navigator: NavigatorRepresentable {
         }
     }
 
+    /// Dismiss the navigation controller.
     func dismiss() {
         navigationController.dismiss(animated: true, completion: nil)
     }
 
+    /// Pop the view controller.
     func pop() {
         navigationController.popViewController(animated: true)
     }

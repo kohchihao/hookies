@@ -72,6 +72,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         centerOnNode(node: currentPlayer)
     }
 
+    /// Set the power launch.
+    /// - Parameter power: The power to launch at
     func setPowerLaunch(at power: Int) {
         powerLaunch = power
     }
@@ -99,20 +101,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
+    /// Checks if there is a contact between 2 sprites.
+    /// - Parameters:
+    ///   - contact: The contact between sprites
+    ///   - node: The node to check with
     private func has(contact: SKPhysicsContact, with node: SKSpriteNode?) -> Bool {
-        return contact.bodyA.node == node ||
-            contact.bodyB.node == node
+        return contact.bodyA.node == node || contact.bodyB.node == node
     }
 
+    /// Handles the contact with traps.
+    /// - Parameters:
+    ///   - player: The player that is trapped
+    ///   - trap: The trap itself
     private func handleContactWithTrap(between player: SKSpriteNode, trap: SKSpriteNode) {
         gameEngine?.contactBetween(playerNode: player, trap: trap)
     }
 
+    /// Handles the contact with power up chests.
+    /// - Parameter powerup: The power up chest
     private func handleContactWithPowerup(_ powerup: SKSpriteNode) {
         powerups.removeAll(where: { $0 == powerup })
         animateDisappear(of: powerup)
     }
 
+    /// Animate the removal of power up chest
+    /// - Parameter powerup: The power up chest
     private func animateDisappear(of powerup: SKSpriteNode) {
         guard let powerupType = gameEngine?.currentPlayerContactWith(powerup: powerup) else {
             return
@@ -252,6 +265,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.powerups = powerupNodes
     }
 
+    /// Get the nodes within the Game Scene.
+    /// - Parameter type: The type of game object
     private func getGameNodes(of type: GameObjectType) -> [SKSpriteNode] {
         var nodes = [SKSpriteNode]()
 
@@ -266,6 +281,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return nodes
     }
 
+    /// Get the game object within the Game Scene.
+    /// - Parameter type: The type of game object
     private func getGameObjects(of type: GameObjectType) -> [GameObject] {
         var objects = [GameObject]()
 
@@ -283,6 +300,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: - Centering camera
 
+    /// Center the camera.
+    /// - Parameter node: The node to center on
     private func centerOnNode(node: SKNode) {
         let action = SKAction.move(to: CGPoint(x: node.position.x, y: 0), duration: 0.5)
         self.cam?.run(action)
@@ -291,7 +310,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: - Count down to start game
 
-    func countdown(count: Int) {
+    /// Animate the countdown sequence.
+    /// - Parameter count: The time to countdown to
+    private func countdown(count: Int) {
         countdownLabel?.text = "Launching player in \(count)..."
 
         let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0),
@@ -301,11 +322,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
 
+    /// Update the countdown message.
     private func countdownAction() {
         count -= 1
         countdownLabel?.text = "Launching player in \(count)..."
     }
 
+    /// End the count down and start the game engine.
     private func endCountdown() {
         enableGameButtons()
         countdownLabel?.removeFromParent()
@@ -369,11 +392,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Current player activating power up
 
     private func handleCurrentPlayerActivatePowerup() {
-        powerupButton?.touchBeganHandler = handlePowerupBtnTouch
         powerupButton?.touchEndHandler = handlePowerupBtnTouchEnd
-    }
-
-    private func handlePowerupBtnTouch() {
     }
 
     private func handleGrapplingHookBtnTouchBegan() {

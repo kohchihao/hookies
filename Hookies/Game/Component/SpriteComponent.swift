@@ -30,6 +30,10 @@ extension SpriteComponent: Hashable {
 }
 
 extension SpriteComponent {
+
+
+    /// Make a line to the sprite.
+    /// - Parameter sprite2: The sprite at the end of the line
     func makeLine(to sprite2: SpriteComponent) -> SKShapeNode {
         let type = SpriteType.line
 
@@ -49,6 +53,8 @@ extension SpriteComponent {
         return currLine
     }
 
+    /// Make the path to the sprite.
+    /// - Parameter sprite2: The sprite at the end of the line
     func makePath(to sprite2: SpriteComponent) -> CGMutablePath {
         let path = CGMutablePath()
         path.move(to: node.position)
@@ -59,12 +65,18 @@ extension SpriteComponent {
         return path
     }
 
-    func distance(to sprite2: SpriteComponent) -> CGFloat {
+
+    /// Calculate the distance between the sprites.
+    /// - Parameter sprite2: The other sprite to calculate to
+    private func distance(to sprite2: SpriteComponent) -> CGFloat {
         let sprite1Pos = Vector(point: node.position)
         let sprite2Pos = Vector(point: sprite2.node.position)
         return CGFloat(sprite1Pos.distance(to: sprite2Pos))
     }
 
+
+    /// Get the nearest sprite in front of the sprite.
+    /// - Parameter others: The other sprite components to check
     func nearestSpriteInFront(from others: [SpriteComponent]) -> SpriteComponent? {
         var nearestSprite: SpriteComponent?
         var nearestDistance = CGFloat.greatestFiniteMagnitude
