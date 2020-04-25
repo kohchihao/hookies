@@ -40,15 +40,15 @@ class PostGameLobbyCoordinator: Coordinator {
 
 // MARK: - PostGameLobbyViewNavigationDelegate
 extension PostGameLobbyCoordinator: PostGameLobbyViewNavigationDelegate {
+    func continueGame(in: PostGameLobbyViewController, lobby: Lobby) {
+        let preGameLobbyCoordinator = PreGameLobbyCoordinator(with: navigator, withLobby: lobby)
+        preGameLobbyCoordinator.coordinatorDelegate = self
+        preGameLobbyCoordinator.start()
+    }
+
     func didPressReturnHomeButton(in: PostGameLobbyViewController) {
         let homeCoordinator = HomeCoordinator(with: navigator)
         homeCoordinator.coordinatorDelegate = self
         homeCoordinator.start()
-    }
-
-    func didPressContinueButton(in: PostGameLobbyViewController, lobby: Lobby) {
-        let preGameLobbyCoordinator = PreGameLobbyCoordinator(with: navigator, withLobby: lobby)
-        preGameLobbyCoordinator.coordinatorDelegate = self
-        preGameLobbyCoordinator.start()
     }
 }

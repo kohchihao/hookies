@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol PostGameLobbyViewNavigationDelegate: class {
-    func didPressContinueButton(in: PostGameLobbyViewController, lobby: Lobby)
+    func continueGame(in: PostGameLobbyViewController, lobby: Lobby)
     func didPressReturnHomeButton(in: PostGameLobbyViewController)
 }
 
@@ -38,17 +38,25 @@ class PostGameLobbyViewController: UIViewController {
         return true
     }
 
+    // MARK: Manage Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        continueButton.isHidden = true
-        self.viewModel.updateLobby()
+        waitingForHost()
         setupPlayerView()
+        self.viewModel.subscribeToLobby()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        API.shared.lobby.unsubscribeFromLobby()
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        viewModel.disconnect()
+//    }
+
+    deinit {
+        viewModel.disconnect()
     }
+
+    // MARK: Setup view
 
     private func setupPlayerView() {
         guard Constants.maxPlayerCount > 0 else {
@@ -91,6 +99,8 @@ class PostGameLobbyViewController: UIViewController {
         }
     }
 
+    // MARK: Update view
+
     private func updatePlayerViews() {
         guard self.viewModel.players.count <= self.playerViews.count else {
             return
@@ -126,125 +136,48 @@ class PostGameLobbyViewController: UIViewController {
         })
     }
 
-    @IBAction private func continueButtonPressed(_ sender: UIButton) {
-        guard var lobby = self.viewModel.lobby else {
-            return
-        }
-        guard let currentPlayerId = API.shared.user.currentUser?.uid else {
-            return
-        }
-        if currentPlayerId == lobby.hostId {
-            lobby.updateLobbyState(lobbyState: .open)
-            print(lobby)
+    private func waitingForHost() {
+        if viewModel.isHost {
+            self.continueButton.isHidden = false
+            self.hostStatusLabel.isHidden = true
         } else {
-            guard lobby.lobbyState == .open else {
-                Logger.log.show(details: "Lobby is not open", logType: .error)
-                return
-            }
-            lobby.addPlayer(playerId: currentPlayerId)
-            if lobby.playersId.count >= Constants.maxPlayerCount {
-                lobby.updateLobbyState(lobbyState: .full)
-            }
+            self.continueButton.isHidden = true
+            self.hostStatusLabel.isHidden = false
+            self.hostStatusLabel.text = "Waiting for host"
         }
-        API.shared.lobby.save(lobby: lobby)
-        navigationDelegate?.didPressContinueButton(in: self, lobby: lobby)
+    }
+
+    @IBAction private func continueButtonPressed(_ sender: UIButton) {
+        viewModel.continueGame()
     }
 
     @IBAction private func returnHomeButtonPressed(_sender: UIButton) {
-        if self.viewModel.players.contains(where: { $0.isHost && $0.isCurrentPlayer }) {
-            guard var lobby = self.viewModel.lobby else {
-                return
-            }
-            lobby.updateLobbyState(lobbyState: .empty)
-            API.shared.lobby.save(lobby: lobby)
-        }
-        leaveLobby()
-    }
-
-    private func leaveLobby() {
-        navigationDelegate?.didPressReturnHomeButton(in: self)
-    }
-
-    func subscribeToLobby(lobby: Lobby) {
-        API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
-            guard error == nil else {
-                Logger.log.show(details: error.debugDescription, logType: .error)
-                return
-            }
-            guard let updatedLobby = lobby else {
-                return
-            }
-            self.viewModel.lobby = updatedLobby
-            switch updatedLobby.lobbyState {
-            case .open:
-                self.hostHasContinued()
-            case .full:
-                self.lobbyIsFull()
-            case .start:
-                self.gameHasStarted()
-            case .empty:
-                if updatedLobby.lobbyState == .empty {
-                    guard let lobby = self.viewModel.lobby else {
-                        return
-                    }
-                    if API.shared.user.currentUser?.uid == lobby.hostId {
-                        API.shared.lobby.delete(lobbyId: lobby.lobbyId)
-                    }
-                    self.leaveLobby()
-                }
-            }
-        })
-    }
-
-    private func waitingForHost() {
-        self.continueButton.isHidden = true
-        self.hostStatusLabel.isHidden = false
-        self.hostStatusLabel.text = "Waiting for host"
-    }
-
-    private func hostHasContinued() {
-        self.continueButton.isHidden = false
-        self.hostStatusLabel.isHidden = true
-    }
-
-    private func hostHasLeft() {
-        self.continueButton.isHidden = true
-        self.hostStatusLabel.isHidden = false
-        self.hostStatusLabel.text = "Host has left"
-    }
-
-    private func lobbyIsFull() {
-        self.continueButton.isHidden = true
-        self.hostStatusLabel.isHidden = false
-        self.hostStatusLabel.text = "Lobby is full"
-    }
-
-    private func gameHasStarted() {
-        self.continueButton.isHidden = true
-        self.hostStatusLabel.isHidden = false
-        self.hostStatusLabel.text = "Game has started"
-    }
-
-    deinit {
-        API.shared.lobby.unsubscribeFromLobby()
+        viewModel.returnHome()
     }
 }
 
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
-    func lobbyLoaded(isLoaded: Bool) {
+    func updateView() {
         updatePlayerViews()
-        guard let lobby = self.viewModel.lobby else {
-            return
-        }
-        subscribeToLobby(lobby: lobby)
-        guard let currentUserId = API.shared.user.currentUser?.uid else {
-            return
-        }
-        if currentUserId == lobby.hostId {
-            self.continueButton.isHidden = false
-            self.hostStatusLabel.isHidden = true
-        } else {
-            waitingForHost()
-        }
+    }
+
+    func hostHasContinued() {
+        continueButton.isHidden = false
+        hostStatusLabel.isHidden = true
+    }
+
+    func lobbyIsFull() {
+        continueButton.isHidden = true
+        hostStatusLabel.isHidden = false
+        hostStatusLabel.text = "Lobby is full"
+    }
+
+    func continueGame(with lobby: Lobby) {
+        navigationDelegate?.continueGame(in: self, lobby: lobby)
+    }
+
+    func leaveLobby() {
+        viewModel.disconnect()
+        navigationDelegate?.didPressReturnHomeButton(in: self)
     }
 }

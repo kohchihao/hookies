@@ -9,21 +9,32 @@
 import Foundation
 
 protocol PostGameLobbyViewModelDelegate: class {
-    func lobbyLoaded(isLoaded: Bool)
+    func updateView()
+    func leaveLobby()
+    func hostHasContinued()
+    func lobbyIsFull()
+    func continueGame(with lobby: Lobby)
 }
 
 protocol PostGameLobbyViewModelRepresentable {
     var lobby: Lobby? { get set }
     var lobbyId: String { get }
     var players: [Player] { get }
+    var isHost: Bool { get }
     var delegate: PostGameLobbyViewModelDelegate? { get set }
-    func updateLobby()
+    func subscribeToLobby()
+    func disconnect()
+    func continueGame()
+    func returnHome()
 }
 
 class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
     var lobby: Lobby?
     var lobbyId: String
     var players: [Player] = []
+    var isHost: Bool {
+        players.contains(where: ({ $0.isCurrentPlayer && $0.isHost }))
+    }
     weak var delegate: PostGameLobbyViewModelDelegate?
 
     init(lobbyId: String, players: [Player]) {
@@ -31,23 +42,77 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
         self.players = players
     }
 
-    func updateLobby() {
-        API.shared.lobby.get(lobbyId: lobbyId, completion: { lobby, error in
+    func subscribeToLobby() {
+        API.shared.lobby.subscribeToLobby(lobbyId: lobbyId, listener: { lobby, error  in
             guard error == nil else {
                 Logger.log.show(details: error.debugDescription, logType: .error)
-                self.delegate?.lobbyLoaded(isLoaded: false)
                 return
             }
-            guard var lobby = lobby else {
-                self.delegate?.lobbyLoaded(isLoaded: false)
+            guard let updatedLobby = lobby else {
                 return
             }
-            if lobby.lobbyState == .start {
-                lobby.reset()
-            }
-            API.shared.lobby.save(lobby: lobby)
-            self.lobby = lobby
-            self.delegate?.lobbyLoaded(isLoaded: true)
+            self.lobby = updatedLobby
+            self.checkLobbyState()
+            self.delegate?.updateView()
         })
+    }
+
+    private func checkLobbyState() {
+        if !isHost {
+            switch lobby?.lobbyState {
+            case .open:
+                self.delegate?.hostHasContinued()
+            case .full:
+                self.delegate?.lobbyIsFull()
+            case .empty:
+                guard let lobby = self.lobby else {
+                    return
+                }
+                if API.shared.user.currentUser?.uid == lobby.hostId {
+                    API.shared.lobby.delete(lobbyId: lobby.lobbyId)
+                }
+                self.delegate?.leaveLobby()
+            default:
+                return
+            }
+        }
+    }
+
+    func disconnect() {
+        API.shared.lobby.unsubscribeFromLobby()
+    }
+
+    func returnHome() {
+        if self.players.contains(where: { $0.isHost && $0.isCurrentPlayer }) {
+            guard var lobby = self.lobby else {
+                return
+            }
+            lobby.updateLobbyState(lobbyState: .empty)
+            API.shared.lobby.save(lobby: lobby)
+        } else {
+            delegate?.leaveLobby()
+        }
+    }
+
+    func continueGame() {
+        guard var lobby = lobby else {
+            return
+        }
+        if isHost {
+            lobby.reset()
+        } else {
+            guard lobby.lobbyState == .open else {
+                Logger.log.show(details: "Lobby is not open", logType: .error).display(.toast)
+                return
+            }
+            guard let currentPlayerId = API.shared.user.currentUser?.uid else {
+                Logger.log.show(details: "User is not logged in", logType: .error).display(.toast)
+                return
+            }
+            lobby.addPlayer(playerId: currentPlayerId)
+        }
+        disconnect()
+        API.shared.lobby.save(lobby: lobby)
+        delegate?.continueGame(with: lobby)
     }
 }
