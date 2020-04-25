@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		085CFA2C7C3D713DC56EB872 /* Pods_HookiesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */; };
+		11078C3324549F67002424D6 /* PowerupSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11078C3224549F67002424D6 /* PowerupSystemTests.swift */; };
 		110B3CED2420605600840C4E /* DictionaryRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */; };
 		111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111D2EF42418C8BA0083373C /* UserStoreError.swift */; };
 		1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1127C5592415E18800A78AA0 /* GoogleService-Info.plist */; };
@@ -225,6 +226,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		11078C3224549F67002424D6 /* PowerupSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupSystemTests.swift; sourceTree = "<group>"; };
 		110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryRepresentable.swift; sourceTree = "<group>"; };
 		111D2EF42418C8BA0083373C /* UserStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoreError.swift; sourceTree = "<group>"; };
 		1127C5592415E18800A78AA0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -1081,6 +1083,7 @@
 				11CC852E2439E9EB006D3A8F /* DeadlockSystemTests.swift */,
 				11CC852D2439E9EB006D3A8F /* GameObjectMovementSystemTests.swift */,
 				11CC852F2439E9EB006D3A8F /* HealthSystemTests.swift */,
+				11078C3224549F67002424D6 /* PowerupSystemTests.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1579,6 +1582,7 @@
 				11CC85342439E9EB006D3A8F /* HealthSystemTests.swift in Sources */,
 				11CC85362439E9EB006D3A8F /* SpriteSystemTests.swift in Sources */,
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
+				11078C3324549F67002424D6 /* PowerupSystemTests.swift in Sources */,
 				11CC85332439E9EB006D3A8F /* DeadlockSystemTests.swift in Sources */,
 				D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */,
 				119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */,
