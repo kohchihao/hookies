@@ -38,13 +38,11 @@ class HealthSystem: System, HealthSystemProtocol {
         registerNotificationObservers()
     }
 
-
     /// Checks if a player is alive or not.
     /// - Parameter sprite: The sprite to check
     func isPlayerAlive(for sprite: SpriteComponent) -> Bool {
         return self.isPlayerAlive(for: sprite.node.position)
     }
-
 
     /// Checks if a player is alive or not.
     /// - Parameter position: The position to check

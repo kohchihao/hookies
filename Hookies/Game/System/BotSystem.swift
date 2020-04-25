@@ -69,7 +69,7 @@ class BotSystem: System, BotSystemProtocol {
     }
 }
 
-// MARK: Networking
+// MARK: - Networking
 
 extension BotSystem {
     private func registerNotificationObservers() {

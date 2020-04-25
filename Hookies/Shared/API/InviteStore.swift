@@ -43,7 +43,6 @@ class InviteStore {
         ref.setDataModel(invite)
     }
 
-
     /// Will delete the lobby invitation that is on the backend database.
     /// - Parameter invite: The lobby invitation model
     func delete(invite: Invite) {

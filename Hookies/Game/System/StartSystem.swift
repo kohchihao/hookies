@@ -41,7 +41,6 @@ class StartSystem: System, StartSystemProtocol {
         registerNotificationObservers()
     }
 
-
     /// Add a player with its sprite component to the system
     /// - Parameters:
     ///   - player: the player model
