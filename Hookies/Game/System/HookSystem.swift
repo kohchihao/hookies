@@ -31,9 +31,26 @@ protocol HookSystemProtocol {
 }
 
 protocol HookSystemDelegate: AnyObject, MovementControlDelegate {
+    /// Indicates that a hook has been applied by a sprite,
+    /// - Parameters:
+    ///   - sprite: The sprite that applied the hook action
+    ///   - velocity: The iniial velocity of the sprite
+    ///   - hook: The hook component for the sprte
     func hookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
+
+    /// Indicaties that an adjust hook has been applied by a sprite
+    /// - Parameters:
+    ///   - sprite: The sprite that applied the adjust action
+    ///   - velocity: The initial velocity of the sprite
+    ///   - hook: the hook compoennt for the sprite
     func adjustHookActionApplied(sprite: SpriteComponent, velocity: CGVector, hook: HookComponent)
+
+    /// Indicates that an unhook acton has been applieed
+    /// - Parameter hook: The hook component to unhook from
     func unhookActionApplied(hook: HookComponent)
+
+    /// Indicates that a hook player action has been applied
+    /// - Parameter line: The line between the 2 players
     func hookPlayerApplied(with line: SKShapeNode)
 }
 

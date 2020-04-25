@@ -20,7 +20,8 @@ class RequestStore {
     /// Get the friend request with the given request id.
     /// - Parameters:
     ///   - requestId: The Id of the friend request.
-    ///   - completion: The callback handler which gets triggered when the async function completes. Will return with the Request model.
+    ///   - completion: The callback handler which gets triggered when the async function completes.
+    ///                 Will return with the Request model.
     func get(requestId: String, completion: @escaping (Request?, Error?) -> Void) {
         let ref = collection.document(requestId)
         ref.getDocumentModel(Request.self, completion: { request, error in

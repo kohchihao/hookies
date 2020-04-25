@@ -10,10 +10,6 @@ import Foundation
 
 /// Bot System manages the bot along with its instructions.
 
-protocol BotSystemDelegate: class {
-
-}
-
 protocol BotSystemProtocol {
     func start()
     func stopTimer()
@@ -21,9 +17,7 @@ protocol BotSystemProtocol {
 }
 
 class BotSystem: System, BotSystemProtocol {
-
     private(set) var bots = [SpriteComponent: BotComponent]()
-    weak var delegate: BotSystemDelegate?
     private var timer: Timer?
     private var timeElapsed: Double = 0
 
@@ -31,7 +25,6 @@ class BotSystem: System, BotSystemProtocol {
         Logger.log.show(details: "bot system created", logType: .information)
         registerNotificationObservers()
     }
-
 
     /// Start the timer for the bot system.
     func start() {
@@ -76,7 +69,7 @@ class BotSystem: System, BotSystemProtocol {
     }
 }
 
-// MARK: Networking
+// MARK: - Networking
 
 extension BotSystem {
     private func registerNotificationObservers() {
