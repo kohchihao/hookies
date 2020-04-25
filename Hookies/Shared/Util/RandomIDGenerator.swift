@@ -9,6 +9,9 @@
 import Foundation
 
 struct RandomIDGenerator {
+
+    /// Get a random ID.
+    /// - Parameter length: The length of the random ID
     static func getRandomID(length: Int) -> String {
         let alphanumeric = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
         guard length > 0 else {
