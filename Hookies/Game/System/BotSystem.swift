@@ -10,10 +10,6 @@ import Foundation
 
 /// Bot System manages the bot along with its instructions.
 
-protocol BotSystemDelegate: class {
-
-}
-
 protocol BotSystemProtocol {
     func start()
     func stopTimer()
