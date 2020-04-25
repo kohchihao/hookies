@@ -43,11 +43,6 @@ class NetworkManager: NetworkManagerProtocol {
         let queue = DispatchQueue(label: "DeviceConnectionMonitor")
 
         monitor.pathUpdateHandler = { pathUpdateHandler in
-            // To ensure that the device status is set only once
-            guard self.deviceStatus == nil else {
-                return
-            }
-
             if pathUpdateHandler.status == .satisfied {
                 self.deviceStatus = .online
             } else {
@@ -325,6 +320,20 @@ class NetworkManager: NetworkManagerProtocol {
             }
 
             API.shared.gameplay.registerBotFinishLineReached(for: botId)
+            broadcastOfflineFinishEvent(with: sprite)
+        }
+    }
+
+    private func broadcastOfflineFinishEvent(with sprite: SpriteComponent) {
+        guard let deviceStatus = deviceStatus else {
+            return
+        }
+
+        if deviceStatus == .offline {
+            NotificationCenter.default.post(
+                name: .broadcastPlayerFinishSprite,
+                object: self,
+                userInfo: ["data": sprite])
         }
     }
 
