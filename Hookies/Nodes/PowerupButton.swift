@@ -28,7 +28,6 @@ class PowerupButton: ButtonNode {
         super.init(coder: aDecoder)
     }
 
-
     /// Set the power up for the button.
     /// - Parameter type: The type of power up
     func setPowerup(to type: PowerupType) {
@@ -36,7 +35,6 @@ class PowerupButton: ButtonNode {
         powerupType = type
         state = .ButtonNodeStateActive
     }
-
 
     /// Remove the power up from the button.
     func clearPowerup() {

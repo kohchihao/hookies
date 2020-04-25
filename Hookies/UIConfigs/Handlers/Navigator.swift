@@ -34,7 +34,6 @@ struct Navigator: NavigatorRepresentable {
         return navigationController
     }
 
-
     /// Transition between different controllers.
     /// - Parameters:
     ///   - viewController: The view controller to transition to.

@@ -22,7 +22,6 @@ class LobbyStore: SocketRoom {
         socket = socketRef
     }
 
-
     /// Will get the Lobby of the given lobby id.
     /// - Parameters:
     ///   - lobbyId: The id of the lobby
@@ -55,7 +54,6 @@ class LobbyStore: SocketRoom {
     func unsubscribeFromLobby() {
         lobbyListener?.remove()
     }
-
 
     /// Will save the given lobby to the backend database.
     /// - Parameter lobby: The lobby model to save.
