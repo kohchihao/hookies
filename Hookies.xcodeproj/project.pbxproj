@@ -104,7 +104,6 @@
 		11CC84D02439E88A006D3A8F /* Social+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84C82439E889006D3A8F /* Social+FirestoreModel.swift */; };
 		11CC84D12439E88A006D3A8F /* Invite+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84C92439E889006D3A8F /* Invite+FirestoreModel.swift */; };
 		11CC84D22439E88A006D3A8F /* Request+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84CA2439E88A006D3A8F /* Request+FirestoreModel.swift */; };
-		11CC84DA2439E8A0006D3A8F /* HookActionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84D32439E89F006D3A8F /* HookActionData.swift */; };
 		11CC84DB2439E8A0006D3A8F /* GenericPlayerEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84D42439E89F006D3A8F /* GenericPlayerEventData.swift */; };
 		11CC84DC2439E8A0006D3A8F /* PlayerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84D52439E8A0006D3A8F /* PlayerData.swift */; };
 		11CC84DD2439E8A0006D3A8F /* PowerupCollectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84D62439E8A0006D3A8F /* PowerupCollectionData.swift */; };
@@ -324,7 +323,6 @@
 		11CC84C82439E889006D3A8F /* Social+FirestoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Social+FirestoreModel.swift"; sourceTree = "<group>"; };
 		11CC84C92439E889006D3A8F /* Invite+FirestoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Invite+FirestoreModel.swift"; sourceTree = "<group>"; };
 		11CC84CA2439E88A006D3A8F /* Request+FirestoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Request+FirestoreModel.swift"; sourceTree = "<group>"; };
-		11CC84D32439E89F006D3A8F /* HookActionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HookActionData.swift; sourceTree = "<group>"; };
 		11CC84D42439E89F006D3A8F /* GenericPlayerEventData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericPlayerEventData.swift; sourceTree = "<group>"; };
 		11CC84D52439E8A0006D3A8F /* PlayerData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerData.swift; sourceTree = "<group>"; };
 		11CC84D62439E8A0006D3A8F /* PowerupCollectionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerupCollectionData.swift; sourceTree = "<group>"; };
@@ -724,7 +722,6 @@
 			isa = PBXGroup;
 			children = (
 				11CC84D42439E89F006D3A8F /* GenericPlayerEventData.swift */,
-				11CC84D32439E89F006D3A8F /* HookActionData.swift */,
 				11CC84D52439E8A0006D3A8F /* PlayerData.swift */,
 				11CC84D62439E8A0006D3A8F /* PowerupCollectionData.swift */,
 				11CC84D92439E8A0006D3A8F /* PowerupEventData.swift */,
@@ -1094,10 +1091,10 @@
 			isa = PBXGroup;
 			children = (
 				11CC85302439E9EB006D3A8F /* ClosestBoltSystemTests.swift */,
+				11CC85312439E9EB006D3A8F /* SpriteSystemTests.swift */,
 				11CC852E2439E9EB006D3A8F /* DeadlockSystemTests.swift */,
 				11CC852D2439E9EB006D3A8F /* GameObjectMovementSystemTests.swift */,
 				11CC852F2439E9EB006D3A8F /* HealthSystemTests.swift */,
-				11CC85312439E9EB006D3A8F /* SpriteSystemTests.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1507,7 +1504,6 @@
 				1127C5642415E3AE00A78AA0 /* Coordinator.swift in Sources */,
 				2BA5F943244364E4009AF93C /* DeviceStatus.swift in Sources */,
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
-				11CC84DA2439E8A0006D3A8F /* HookActionData.swift in Sources */,
 				11CC84E82439E8B9006D3A8F /* GameplayStore.swift in Sources */,
 				11CC844E2439E748006D3A8F /* ClosestBoltSystem.swift in Sources */,
 				1191BD712435ADAD00189DB8 /* GenericPlayerEvent.swift in Sources */,
