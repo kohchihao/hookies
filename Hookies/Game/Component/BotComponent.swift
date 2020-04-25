@@ -18,14 +18,19 @@ class BotComponent: Component {
     }
 
     func getNextInstruction(timeElapsed: Double) -> BotInstruction? {
-        let nextInstruction = instructions.first
-        guard let instructionTimeStep = nextInstruction?.timeSteps else {
+        guard let nextInstruction = instructions.first else {
             return nil
         }
+        let instructionTimeStep = nextInstruction.timeSteps
         guard Double(instructionTimeStep) * Constants.botTimeStep <= timeElapsed else {
             return nil
         }
+
+        var repeatedInstruction = nextInstruction
+        repeatedInstruction.timeSteps += Int(Constants.maxGameLength / Constants.botTimeStep)
+        self.instructions.append(repeatedInstruction)
         self.instructions.removeFirst()
+
         return nextInstruction
     }
 }
