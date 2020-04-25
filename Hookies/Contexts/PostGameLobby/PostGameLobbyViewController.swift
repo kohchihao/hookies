@@ -45,6 +45,11 @@ class PostGameLobbyViewController: UIViewController {
         setupPlayerView()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        API.shared.lobby.unsubscribeFromLobby()
+    }
+
     private func setupPlayerView() {
         guard Constants.maxPlayerCount > 0 else {
             return
@@ -102,20 +107,22 @@ class PostGameLobbyViewController: UIViewController {
         guard self.playerViews.indices.contains(index) else {
             return
         }
+        var username: String = ""
+        if player.playerId.contains(Constants.botPrefix) {
+            username = String(player.playerId.prefix(Constants.botUsernameLength))
+        } else if player.playerId == API.shared.user.currentUser?.uid {
+            username = API.shared.user.currentUser?.username ?? ""
+        }
         API.shared.user.get(withUid: player.playerId, completion: { user, error in
             guard error == nil else {
                 Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
-            var username: String
             if let user = user {
                 username = user.username
-            } else if player.playerId.contains(Constants.botPrefix) {
-                username = String(player.playerId.prefix(Constants.botUsernameLength))
-            } else {
-                return
             }
             self.playerViews[index].updateUsernameLabel(username: username)
+            return
         })
     }
 
@@ -140,7 +147,6 @@ class PostGameLobbyViewController: UIViewController {
             }
         }
         API.shared.lobby.save(lobby: lobby)
-        API.shared.lobby.unsubscribeFromLobby()
         navigationDelegate?.didPressContinueButton(in: self, lobby: lobby)
     }
 
@@ -152,7 +158,10 @@ class PostGameLobbyViewController: UIViewController {
             lobby.updateLobbyState(lobbyState: .empty)
             API.shared.lobby.save(lobby: lobby)
         }
-        API.shared.lobby.unsubscribeFromLobby()
+        leaveLobby()
+    }
+
+    private func leaveLobby() {
         navigationDelegate?.didPressReturnHomeButton(in: self)
     }
 
@@ -165,7 +174,6 @@ class PostGameLobbyViewController: UIViewController {
             guard let updatedLobby = lobby else {
                 return
             }
-            print(updatedLobby)
             self.viewModel.lobby = updatedLobby
             switch updatedLobby.lobbyState {
             case .open:
@@ -174,8 +182,16 @@ class PostGameLobbyViewController: UIViewController {
                 self.lobbyIsFull()
             case .start:
                 self.gameHasStarted()
-            default:
-                return
+            case .empty:
+                if updatedLobby.lobbyState == .empty {
+                    guard let lobby = self.viewModel.lobby else {
+                        return
+                    }
+                    if API.shared.user.currentUser?.uid == lobby.hostId {
+                        API.shared.lobby.delete(lobbyId: lobby.lobbyId)
+                    }
+                    self.leaveLobby()
+                }
             }
         })
     }

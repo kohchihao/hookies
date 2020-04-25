@@ -43,7 +43,7 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
                 return
             }
             if lobby.lobbyState == .start {
-                lobby.updateLobbyState(lobbyState: .empty)
+                lobby.reset()
             }
             API.shared.lobby.save(lobby: lobby)
             self.lobby = lobby

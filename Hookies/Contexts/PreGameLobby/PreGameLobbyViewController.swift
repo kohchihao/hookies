@@ -271,6 +271,9 @@ class PreGameLobbyViewController: UIViewController {
             Logger.log.show(details: "max number of players exceeded", logType: .error)
             return
         }
+        for playerView in playerViews {
+            playerView.resetView()
+        }
         var index: Int
         var otherPlayersViewIndex = 1
         for playerId in self.viewModel.lobby.playersId {
@@ -290,25 +293,29 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     private func updatePlayerViewWithUsername(playerId: String, index: Int) {
-           if isOnline {
-               API.shared.user.get(withUid: playerId, completion: { user, error in
-                   guard error == nil else {
-                       Logger.log.show(details: error.debugDescription, logType: .error)
-                       return
-                   }
-                   var username: String
-                   if let user = user {
-                       username = user.username
-                   } else if playerId.contains(Constants.botPrefix) {
-                       username = String(playerId.prefix(Constants.botUsernameLength))
-                   } else {
-                       return
-                   }
-                   self.playerViews[index].updateUsernameLabel(username: username)
-               })
-           } else {
-            self.playerViews[index].updateUsernameLabel(username: String(playerId.prefix(Constants.botUsernameLength)))
-       }
+        if isOnline {
+            API.shared.user.get(withUid: playerId, completion: { user, error in
+                guard error == nil else {
+                   Logger.log.show(details: error.debugDescription, logType: .error)
+                   return
+                }
+                var username: String = ""
+                if let user = user {
+                    username = user.username
+                } else if playerId.contains(Constants.botPrefix) {
+                    username = String(playerId.prefix(Constants.botUsernameLength))
+                }
+                self.playerViews[index].updateUsernameLabel(username: username)
+            })
+        } else {
+            var username: String = "Current Offline"
+            if playerId == API.shared.user.currentUser?.uid {
+                username = API.shared.user.currentUser?.username ?? "Currently Offline"
+            } else if playerId.contains(Constants.botPrefix) {
+                username = String(playerId.prefix(Constants.botUsernameLength))
+            }
+            self.playerViews[index].updateUsernameLabel(username: username)
+        }
     }
 
     @IBAction private func onFriendButtonPressed(_ sender: UIButton) {

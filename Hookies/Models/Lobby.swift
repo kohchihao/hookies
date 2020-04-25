@@ -119,4 +119,9 @@ struct Lobby {
         }
         self.lobbyState = lobbyState
     }
+
+    mutating func reset() {
+        self.playersId = [hostId]
+        self.lobbyState = .open
+    }
 }
