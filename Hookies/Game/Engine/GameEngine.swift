@@ -7,6 +7,7 @@
 //
 import SpriteKit
 
+/// Handles the coordination between the different game logic
 class GameEngine {
     private var gameState: GameState = .waiting
     private var totalNumberOfPlayers = 0
@@ -82,7 +83,9 @@ class GameEngine {
     }
 
     // MARK: - Add Players
-
+    /// Add all the players to the game
+    /// - Parameters:
+    ///     - players: A list of Player
     func addPlayers(_ players: [Player]) {
         initialisePlayers(players)
         startSystem.getReady()
@@ -92,7 +95,9 @@ class GameEngine {
     }
 
     // MARK: - Launch Current Player
-
+    /// Launches all the players on the current device with a given velocity
+    /// - Parameters:
+    ///     - velocity: The velocity to launch the player
     func launchLocalPlayers(with velocity: CGVector) {
         for player in localPlayers {
             guard let sprite = player.get(SpriteComponent.self) else {
@@ -103,7 +108,7 @@ class GameEngine {
     }
 
     // MARK: - Current Player Hook Action
-
+    /// Handles the logic to the hook action of the current player
     func applyHookActionToCurrentPlayer() {
         guard let currentPlayer = currentPlayer else {
             return
@@ -112,6 +117,7 @@ class GameEngine {
         _ = hookSystem?.hook(from: currentPlayer)
     }
 
+    /// Handles the logic to the unhook action of the current player
     func applyUnhookActionToCurrentPlayer() {
         guard let currentPlayer = currentPlayer else {
             return
@@ -121,7 +127,7 @@ class GameEngine {
     }
 
     // MARK: - Current Player Adjust Action
-
+    /// Handles the logic to the shorten rope  action of the current player
     func applyShortenActionToCurrentPlayer() {
         guard let currentPlayer = currentPlayer else {
             return
@@ -138,6 +144,7 @@ class GameEngine {
         _ = hookSystem.adjustLength(from: currentPlayer, type: .shorten)
     }
 
+    /// Handles the logic to the lengthen rope  action of the current player
     func applyLengthenActionToCurrentPlayer() {
         guard let currentPlayer = currentPlayer else {
             return
@@ -147,7 +154,7 @@ class GameEngine {
     }
 
     // MARK: - Current Player Powerup Action
-
+    /// Activiates the powerup of the current player.
     func currentPlayerPowerupAction(with type: PowerupType) {
         guard let currentPlayer = currentPlayer,
             let playerSprite = currentPlayer.get(SpriteComponent.self) else {
@@ -158,13 +165,15 @@ class GameEngine {
     }
 
     // MARK: - Current Player Jump Action
-
+    /// Handles the logic to the jump  action of the current player
     func currentPlayerJumpAction() {
         deadlockSystem?.resolveDeadlock()
     }
 
     // MARK: - Local Player Finish Race
-
+    /// Stops all the players on the current device of the given node
+    /// - Parameters:
+    ///     - playerNode: The node of the local player to stop
     func stopLocalPlayer(playerNode: SKSpriteNode) {
         for player in localPlayers {
             guard let playerSprite = player.get(SpriteComponent.self) else {
@@ -186,11 +195,11 @@ class GameEngine {
     }
 
     // MARK: - Contact with Powerups
-
+    /// Handles the logic of collecting of powerups for current player
     func currentPlayerContactWith(powerup: SKSpriteNode) -> PowerupType? {
         guard let playerSprite = currentPlayer?.get(SpriteComponent.self),
             let powerupEntity = findPowerupEntity(for: powerup),
-            let powerupSprite = powerupEntity.getSpriteComponent(),
+            let powerupSprite = powerupEntity.get(SpriteComponent.self),
             let powerupComponent = powerupEntity.get(PowerupComponent.self) else {
                 return nil
         }
@@ -202,6 +211,10 @@ class GameEngine {
         return powerupComponent.type
     }
 
+    /// Handles the contact logic between a player and a trap in the game
+    /// - Parameters:
+    ///     - playerNode: The player's node that has contact with the trap
+    ///     - trap: The trap's node that has contact with the player
     func contactBetween(playerNode: SKSpriteNode, trap: SKSpriteNode) {
         for player in localPlayers {
             guard let playerSprite = player.get(SpriteComponent.self) else {
@@ -215,7 +228,9 @@ class GameEngine {
     }
 
     // MARK: - Update
-
+    /// Handles all the elements that need to be checked / updated at every time interval
+    /// - Parameters:
+    ///     - time: The time interval
     func update(time: TimeInterval) {
         checkLocalPlayerHealth()
         updateClosestBolt()
@@ -296,17 +311,6 @@ class GameEngine {
         _ = spriteSystem.setPhysicsBody(to: powerupSprite, of: .powerup,
                                         rectangleOf: powerupSprite.node.size)
         return powerupEntity
-    }
-
-    private func respawnPowerup(_ powerup: SKSpriteNode) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.powerupRespawnDelay) {
-            let newPowerup = SKSpriteNode(texture: powerup.texture,
-                                          color: .clear,
-                                          size: powerup.size)
-            newPowerup.position = powerup.position
-            self.addNewRandomPowerup(for: newPowerup)
-            self.delegate?.addNotActivatedPowerup(newPowerup)
-        }
     }
 
     // MARK: - Platform
@@ -462,6 +466,7 @@ class GameEngine {
         delegate?.addPlayer(with: sprite.node)
     }
 
+    /// Get tne SpriteType for other players based on the number of existing other player
     private func getOtherPlayerSpriteType() -> SpriteType {
         let typeIndex = numOtherPlayers + 1
 

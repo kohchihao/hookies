@@ -94,6 +94,7 @@ class HookSystem: System, HookSystemProtocol {
 
         let line = sprite.makeLine(to: closestBolt)
 
+        // To ensure that the joint pin between bolt-line and player-line should be created
         guard let anchorLineJointPin = makeJointPinToLine(from: closestBolt.node, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: sprite.node, toLine: line) else {
                 return false
@@ -119,11 +120,12 @@ class HookSystem: System, HookSystemProtocol {
             return
         }
         let line = anchorSprite.makeLine(to: sprite)
-        delegate?.movement(isDisabled: true, for: sprite)
         delegate?.hookPlayerApplied(with: line)
+        delegate?.movement(isDisabled: true, for: sprite)
         sprite.node.physicsBody?.affectedByGravity = false
+        let duration = TimeInterval(Constants.pullPlayerDuration)
 
-        let duration = TimeInterval(2.0)
+        // The pull animation
         let followAnchor = SKAction.customAction(withDuration: duration) { node, _ in
             let newPath = anchorSprite.makePath(to: sprite)
             line.path = newPath
@@ -131,11 +133,10 @@ class HookSystem: System, HookSystemProtocol {
             let dx = anchorSprite.node.position.x - node.position.x
             let dy = anchorSprite.node.position.y - node.position.y
             let angle = atan2(dx, dy)
-            let speedPerFrame = CGFloat(15)
-            if abs(dx) > speedPerFrame * 5 {
-                node.position.x += sin(angle) * speedPerFrame
+            if abs(dx) > Constants.speedOfPlayerPull * 5 {
+                node.position.x += sin(angle) * Constants.speedOfPlayerPull
             }
-            node.position.y += cos(angle) * speedPerFrame
+            node.position.y += cos(angle) * Constants.speedOfPlayerPull
         }
 
         sprite.node.run(followAnchor, completion: {
@@ -227,6 +228,7 @@ class HookSystem: System, HookSystemProtocol {
 
         let line = sprite.makeLine(to: bolt)
 
+        // To ensure that the joint pin between bolt-line and player-line should be created
         guard let anchorLineJointPin = makeJointPinToLine(from: bolt.node, toLine: line),
             let spriteLineJointPin = makeJointPinToLine(from: sprite.node, toLine: line)
             else {

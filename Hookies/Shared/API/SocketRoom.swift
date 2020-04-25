@@ -12,7 +12,9 @@ protocol SocketRoom {
     var socket: SocketIOClient { get }
 }
 
+/// An abstract SocketRoom that will provide basic functionalities of a generic room where players can join/leave.
 extension SocketRoom {
+
     /// Will remove all listeners that has been added the current room session.
     func close() {
         socket.removeAllHandlers()
@@ -22,6 +24,9 @@ extension SocketRoom {
     /// Connect the current user to the defined room id.
     /// In the completion handler, it will return you an array of String representing uids of other players
     /// that are currently in the room.
+    /// - Parameters:
+    ///   - roomId: The id of the room
+    ///   - completion: The callback handler which gets triggered when the async function completes.
     func connect(roomId: String, completion: @escaping ([String]) -> Void) {
         socket.connect()
         socket.once(clientEvent: .connect) { _, _ in
@@ -61,6 +66,20 @@ extension SocketRoom {
         }
     }
 
+    /// Will get the bot to join the room.
+    /// - Parameters:
+    ///   - roomId: The id of the room.
+    ///   - userId: The id of the bot.
+    func botJoinRoom(
+        roomId: String,
+        userId: String
+    ) {
+        self.socket.emit("botJoinRoom", [
+            "user": userId,
+            "roomId": roomId
+        ])
+    }
+
     private func joinRoom(roomId: String,
                           completion: @escaping ([String]) -> Void
     ) {
@@ -76,16 +95,6 @@ extension SocketRoom {
                 .filter({ $0 != currentUser.uid })
             completion(otherOnlineUsers)
         }
-    }
-
-    func botJoinRoom(
-        roomId: String,
-        userId: String
-    ) {
-        self.socket.emit("botJoinRoom", [
-            "user": userId,
-            "roomId": roomId
-        ])
     }
 
     private func decodePlayersInRoomData(data: [Any]) -> [String] {

@@ -7,18 +7,13 @@
 //
 import SpriteKit
 
+/// Represent the required fields for hook's components
+/// - Parameters:
+///     - line: line to the attached bolt
+///     - anchorLineJointPin: joint pin from the attahed bolt to the line
+///     - playerLineJointPin: joint pin from the player to the line
 struct HookDelegateModel {
     let line: SKShapeNode
     let anchorLineJointPin: SKPhysicsJointPin
     let playerLineJointPin: SKPhysicsJointPin
-
-    init(
-        line: SKShapeNode,
-        anchorLineJointPin: SKPhysicsJointPin,
-        playerLineJointPin: SKPhysicsJointPin
-    ) {
-        self.line = line
-        self.anchorLineJointPin = anchorLineJointPin
-        self.playerLineJointPin = playerLineJointPin
-    }
 }

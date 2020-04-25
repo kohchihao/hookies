@@ -22,6 +22,8 @@ class HealthSystemTests: XCTestCase {
     var playerSprite: SpriteComponent!
     var playerEntity: PlayerEntity!
 
+    var startPoint: CGPoint!
+
     override func setUp() {
         super.setUp()
         spriteSystem = SpriteSystem()
@@ -35,8 +37,9 @@ class HealthSystemTests: XCTestCase {
         playerEntity = PlayerEntity()
         playerSprite = SpriteComponent(parent: playerEntity)
         _ = spriteSystem.set(sprite: playerSprite, of: .player1, with: "Pink_Monster", at: CGPoint(x: 10, y: 20))
+        startPoint = CGPoint(x: 0, y: 0)
 
-        healthSystem = HealthSystem(platforms: platforms)
+        healthSystem = HealthSystem(platforms: platforms, startPosition: startPoint)
     }
 
     override func tearDown() {
@@ -72,18 +75,6 @@ class HealthSystemTests: XCTestCase {
 
     func testRespawnPlayer_playerIsAlive() {
         _ = healthSystem.respawnPlayer(for: playerSprite)
-        XCTAssertEqual(playerSprite.node.position, CGPoint(x: 10, y: 20))
-    }
-
-    func testRespawnPlayerWithPosition_playerIsDead() {
-        let pos = CGPoint(x: 1000, y: -500)
-        _ = healthSystem.respawnPlayer(for: playerSprite, at: pos)
-        XCTAssertEqual(playerSprite.node.position, CGPoint(x: 1000, y: 200))
-    }
-
-    func testRespawnPlayerWithPosition_playerIsAlive() {
-        let pos = CGPoint(x: 1000, y: -400)
-        _ = healthSystem.respawnPlayer(for: playerSprite, at: pos)
         XCTAssertEqual(playerSprite.node.position, CGPoint(x: 10, y: 20))
     }
 

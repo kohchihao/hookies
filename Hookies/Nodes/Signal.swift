@@ -8,6 +8,7 @@
 
 import SpriteKit
 
+/// The connection signal's node
 class Signal: SKSpriteNode {
     // MARK: - Init
 

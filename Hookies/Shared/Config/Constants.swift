@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 struct Constants {
     static let prodSocketURL = URL(string: "http://128.199.164.69:3000")!
@@ -17,8 +18,6 @@ struct Constants {
     static let inviteIdLength = 6
     static let maxPlayerCount = 4
 
-    static let powerupRespawnDelay = 2.0
-
     // Time Step in seconds
     static let botTimeStep: Double = 1.0
 
@@ -27,4 +26,10 @@ struct Constants {
 
     static let botPrefix = "Bot"
     static let botUsernameLength = 7
+
+    /// Hook Powerup
+    // The duration in which the player to be pulled back
+    static let pullPlayerDuration = 2.0
+    // The speed of pull
+    static let speedOfPlayerPull = CGFloat(15.0)
 }

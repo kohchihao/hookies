@@ -17,6 +17,8 @@ class DeadlockSystemTests: XCTestCase {
     var playerSprite: SpriteComponent!
     var playerEntity: PlayerEntity!
 
+    var hookComponent: HookComponent!
+
     override func setUp() {
         super.setUp()
         spriteSystem = SpriteSystem()
@@ -24,7 +26,10 @@ class DeadlockSystemTests: XCTestCase {
         playerSprite = SpriteComponent(parent: playerEntity)
         _ = spriteSystem.set(sprite: playerSprite, of: .player1, with: "Pink_Monster", at: CGPoint(x: 10, y: 20))
         _ = spriteSystem.setPhysicsBody(to: playerSprite, of: .player1)
-        deadlockSystem = DeadlockSystem(sprite: playerSprite)
+
+        hookComponent = HookComponent(parent: playerEntity)
+
+        deadlockSystem = DeadlockSystem(sprite: playerSprite, hook: hookComponent)
     }
 
     override func tearDown() {
@@ -51,15 +56,6 @@ class DeadlockSystemTests: XCTestCase {
     func testResolveDeadlock() {
         playerSprite.node.physicsBody?.velocity = CGVector(dx: 0.2, dy: 100)
         deadlockSystem.resolveDeadlock()
-        XCTAssertNotEqual(CGVector(dx: 0.2, dy: 100), playerSprite.node.physicsBody?.velocity)
-    }
-
-    func testResolveDeadlockWithPosition() {
-        playerSprite.node.physicsBody?.velocity = CGVector(dx: 0.2, dy: 100)
-        deadlockSystem.resolveDeadlock(
-            for: playerSprite,
-            at: playerSprite.node.position,
-            with: playerSprite.node.physicsBody!.velocity)
         XCTAssertNotEqual(CGVector(dx: 0.2, dy: 100), playerSprite.node.physicsBody?.velocity)
     }
 }

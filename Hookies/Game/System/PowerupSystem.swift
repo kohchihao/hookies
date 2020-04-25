@@ -51,16 +51,24 @@ class PowerupSystem: System, PowerupSystemProtocol {
     }
 
     // MARK: Add Player
+
+    /// Will add the player to the system.
+    /// - Parameter player: The sprite component of the player.
     func add(player: SpriteComponent) {
         ownedPowerups[player] = []
         activatedPowerups[player] = []
     }
 
     // MARK: Remove/Add Powerup
+
+    /// Will add the powerup component into the system
+    /// - Parameter powerup: The powerup component to add into the system.
     func add(powerup: PowerupComponent) {
         powerups.insert(powerup)
     }
 
+    /// Will remove the powerup owned by the  player.
+    /// - Parameter player: The player which you want the power up to be removed.
     func removePowerup(from player: SpriteComponent) {
         guard let powerupToRemove = powerup(for: player),
             let indexToRemove = ownedPowerups[player]?.firstIndex(of: powerupToRemove) else {
@@ -70,15 +78,32 @@ class PowerupSystem: System, PowerupSystemProtocol {
         player.parent.removeFirstComponent(of: powerupToRemove)
     }
 
+    /// Will add the activated powerup into the activated power up array.
+    /// If not activated, do nothing.
+    /// - Parameters:
+    ///   - powerup: The activated powerup component
+    ///   - sprite: The sprite that owns the powerup
     private func addActivated(powerup: PowerupComponent, to sprite: SpriteComponent) {
-        activatedPowerups[sprite]?.append(powerup)
+        if powerup.isActivated {
+            activatedPowerups[sprite]?.append(powerup)
+        }
     }
 
+    /// Will remove the activated powerup from the system. To use then when the powerup has be used.
+    /// - Parameters:
+    ///   - powerup: The activated powerup component to remove.
+    ///   - sprite: The sprite that owns the powerup.
     private func removeActivated(powerup: PowerupComponent, from sprite: SpriteComponent) {
         activatedPowerups[sprite]?.removeAll(where: { $0 === powerup })
     }
 
     // MARK: - Collect Powerup
+
+    /// Will trigger the sprite to collect the given powerup.
+    /// Will also broadcast this event to other players.
+    /// - Parameters:
+    ///   - powerupComponent: The powerup component to be collected
+    ///   - sprite: The sprite that collects the powerup.
     func collectAndBroadcast(powerupComponent: PowerupComponent,
                              by sprite: SpriteComponent
     ) {
@@ -99,6 +124,12 @@ class PowerupSystem: System, PowerupSystemProtocol {
     }
 
     // MARK: - Activate Powerup
+
+    /// Will activate the powerup that is owned by the sprite.
+    /// Will also broadcast this event to other players.
+    /// - Parameters:
+    ///   - powerupType: The powerup type to be activated.
+    ///   - sprite: the sprite that triggers this activation.
     func activateAndBroadcast(powerupType: PowerupType,
                               for sprite: SpriteComponent
     ) {
@@ -113,6 +144,11 @@ class PowerupSystem: System, PowerupSystemProtocol {
                                         userInfo: info)
     }
 
+    /// Will activate the netTrap event that is activated on the given sprite.
+    /// Will also broadcast this event to other players.
+    /// - Parameters:
+    ///   - point: The point at which this activate occurs.
+    ///   - sprite: The sprite that gets trap in the net
     func activateNetTrapAndBroadcast(at point: CGPoint,
                                      on sprite: SpriteComponent) {
         guard let trap = findTrap(at: point) else {
@@ -183,6 +219,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: - Find Trap
 
+    /// Will find a trap at the given point if any.
     private func findTrap(at point: CGPoint) -> SpriteComponent? {
         for trap in netTraps where trap.node.frame.contains(point) {
             return trap
@@ -192,6 +229,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: - isProtected
 
+    /// Determine whether the sprite is protected from the given effect
     private func isProtected(spriteComponent: SpriteComponent,
                              from effect: PowerupEffectComponent
     ) -> Bool {
@@ -222,6 +260,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: - Activate Powerup
 
+    /// Will activate the powerup type which is triggered by the given sprite.
     private func activate(powerupType: PowerupType,
                           by sprite: SpriteComponent
     ) {
@@ -237,6 +276,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
         apply(powerup: powerup, on: sprite)
     }
 
+    /// Will apply the powerup on the sprite.
     private func apply(powerup: PowerupComponent, on sprite: SpriteComponent) {
         let effects = powerup.parent.getMultiple(PowerupEffectComponent.self)
         for effect in effects {
@@ -248,6 +288,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
     }
 
+    /// Will apply the effect on the sprite
     private func apply(effect: PowerupEffectComponent,
                        on sprite: SpriteComponent,
                        complete: @escaping () -> Void
@@ -273,9 +314,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
             return
         }
     }
+}
 
-    // MARK: - Apply Effects
-
+// MARK: - Apply Effects
+extension PowerupSystem {
     private func applyStealPowerupEffect(_ effect: StealPowerupEffectComponent,
                                          by sprite: SpriteComponent,
                                          complete: () -> Void) {
