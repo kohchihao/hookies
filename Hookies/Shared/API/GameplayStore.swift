@@ -11,14 +11,10 @@ import Firebase
 import SocketIO
 
 class GameplayStore: SocketRoom {
-    private let collection: CollectionReference
 
     let socket: SocketIOClient
 
-    init(gameplayCollection: CollectionReference,
-         socketRef: SocketIOClient
-    ) {
-        self.collection = gameplayCollection
+    init(socketRef: SocketIOClient) {
         self.socket = socketRef
     }
 
@@ -102,15 +98,6 @@ class GameplayStore: SocketRoom {
             }
             listener(ranking)
         }
-    }
-
-    func saveGameState(gameplay: Gameplay) {
-        let ref = collection.document(gameplay.documentID)
-        ref.setDataModel(gameplay)
-    }
-
-    private func playerStatesCollection(for gameId: String) -> CollectionReference {
-        return self.collection.document(gameId).collection("playerStates")
     }
 
     private func decodePlayersInRoomData(data: [Any]) -> [String] {

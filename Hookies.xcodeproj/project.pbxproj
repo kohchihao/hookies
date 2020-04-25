@@ -100,7 +100,6 @@
 		11CC84CB2439E88A006D3A8F /* FirestoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84C32439E889006D3A8F /* FirestoreDataModel.swift */; };
 		11CC84CC2439E88A006D3A8F /* FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84C42439E889006D3A8F /* FirestoreModel.swift */; };
 		11CC84CD2439E88A006D3A8F /* User+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84C52439E889006D3A8F /* User+FirestoreModel.swift */; };
-		11CC84CE2439E88A006D3A8F /* Gameplay+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84C62439E889006D3A8F /* Gameplay+FirestoreModel.swift */; };
 		11CC84CF2439E88A006D3A8F /* Lobby+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84C72439E889006D3A8F /* Lobby+FirestoreModel.swift */; };
 		11CC84D02439E88A006D3A8F /* Social+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84C82439E889006D3A8F /* Social+FirestoreModel.swift */; };
 		11CC84D12439E88A006D3A8F /* Invite+FirestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84C92439E889006D3A8F /* Invite+FirestoreModel.swift */; };
@@ -145,7 +144,6 @@
 		11CC851E2439E991006D3A8F /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85182439E991006D3A8F /* RequestManager.swift */; };
 		11CC85222439E9BF006D3A8F /* Invite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC851F2439E9BF006D3A8F /* Invite.swift */; };
 		11CC85232439E9BF006D3A8F /* Lobby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85202439E9BF006D3A8F /* Lobby.swift */; };
-		11CC85242439E9BF006D3A8F /* Gameplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85212439E9BF006D3A8F /* Gameplay.swift */; };
 		11CC85292439E9C4006D3A8F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85252439E9C4006D3A8F /* User.swift */; };
 		11CC852A2439E9C4006D3A8F /* Social.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85262439E9C4006D3A8F /* Social.swift */; };
 		11CC852B2439E9C4006D3A8F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85272439E9C4006D3A8F /* Request.swift */; };
@@ -329,7 +327,6 @@
 		11CC84C32439E889006D3A8F /* FirestoreDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreDataModel.swift; sourceTree = "<group>"; };
 		11CC84C42439E889006D3A8F /* FirestoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreModel.swift; sourceTree = "<group>"; };
 		11CC84C52439E889006D3A8F /* User+FirestoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+FirestoreModel.swift"; sourceTree = "<group>"; };
-		11CC84C62439E889006D3A8F /* Gameplay+FirestoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Gameplay+FirestoreModel.swift"; sourceTree = "<group>"; };
 		11CC84C72439E889006D3A8F /* Lobby+FirestoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Lobby+FirestoreModel.swift"; sourceTree = "<group>"; };
 		11CC84C82439E889006D3A8F /* Social+FirestoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Social+FirestoreModel.swift"; sourceTree = "<group>"; };
 		11CC84C92439E889006D3A8F /* Invite+FirestoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Invite+FirestoreModel.swift"; sourceTree = "<group>"; };
@@ -374,7 +371,6 @@
 		11CC85182439E991006D3A8F /* RequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestManager.swift; path = Hookies/Contexts/Social/RequestManager.swift; sourceTree = SOURCE_ROOT; };
 		11CC851F2439E9BF006D3A8F /* Invite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Invite.swift; sourceTree = "<group>"; };
 		11CC85202439E9BF006D3A8F /* Lobby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lobby.swift; sourceTree = "<group>"; };
-		11CC85212439E9BF006D3A8F /* Gameplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gameplay.swift; sourceTree = "<group>"; };
 		11CC85252439E9C4006D3A8F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		11CC85262439E9C4006D3A8F /* Social.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Social.swift; sourceTree = "<group>"; };
 		11CC85272439E9C4006D3A8F /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -649,7 +645,6 @@
 		1127C5832415FFAA00A78AA0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				11CC85212439E9BF006D3A8F /* Gameplay.swift */,
 				11CC851F2439E9BF006D3A8F /* Invite.swift */,
 				11CC85202439E9BF006D3A8F /* Lobby.swift */,
 				11CC85272439E9C4006D3A8F /* Request.swift */,
@@ -758,7 +753,6 @@
 			children = (
 				11CC84C32439E889006D3A8F /* FirestoreDataModel.swift */,
 				11CC84C42439E889006D3A8F /* FirestoreModel.swift */,
-				11CC84C62439E889006D3A8F /* Gameplay+FirestoreModel.swift */,
 				11CC84C92439E889006D3A8F /* Invite+FirestoreModel.swift */,
 				11CC84C72439E889006D3A8F /* Lobby+FirestoreModel.swift */,
 				11CC84CA2439E88A006D3A8F /* Request+FirestoreModel.swift */,
@@ -1490,7 +1484,6 @@
 				110B3CF42420759700840C4E /* HookPowerup.swift in Sources */,
 				11CC84B22439E81A006D3A8F /* Background.swift in Sources */,
 				119C5423241691EF00F27D87 /* Query.swift in Sources */,
-				11CC84CE2439E88A006D3A8F /* Gameplay+FirestoreModel.swift in Sources */,
 				11CC85042439E8E5006D3A8F /* OutgoingTableViewCell.swift in Sources */,
 				11CC850E2439E920006D3A8F /* MapsViewController.swift in Sources */,
 				11CC85192439E991006D3A8F /* SocialViewController.swift in Sources */,
@@ -1591,7 +1584,6 @@
 				785B79EC242527C5001D7028 /* RandomIDGenerator.swift in Sources */,
 				11CC84EA2439E8B9006D3A8F /* RequestStore.swift in Sources */,
 				2BA5F93C24434F08009AF93C /* BotType.swift in Sources */,
-				11CC85242439E9BF006D3A8F /* Gameplay.swift in Sources */,
 				D908770624299DC200B73D0E /* GameEngine.swift in Sources */,
 				2BA5F941244354CF009AF93C /* NetworkManager.swift in Sources */,
 				11CC84A62439E7D1006D3A8F /* BoltEntity.swift in Sources */,

@@ -24,7 +24,4 @@ struct HookPowerup: Powerup {
     mutating func deactivate() {
         isActivated = false
     }
-
-    mutating func apply(to gameplay: Gameplay) {
-    }
 }
