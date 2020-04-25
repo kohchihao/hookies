@@ -19,7 +19,7 @@ class PostGameLobbyViewController: UIViewController {
     private var viewModel: PostGameLobbyViewModelRepresentable
     private var playerViews: [LobbyPlayerView] = []
 
-    @IBOutlet var continueButton: RoundButton!
+    @IBOutlet private var continueButton: RoundButton!
 
     // MARK: - INIT
     init(with viewModel: PostGameLobbyViewModelRepresentable) {
@@ -92,10 +92,15 @@ class PostGameLobbyViewController: UIViewController {
                     Logger.log.show(details: error.debugDescription, logType: .error)
                     return
                 }
-                guard let user = user else {
+                var username: String
+                if let user = user {
+                    username = user.username
+                } else if player.playerId.contains(Constants.botPrefix) {
+                    username = String(player.playerId.prefix(Constants.botUsernameLength))
+                } else {
                     return
                 }
-                self.playerViews[index].updateUsernameLabel(username: user.username)
+                self.playerViews[index].updateUsernameLabel(username: username)
                 self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
                 index += 1
             })
@@ -154,7 +159,6 @@ class PostGameLobbyViewController: UIViewController {
 
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
     func lobbyLoaded(isLoaded: Bool) {
-        print(self.viewModel.players)
         updatePlayerViews()
         guard let lobby = self.viewModel.lobby else {
             return

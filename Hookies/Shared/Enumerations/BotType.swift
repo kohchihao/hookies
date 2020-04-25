@@ -8,7 +8,13 @@
 
 import Foundation
 
-enum BotType {
-    case jumpy
-    case walkStraight
+enum BotType: CaseIterable {
+    case hooksALot
+    case hooksLittle
+    case hooksAndShorten
+    case hooksAndLength
+
+    static func getRandom() -> BotType? {
+        BotType.allCases.randomElement()
+    }
 }
