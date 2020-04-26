@@ -79,3 +79,11 @@ struct Vector {
         return angle
     }
 }
+
+// MARK: - Equatable
+
+extension Vector: Equatable {
+    public static func == (lhs: Vector, rhs: Vector) -> Bool {
+        return lhs.x == rhs.x && lhs.y == rhs.y
+    }
+}

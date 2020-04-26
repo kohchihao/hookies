@@ -191,6 +191,7 @@
 		D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */; };
 		D9BE7DE5245563F8002ECB54 /* CannonSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BE7DE4245563F8002ECB54 /* CannonSystemTests.swift */; };
 		D9BE7DE724556C29002ECB54 /* StartSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BE7DE624556C29002ECB54 /* StartSystemTests.swift */; };
+		D9BE7DEA2455873D002ECB54 /* PowerupSystemEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BE7DE92455873D002ECB54 /* PowerupSystemEventTests.swift */; };
 		D9DB89A5244DA58B00A86DFC /* LengthenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DB89A4244DA58B00A86DFC /* LengthenButton.swift */; };
 		D9DB89A7244DA6A600A86DFC /* ShortenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DB89A6244DA6A600A86DFC /* ShortenButton.swift */; };
 		D9DB89AA244DED3400A86DFC /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DB89A9244DED3400A86DFC /* Logger.swift */; };
@@ -424,6 +425,7 @@
 		D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloatingLandMap.sks; sourceTree = "<group>"; };
 		D9BE7DE4245563F8002ECB54 /* CannonSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonSystemTests.swift; sourceTree = "<group>"; };
 		D9BE7DE624556C29002ECB54 /* StartSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSystemTests.swift; sourceTree = "<group>"; };
+		D9BE7DE92455873D002ECB54 /* PowerupSystemEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupSystemEventTests.swift; sourceTree = "<group>"; };
 		D9DB89A4244DA58B00A86DFC /* LengthenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LengthenButton.swift; sourceTree = "<group>"; };
 		D9DB89A6244DA6A600A86DFC /* ShortenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortenButton.swift; sourceTree = "<group>"; };
 		D9DB89A9244DED3400A86DFC /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -1076,6 +1078,7 @@
 		D9BC4AAC24359D2900BD35DF /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				D9BE7DE824558726002ECB54 /* Model */,
 				D9BC4AAD24359D3200BD35DF /* System */,
 			);
 			path = Game;
@@ -1094,6 +1097,14 @@
 				D9BE7DE624556C29002ECB54 /* StartSystemTests.swift */,
 			);
 			path = System;
+			sourceTree = "<group>";
+		};
+		D9BE7DE824558726002ECB54 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D9BE7DE92455873D002ECB54 /* PowerupSystemEventTests.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		D9DB89A8244DECF000A86DFC /* Logger */ = {
@@ -1588,6 +1599,7 @@
 				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
 				11CC85342439E9EB006D3A8F /* HealthSystemTests.swift in Sources */,
 				11CC85362439E9EB006D3A8F /* SpriteSystemTests.swift in Sources */,
+				D9BE7DEA2455873D002ECB54 /* PowerupSystemEventTests.swift in Sources */,
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
 				11078C3324549F67002424D6 /* PowerupSystemTests.swift in Sources */,
 				11CC85332439E9EB006D3A8F /* DeadlockSystemTests.swift in Sources */,
