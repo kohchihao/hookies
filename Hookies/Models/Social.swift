@@ -72,12 +72,16 @@ struct Social {
 
     /// Add the incoming invite to the social
     mutating func addIncomingInvite(inviteId: String) {
-        self.incomingInvites.append(inviteId)
+        if !self.incomingInvites.contains(inviteId) {
+            self.incomingInvites.append(inviteId)
+        }
     }
 
     /// Add the outgoing invite to the social
     mutating func addOutgoingInvite(inviteId: String) {
-        self.outgoingInvites.append(inviteId)
+        if !self.outgoingInvites.contains(inviteId) {
+            self.outgoingInvites.append(inviteId)
+        }
     }
 
     /// Remove the invite from social

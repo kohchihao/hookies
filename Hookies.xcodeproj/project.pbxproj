@@ -157,6 +157,9 @@
 		2BA5F943244364E4009AF93C /* DeviceStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F942244364E4009AF93C /* DeviceStatus.swift */; };
 		2BAACCBB244D78C6008D4659 /* EndSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAACCBA244D78C6008D4659 /* EndSystem.swift */; };
 		7834B1B6245555A200992958 /* SocialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7834B1B5245555A200992958 /* SocialManager.swift */; };
+		7834B1B8245560A100992958 /* InviteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7834B1B7245560A100992958 /* InviteTests.swift */; };
+		7834B1BA2455628300992958 /* RequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7834B1B92455628300992958 /* RequestTests.swift */; };
+		7834B1BC2455632300992958 /* SocialTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7834B1BB2455632300992958 /* SocialTests.swift */; };
 		7856D6412452F80B0012E403 /* Hookies-Normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D63D2452F80B0012E403 /* Hookies-Normal.ttf */; };
 		7856D6422452F80B0012E403 /* Hookies-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D63E2452F80B0012E403 /* Hookies-Thin.ttf */; };
 		7856D6432452F80B0012E403 /* Hookies-Short.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D63F2452F80B0012E403 /* Hookies-Short.ttf */; };
@@ -375,6 +378,9 @@
 		2BAACCBA244D78C6008D4659 /* EndSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndSystem.swift; sourceTree = "<group>"; };
 		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7834B1B5245555A200992958 /* SocialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialManager.swift; sourceTree = "<group>"; };
+		7834B1B7245560A100992958 /* InviteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteTests.swift; sourceTree = "<group>"; };
+		7834B1B92455628300992958 /* RequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
+		7834B1BB2455632300992958 /* SocialTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialTests.swift; sourceTree = "<group>"; };
 		784096012438583B00D2CAB4 /* InviteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteManager.swift; sourceTree = "<group>"; };
 		7856D63D2452F80B0012E403 /* Hookies-Normal.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Normal.ttf"; sourceTree = "<group>"; };
 		7856D63E2452F80B0012E403 /* Hookies-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Thin.ttf"; sourceTree = "<group>"; };
@@ -1134,6 +1140,9 @@
 				D9F1806924338278009D7A52 /* VectorTests.swift */,
 				D9F1806B24338F27009D7A52 /* UserTests.swift */,
 				D9F1806D243394F1009D7A52 /* LobbyTests.swift */,
+				7834B1B7245560A100992958 /* InviteTests.swift */,
+				7834B1BB2455632300992958 /* SocialTests.swift */,
+				7834B1B92455628300992958 /* RequestTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1582,6 +1591,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
+				7834B1BC2455632300992958 /* SocialTests.swift in Sources */,
+				7834B1BA2455628300992958 /* RequestTests.swift in Sources */,
 				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
 				11CC85342439E9EB006D3A8F /* HealthSystemTests.swift in Sources */,
 				11CC85362439E9EB006D3A8F /* SpriteSystemTests.swift in Sources */,
@@ -1593,6 +1604,7 @@
 				11CC85322439E9EB006D3A8F /* GameObjectMovementSystemTests.swift in Sources */,
 				788007392413F37500F43B71 /* HookiesTests.swift in Sources */,
 				11CC85352439E9EB006D3A8F /* ClosestBoltSystemTests.swift in Sources */,
+				7834B1B8245560A100992958 /* InviteTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
