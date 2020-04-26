@@ -96,6 +96,14 @@ class PowerupSystemTests: XCTestCase {
                        [shieldPowerupComponent])
     }
 
+    func testActivateShieldPowerup() {
+        powerupSystem.collectAndBroadcast(powerupComponent: shieldPowerupComponent,
+                                          by: player1Sprite)
+        powerupSystem.activateAndBroadcast(powerupType: .shield, for: player1Sprite)
+        XCTAssertTrue(shieldPowerupComponent.parent
+            .get(PowerupEffectComponent.self) is ShieldEffectComponent)
+    }
+
     func testActivatingNetTrapPowerup() {
         powerupSystem.add(powerup: netTrapPowerupComponent)
         powerupSystem.collectAndBroadcast(powerupComponent: netTrapPowerupComponent,

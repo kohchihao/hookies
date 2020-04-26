@@ -461,13 +461,8 @@ class NetworkManager: NetworkManagerProtocol {
             return nil
         }
 
-        guard let velocity = genericPlayerEventData.playerData.velocity else {
-            return nil
-        }
-
-        playerSprite.node.position = CGPoint(vector: genericPlayerEventData.playerData.position)
         playerSprite.node.physicsBody?.isDynamic = true
-        playerSprite.node.physicsBody?.velocity = CGVector(vector: velocity)
+        sync(sprite: playerSprite, with: genericPlayerEventData.playerData)
 
         return GenericSystemEvent(sprite: playerSprite, eventType: genericPlayerEventData.type)
     }
@@ -523,8 +518,7 @@ class NetworkManager: NetworkManagerProtocol {
             return nil
         }
 
-        playerSprite.node.position = CGPoint(vector: powerupEventData.playerData.position)
-
+        sync(sprite: playerSprite, with: powerupEventData.playerData)
         return PowerupSystemEvent(
             sprite: playerSprite,
             powerupEventType: powerupEventData.eventType,
@@ -557,8 +551,7 @@ class NetworkManager: NetworkManagerProtocol {
             return nil
         }
 
-        playerSprite.node.position = CGPoint(vector: powerupCollectionData.playerData.position)
-
+        sync(sprite: playerSprite, with: powerupCollectionData.playerData)
         return PowerupCollectionSystemEvent(
             sprite: playerSprite,
             powerupPos: powerupCollectionData.powerupPos,
@@ -571,6 +564,16 @@ class NetworkManager: NetworkManagerProtocol {
         NotificationCenter.default.post(name: .receivedOtherPlayerJoinEvent, object: nil)
 
         otherPlayersId.insert(playerId)
+    }
+
+    // MARK: - Sync with PlayerData
+
+    private func sync(sprite: SpriteComponent, with data: PlayerData) {
+        sprite.node.position = CGPoint(vector: data.position)
+        guard let velocity = data.velocity else {
+            return
+        }
+        sprite.node.physicsBody?.velocity = CGVector(vector: velocity)
     }
 
     // MARK: - Reset Network Manger
