@@ -149,6 +149,8 @@
 		2B64FD732445B36B00C848C4 /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */; };
 		2B64FD7B2445EBD400C848C4 /* GenericSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */; };
 		2B64FD7F244613C000C848C4 /* PowerupSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD7E244613C000C848C4 /* PowerupSystemEvent.swift */; };
+		2B93A7D1245575D9008C78E3 /* HookSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B93A7D0245575D9008C78E3 /* HookSystemTests.swift */; };
+		2B93A7D624559BFE008C78E3 /* EntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B93A7D524559BFE008C78E3 /* EntityTests.swift */; };
 		2BA5F93824434C89009AF93C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93724434C89009AF93C /* Player.swift */; };
 		2BA5F93A24434CE7009AF93C /* PlayerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93924434CE7009AF93C /* PlayerType.swift */; };
 		2BA5F93C24434F08009AF93C /* BotType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93B24434F08009AF93C /* BotType.swift */; };
@@ -372,6 +374,8 @@
 		2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
 		2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSystemEvent.swift; sourceTree = "<group>"; };
 		2B64FD7E244613C000C848C4 /* PowerupSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupSystemEvent.swift; sourceTree = "<group>"; };
+		2B93A7D0245575D9008C78E3 /* HookSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSystemTests.swift; sourceTree = "<group>"; };
+		2B93A7D524559BFE008C78E3 /* EntityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityTests.swift; sourceTree = "<group>"; };
 		2BA5F93724434C89009AF93C /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2BA5F93924434CE7009AF93C /* PlayerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerType.swift; sourceTree = "<group>"; };
 		2BA5F93B24434F08009AF93C /* BotType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotType.swift; sourceTree = "<group>"; };
@@ -786,6 +790,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		2B93A7D424559BE7008C78E3 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				2B93A7D524559BFE008C78E3 /* EntityTests.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
 		2BA5F936243E2C41009AF93C /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -987,6 +999,7 @@
 		D90876FD24299BDD00B73D0E /* System */ = {
 			isa = PBXGroup;
 			children = (
+				785CE3DF244D6C3600B1B5CD /* BotSystem.swift */,
 				11CC843E2439E748006D3A8F /* CannonSystem.swift */,
 				11CC84422439E748006D3A8F /* ClosestBoltSystem.swift */,
 				11CC84392439E748006D3A8F /* DeadlockSystem.swift */,
@@ -996,7 +1009,6 @@
 				11CC84402439E748006D3A8F /* HealthSystem.swift */,
 				11CC84372439E747006D3A8F /* HookSystem.swift */,
 				11CC843F2439E748006D3A8F /* PowerupSystem.swift */,
-				785CE3DF244D6C3600B1B5CD /* BotSystem.swift */,
 				11CC843B2439E748006D3A8F /* SpriteSystem.swift */,
 				D979D8FC244ACC3700830E8C /* StartSystem.swift */,
 				11CC843D2439E748006D3A8F /* System.swift */,
@@ -1087,6 +1099,7 @@
 		D9BC4AAC24359D2900BD35DF /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				2B93A7D424559BE7008C78E3 /* Entity */,
 				D9BE7DE824558726002ECB54 /* Model */,
 				D9BC4AAD24359D3200BD35DF /* System */,
 			);
@@ -1102,6 +1115,7 @@
 				11CC852D2439E9EB006D3A8F /* GameObjectMovementSystemTests.swift */,
 				11CC852F2439E9EB006D3A8F /* HealthSystemTests.swift */,
 				11078C3224549F67002424D6 /* PowerupSystemTests.swift */,
+				2B93A7D0245575D9008C78E3 /* HookSystemTests.swift */,
 				D9BE7DE4245563F8002ECB54 /* CannonSystemTests.swift */,
 				D9BE7DE624556C29002ECB54 /* StartSystemTests.swift */,
 			);
@@ -1618,6 +1632,8 @@
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
 				11078C3324549F67002424D6 /* PowerupSystemTests.swift in Sources */,
 				11CC85332439E9EB006D3A8F /* DeadlockSystemTests.swift in Sources */,
+				2B93A7D1245575D9008C78E3 /* HookSystemTests.swift in Sources */,
+				2B93A7D624559BFE008C78E3 /* EntityTests.swift in Sources */,
 				D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */,
 				D9BE7DE724556C29002ECB54 /* StartSystemTests.swift in Sources */,
 				119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */,
