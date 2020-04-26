@@ -72,8 +72,14 @@ class DeadlockSystemTests: XCTestCase {
     }
 
     func testResolveDeadlock() {
+        expectation(
+            forNotification: .broadcastGenericPlayerAction,
+            object: deadlockSystem,
+            handler: nil)
+
         playerSprite.node.physicsBody?.velocity = CGVector(dx: 0.2, dy: 100)
         deadlockSystem.resolveDeadlock()
         XCTAssertNotEqual(CGVector(dx: 0.2, dy: 100), playerSprite.node.physicsBody?.velocity)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 }
