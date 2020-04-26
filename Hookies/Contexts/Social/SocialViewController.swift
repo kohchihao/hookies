@@ -24,6 +24,7 @@ class SocialViewController: UIViewController {
     @IBOutlet private var outgoingInviteTableView: UITableView!
     @IBOutlet private var requestTextField: UITextField!
 
+    // MARK: - INIT
     init(with viewModel: SocialViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: SocialViewController.name, bundle: nil)
@@ -79,7 +80,7 @@ class SocialViewController: UIViewController {
         viewModel.sendRequest(username: username)
     }
 
-    func updateRequestInCell(requestId: String, cell: UITableViewCell) {
+    private func updateRequestInCell(requestId: String, cell: UITableViewCell) {
         RequestManager.getRequest(requestId: requestId, completion: { request in
             guard let request = request else {
                 return
@@ -101,7 +102,7 @@ class SocialViewController: UIViewController {
         })
     }
 
-    func updateInviteInCell(inviteId: String, cell: UITableViewCell) {
+    private func updateInviteInCell(inviteId: String, cell: UITableViewCell) {
         InviteManager.getInvite(inviteId: inviteId, completion: { invite in
             guard let invite = invite else {
                 return
@@ -123,7 +124,7 @@ class SocialViewController: UIViewController {
         })
     }
 
-    func updateUsernameInCell(userId: String, cell: UITableViewCell) {
+    private func updateUsernameInCell(userId: String, cell: UITableViewCell) {
         API.shared.user.get(withUid: userId, completion: { user, error in
             guard error == nil else {
                 return
@@ -136,6 +137,7 @@ class SocialViewController: UIViewController {
     }
 }
 
+// MARK: - SocialViewModelDelegate
 extension SocialViewController: SocialViewModelDelegate {
     func updateView() {
         self.socialTableView.reloadData()
@@ -146,6 +148,7 @@ extension SocialViewController: SocialViewModelDelegate {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -251,6 +254,7 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+// MARK: - FriendTableViewCellDelegate
 extension SocialViewController: FriendTableViewCellDelegate {
     func inviteButtonPressed(username: String) {
         viewModel.sendInvite(username: username)
@@ -261,6 +265,7 @@ extension SocialViewController: FriendTableViewCellDelegate {
     }
 }
 
+// MARK: - IncomingTableViewCellDelegate
 extension SocialViewController: IncomingTableViewCellDelegate {
     func acceptButtonPressed(requestId: String) {
         RequestManager.acceptRequest(requestId: requestId)
@@ -291,6 +296,7 @@ extension SocialViewController: IncomingTableViewCellDelegate {
     }
 }
 
+// MARK: - OutgoingTableViewCellDelegate
 extension SocialViewController: OutgoingTableViewCellDelegate {
     func cancelButtonPressed(requestId: String) {
         RequestManager.rejectRequest(requestId: requestId)

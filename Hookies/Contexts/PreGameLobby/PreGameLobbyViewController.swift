@@ -25,7 +25,8 @@ class PreGameLobbyViewController: UIViewController {
     private var viewModel: PreGameLobbyViewModelRepresentable
     private var playerViews: [LobbyPlayerView] = []
     private var startButtonHidden: Bool {
-        return self.viewModel.lobby.hostId != API.shared.user.currentUser?.uid || self.viewModel.lobby.selectedMapType == nil
+        return self.viewModel.lobby.hostId != API.shared.user.currentUser?.uid
+            || self.viewModel.lobby.selectedMapType == nil
     }
 
     @IBOutlet private var selectedMapLabel: UILabel!
@@ -52,7 +53,6 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     // MARK: Manage Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPlayerView()
@@ -67,7 +67,6 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     // MARK: Setup View
-
     private func setupPlayerView() {
         guard Constants.maxPlayerCount > 0 else {
             return
@@ -93,12 +92,12 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     // MARK: Update View
-
     private func updateCostumeIdLabel() {
         guard let userId = API.shared.user.currentUser?.uid else {
             return
         }
-        costumeIdLabel.text = viewModel.lobby.costumesId[userId].map({ $0.rawValue })?.replacingOccurrences(of: "_", with: " ")
+        costumeIdLabel.text = viewModel.lobby.costumesId[userId].map({
+            $0.rawValue })?.replacingOccurrences(of: "_", with: " ")
     }
 
     private func updatePlayerViewWithUsername(playerId: String, index: Int) {
@@ -158,7 +157,6 @@ class PreGameLobbyViewController: UIViewController {
     }
 
     // MARK: IBActions
-    
     @IBAction private func onSelectMapClicked(_ sender: UIButton) {
         navigationDelegate?.didPressSelectMapButton(in: self)
     }
@@ -188,7 +186,8 @@ class PreGameLobbyViewController: UIViewController {
     }
 }
 
-extension PreGameLobbyViewController: RoomStateViewModelDelegate {
+// MARK: PreGameLobbyViewModelDelegate
+extension PreGameLobbyViewController: PreGameLobbyViewModelDelegate {
     func startGame(with players: [Player]) {
         guard let selectedMapType = viewModel.lobby.selectedMapType else {
             Logger.log.show(details: "Map not selected.", logType: .error)
