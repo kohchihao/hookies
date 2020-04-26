@@ -8,59 +8,14 @@
 
 import Foundation
 
+/// Request Manager handles all request related calls to the API
+
 struct RequestManager {
-    static func checkUsersExist(fromUserId: String, toUserId: String, completion: @escaping (Bool) -> Void) {
-        API.shared.user.get(withUid: fromUserId, completion: { sender, error in
-            guard error == nil else {
-                Logger.log.show(details: error.debugDescription, logType: .error)
-                return completion(false)
-            }
-            guard sender != nil else {
-                Logger.log.show(details: "Sender of request not found", logType: .error)
-                return completion(false)
-            }
-            API.shared.user.get(withUid: toUserId, completion: { recipient, error in
-                guard error == nil else {
-                    Logger.log.show(details: error.debugDescription, logType: .error)
-                    return completion(false)
-                }
-                guard recipient != nil else {
-                    Logger.log.show(details: "Recipient of request not found", logType: .error)
-                    return completion(false)
-                }
-                return completion(true)
-            })
-        })
-    }
 
-    static func checkUsersSocialExist(
-        fromUserId: String,
-        toUserId: String,
-        completion: @escaping (Bool, Social?, Social?) -> Void
-    ) {
-        API.shared.social.get(userId: fromUserId, completion: { senderSocial, error in
-            guard error == nil else {
-                Logger.log.show(details: error.debugDescription, logType: .error)
-                return completion(false, nil, nil)
-            }
-            guard let senderSocial = senderSocial else {
-                Logger.log.show(details: "Sender of request does not have social", logType: .error)
-                return completion(false, nil, nil)
-            }
-            API.shared.social.get(userId: toUserId, completion: { recipientSocial, error in
-                guard error == nil else {
-                    Logger.log.show(details: error.debugDescription, logType: .error)
-                    return completion(false, nil, nil)
-                }
-                guard let recipientSocial = recipientSocial else {
-                    Logger.log.show(details: "Recipient of request does not have social", logType: .error)
-                    return completion(false, nil, nil)
-                }
-                return completion(true, senderSocial, recipientSocial)
-            })
-        })
-    }
-
+    /// Get requests using the request IDs
+    /// - Parameters:
+    ///   - requestIds: ID of requests to be retrieved
+    ///   - completion: Returns an array of the retrieved requests if successful
     static func getRequests(requestIds: [String], completion: @escaping ([Request]) -> Void) {
         var requests: [Request] = []
         let dispatch = DispatchGroup()
@@ -83,6 +38,12 @@ struct RequestManager {
         }
     }
 
+    /// Helper method to check that the request is not repeated
+    /// - Parameters:
+    ///   - request: Request to be checked
+    ///   - sender: Social of the sender
+    ///   - recipient: Social of the recipient
+    ///   - completion: Returns true if the request is not repeated, false otherwise
     static func checkRequestIsNotRepeated(
         request: Request,
         sender: Social,
@@ -116,13 +77,17 @@ struct RequestManager {
         })
     }
 
+    /// Send friend request
+    /// - Parameters:
+    ///   - fromUserId: User ID of sender
+    ///   - toUserId: User ID of recipient
     static func sendRequest(fromUserId: String, toUserId: String) {
-        self.checkUsersExist(fromUserId: fromUserId, toUserId: toUserId) { usersExist in
+        SocialManager.checkUsersExist(fromUserId: fromUserId, toUserId: toUserId) { usersExist in
             guard usersExist else {
                 return
             }
             let request = Request(fromUserId: fromUserId, toUserId: toUserId)
-            self.checkUsersSocialExist(
+            SocialManager.checkUsersSocialExist(
                 fromUserId: fromUserId,
                 toUserId: toUserId
             ) { exists, senderSocial, recipientSocial  in
@@ -149,6 +114,10 @@ struct RequestManager {
         }
     }
 
+    /// Get request using request ID
+    /// - Parameters:
+    ///   - requestId: ID of the request to be retrieved
+    ///   - completion: Returns the retrieved request if successful
     static func getRequest(requestId: String, completion: @escaping (Request?) -> Void) {
         API.shared.request.get(requestId: requestId, completion: { request, error in
             guard error == nil else {
@@ -163,12 +132,14 @@ struct RequestManager {
         })
     }
 
+    /// Accept a request
+    /// - Parameter requestId: ID of the request to be accepted
     static func acceptRequest(requestId: String) {
         getRequest(requestId: requestId) { request in
             guard let request = request else {
                 return
             }
-            self.checkUsersSocialExist(
+            SocialManager.checkUsersSocialExist(
                 fromUserId: request.fromUserId,
                 toUserId: request.toUserId
             ) { exists, sender, recipient  in
@@ -192,12 +163,14 @@ struct RequestManager {
         }
     }
 
+    /// Reject the request
+    /// - Parameter requestId: ID of the request to be rejected
     static func rejectRequest(requestId: String) {
         getRequest(requestId: requestId) { request in
             guard let request = request else {
                 return
             }
-            self.checkUsersSocialExist(
+            SocialManager.checkUsersSocialExist(
                 fromUserId: request.fromUserId,
                 toUserId: request.toUserId
             ) { exists, sender, recipient  in

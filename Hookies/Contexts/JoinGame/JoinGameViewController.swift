@@ -21,6 +21,7 @@ class JoinGameViewController: UIViewController {
     @IBOutlet private var joinGameDialog: UIView!
     @IBOutlet private var lobbyIdField: UITextField!
 
+    // MARK: - INIT
     init(with viewModel: JoinGameViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: JoinGameViewController.name, bundle: nil)
@@ -34,6 +35,7 @@ class JoinGameViewController: UIViewController {
                                                object: nil)
     }
 
+    /// Adjust pop up dialog position based on keyboard height.
     @objc
     private func keyboardWillChangeFrame(_ notification: Notification) {
         guard let info = (notification as NSNotification).userInfo,
@@ -78,14 +80,6 @@ class JoinGameViewController: UIViewController {
         }
         self.navigationDelegate?.didPressJoinLobbyButton(in: self, lobbyId: lobbyId)
         self.dismiss(animated: false, completion: nil)
-    }
-
-    private func playerJoinedLobby(playerId: String, lobby: Lobby) {
-
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
     }
 
     deinit {

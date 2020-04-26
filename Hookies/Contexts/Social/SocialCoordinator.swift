@@ -10,13 +10,15 @@ import Foundation
 
 class SocialCoodinator: Coordinator {
 
+    // MARK: - PROPERTIES
     var coordinators: [Coordinator] = []
     weak var coordinatorDelegate: CoordinatorDelegate?
 
+    // MARK: - PRIVATE PROPERTIES
     private var viewModel: SocialViewModel
-
     private let navigator: NavigatorRepresentable
 
+    // MARK: - INIT
     init(with navigator: NavigatorRepresentable) {
         self.navigator = navigator
         self.viewModel = SocialViewModel(lobbyId: nil)
@@ -32,11 +34,13 @@ class SocialCoodinator: Coordinator {
         self.viewModel = viewModel
     }
 
+    // MARK: - START
     func start() {
         coordinatorDelegate?.coordinatorDidStart(self)
         navigator.transition(to: viewController(), as: .modal)
     }
 
+    // MARK: - FUNCTIONS
     private func viewController() -> SocialViewController {
         let viewController = SocialViewController(with: viewModel)
         viewController.navigationDelegate = self
@@ -44,6 +48,7 @@ class SocialCoodinator: Coordinator {
     }
 }
 
+// MARK: - SocialViewNavigationDelegate
 extension SocialCoodinator: SocialViewNavigationDelegate {
     func didAcceptInvite(invite: Invite) {
         API.shared.lobby.get(lobbyId: invite.lobbyId, completion: { lobby, error in
@@ -60,7 +65,7 @@ extension SocialCoodinator: SocialViewNavigationDelegate {
                 return
             }
             guard lobby.lobbyState == .open else {
-                Logger.log.show(details: "lobby is not open", logType: .error)
+                Logger.log.show(details: "lobby is not open", logType: .error).display(.toast)
                 return
             }
             lobby.addPlayer(playerId: playerId)
