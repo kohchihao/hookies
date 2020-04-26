@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol PostGameLobbyViewNavigationDelegate: class {
-    func didPressContinueButton(in: PostGameLobbyViewController, lobby: Lobby)
+    func continueGame(in: PostGameLobbyViewController, lobby: Lobby)
     func didPressReturnHomeButton(in: PostGameLobbyViewController)
 }
 
@@ -20,6 +20,7 @@ class PostGameLobbyViewController: UIViewController {
     private var playerViews: [LobbyPlayerView] = []
 
     @IBOutlet private var continueButton: RoundButton!
+    @IBOutlet private var hostStatusLabel: UILabel!
 
     // MARK: - INIT
     init(with viewModel: PostGameLobbyViewModelRepresentable) {
@@ -33,12 +34,24 @@ class PostGameLobbyViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
+    // MARK: Manage Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        continueButton.isHidden = true
-        self.viewModel.updateLobby()
+        waitingForHost()
         setupPlayerView()
+        self.viewModel.subscribeToLobby()
     }
+
+    deinit {
+        viewModel.closeLobbyConnection()
+    }
+
+    // MARK: Setup view
 
     private func setupPlayerView() {
         guard Constants.maxPlayerCount > 0 else {
@@ -81,94 +94,87 @@ class PostGameLobbyViewController: UIViewController {
         }
     }
 
+    // MARK: Update view
+
     private func updatePlayerViews() {
         guard self.viewModel.players.count <= self.playerViews.count else {
             return
         }
         var index = 0
-        for player in self.viewModel.players.reversed() {
-            API.shared.user.get(withUid: player.playerId, completion: { user, error in
-                guard error == nil else {
-                    Logger.log.show(details: error.debugDescription, logType: .error)
-                    return
-                }
-                var username: String
-                if let user = user {
-                    username = user.username
-                } else if player.playerId.contains(Constants.botPrefix) {
-                    username = String(player.playerId.prefix(Constants.botUsernameLength))
-                } else {
-                    return
-                }
-                self.playerViews[index].updateUsernameLabel(username: username)
-                self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
-                index += 1
-            })
+        for player in self.viewModel.players {
+            updatePlayerViewWithUsername(player: player, index: index)
+            self.playerViews[index].addPlayerImage(costumeType: player.costumeType)
+            index += 1
         }
     }
 
-    @IBAction private func continueButtonPressed(_ sender: UIButton) {
-        guard var lobby = self.viewModel.lobby else {
+    private func updatePlayerViewWithUsername(player: Player, index: Int) {
+        guard self.playerViews.indices.contains(index) else {
             return
         }
-        guard let currentPlayerId = API.shared.user.currentUser?.uid else {
-            return
+        var username: String = ""
+        if player.playerId.contains(Constants.botPrefix) {
+            username = String(player.playerId.prefix(Constants.botUsernameLength))
+        } else if player.playerId == API.shared.user.currentUser?.uid {
+            username = API.shared.user.currentUser?.username ?? ""
         }
-        if currentPlayerId == lobby.hostId {
-            lobby.updateLobbyState(lobbyState: .open)
-        } else {
-            guard lobby.lobbyState == .open else {
-                Logger.log.show(details: "Lobby is not open", logType: .error)
-                return
-            }
-            lobby.addPlayer(playerId: currentPlayerId)
-            if lobby.playersId.count >= Constants.maxPlayerCount {
-                lobby.updateLobbyState(lobbyState: .full)
-            }
-        }
-        API.shared.lobby.save(lobby: lobby)
-        API.shared.lobby.unsubscribeFromLobby()
-        navigationDelegate?.didPressContinueButton(in: self, lobby: lobby)
-    }
-
-    @IBAction private func returnHomeButtonPressed(_sender: UIButton) {
-        API.shared.lobby.unsubscribeFromLobby()
-        navigationDelegate?.didPressReturnHomeButton(in: self)
-    }
-
-    func subscribeToLobby(lobby: Lobby) {
-        API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
+        API.shared.user.get(withUid: player.playerId, completion: { user, error in
             guard error == nil else {
                 Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
-            guard let updatedLobby = lobby else {
-                return
+            if let user = user {
+                username = user.username
             }
-            self.viewModel.lobby = updatedLobby
-            if updatedLobby.lobbyState == .open {
-                self.continueButton.isHidden = false
-            }
+            self.playerViews[index].updateUsernameLabel(username: username)
+            return
         })
     }
 
-    deinit {
-        API.shared.lobby.unsubscribeFromLobby()
+    private func waitingForHost() {
+        if viewModel.isHost {
+            self.continueButton.isHidden = false
+            self.hostStatusLabel.isHidden = true
+        } else {
+            self.continueButton.isHidden = true
+            self.hostStatusLabel.isHidden = false
+            self.hostStatusLabel.text = "Waiting for host"
+        }
+    }
+
+    // MARK: IBActions
+
+    @IBAction private func continueButtonPressed(_ sender: UIButton) {
+        viewModel.continueGame()
+    }
+
+    @IBAction private func returnHomeButtonPressed(_sender: UIButton) {
+        viewModel.returnHome()
     }
 }
 
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
-    func lobbyLoaded(isLoaded: Bool) {
+    func updateView() {
         updatePlayerViews()
-        guard let lobby = self.viewModel.lobby else {
-            return
-        }
-        subscribeToLobby(lobby: lobby)
-        guard let currentUserId = API.shared.user.currentUser?.uid else {
-            return
-        }
-        if currentUserId == lobby.hostId {
-            self.continueButton.isHidden = false
-        }
+    }
+
+    func hostHasContinued() {
+        continueButton.isHidden = false
+        hostStatusLabel.isHidden = true
+    }
+
+    func lobbyIsFull() {
+        continueButton.isHidden = true
+        hostStatusLabel.isHidden = false
+        hostStatusLabel.text = "Lobby is full"
+    }
+
+    func continueGame(with lobby: Lobby) {
+        navigationDelegate?.continueGame(in: self, lobby: lobby)
+    }
+
+    func leaveLobby() {
+        viewModel.closeLobbyConnection()
+        navigationDelegate?.didPressReturnHomeButton(in: self)
     }
 }

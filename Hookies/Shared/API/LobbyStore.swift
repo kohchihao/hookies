@@ -40,6 +40,15 @@ class LobbyStore: SocketRoom {
         })
     }
 
+    func delete(lobbyId: String) {
+        let ref = collection.document(lobbyId)
+        ref.delete(completion: { error in
+            if let error = error {
+                print("Error removing the document: \(error)")
+            }
+        })
+    }
+
     /// Will subscribe to the changes to the lobby data at the backend.
     /// - Parameters:
     ///   - lobbyId: id of the lobby.

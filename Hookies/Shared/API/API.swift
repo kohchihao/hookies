@@ -32,8 +32,7 @@ class API {
         db = Firestore.firestore()
 
         user = UserStore(userCollection: db.collection("users"))
-        gameplay = GameplayStore(gameplayCollection: db.collection("gameplays"),
-                                 socketRef: socketManager.socket(forNamespace: "/games"))
+        gameplay = GameplayStore(socketRef: socketManager.socket(forNamespace: "/games"))
         lobby = LobbyStore(lobbyCollection: db.collection("lobbies"),
                            socketRef: socketManager.socket(forNamespace: "/lobbies"))
         social = SocialStore(socialCollection: db.collection("socials"))

@@ -56,5 +56,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Hookies-Normal.ttf</string>
+		<string>Hookies-Thin.ttf</string>
+		<string>Hookies-Short.ttf</string>
+		<string>Hookies-Tall.ttf</string>
+	</array>
 </dict>
 </plist>

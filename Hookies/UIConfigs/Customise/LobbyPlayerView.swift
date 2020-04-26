@@ -33,6 +33,11 @@ class LobbyPlayerView: UIView {
         mainView.frame = self.bounds
     }
 
+    func resetView() {
+        usernameLabel.text = nil
+        playerImageView.image = nil
+    }
+
     func updateUsernameLabel(username: String) {
         usernameLabel.text = username
     }

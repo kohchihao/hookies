@@ -65,6 +65,18 @@ struct Lobby {
         }
     }
 
+    mutating func removePlayer(playerId: String) {
+        guard playerId != hostId else {
+            lobbyState = .empty
+            return
+        }
+        playersId = playersId.filter({ $0 != playerId })
+        removeCostumeId(playerId: playerId)
+        if lobbyState == .full && playersId.count < Constants.maxPlayerCount {
+            lobbyState = .open
+        }
+    }
+
     mutating func updatePlayers(playersId: [String]) {
         guard playersId.contains(hostId) else {
             return
@@ -76,6 +88,10 @@ struct Lobby {
         if playersId.contains(playerId) {
             self.costumesId[playerId] = costumeType
         }
+    }
+
+    mutating func removeCostumeId(playerId: String) {
+        self.costumesId = self.costumesId.filter({ $0.key != playerId })
     }
 
     mutating func updateSelectedMapType(selectedMapType: MapType) {
@@ -100,5 +116,10 @@ struct Lobby {
             self.playersId = [hostId]
         }
         self.lobbyState = lobbyState
+    }
+
+    mutating func reset() {
+        self.playersId = [hostId]
+        self.lobbyState = .open
     }
 }

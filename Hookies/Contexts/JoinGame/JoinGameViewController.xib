@@ -6,6 +6,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Hookies-Normal.ttf">
+            <string>font1980202001</string>
+        </array>
+        <array key="Hookies-Thin.ttf">
+            <string>font1980202002</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JoinGameViewController" customModule="Hookies" customModuleProvider="target">
             <connections>
@@ -26,8 +34,9 @@
                             <rect key="frame" x="0.0" y="0.0" width="400" height="323"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XDy-Gf-gjA" userLabel="submit" customClass="RoundButton" customModule="Hookies" customModuleProvider="target">
-                            <rect key="frame" x="82" y="227" width="246" height="30"/>
+                            <rect key="frame" x="82" y="231" width="246" height="36"/>
                             <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" name="font1980202002" family="font1980202002" pointSize="30"/>
                             <state key="normal" title="Submit">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
@@ -51,14 +60,14 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the Lobby ID:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u7j-lQ-v6L" userLabel="Enter the Lobby ID:">
-                            <rect key="frame" x="41" y="50" width="328" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                            <rect key="frame" x="41" y="50" width="328" height="24"/>
+                            <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D4L-qM-MBg" userLabel="lobbyIdField">
                             <rect key="frame" x="82" y="136.5" width="246" height="34"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="font1980202001" family="font1980202001" pointSize="30"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                     </subviews>
@@ -67,7 +76,7 @@
                         <constraint firstItem="oVX-po-nuR" firstAttribute="top" secondItem="zSa-1l-fgT" secondAttribute="top" id="HCx-4a-Dh7"/>
                         <constraint firstAttribute="bottom" secondItem="oVX-po-nuR" secondAttribute="bottom" constant="-16" id="J5P-FD-qt8" userLabel="bottom = dialog_bg.bottom"/>
                         <constraint firstItem="XDy-Gf-gjA" firstAttribute="centerX" secondItem="zSa-1l-fgT" secondAttribute="centerX" id="Mei-Xv-vem"/>
-                        <constraint firstAttribute="bottom" secondItem="XDy-Gf-gjA" secondAttribute="bottom" constant="50" id="OqA-QM-EHq"/>
+                        <constraint firstAttribute="bottom" secondItem="XDy-Gf-gjA" secondAttribute="bottom" constant="40" id="OqA-QM-EHq"/>
                         <constraint firstItem="u7j-lQ-v6L" firstAttribute="top" secondItem="zSa-1l-fgT" secondAttribute="top" constant="50" id="TQ6-hQ-oCN"/>
                         <constraint firstItem="u7j-lQ-v6L" firstAttribute="centerX" secondItem="zSa-1l-fgT" secondAttribute="centerX" id="U4a-xc-y7h"/>
                         <constraint firstItem="D4L-qM-MBg" firstAttribute="centerY" secondItem="zSa-1l-fgT" secondAttribute="centerY" id="X9u-PU-KhV"/>

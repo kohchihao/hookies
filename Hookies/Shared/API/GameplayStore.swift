@@ -12,14 +12,10 @@ import SocketIO
 
 /// A class that is used to interact with the backend of the gameplay.
 class GameplayStore: SocketRoom {
-    private let collection: CollectionReference
 
     let socket: SocketIOClient
 
-    init(gameplayCollection: CollectionReference,
-         socketRef: SocketIOClient
-    ) {
-        self.collection = gameplayCollection
+    init(socketRef: SocketIOClient) {
         self.socket = socketRef
     }
 
@@ -115,13 +111,6 @@ class GameplayStore: SocketRoom {
             }
             listener(ranking)
         }
-    }
-
-    /// Will save the gameState into a persistent database.
-    /// - Parameter gameplay: The gameplay model.
-    func saveGameState(gameplay: Gameplay) {
-        let ref = collection.document(gameplay.documentID)
-        ref.setDataModel(gameplay)
     }
 
     private func decodePlayersInRoomData(data: [Any]) -> [String] {

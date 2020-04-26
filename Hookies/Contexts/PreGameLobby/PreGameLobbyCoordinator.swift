@@ -74,15 +74,15 @@ extension PreGameLobbyCoordinator: PreGameLobbyViewNavigationDelegate {
         socialCoordinator.start()
     }
 
-    func didPressPostButton(in: PreGameLobbyViewController, lobbyId: String, players: [Player]) {
-        let postGameLobbyCoordinator = PostGameLobbyCoordinator(with: navigator, gamePlayId: lobbyId, ranking: players)
-        postGameLobbyCoordinator.coordinatorDelegate = self
-        postGameLobbyCoordinator.start()
+    func leaveLobby() {
+        let homeCoordinator = HomeCoordinator(with: navigator)
+        homeCoordinator.coordinatorDelegate = self
+        homeCoordinator.start()
     }
 }
 
 extension PreGameLobbyCoordinator: MapDelegate {
     func onSelected(for map: MapType) {
-        viewModel.delegate?.updateSelectedMap(mapType: map)
+        viewModel.updateSelectedMapType(selectedMapType: map)
     }
 }
