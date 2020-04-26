@@ -10,7 +10,6 @@
 		085CFA2C7C3D713DC56EB872 /* Pods_HookiesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */; };
 		11078C3324549F67002424D6 /* PowerupSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11078C3224549F67002424D6 /* PowerupSystemTests.swift */; };
 		110B3CED2420605600840C4E /* DictionaryRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */; };
-		110B3CEF242062C300840C4E /* Powerup+DictionaryRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEE242062C300840C4E /* Powerup+DictionaryRepresentable.swift */; };
 		111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111D2EF42418C8BA0083373C /* UserStoreError.swift */; };
 		1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1127C5592415E18800A78AA0 /* GoogleService-Info.plist */; };
 		1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */; };
@@ -150,6 +149,7 @@
 		2B64FD732445B36B00C848C4 /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */; };
 		2B64FD7B2445EBD400C848C4 /* GenericSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */; };
 		2B64FD7F244613C000C848C4 /* PowerupSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64FD7E244613C000C848C4 /* PowerupSystemEvent.swift */; };
+		2B93A7D1245575D9008C78E3 /* HookSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B93A7D0245575D9008C78E3 /* HookSystemTests.swift */; };
 		2BA5F93824434C89009AF93C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93724434C89009AF93C /* Player.swift */; };
 		2BA5F93A24434CE7009AF93C /* PlayerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93924434CE7009AF93C /* PlayerType.swift */; };
 		2BA5F93C24434F08009AF93C /* BotType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F93B24434F08009AF93C /* BotType.swift */; };
@@ -227,7 +227,6 @@
 /* Begin PBXFileReference section */
 		11078C3224549F67002424D6 /* PowerupSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupSystemTests.swift; sourceTree = "<group>"; };
 		110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryRepresentable.swift; sourceTree = "<group>"; };
-		110B3CEE242062C300840C4E /* Powerup+DictionaryRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Powerup+DictionaryRepresentable.swift"; sourceTree = "<group>"; };
 		111D2EF42418C8BA0083373C /* UserStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoreError.swift; sourceTree = "<group>"; };
 		1127C5592415E18800A78AA0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -367,6 +366,7 @@
 		2B64FD722445B36B00C848C4 /* NotificationName+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
 		2B64FD7A2445EBD400C848C4 /* GenericSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSystemEvent.swift; sourceTree = "<group>"; };
 		2B64FD7E244613C000C848C4 /* PowerupSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupSystemEvent.swift; sourceTree = "<group>"; };
+		2B93A7D0245575D9008C78E3 /* HookSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSystemTests.swift; sourceTree = "<group>"; };
 		2BA5F93724434C89009AF93C /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2BA5F93924434CE7009AF93C /* PlayerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerType.swift; sourceTree = "<group>"; };
 		2BA5F93B24434F08009AF93C /* BotType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotType.swift; sourceTree = "<group>"; };
@@ -1088,6 +1088,7 @@
 				11CC852D2439E9EB006D3A8F /* GameObjectMovementSystemTests.swift */,
 				11CC852F2439E9EB006D3A8F /* HealthSystemTests.swift */,
 				11078C3224549F67002424D6 /* PowerupSystemTests.swift */,
+				2B93A7D0245575D9008C78E3 /* HookSystemTests.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1271,7 +1272,6 @@
 			files = (
 				11CC85072439E8E5006D3A8F /* LobbyPlayerView.xib in Resources */,
 				788007292413F37100F43B71 /* Main.storyboard in Resources */,
-				7856D6672454AE0A0012E403 /* Hookies-Short.ttf in Resources */,
 				11CC85062439E8E5006D3A8F /* IncomingTableViewCell.xib in Resources */,
 				7880072B2413F37400F43B71 /* Assets.xcassets in Resources */,
 				11CC851A2439E991006D3A8F /* SocialViewController.xib in Resources */,
@@ -1290,7 +1290,6 @@
 				D9FF1A80241E325900E7965F /* GamePlayViewController.xib in Resources */,
 				785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
-				7856D6682454AE0A0012E403 /* Hookies-Tall.ttf in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
 				785CE3ED244EB40F00B1B5CD /* PostGameLobbyViewController.xib in Resources */,
 				7856D6432452F80B0012E403 /* Hookies-Short.ttf in Resources */,
@@ -1588,6 +1587,7 @@
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
 				11078C3324549F67002424D6 /* PowerupSystemTests.swift in Sources */,
 				11CC85332439E9EB006D3A8F /* DeadlockSystemTests.swift in Sources */,
+				2B93A7D1245575D9008C78E3 /* HookSystemTests.swift in Sources */,
 				D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */,
 				119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */,
 				11CC85322439E9EB006D3A8F /* GameObjectMovementSystemTests.swift in Sources */,
