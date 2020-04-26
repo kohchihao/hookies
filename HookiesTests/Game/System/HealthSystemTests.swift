@@ -80,9 +80,15 @@ class HealthSystemTests: XCTestCase {
     }
 
     func testRespawnPlayer_playerIsDead() {
+        expectation(
+            forNotification: .broadcastGenericPlayerAction,
+            object: healthSystem,
+            handler: nil)
+
         playerSprite.node.position = CGPoint(x: 1000, y: -500)
         _ = healthSystem.respawnPlayer(for: playerSprite)
         XCTAssertEqual(playerSprite.node.position, CGPoint(x: 1000, y: 200))
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testRespawnPlayer_playerIsAlive() {
