@@ -79,12 +79,14 @@ struct InviteManager {
             }
             self.getInvites(inviteIds: sender.incomingInvites, completion: { invites in
                 guard !invites.map({ $0.fromUserId }).contains(invite.toUserId) else {
-                    Logger.log.show(details: "There is an existing invite from this player", logType: .alert).display(.toast)
+                    Logger.log.show(details: "There is an existing invite from this player",
+                                    logType: .alert).display(.toast)
                     return completion(false)
                 }
                 self.getInvites(inviteIds: recipient.outgoingInvites, completion: { recipientInvites in
                     guard !recipientInvites.map({ $0.toUserId }).contains(invite.fromUserId) else {
-                        Logger.log.show(details: "There is an existing invite from this player", logType: .alert).display(.toast)
+                        Logger.log.show(details: "There is an existing invite from this player",
+                                        logType: .alert).display(.toast)
                         return completion(false)
                     }
                     self.getInvites(inviteIds: recipient.incomingInvites, completion: { recipientInvites in
@@ -93,7 +95,8 @@ struct InviteManager {
                             return completion(false)
                         }
                         guard !invites.map({ $0.lobbyId }).contains(invite.lobbyId) else {
-                            Logger.log.show(details: "Invite from this lobby id already exists", logType: .alert).display(.toast)
+                            Logger.log.show(details: "Invite from this lobby id already exists",
+                                            logType: .alert).display(.toast)
                             return completion(false)
                         }
                         return completion(true)
