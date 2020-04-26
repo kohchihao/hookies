@@ -423,6 +423,7 @@ extension PowerupSystem {
 
         delegate?.movement(isDisabled: true, for: sprite)
         if effect.stopMovement {
+            sprite.node.physicsBody?.velocity = CGVector.zero
             sprite.node.physicsBody?.affectedByGravity = false
         }
         sprite.node.position = initialPoint

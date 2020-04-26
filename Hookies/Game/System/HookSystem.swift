@@ -140,6 +140,7 @@ class HookSystem: System, HookSystemProtocol {
         delegate?.hookPlayerApplied(with: line)
         delegate?.movement(isDisabled: true, for: sprite)
         sprite.node.physicsBody?.affectedByGravity = false
+        sprite.node.physicsBody?.velocity = CGVector.zero
         let duration = TimeInterval(Constants.pullPlayerDuration)
 
         // The pull animation
