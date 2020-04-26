@@ -10,7 +10,6 @@
 		085CFA2C7C3D713DC56EB872 /* Pods_HookiesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */; };
 		11078C3324549F67002424D6 /* PowerupSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11078C3224549F67002424D6 /* PowerupSystemTests.swift */; };
 		110B3CED2420605600840C4E /* DictionaryRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */; };
-		110B3CEF242062C300840C4E /* Powerup+DictionaryRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEE242062C300840C4E /* Powerup+DictionaryRepresentable.swift */; };
 		111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111D2EF42418C8BA0083373C /* UserStoreError.swift */; };
 		1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1127C5592415E18800A78AA0 /* GoogleService-Info.plist */; };
 		1127C5602415E34F00A78AA0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */; };
@@ -190,6 +189,7 @@
 		D979D8FD244ACC3700830E8C /* StartSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D979D8FC244ACC3700830E8C /* StartSystem.swift */; };
 		D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A123D5241E71C000A6DB7F /* MapType.swift */; };
 		D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */ = {isa = PBXBuildFile; fileRef = D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */; };
+		D9BE7DE5245563F8002ECB54 /* CannonSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BE7DE4245563F8002ECB54 /* CannonSystemTests.swift */; };
 		D9DB89A5244DA58B00A86DFC /* LengthenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DB89A4244DA58B00A86DFC /* LengthenButton.swift */; };
 		D9DB89A7244DA6A600A86DFC /* ShortenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DB89A6244DA6A600A86DFC /* ShortenButton.swift */; };
 		D9DB89AA244DED3400A86DFC /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DB89A9244DED3400A86DFC /* Logger.swift */; };
@@ -227,7 +227,6 @@
 /* Begin PBXFileReference section */
 		11078C3224549F67002424D6 /* PowerupSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupSystemTests.swift; sourceTree = "<group>"; };
 		110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryRepresentable.swift; sourceTree = "<group>"; };
-		110B3CEE242062C300840C4E /* Powerup+DictionaryRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Powerup+DictionaryRepresentable.swift"; sourceTree = "<group>"; };
 		111D2EF42418C8BA0083373C /* UserStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoreError.swift; sourceTree = "<group>"; };
 		1127C5592415E18800A78AA0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1127C55F2415E34F00A78AA0 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -422,6 +421,7 @@
 		D979D8FC244ACC3700830E8C /* StartSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSystem.swift; sourceTree = "<group>"; };
 		D9A123D5241E71C000A6DB7F /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		D9BC4AAA2435883C00BD35DF /* FloatingLandMap.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloatingLandMap.sks; sourceTree = "<group>"; };
+		D9BE7DE4245563F8002ECB54 /* CannonSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonSystemTests.swift; sourceTree = "<group>"; };
 		D9DB89A4244DA58B00A86DFC /* LengthenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LengthenButton.swift; sourceTree = "<group>"; };
 		D9DB89A6244DA6A600A86DFC /* ShortenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortenButton.swift; sourceTree = "<group>"; };
 		D9DB89A9244DED3400A86DFC /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -1088,6 +1088,7 @@
 				11CC852D2439E9EB006D3A8F /* GameObjectMovementSystemTests.swift */,
 				11CC852F2439E9EB006D3A8F /* HealthSystemTests.swift */,
 				11078C3224549F67002424D6 /* PowerupSystemTests.swift */,
+				D9BE7DE4245563F8002ECB54 /* CannonSystemTests.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1271,7 +1272,6 @@
 			files = (
 				11CC85072439E8E5006D3A8F /* LobbyPlayerView.xib in Resources */,
 				788007292413F37100F43B71 /* Main.storyboard in Resources */,
-				7856D6672454AE0A0012E403 /* Hookies-Short.ttf in Resources */,
 				11CC85062439E8E5006D3A8F /* IncomingTableViewCell.xib in Resources */,
 				7880072B2413F37400F43B71 /* Assets.xcassets in Resources */,
 				11CC851A2439E991006D3A8F /* SocialViewController.xib in Resources */,
@@ -1290,7 +1290,6 @@
 				D9FF1A80241E325900E7965F /* GamePlayViewController.xib in Resources */,
 				785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
-				7856D6682454AE0A0012E403 /* Hookies-Tall.ttf in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
 				785CE3ED244EB40F00B1B5CD /* PostGameLobbyViewController.xib in Resources */,
 				7856D6432452F80B0012E403 /* Hookies-Short.ttf in Resources */,
@@ -1582,6 +1581,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9F1806C24338F27009D7A52 /* UserTests.swift in Sources */,
+				D9BE7DE5245563F8002ECB54 /* CannonSystemTests.swift in Sources */,
 				119822202434ED770035AFC1 /* DecoderModelTests.swift in Sources */,
 				11CC85342439E9EB006D3A8F /* HealthSystemTests.swift in Sources */,
 				11CC85362439E9EB006D3A8F /* SpriteSystemTests.swift in Sources */,
