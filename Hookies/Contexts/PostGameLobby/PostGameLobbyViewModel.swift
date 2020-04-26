@@ -43,7 +43,7 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
     }
 
     // MARK: Lobby Store
-
+    /// Subscribe to lobby API
     func subscribeToLobby() {
         API.shared.lobby.subscribeToLobby(lobbyId: lobbyId, listener: { lobby, error  in
             guard error == nil else {
@@ -59,6 +59,7 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
         })
     }
 
+    /// Helper method to check and handle the lobby state
     private func checkLobbyState() {
         if !isHost {
             switch lobby?.lobbyState {
@@ -80,12 +81,13 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
         }
     }
 
+    /// Close all network connections for the lobby
     func closeLobbyConnection() {
         API.shared.lobby.unsubscribeFromLobby()
     }
 
     // MARK: Return Home
-
+    /// Leaving the post game lobby back to home
     func returnHome() {
         if self.players.contains(where: { $0.isHost && $0.isCurrentPlayer }) {
             guard var lobby = self.lobby else {
@@ -99,7 +101,7 @@ class PostGameLobbyViewModel: PostGameLobbyViewModelRepresentable {
     }
 
     // MARK: Continue Game
-
+    /// Leaving the post game lobby to pre game lobby
     func continueGame() {
         guard var lobby = lobby else {
             return

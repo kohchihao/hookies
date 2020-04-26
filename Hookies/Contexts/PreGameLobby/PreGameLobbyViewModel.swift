@@ -8,7 +8,7 @@
 import Foundation
 
 protocol PreGameLobbyViewModelRepresentable {
-    var delegate: RoomStateViewModelDelegate? { get set }
+    var delegate: PreGameLobbyViewModelDelegate? { get set }
     var lobby: Lobby { get set }
     var isHost: Bool { get }
     var isOnline: Bool { get }
@@ -21,12 +21,12 @@ protocol PreGameLobbyViewModelRepresentable {
 }
 
 class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
-
-    weak var delegate: RoomStateViewModelDelegate?
+    weak var delegate: PreGameLobbyViewModelDelegate?
     var lobby: Lobby
     var isOnline = false
     var isHost: Bool
 
+    // MARK: Init
     convenience init() {
         guard let hostId = API.shared.user.currentUser?.uid else {
             fatalError("Host is not logged in")
@@ -48,14 +48,15 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
         closeLobbyConnection()
     }
 
+    /// Update the lobby with the selected map type
     func updateSelectedMapType(selectedMapType: MapType) {
         lobby.updateSelectedMapType(selectedMapType: selectedMapType)
         saveLobby(lobby: lobby)
     }
 
     // MARK: LobbyStore
-
-    func subscribeToLobby(lobby: Lobby) {
+    /// Subscribe to lobby API
+    private func subscribeToLobby(lobby: Lobby) {
         API.shared.lobby.subscribeToLobby(lobbyId: lobby.lobbyId, listener: { lobby, error  in
             guard error == nil else {
                 Logger.log.show(details: error.debugDescription, logType: .error)
@@ -79,6 +80,7 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
         })
     }
 
+    /// Connect to socket for heartbeat
     private func connectToSocket() {
         API.shared.lobby.connect(roomId: self.lobby.lobbyId, completion: { _ in })
         API.shared.lobby.subscribeToRoomConnection(roomId: self.lobby.lobbyId, listener: { connectionState in
@@ -106,17 +108,18 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
         })
     }
 
-    func saveLobby(lobby: Lobby) {
+    /// Save the lobby using API
+    private func saveLobby(lobby: Lobby) {
         API.shared.lobby.save(lobby: lobby)
     }
 
+    /// Close all network connections for the lobby
     func closeLobbyConnection() {
         API.shared.lobby.unsubscribeFromLobby()
         API.shared.lobby.close()
     }
 
     // MARK: Costumes
-
     func nextCostume() {
         guard let userId = API.shared.user.currentUser?.uid else {
             return
@@ -142,7 +145,7 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
     }
 
     // MARK: Start Game
-
+    /// Prepare the lobby to start game
     func prepareGame() {
         if API.shared.user.currentUser?.uid == lobby.hostId {
             lobby.updateLobbyState(lobbyState: .start)
@@ -153,13 +156,13 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
 
     }
 
+    /// Transition to gameplay
     func startGame() {
         let players = createPlayers()
         delegate?.startGame(with: players)
     }
 
-    // swiftlint:disable line_length
-
+    /// Creates a list of player in the lobby
     private func createPlayers() -> [Player] {
         var players: [Player] = []
         guard let currentId = API.shared.user.currentUser?.uid else {
@@ -178,7 +181,8 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
                     players.append(bot)
                 }
             } else {
-                if let player = Player(playerId: playerId, playerType: .human, costumeType: costume, isCurrentPlayer: currentId == playerId, isHost: isHost) {
+                if let player = Player(playerId: playerId, playerType: .human, costumeType: costume,
+                                       isCurrentPlayer: currentId == playerId, isHost: isHost) {
                     players.append(player)
                 }
             }
@@ -187,7 +191,7 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
     }
 
     // MARK: Leave Lobby
-
+    /// Transition out of the lobby
     func leaveLobby() {
         if isHost {
             lobby.updateLobbyState(lobbyState: .empty)
@@ -203,7 +207,7 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
     }
 
     // MARK: Bot
-
+    /// Add bot to the lobby
     func addBot() {
         guard lobby.playersId.count < Constants.maxPlayerCount else {
             Logger.log.show(details: "max number of players exceeded", logType: .error).display(.toast)
@@ -219,7 +223,8 @@ class PreGameLobbyViewModel: PreGameLobbyViewModelRepresentable {
     }
 }
 
-protocol RoomStateViewModelDelegate: class {
+// MARK: RoomStateViewModelDelegate
+protocol PreGameLobbyViewModelDelegate: class {
     func leaveLobby()
     func startGame(with players: [Player])
     func updateView()

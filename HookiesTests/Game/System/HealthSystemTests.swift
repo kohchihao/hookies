@@ -61,16 +61,34 @@ class HealthSystemTests: XCTestCase {
         XCTAssertTrue(playerIsAlive)
     }
 
-    func testIsPlayerAlive_playerIsDead() {
+    func testIsPlayerAlive_playerIsDead_belowFixedHorizontalLine() {
         playerSprite.node.position = CGPoint(x: 1000, y: -500)
         let playerIsAlive = healthSystem.isPlayerAlive(for: playerSprite)
         XCTAssertFalse(playerIsAlive)
     }
 
+    func testIsPlayerAlive_playerIsDead_aboveFixedHorizontalLine() {
+        playerSprite.node.position = CGPoint(x: 1000, y: 500)
+        let playerIsAlive = healthSystem.isPlayerAlive(for: playerSprite)
+        XCTAssertFalse(playerIsAlive)
+    }
+
+    func testIsPlayerAlive_playerIsDead_behindStartingLine() {
+        playerSprite.node.position = CGPoint(x: -1, y: 0)
+        let playerIsAlive = healthSystem.isPlayerAlive(for: playerSprite)
+        XCTAssertFalse(playerIsAlive)
+    }
+
     func testRespawnPlayer_playerIsDead() {
+        expectation(
+            forNotification: .broadcastGenericPlayerAction,
+            object: healthSystem,
+            handler: nil)
+
         playerSprite.node.position = CGPoint(x: 1000, y: -500)
         _ = healthSystem.respawnPlayer(for: playerSprite)
         XCTAssertEqual(playerSprite.node.position, CGPoint(x: 1000, y: 200))
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testRespawnPlayer_playerIsAlive() {

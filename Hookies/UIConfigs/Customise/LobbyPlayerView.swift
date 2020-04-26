@@ -33,15 +33,19 @@ class LobbyPlayerView: UIView {
         mainView.frame = self.bounds
     }
 
+    /// Reset the player view
     func resetView() {
         usernameLabel.text = nil
         playerImageView.image = nil
     }
 
+    /// Update the username label in player view
     func updateUsernameLabel(username: String) {
         usernameLabel.text = username
     }
 
+    /// Add image of the player costume to the player view
+    /// - Parameter costumeType: Costume of player to be added
     func addPlayerImage(costumeType: CostumeType) {
         guard let image = UIImage(named: costumeType.rawValue) else {
             return

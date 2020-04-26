@@ -204,8 +204,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
             Logger.log.show(details: "No powerup to steal", logType: .warning)
             return
         }
-        Logger.log.show(details: "Power up stolen \(powerupToSteal.type.stringValue)",
-                        logType: .alert)
 
         removePowerup(from: player1)
         add(player: player2, with: powerupToSteal)
@@ -277,7 +275,11 @@ class PowerupSystem: System, PowerupSystemProtocol {
         if sprite.parent === owner {
             return
         }
-        apply(powerup: powerup, on: sprite)
+        apply(powerup: powerup, on: sprite) { isSuccess in
+            if isSuccess {
+                self.netTraps.remove(trap)
+            }
+        }
     }
 
     // MARK: - Activate Powerup
@@ -299,12 +301,18 @@ class PowerupSystem: System, PowerupSystemProtocol {
     }
 
     /// Will apply the powerup on the sprite.
-    private func apply(powerup: PowerupComponent, on sprite: SpriteComponent) {
+    private func apply(powerup: PowerupComponent,
+                       on sprite: SpriteComponent,
+                       complete: ((Bool) -> Void)? = nil
+    ) {
         let effects = powerup.parent.getMultiple(PowerupEffectComponent.self)
         for effect in effects {
-            apply(effect: effect, on: sprite) {
+            apply(effect: effect, on: sprite) { isSuccess in
                 effect.parent.removeFirstComponent(of: effect)
                 self.removeActivated(powerup: powerup, from: sprite)
+                if let complete = complete {
+                    complete(isSuccess)
+                }
             }
         }
     }
@@ -312,9 +320,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
     /// Will apply the effect on the sprite
     private func apply(effect: PowerupEffectComponent,
                        on sprite: SpriteComponent,
-                       complete: @escaping () -> Void
+                       complete: @escaping (_ success: Bool) -> Void
     ) {
         if isProtected(spriteComponent: sprite, from: effect) {
+            complete(false)
             return
         }
 
@@ -341,7 +350,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
 extension PowerupSystem {
     private func applyStealPowerupEffect(_ effect: StealPowerupEffectComponent,
                                          by sprite: SpriteComponent,
-                                         complete: () -> Void) {
+                                         complete: (_ success: Bool) -> Void) {
         guard let nearestSprite = sprite.nearestSpriteInFront(from: players) else {
             Logger.log.show(details: "No players in front to steal powerup",
                             logType: .warning)
@@ -353,12 +362,12 @@ extension PowerupSystem {
             return
         }
         steal(from: nearestSprite, by: sprite)
-        complete()
+        complete(true)
     }
 
     private func applyCutRopeEffect(_ effect: CutRopeEffectComponent,
                                     by sprite: SpriteComponent,
-                                    complete: () -> Void) {
+                                    complete: (_ success: Bool) -> Void) {
         let players = Array(ownedPowerups.keys).filter({
             $0 !== sprite && !isProtected(spriteComponent: $0, from: effect)
         })
@@ -366,12 +375,12 @@ extension PowerupSystem {
         for player in players {
             delegate?.forceUnhookFor(player: player)
         }
-        complete()
+        complete(true)
     }
 
     private func applyPlayerHookEffect(_ effect: PlayerHookEffectComponent,
                                        by sprite: SpriteComponent,
-                                       complete: () -> Void) {
+                                       complete: (_ success: Bool) -> Void) {
         guard let nearestSprite = sprite.nearestSpriteInFront(from: players) else {
             Logger.log.show(details: "No players to hook in front.", logType: .warning)
             return
@@ -384,12 +393,12 @@ extension PowerupSystem {
 
         delegate?.forceUnhookFor(player: nearestSprite)
         delegate?.hook(nearestSprite, from: sprite)
-        complete()
+        complete(true)
     }
 
     private func applyPlacementEffect(_ effect: PlacementEffectComponent,
                                       by sprite: SpriteComponent,
-                                      complete: () -> Void) {
+                                      complete: (_ success: Bool) -> Void) {
         guard let effectSprite = effect.parent.get(SpriteComponent.self),
             let powerupCom = effect.parent.get(PowerupComponent.self) else {
             return
@@ -406,18 +415,20 @@ extension PowerupSystem {
             effectSprite.node.position = sprite.node.position
             netTraps.insert(effectSprite)
             delegate?.hasAddedTrap(sprite: effectSprite)
-            complete()
+            complete(true)
         default:
+            complete(false)
             return
         }
     }
 
     private func applyMovementEffect(_ effect: MovementEffectComponent,
                                      on sprite: SpriteComponent,
-                                     complete: @escaping () -> Void) {
+                                     complete: @escaping (_ success: Bool) -> Void) {
         guard let initialPoint = effect.from,
             let endPoint = effect.to,
             let duration = effect.duration else {
+                complete(false)
                 return
         }
 
@@ -432,13 +443,13 @@ extension PowerupSystem {
             sprite.node.physicsBody?.affectedByGravity = true
             effect.parent.get(SpriteComponent.self)?.node.removeFromParent()
             self.delegate?.movement(isDisabled: false, for: sprite)
-            complete()
+            complete(true)
         })
     }
 
     private func applyShieldEffect(_ effect: ShieldEffectComponent,
                                    on sprite: SpriteComponent,
-                                   complete: @escaping () -> Void) {
+                                   complete: @escaping (_ success: Bool) -> Void) {
         let shieldTexture = SKTexture(imageNamed: "shield_bubble")
         let shieldSize = CGSize(width: sprite.node.size.width * 2,
                                 height: sprite.node.size.height * 2)
@@ -448,7 +459,7 @@ extension PowerupSystem {
         sprite.node.addChild(shieldNode)
         DispatchQueue.main.asyncAfter(deadline: .now() + effect.duration) {
             shieldNode.removeFromParent()
-            complete()
+            complete(true)
         }
     }
 }

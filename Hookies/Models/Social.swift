@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Social holds all the social data structures related to the player
+
 struct Social {
     private(set) var userId: String
     private(set) var friends: [String] = []
@@ -36,41 +38,53 @@ struct Social {
         self.outgoingInvites = outInvites
     }
 
+    /// Add the incoming request to the social
     mutating func addIncomingRequest(requestId: String) {
         if !self.incomingRequests.contains(requestId) {
             self.incomingRequests.append(requestId)
         }
     }
 
+    /// Add the outgoing request to the social
     mutating func addOutgoingRequest(requestId: String) {
         if !self.outgoingRequests.contains(requestId) {
             self.outgoingRequests.append(requestId)
         }
     }
 
+    /// Remove the request from social
     mutating func removeRequest(requestId: String) {
         self.incomingRequests = self.incomingRequests.filter({ $0 != requestId })
         self.outgoingRequests = self.outgoingRequests.filter({ $0 != requestId })
     }
 
+    /// Add friend to social
     mutating func addFriend(userId: String) {
         if !self.friends.contains(userId) {
             self.friends.append(userId)
         }
     }
 
+    /// Remove friend from social
     mutating func removeFriend(userId: String) {
         self.friends = self.friends.filter({ $0 != userId })
     }
 
+    /// Add the incoming invite to the social
     mutating func addIncomingInvite(inviteId: String) {
-        self.incomingInvites.append(inviteId)
+        if !self.incomingInvites.contains(inviteId) {
+            self.incomingInvites.append(inviteId)
+        }
     }
 
+    /// Add the outgoing invite to the social
     mutating func addOutgoingInvite(inviteId: String) {
-        self.outgoingInvites.append(inviteId)
+        if !self.outgoingInvites.contains(inviteId) {
+            self.outgoingInvites.append(inviteId)
+        }
     }
 
+    /// Remove the invite from social
     mutating func removeInvite(inviteId: String) {
         self.incomingInvites = self.incomingInvites.filter({ $0 != inviteId })
         self.outgoingInvites = self.outgoingInvites.filter({ $0 != inviteId })

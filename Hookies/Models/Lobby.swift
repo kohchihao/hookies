@@ -50,6 +50,8 @@ struct Lobby {
         self.costumesId = costumesId
     }
 
+    /// Add player ID to lobby
+    /// - Parameter playerId: player ID to be added
     mutating func addPlayer(playerId: String) {
         guard !playersId.contains(playerId) && playerId != hostId && lobbyState == .open else {
             return
@@ -65,6 +67,8 @@ struct Lobby {
         }
     }
 
+    /// Remove player ID from lobby
+    /// - Parameter playerId: player ID to be removed
     mutating func removePlayer(playerId: String) {
         guard playerId != hostId else {
             lobbyState = .empty
@@ -77,27 +81,28 @@ struct Lobby {
         }
     }
 
-    mutating func updatePlayers(playersId: [String]) {
-        guard playersId.contains(hostId) else {
-            return
-        }
-        self.playersId = playersId
-    }
-
+    /// Update costume of player
+    /// - Parameters:
+    ///   - playerId: player ID of the player
+    ///   - costumeType: costume type of the player
     mutating func updateCostumeId(playerId: String, costumeType: CostumeType) {
         if playersId.contains(playerId) {
             self.costumesId[playerId] = costumeType
         }
     }
 
-    mutating func removeCostumeId(playerId: String) {
+    /// Remove costume of player
+    /// - Parameter playerId: player id of the player
+    mutating private func removeCostumeId(playerId: String) {
         self.costumesId = self.costumesId.filter({ $0.key != playerId })
     }
 
+    /// Update the selected map in the lobby
     mutating func updateSelectedMapType(selectedMapType: MapType) {
         self.selectedMapType = selectedMapType
     }
 
+    /// Update the lobby state of the lobby
     mutating func updateLobbyState(lobbyState: LobbyState) {
         switch lobbyState {
         case .open:
@@ -118,6 +123,7 @@ struct Lobby {
         self.lobbyState = lobbyState
     }
 
+    /// Reset the lobby 
     mutating func reset() {
         self.playersId = [hostId]
         self.lobbyState = .open
