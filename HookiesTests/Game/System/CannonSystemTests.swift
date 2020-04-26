@@ -52,6 +52,11 @@ class CannonSystemTests: XCTestCase {
     }
 
     func testLaunchPlayer_zeroVelocity() {
+        expectation(
+            forNotification: .broadcastGenericPlayerAction,
+            object: cannonSystem,
+            handler: nil)
+
         let velocity = CGVector(dx: 0, dy: 0)
         cannonSystem.launch(player: playerSprite, with: velocity)
 
@@ -61,9 +66,15 @@ class CannonSystemTests: XCTestCase {
         }
         XCTAssertTrue(physicsBody.isDynamic)
         XCTAssertEqual(physicsBody.velocity, velocity)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testLaunchPlayer_positiveVelocity() {
+        expectation(
+            forNotification: .broadcastGenericPlayerAction,
+            object: cannonSystem,
+            handler: nil)
+
         let velocity = CGVector(dx: 10, dy: 0)
         cannonSystem.launch(player: playerSprite, with: velocity)
 
@@ -72,9 +83,15 @@ class CannonSystemTests: XCTestCase {
             return
         }
         XCTAssertTrue(physicsBody.isDynamic)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testLaunchPlayer_negativeVelocity() {
+        expectation(
+            forNotification: .broadcastGenericPlayerAction,
+            object: cannonSystem,
+            handler: nil)
+
         let velocity = CGVector(dx: -10, dy: 0)
         cannonSystem.launch(player: playerSprite, with: velocity)
 
@@ -83,5 +100,6 @@ class CannonSystemTests: XCTestCase {
             return
         }
         XCTAssertTrue(physicsBody.isDynamic)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 }
