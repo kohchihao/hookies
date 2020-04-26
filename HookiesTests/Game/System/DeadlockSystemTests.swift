@@ -47,6 +47,24 @@ class DeadlockSystemTests: XCTestCase {
         XCTAssertTrue(isStuck)
     }
 
+    func testCheckIfStuck_playerNotStuck_velocityBoundaryPositive() {
+        playerSprite.node.physicsBody?.velocity = CGVector(dx: 0.5, dy: 100)
+        let isStuck = deadlockSystem.checkIfStuck()
+        XCTAssertFalse(isStuck)
+    }
+
+    func testCheckIfStuck_playerNotStuck_velocityBoundaryNegative() {
+        playerSprite.node.physicsBody?.velocity = CGVector(dx: -0.5, dy: 100)
+        let isStuck = deadlockSystem.checkIfStuck()
+        XCTAssertFalse(isStuck)
+    }
+
+    func testCheckIfStuck_playerStuck_velocityZero() {
+        playerSprite.node.physicsBody?.velocity = CGVector(dx: 0, dy: 100)
+        let isStuck = deadlockSystem.checkIfStuck()
+        XCTAssertTrue(isStuck)
+    }
+
     func testCheckIfStuck_playerNotStuck() {
         playerSprite.node.physicsBody?.velocity = CGVector(dx: 0.7, dy: 100)
         let isStuck = deadlockSystem.checkIfStuck()
