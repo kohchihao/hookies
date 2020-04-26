@@ -39,7 +39,6 @@ class PostGameLobbyViewController: UIViewController {
     }
 
     // MARK: Manage Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         waitingForHost()
@@ -52,7 +51,6 @@ class PostGameLobbyViewController: UIViewController {
     }
 
     // MARK: Setup view
-
     private func setupPlayerView() {
         guard Constants.maxPlayerCount > 0 else {
             return
@@ -95,7 +93,6 @@ class PostGameLobbyViewController: UIViewController {
     }
 
     // MARK: Update view
-
     private func updatePlayerViews() {
         guard self.viewModel.players.count <= self.playerViews.count else {
             return
@@ -143,7 +140,6 @@ class PostGameLobbyViewController: UIViewController {
     }
 
     // MARK: IBActions
-
     @IBAction private func continueButtonPressed(_ sender: UIButton) {
         viewModel.continueGame()
     }
@@ -153,6 +149,7 @@ class PostGameLobbyViewController: UIViewController {
     }
 }
 
+// MARK: PostGameLobbyViewController
 extension PostGameLobbyViewController: PostGameLobbyViewModelDelegate {
     func updateView() {
         updatePlayerViews()

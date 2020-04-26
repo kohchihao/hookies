@@ -16,7 +16,6 @@ protocol JoinGameViewModelRepresentable {
 class JoinGameViewModel: JoinGameViewModelRepresentable {
     var lobby: Lobby?
     weak var delegate: JoinGameViewModelDelegate?
-
 }
 
 protocol JoinGameViewModelDelegate: class {

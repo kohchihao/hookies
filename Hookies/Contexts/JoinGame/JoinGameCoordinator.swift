@@ -14,9 +14,8 @@ class JoinGameCoordinator: Coordinator {
     var coordinators: [Coordinator] = []
     weak var coordinatorDelegate: CoordinatorDelegate?
 
-    private let viewModel = JoinGameViewModel()
-
     // MARK: - PRIVATE PROPERTIES
+    private let viewModel = JoinGameViewModel()
     private let navigator: NavigatorRepresentable
 
     // MARK: - INIT
