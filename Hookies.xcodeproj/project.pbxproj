@@ -113,18 +113,14 @@
 		11CC84EC2439E8B9006D3A8F /* LobbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84E62439E8B9006D3A8F /* LobbyStore.swift */; };
 		11CC84EE2439E8BE006D3A8F /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84ED2439E8BE006D3A8F /* API.swift */; };
 		11CC84FC2439E8E5006D3A8F /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84EF2439E8E4006D3A8F /* RoundButton.swift */; };
-		11CC84FD2439E8E5006D3A8F /* OutgoingRequestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84F02439E8E4006D3A8F /* OutgoingRequestTableViewCell.xib */; };
 		11CC84FE2439E8E5006D3A8F /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F12439E8E4006D3A8F /* FriendTableViewCell.swift */; };
 		11CC84FF2439E8E5006D3A8F /* OutgoingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84F22439E8E4006D3A8F /* OutgoingTableViewCell.xib */; };
-		11CC85002439E8E5006D3A8F /* OutgoingRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F32439E8E4006D3A8F /* OutgoingRequestTableViewCell.swift */; };
 		11CC85012439E8E5006D3A8F /* IncomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F42439E8E4006D3A8F /* IncomingTableViewCell.swift */; };
 		11CC85022439E8E5006D3A8F /* FriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84F52439E8E4006D3A8F /* FriendTableViewCell.xib */; };
 		11CC85032439E8E5006D3A8F /* LobbyPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F62439E8E4006D3A8F /* LobbyPlayerView.swift */; };
 		11CC85042439E8E5006D3A8F /* OutgoingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F72439E8E5006D3A8F /* OutgoingTableViewCell.swift */; };
-		11CC85052439E8E5006D3A8F /* IncomingRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F82439E8E5006D3A8F /* IncomingRequestTableViewCell.swift */; };
 		11CC85062439E8E5006D3A8F /* IncomingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84F92439E8E5006D3A8F /* IncomingTableViewCell.xib */; };
 		11CC85072439E8E5006D3A8F /* LobbyPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84FA2439E8E5006D3A8F /* LobbyPlayerView.xib */; };
-		11CC85082439E8E5006D3A8F /* IncomingRequestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84FB2439E8E5006D3A8F /* IncomingRequestTableViewCell.xib */; };
 		11CC850E2439E920006D3A8F /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85092439E920006D3A8F /* MapsViewController.swift */; };
 		11CC850F2439E920006D3A8F /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC850A2439E920006D3A8F /* MapsViewModel.swift */; };
 		11CC85102439E921006D3A8F /* MapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC850B2439E920006D3A8F /* MapDelegate.swift */; };
@@ -162,6 +158,10 @@
 		2BA5F941244354CF009AF93C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F940244354CF009AF93C /* NetworkManager.swift */; };
 		2BA5F943244364E4009AF93C /* DeviceStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA5F942244364E4009AF93C /* DeviceStatus.swift */; };
 		2BAACCBB244D78C6008D4659 /* EndSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAACCBA244D78C6008D4659 /* EndSystem.swift */; };
+		7856D6662454AE0A0012E403 /* Hookies-Normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D6622454AE0A0012E403 /* Hookies-Normal.ttf */; };
+		7856D6672454AE0A0012E403 /* Hookies-Short.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D6632454AE0A0012E403 /* Hookies-Short.ttf */; };
+		7856D6682454AE0A0012E403 /* Hookies-Tall.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D6642454AE0A0012E403 /* Hookies-Tall.ttf */; };
+		7856D6692454AE0A0012E403 /* Hookies-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7856D6652454AE0A0012E403 /* Hookies-Thin.ttf */; };
 		785B79D824226507001D7028 /* PreGameLobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79D724226507001D7028 /* PreGameLobbyViewModel.swift */; };
 		785B79DA2423581B001D7028 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785B79D92423581B001D7028 /* GameKit.framework */; };
 		785B79DF24237636001D7028 /* JoinGameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785B79DE24237636001D7028 /* JoinGameCoordinator.swift */; };
@@ -331,18 +331,14 @@
 		11CC84E62439E8B9006D3A8F /* LobbyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LobbyStore.swift; sourceTree = "<group>"; };
 		11CC84ED2439E8BE006D3A8F /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		11CC84EF2439E8E4006D3A8F /* RoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
-		11CC84F02439E8E4006D3A8F /* OutgoingRequestTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutgoingRequestTableViewCell.xib; sourceTree = "<group>"; };
 		11CC84F12439E8E4006D3A8F /* FriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		11CC84F22439E8E4006D3A8F /* OutgoingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutgoingTableViewCell.xib; sourceTree = "<group>"; };
-		11CC84F32439E8E4006D3A8F /* OutgoingRequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingRequestTableViewCell.swift; sourceTree = "<group>"; };
 		11CC84F42439E8E4006D3A8F /* IncomingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncomingTableViewCell.swift; sourceTree = "<group>"; };
 		11CC84F52439E8E4006D3A8F /* FriendTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendTableViewCell.xib; sourceTree = "<group>"; };
 		11CC84F62439E8E4006D3A8F /* LobbyPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LobbyPlayerView.swift; sourceTree = "<group>"; };
 		11CC84F72439E8E5006D3A8F /* OutgoingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingTableViewCell.swift; sourceTree = "<group>"; };
-		11CC84F82439E8E5006D3A8F /* IncomingRequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncomingRequestTableViewCell.swift; sourceTree = "<group>"; };
 		11CC84F92439E8E5006D3A8F /* IncomingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IncomingTableViewCell.xib; sourceTree = "<group>"; };
 		11CC84FA2439E8E5006D3A8F /* LobbyPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LobbyPlayerView.xib; sourceTree = "<group>"; };
-		11CC84FB2439E8E5006D3A8F /* IncomingRequestTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IncomingRequestTableViewCell.xib; sourceTree = "<group>"; };
 		11CC85092439E920006D3A8F /* MapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
 		11CC850A2439E920006D3A8F /* MapsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsViewModel.swift; sourceTree = "<group>"; };
 		11CC850B2439E920006D3A8F /* MapDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapDelegate.swift; sourceTree = "<group>"; };
@@ -382,6 +378,10 @@
 		2BAACCBA244D78C6008D4659 /* EndSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndSystem.swift; sourceTree = "<group>"; };
 		4B4ECF28C22761C2EE778511 /* Pods-HookiesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HookiesTests.debug.xcconfig"; path = "Target Support Files/Pods-HookiesTests/Pods-HookiesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		784096012438583B00D2CAB4 /* InviteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteManager.swift; sourceTree = "<group>"; };
+		7856D6622454AE0A0012E403 /* Hookies-Normal.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Normal.ttf"; sourceTree = "<group>"; };
+		7856D6632454AE0A0012E403 /* Hookies-Short.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Short.ttf"; sourceTree = "<group>"; };
+		7856D6642454AE0A0012E403 /* Hookies-Tall.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Tall.ttf"; sourceTree = "<group>"; };
+		7856D6652454AE0A0012E403 /* Hookies-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hookies-Thin.ttf"; sourceTree = "<group>"; };
 		7859AF9E24339A4000B60968 /* SocialCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialCoordinator.swift; sourceTree = "<group>"; };
 		7859AFA024339A5700B60968 /* SocialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewModel.swift; sourceTree = "<group>"; };
 		7859AFA224339A6B00B60968 /* SocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
@@ -810,6 +810,17 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		7856D6612454AE0A0012E403 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				7856D6622454AE0A0012E403 /* Hookies-Normal.ttf */,
+				7856D6632454AE0A0012E403 /* Hookies-Short.ttf */,
+				7856D6642454AE0A0012E403 /* Hookies-Tall.ttf */,
+				7856D6652454AE0A0012E403 /* Hookies-Thin.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		7859AF9D24339A1100B60968 /* Social */ = {
 			isa = PBXGroup;
 			children = (
@@ -891,6 +902,7 @@
 				788007212413F37100F43B71 /* Actions.sks */,
 				788007272413F37100F43B71 /* Main.storyboard */,
 				7880072A2413F37400F43B71 /* Assets.xcassets */,
+				7856D6612454AE0A0012E403 /* Fonts */,
 				7880072C2413F37400F43B71 /* LaunchScreen.storyboard */,
 				1127C5592415E18800A78AA0 /* GoogleService-Info.plist */,
 				7880072F2413F37400F43B71 /* Info.plist */,
@@ -1044,14 +1056,10 @@
 			children = (
 				11CC84F12439E8E4006D3A8F /* FriendTableViewCell.swift */,
 				11CC84F52439E8E4006D3A8F /* FriendTableViewCell.xib */,
-				11CC84F82439E8E5006D3A8F /* IncomingRequestTableViewCell.swift */,
-				11CC84FB2439E8E5006D3A8F /* IncomingRequestTableViewCell.xib */,
 				11CC84F42439E8E4006D3A8F /* IncomingTableViewCell.swift */,
 				11CC84F92439E8E5006D3A8F /* IncomingTableViewCell.xib */,
 				11CC84F62439E8E4006D3A8F /* LobbyPlayerView.swift */,
 				11CC84FA2439E8E5006D3A8F /* LobbyPlayerView.xib */,
-				11CC84F32439E8E4006D3A8F /* OutgoingRequestTableViewCell.swift */,
-				11CC84F02439E8E4006D3A8F /* OutgoingRequestTableViewCell.xib */,
 				11CC84F72439E8E5006D3A8F /* OutgoingTableViewCell.swift */,
 				11CC84F22439E8E4006D3A8F /* OutgoingTableViewCell.xib */,
 				11CC84EF2439E8E4006D3A8F /* RoundButton.swift */,
@@ -1267,27 +1275,29 @@
 			files = (
 				11CC85072439E8E5006D3A8F /* LobbyPlayerView.xib in Resources */,
 				788007292413F37100F43B71 /* Main.storyboard in Resources */,
-				11CC85082439E8E5006D3A8F /* IncomingRequestTableViewCell.xib in Resources */,
+				7856D6672454AE0A0012E403 /* Hookies-Short.ttf in Resources */,
 				11CC85062439E8E5006D3A8F /* IncomingTableViewCell.xib in Resources */,
 				7880072B2413F37400F43B71 /* Assets.xcassets in Resources */,
 				11CC851A2439E991006D3A8F /* SocialViewController.xib in Resources */,
 				11CC85112439E921006D3A8F /* MapsViewController.xib in Resources */,
-				11CC84FD2439E8E5006D3A8F /* OutgoingRequestTableViewCell.xib in Resources */,
 				11CC85022439E8E5006D3A8F /* FriendTableViewCell.xib in Resources */,
 				D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */,
 				1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */,
 				7880072E2413F37400F43B71 /* LaunchScreen.storyboard in Resources */,
 				788007222413F37100F43B71 /* Actions.sks in Resources */,
 				D92F9405241D2E8A0021DBE4 /* DeadlockMap.sks in Resources */,
+				7856D6662454AE0A0012E403 /* Hookies-Normal.ttf in Resources */,
 				D923C13C241A42B5004AB20A /* CannotDieMap.sks in Resources */,
 				11CC84FF2439E8E5006D3A8F /* OutgoingTableViewCell.xib in Resources */,
 				1127C55A2415E18800A78AA0 /* GoogleService-Info.plist in Resources */,
 				D9FF1A80241E325900E7965F /* GamePlayViewController.xib in Resources */,
 				785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
+				7856D6682454AE0A0012E403 /* Hookies-Tall.ttf in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
 				785CE3ED244EB40F00B1B5CD /* PostGameLobbyViewController.xib in Resources */,
 				D9FF1A6A241E0DE600E7965F /* PreGameLobbyViewController.xib in Resources */,
+				7856D6692454AE0A0012E403 /* Hookies-Thin.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1416,7 +1426,6 @@
 				11CC852A2439E9C4006D3A8F /* Social.swift in Sources */,
 				11CC85102439E921006D3A8F /* MapDelegate.swift in Sources */,
 				11CC84DB2439E8A0006D3A8F /* GenericPlayerEventData.swift in Sources */,
-				11CC85002439E8E5006D3A8F /* OutgoingRequestTableViewCell.swift in Sources */,
 				11CC84E92439E8B9006D3A8F /* InviteStore.swift in Sources */,
 				1191BD7F24399A8800189DB8 /* PowerupEventType.swift in Sources */,
 				1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */,
@@ -1506,7 +1515,6 @@
 				11CC84972439E7C0006D3A8F /* PowerupEntity.swift in Sources */,
 				11CC84892439E7A8006D3A8F /* ShieldEffectComponent.swift in Sources */,
 				D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */,
-				11CC85052439E8E5006D3A8F /* IncomingRequestTableViewCell.swift in Sources */,
 				111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */,
 				11CC85122439E921006D3A8F /* MapsCoordinator.swift in Sources */,
 				785CE3E2244D997100B1B5CD /* BotComponent.swift in Sources */,

@@ -16,7 +16,6 @@ protocol SocialViewNavigationDelegate: class {
 class SocialViewController: UIViewController {
     weak var navigationDelegate: SocialViewNavigationDelegate?
     private var viewModel: SocialViewModelRepresentable
-    private var uid = RandomIDGenerator.getRandomID(length: 4)
 
     @IBOutlet private var socialTableView: UITableView!
     @IBOutlet private var incomingRequestTableView: UITableView!
@@ -28,8 +27,7 @@ class SocialViewController: UIViewController {
     init(with viewModel: SocialViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(nibName: SocialViewController.name, bundle: nil)
-        updateViewModel()
-        subscribeToSocial(social: viewModel.social)
+        self.viewModel.delegate = self
     }
 
     @available(*, unavailable)
@@ -41,86 +39,33 @@ class SocialViewController: UIViewController {
         super.viewDidLoad()
 
         var identifier = "FriendTableViewCell"
-
-        socialTableView.dataSource = self
-        socialTableView.delegate = self
-        let friendTableViewCell = UINib(nibName: identifier, bundle: nil)
-        socialTableView.register(friendTableViewCell, forCellReuseIdentifier: identifier)
-        socialTableView.allowsSelection = false
+        setUpTableView(tableView: socialTableView, identifier: identifier)
 
         identifier = "IncomingTableViewCell"
-        incomingRequestTableView.dataSource = self
-        incomingRequestTableView.delegate = self
-        incomingRequestTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
-        incomingRequestTableView.allowsSelection = false
+        setUpTableView(tableView: incomingRequestTableView, identifier: identifier)
+        setUpTableView(tableView: incomingInviteTableView, identifier: identifier)
 
         identifier = "OutgoingTableViewCell"
-        outgoingRequestTableView.dataSource = self
-        outgoingRequestTableView.delegate = self
-        outgoingRequestTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
-        outgoingRequestTableView.allowsSelection = false
+        setUpTableView(tableView: outgoingInviteTableView, identifier: identifier)
+        setUpTableView(tableView: outgoingRequestTableView, identifier: identifier)
 
-        identifier = "IncomingTableViewCell"
-        incomingInviteTableView.dataSource = self
-        incomingInviteTableView.delegate = self
-        incomingInviteTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
-
-        identifier = "OutgoingTableViewCell"
-        outgoingInviteTableView.dataSource = self
-        outgoingInviteTableView.delegate = self
-        outgoingInviteTableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
-
-        updateView()
+        viewModel.subscribeToSocial()
     }
 
-    func updateViewModel() {
-        guard let currentUser = API.shared.user.currentUser else {
-            fatalError("User is not logged in")
-        }
-        API.shared.social.get(userId: currentUser.uid, completion: { social, error in
-            guard error == nil else {
-                return
-            }
-            guard let social = social else {
-                API.shared.social.save(social: self.viewModel.social)
-                return
-            }
-            self.viewModel.social = social
-            API.shared.social.save(social: self.viewModel.social)
-        })
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.unsubscribeSocial()
+    }
+
+    private func setUpTableView(tableView: UITableView, identifier: String) {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
+        tableView.allowsSelection = false
     }
 
     override var prefersStatusBarHidden: Bool {
         return true
-    }
-
-    func subscribeToSocial(social: Social) {
-        guard let currentUser = API.shared.user.currentUser else {
-            return
-        }
-        API.shared.social.subscribeToSocial(userId: currentUser.uid, listener: { social, error in
-            guard error == nil else {
-                Logger.log.show(details: error.debugDescription, logType: .error)
-                return
-            }
-            guard let updatedSocial = social else {
-                return
-            }
-            self.viewModel.social = updatedSocial
-            self.updateView()
-        })
-    }
-
-    func updateUsernameInCell(userId: String, cell: UITableViewCell) {
-        API.shared.user.get(withUid: userId, completion: { user, error in
-            guard error == nil else {
-                return
-            }
-            guard let user = user else {
-                return
-            }
-            cell.textLabel?.text = user.username
-        })
     }
 
     @IBAction private func sendRequestButtonClicked(_ sender: UIButton) {
@@ -128,28 +73,10 @@ class SocialViewController: UIViewController {
             return
         }
         guard !username.isEmpty else {
-            Logger.log.show(details: "username field cannot be empty", logType: .warning)
+            Logger.log.show(details: "Username field cannot be empty", logType: .warning).display(.toast)
             return
         }
-        guard let fromUserId = API.shared.user.currentUser?.uid else {
-            Logger.log.show(details: "user is not logged in", logType: .error)
-            return
-        }
-        API.shared.user.get(withUsername: username, completion: { user, error in
-            guard error == nil else {
-                Logger.log.show(details: error.debugDescription, logType: .error)
-                return
-            }
-            guard let toUserId = user?.uid else {
-                Logger.log.show(details: "user does not exists", logType: .error)
-                return
-            }
-            guard fromUserId != toUserId else {
-                Logger.log.show(details: "cannot send friend request to yourself", logType: .warning)
-                return
-            }
-            RequestManager.sendRequest(fromUserId: fromUserId, toUserId: toUserId)
-        })
+        viewModel.sendRequest(username: username)
     }
 
     func updateRequestInCell(requestId: String, cell: UITableViewCell) {
@@ -196,35 +123,26 @@ class SocialViewController: UIViewController {
         })
     }
 
-    func removeFriend(user: User) {
-        API.shared.social.get(userId: user.uid, completion: { social, error in
+    func updateUsernameInCell(userId: String, cell: UITableViewCell) {
+        API.shared.user.get(withUid: userId, completion: { user, error in
             guard error == nil else {
-                Logger.log.show(details: error.debugDescription, logType: .error)
                 return
             }
-            guard var social = social else {
+            guard let user = user else {
                 return
             }
-            guard let currentUser = API.shared.user.currentUser else {
-                return
-            }
-            self.viewModel.social.removeFriend(userId: user.uid)
-            API.shared.social.save(social: self.viewModel.social)
-            social.removeFriend(userId: currentUser.uid)
-            API.shared.social.save(social: social)
+            cell.textLabel?.text = user.username
         })
     }
+}
 
+extension SocialViewController: SocialViewModelDelegate {
     func updateView() {
         self.socialTableView.reloadData()
         self.incomingRequestTableView.reloadData()
         self.outgoingRequestTableView.reloadData()
         self.incomingInviteTableView.reloadData()
         self.outgoingInviteTableView.reloadData()
-    }
-
-    deinit {
-        API.shared.social.unsubscribeFromSocial()
     }
 }
 
@@ -335,45 +253,11 @@ extension SocialViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension SocialViewController: FriendTableViewCellDelegate {
     func inviteButtonPressed(username: String) {
-        guard self.viewModel.inviteEnabled else {
-            return
-        }
-        guard let fromUserId = API.shared.user.currentUser?.uid else {
-            Logger.log.show(details: "user is not logged in", logType: .error)
-            return
-        }
-        API.shared.user.get(withUsername: username, completion: { user, error in
-            guard error == nil else {
-               Logger.log.show(details: error.debugDescription, logType: .error)
-               return
-            }
-            guard let toUserId = user?.uid else {
-                Logger.log.show(details: "user does not exists", logType: .error)
-                return
-            }
-            guard fromUserId != toUserId else {
-                Logger.log.show(details: "cannot send game invite to yourself", logType: .error)
-                return
-            }
-            guard let lobbyId = self.viewModel.lobbyId else {
-                Logger.log.show(details: "lobby id not available", logType: .error)
-                return
-            }
-            InviteManager.sendInvite(fromUserId: fromUserId, toUserId: toUserId, lobbyId: lobbyId)
-        })
+        viewModel.sendInvite(username: username)
     }
 
     func deleteButtonPressed(username: String) {
-        API.shared.user.get(withUsername: username, completion: { user, error in
-            guard error == nil else {
-                Logger.log.show(details: error.debugDescription, logType: .error)
-                return
-            }
-            guard let user = user else {
-                return
-            }
-            self.removeFriend(user: user)
-        })
+        viewModel.removeFriend(username: username)
     }
 }
 
@@ -389,8 +273,8 @@ extension SocialViewController: IncomingTableViewCellDelegate {
     func acceptButtonPressed(inviteId: String) {
         guard self.viewModel.lobbyId == nil else {
             Logger.log.show(
-                details: "you cannot accept a game invite when you are in the pre-game lobby",
-                logType: .warning)
+                details: "You cannot accept a game invite when you are in the pre-game lobby",
+                logType: .warning).display(.toast)
             return
         }
         InviteManager.processInvite(inviteId: inviteId, completion: { invite in
