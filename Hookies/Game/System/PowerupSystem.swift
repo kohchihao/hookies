@@ -56,13 +56,13 @@ class PowerupSystem: System, PowerupSystemProtocol {
     weak var delegate: PowerupSystemDelegate?
 
     // Key: sprite of player, Value: powerups of player
-    private var ownedPowerups = [SpriteComponent: [PowerupComponent]]()
+    private(set) var ownedPowerups = [SpriteComponent: [PowerupComponent]]()
     // Key: sprite of player, Value: activated powerups of player
-    private var activatedPowerups = [SpriteComponent: [PowerupComponent]]()
+    private(set) var activatedPowerups = [SpriteComponent: [PowerupComponent]]()
 
     // Powerups that are collectible on the map
-    private var powerups = Set<PowerupComponent>()
-    private var netTraps = Set<SpriteComponent>()
+    private(set) var powerups = Set<PowerupComponent>()
+    private(set) var netTraps = Set<SpriteComponent>()
 
     var players: [SpriteComponent] {
         return Array(ownedPowerups.keys)
@@ -303,7 +303,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         let effects = powerup.parent.getMultiple(PowerupEffectComponent.self)
         for effect in effects {
             apply(effect: effect, on: sprite) {
-                Logger.log.show(details: "Completed powerup", logType: .alert)
                 effect.parent.removeFirstComponent(of: effect)
                 self.removeActivated(powerup: powerup, from: sprite)
             }

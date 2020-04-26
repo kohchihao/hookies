@@ -43,7 +43,7 @@ struct InviteManager {
                 return completion(false)
             }
             guard !lobby.playersId.contains(invite.toUserId) else {
-                Logger.log.show(details: "Recipient is already in the lobby", logType: .alert)
+                Logger.log.show(details: "Recipient is already in the lobby", logType: .alert).display(.toast)
                 return completion(false)
             }
             return completion(true)
@@ -58,26 +58,26 @@ struct InviteManager {
     ) {
         self.getInvites(inviteIds: sender.outgoingInvites, completion: { invites in
             guard !invites.map({ $0.toUserId }).contains(invite.toUserId) else {
-                Logger.log.show(details: "invite to this player already exists", logType: .alert).display(.alert)
+                Logger.log.show(details: "Invite to this player already exists", logType: .alert).display(.toast)
                 return completion(false)
             }
             self.getInvites(inviteIds: sender.incomingInvites, completion: { invites in
                 guard !invites.map({ $0.fromUserId }).contains(invite.toUserId) else {
-                    Logger.log.show(details: "there is an existing invite from this player", logType: .alert)
+                    Logger.log.show(details: "There is an existing invite from this player", logType: .alert).display(.toast)
                     return completion(false)
                 }
                 self.getInvites(inviteIds: recipient.outgoingInvites, completion: { recipientInvites in
                     guard !recipientInvites.map({ $0.toUserId }).contains(invite.fromUserId) else {
-                        Logger.log.show(details: "there is an existing invite from this player", logType: .alert)
+                        Logger.log.show(details: "There is an existing invite from this player", logType: .alert).display(.toast)
                         return completion(false)
                     }
                     self.getInvites(inviteIds: recipient.incomingInvites, completion: { recipientInvites in
                         guard !recipientInvites.map({ $0.fromUserId }).contains(invite.fromUserId) else {
-                            Logger.log.show(details: "invite already exists", logType: .alert)
+                            Logger.log.show(details: "Invite already exists", logType: .alert).display(.toast)
                             return completion(false)
                         }
                         guard !invites.map({ $0.lobbyId }).contains(invite.lobbyId) else {
-                            Logger.log.show(details: "invite from this lobby id already exists", logType: .alert)
+                            Logger.log.show(details: "Invite from this lobby id already exists", logType: .alert).display(.toast)
                             return completion(false)
                         }
                         return completion(true)

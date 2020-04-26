@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		085CFA2C7C3D713DC56EB872 /* Pods_HookiesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84573F179B6CFD4E73BA8F68 /* Pods_HookiesTests.framework */; };
+		11078C3324549F67002424D6 /* PowerupSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11078C3224549F67002424D6 /* PowerupSystemTests.swift */; };
 		110B3CED2420605600840C4E /* DictionaryRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */; };
 		110B3CEF242062C300840C4E /* Powerup+DictionaryRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B3CEE242062C300840C4E /* Powerup+DictionaryRepresentable.swift */; };
 		111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111D2EF42418C8BA0083373C /* UserStoreError.swift */; };
@@ -112,18 +113,14 @@
 		11CC84EC2439E8B9006D3A8F /* LobbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84E62439E8B9006D3A8F /* LobbyStore.swift */; };
 		11CC84EE2439E8BE006D3A8F /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84ED2439E8BE006D3A8F /* API.swift */; };
 		11CC84FC2439E8E5006D3A8F /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84EF2439E8E4006D3A8F /* RoundButton.swift */; };
-		11CC84FD2439E8E5006D3A8F /* OutgoingRequestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84F02439E8E4006D3A8F /* OutgoingRequestTableViewCell.xib */; };
 		11CC84FE2439E8E5006D3A8F /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F12439E8E4006D3A8F /* FriendTableViewCell.swift */; };
 		11CC84FF2439E8E5006D3A8F /* OutgoingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84F22439E8E4006D3A8F /* OutgoingTableViewCell.xib */; };
-		11CC85002439E8E5006D3A8F /* OutgoingRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F32439E8E4006D3A8F /* OutgoingRequestTableViewCell.swift */; };
 		11CC85012439E8E5006D3A8F /* IncomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F42439E8E4006D3A8F /* IncomingTableViewCell.swift */; };
 		11CC85022439E8E5006D3A8F /* FriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84F52439E8E4006D3A8F /* FriendTableViewCell.xib */; };
 		11CC85032439E8E5006D3A8F /* LobbyPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F62439E8E4006D3A8F /* LobbyPlayerView.swift */; };
 		11CC85042439E8E5006D3A8F /* OutgoingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F72439E8E5006D3A8F /* OutgoingTableViewCell.swift */; };
-		11CC85052439E8E5006D3A8F /* IncomingRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84F82439E8E5006D3A8F /* IncomingRequestTableViewCell.swift */; };
 		11CC85062439E8E5006D3A8F /* IncomingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84F92439E8E5006D3A8F /* IncomingTableViewCell.xib */; };
 		11CC85072439E8E5006D3A8F /* LobbyPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84FA2439E8E5006D3A8F /* LobbyPlayerView.xib */; };
-		11CC85082439E8E5006D3A8F /* IncomingRequestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11CC84FB2439E8E5006D3A8F /* IncomingRequestTableViewCell.xib */; };
 		11CC850E2439E920006D3A8F /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85092439E920006D3A8F /* MapsViewController.swift */; };
 		11CC850F2439E920006D3A8F /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC850A2439E920006D3A8F /* MapsViewModel.swift */; };
 		11CC85102439E921006D3A8F /* MapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC850B2439E920006D3A8F /* MapDelegate.swift */; };
@@ -228,6 +225,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		11078C3224549F67002424D6 /* PowerupSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupSystemTests.swift; sourceTree = "<group>"; };
 		110B3CEC2420605600840C4E /* DictionaryRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryRepresentable.swift; sourceTree = "<group>"; };
 		110B3CEE242062C300840C4E /* Powerup+DictionaryRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Powerup+DictionaryRepresentable.swift"; sourceTree = "<group>"; };
 		111D2EF42418C8BA0083373C /* UserStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoreError.swift; sourceTree = "<group>"; };
@@ -332,18 +330,14 @@
 		11CC84E62439E8B9006D3A8F /* LobbyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LobbyStore.swift; sourceTree = "<group>"; };
 		11CC84ED2439E8BE006D3A8F /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		11CC84EF2439E8E4006D3A8F /* RoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
-		11CC84F02439E8E4006D3A8F /* OutgoingRequestTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutgoingRequestTableViewCell.xib; sourceTree = "<group>"; };
 		11CC84F12439E8E4006D3A8F /* FriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		11CC84F22439E8E4006D3A8F /* OutgoingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutgoingTableViewCell.xib; sourceTree = "<group>"; };
-		11CC84F32439E8E4006D3A8F /* OutgoingRequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingRequestTableViewCell.swift; sourceTree = "<group>"; };
 		11CC84F42439E8E4006D3A8F /* IncomingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncomingTableViewCell.swift; sourceTree = "<group>"; };
 		11CC84F52439E8E4006D3A8F /* FriendTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendTableViewCell.xib; sourceTree = "<group>"; };
 		11CC84F62439E8E4006D3A8F /* LobbyPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LobbyPlayerView.swift; sourceTree = "<group>"; };
 		11CC84F72439E8E5006D3A8F /* OutgoingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingTableViewCell.swift; sourceTree = "<group>"; };
-		11CC84F82439E8E5006D3A8F /* IncomingRequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncomingRequestTableViewCell.swift; sourceTree = "<group>"; };
 		11CC84F92439E8E5006D3A8F /* IncomingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IncomingTableViewCell.xib; sourceTree = "<group>"; };
 		11CC84FA2439E8E5006D3A8F /* LobbyPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LobbyPlayerView.xib; sourceTree = "<group>"; };
-		11CC84FB2439E8E5006D3A8F /* IncomingRequestTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IncomingRequestTableViewCell.xib; sourceTree = "<group>"; };
 		11CC85092439E920006D3A8F /* MapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
 		11CC850A2439E920006D3A8F /* MapsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsViewModel.swift; sourceTree = "<group>"; };
 		11CC850B2439E920006D3A8F /* MapDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapDelegate.swift; sourceTree = "<group>"; };
@@ -1058,14 +1052,10 @@
 			children = (
 				11CC84F12439E8E4006D3A8F /* FriendTableViewCell.swift */,
 				11CC84F52439E8E4006D3A8F /* FriendTableViewCell.xib */,
-				11CC84F82439E8E5006D3A8F /* IncomingRequestTableViewCell.swift */,
-				11CC84FB2439E8E5006D3A8F /* IncomingRequestTableViewCell.xib */,
 				11CC84F42439E8E4006D3A8F /* IncomingTableViewCell.swift */,
 				11CC84F92439E8E5006D3A8F /* IncomingTableViewCell.xib */,
 				11CC84F62439E8E4006D3A8F /* LobbyPlayerView.swift */,
 				11CC84FA2439E8E5006D3A8F /* LobbyPlayerView.xib */,
-				11CC84F32439E8E4006D3A8F /* OutgoingRequestTableViewCell.swift */,
-				11CC84F02439E8E4006D3A8F /* OutgoingRequestTableViewCell.xib */,
 				11CC84F72439E8E5006D3A8F /* OutgoingTableViewCell.swift */,
 				11CC84F22439E8E4006D3A8F /* OutgoingTableViewCell.xib */,
 				11CC84EF2439E8E4006D3A8F /* RoundButton.swift */,
@@ -1097,6 +1087,7 @@
 				11CC852E2439E9EB006D3A8F /* DeadlockSystemTests.swift */,
 				11CC852D2439E9EB006D3A8F /* GameObjectMovementSystemTests.swift */,
 				11CC852F2439E9EB006D3A8F /* HealthSystemTests.swift */,
+				11078C3224549F67002424D6 /* PowerupSystemTests.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1280,13 +1271,12 @@
 			files = (
 				11CC85072439E8E5006D3A8F /* LobbyPlayerView.xib in Resources */,
 				788007292413F37100F43B71 /* Main.storyboard in Resources */,
-				11CC85082439E8E5006D3A8F /* IncomingRequestTableViewCell.xib in Resources */,
+				7856D6672454AE0A0012E403 /* Hookies-Short.ttf in Resources */,
 				11CC85062439E8E5006D3A8F /* IncomingTableViewCell.xib in Resources */,
 				7880072B2413F37400F43B71 /* Assets.xcassets in Resources */,
 				11CC851A2439E991006D3A8F /* SocialViewController.xib in Resources */,
 				7856D6422452F80B0012E403 /* Hookies-Thin.ttf in Resources */,
 				11CC85112439E921006D3A8F /* MapsViewController.xib in Resources */,
-				11CC84FD2439E8E5006D3A8F /* OutgoingRequestTableViewCell.xib in Resources */,
 				11CC85022439E8E5006D3A8F /* FriendTableViewCell.xib in Resources */,
 				D9BC4AAB2435883C00BD35DF /* FloatingLandMap.sks in Resources */,
 				1127C5792415EE2000A78AA0 /* .swiftlint.yml in Resources */,
@@ -1300,6 +1290,7 @@
 				D9FF1A80241E325900E7965F /* GamePlayViewController.xib in Resources */,
 				785B79E524237AE4001D7028 /* JoinGameViewController.xib in Resources */,
 				1127C586241606CD00A78AA0 /* AuthViewController.xib in Resources */,
+				7856D6682454AE0A0012E403 /* Hookies-Tall.ttf in Resources */,
 				1127C57C2415F80B00A78AA0 /* HomeViewController.xib in Resources */,
 				785CE3ED244EB40F00B1B5CD /* PostGameLobbyViewController.xib in Resources */,
 				7856D6432452F80B0012E403 /* Hookies-Short.ttf in Resources */,
@@ -1433,7 +1424,6 @@
 				11CC852A2439E9C4006D3A8F /* Social.swift in Sources */,
 				11CC85102439E921006D3A8F /* MapDelegate.swift in Sources */,
 				11CC84DB2439E8A0006D3A8F /* GenericPlayerEventData.swift in Sources */,
-				11CC85002439E8E5006D3A8F /* OutgoingRequestTableViewCell.swift in Sources */,
 				11CC84E92439E8B9006D3A8F /* InviteStore.swift in Sources */,
 				1191BD7F24399A8800189DB8 /* PowerupEventType.swift in Sources */,
 				1127C5802415FBAC00A78AA0 /* AuthViewController.swift in Sources */,
@@ -1522,7 +1512,6 @@
 				11CC84972439E7C0006D3A8F /* PowerupEntity.swift in Sources */,
 				11CC84892439E7A8006D3A8F /* ShieldEffectComponent.swift in Sources */,
 				D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */,
-				11CC85052439E8E5006D3A8F /* IncomingRequestTableViewCell.swift in Sources */,
 				111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */,
 				11CC85122439E921006D3A8F /* MapsCoordinator.swift in Sources */,
 				785CE3E2244D997100B1B5CD /* BotComponent.swift in Sources */,
@@ -1597,6 +1586,7 @@
 				11CC85342439E9EB006D3A8F /* HealthSystemTests.swift in Sources */,
 				11CC85362439E9EB006D3A8F /* SpriteSystemTests.swift in Sources */,
 				D9F1806A24338278009D7A52 /* VectorTests.swift in Sources */,
+				11078C3324549F67002424D6 /* PowerupSystemTests.swift in Sources */,
 				11CC85332439E9EB006D3A8F /* DeadlockSystemTests.swift in Sources */,
 				D9F1806E243394F1009D7A52 /* LobbyTests.swift in Sources */,
 				119822222434F26C0035AFC1 /* EncoderModelTests.swift in Sources */,
