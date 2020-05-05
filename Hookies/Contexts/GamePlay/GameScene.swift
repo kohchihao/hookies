@@ -121,29 +121,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     /// - Parameter powerup: The power up chest
     private func handleContactWithPowerup(_ powerup: SKSpriteNode) {
         powerups.removeAll(where: { $0 == powerup })
-        animateDisappear(of: powerup)
-    }
-
-    /// Animate the removal of power up chest
-    /// - Parameter powerup: The power up chest
-    private func animateDisappear(of powerup: SKSpriteNode) {
-        guard let powerupType = gameEngine?.currentPlayerContactWith(powerup: powerup) else {
-            return
-        }
-
-        let powerupDisplay = powerupType.buttonNode
-        powerupDisplay.position = powerup.position
-        powerupDisplay.zPosition = 0
-        addChild(powerupDisplay)
-
-        let finalPosition = CGPoint(x: powerupDisplay.position.x,
-                                    y: powerupDisplay.position.y + 60)
-        let powerupAnimation = SKAction.sequence([SKAction.move(to: finalPosition, duration: 1),
-                                                  SKAction.fadeOut(withDuration: 0.5)])
-        powerupDisplay.run(powerupAnimation, completion: {
-            powerupDisplay.removeFromParent()
-            self.powerupButton?.setPowerup(to: powerupType)
-        })
+        gameEngine?.currentPlayerContactWith(powerup: powerup)
     }
 
     // MARK: - Initialise contact delegate
@@ -577,6 +555,7 @@ extension GameScene: GameEngineDelegate {
         guard let powerupButton = powerupButton else {
             return
         }
+        print("hasObtained")
         let node = powerup.buttonNode
         node.position = CGPoint(x: powerupButton.position.x + 100,
                                 y: powerupButton.position.y)
@@ -597,5 +576,13 @@ extension GameScene: GameEngineDelegate {
             message.removeFromParent()
             powerupButton.setPowerup(to: powerup)
         })
+    }
+
+    func hasAdded(node: SKSpriteNode) {
+        addChild(node)
+    }
+
+    func hasCollected(powerup: PowerupType) {
+        powerupButton?.setPowerup(to: powerup)
     }
 }

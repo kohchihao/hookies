@@ -17,10 +17,41 @@ class PowerupEntity: Entity {
 
     convenience init(for type: PowerupType) {
         self.init(components: [])
+        addDefaultComponents(for: type)
+    }
+
+    func addDefaultComponents(for type: PowerupType) {
         let powerupSprite = SpriteComponent(parent: self)
         let powerupComponent = PowerupComponent(parent: self, type: type)
         addComponent(powerupSprite)
         addComponent(powerupComponent)
+    }
+
+    static func createRandom() -> PowerupEntity {
+        let randType = PowerupType.allCases.randomElement() ?? .shield
+        return create(for: randType)
+    }
+
+    static func create(for type: PowerupType) -> PowerupEntity {
+        switch type {
+        case .cutRope:
+            return CutRopePowerup()
+        case .netTrap:
+            return NetTrapPowerup()
+        case .playerHook:
+            return PlayerHookPowerup()
+        case .shield:
+            return ShieldPowerup()
+        case .stealPowerup:
+            return StealPowerup()
+        }
+    }
+
+    func activate() {
+        guard let powerupComponent = get(PowerupComponent.self) else {
+            return
+        }
+        powerupComponent.isActivated = true
     }
 }
 

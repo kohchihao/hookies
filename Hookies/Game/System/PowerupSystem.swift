@@ -14,13 +14,13 @@ protocol PowerupSystemProtocol {
     func add(player: SpriteComponent)
     func add(powerup: PowerupComponent)
     func removePowerup(from player: SpriteComponent)
-    func collectAndBroadcast(powerupComponent: PowerupComponent,
+    func collectAndBroadcast(powerupNode: SKSpriteNode,
                              by sprite: SpriteComponent)
     func activateNetTrapAndBroadcast(at point: CGPoint,
                                      on sprite: SpriteComponent)
 }
 
-protocol PowerupSystemDelegate: MovementControlDelegate {
+protocol PowerupSystemDelegate: MovementControlDelegate, SceneDelegate {
 
     /// Indicates that the trap has been added.
     /// - Parameter sprite: The trap's sprite
@@ -61,7 +61,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private(set) var activatedPowerups = [SpriteComponent: [PowerupComponent]]()
 
     // Powerups that are collectible on the map
-    private(set) var powerups = Set<PowerupComponent>()
+    private(set) var collectablePowerups = Set<PowerupComponent>()
     private(set) var netTraps = Set<SpriteComponent>()
 
     var players: [SpriteComponent] {
@@ -86,7 +86,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     /// Will add the powerup component into the system
     /// - Parameter powerup: The powerup component to add into the system.
     func add(powerup: PowerupComponent) {
-        powerups.insert(powerup)
+        collectablePowerups.insert(powerup)
     }
 
     /// Will remove the powerup owned by the  player.
@@ -124,21 +124,30 @@ class PowerupSystem: System, PowerupSystemProtocol {
     /// Will trigger the sprite to collect the given powerup.
     /// Will also broadcast this event to other players.
     /// - Parameters:
-    ///   - powerupComponent: The powerup component to be collected
+    ///   - powerupNode: The powerup sprite node to be collected
     ///   - sprite: The sprite that collects the powerup.
-    func collectAndBroadcast(powerupComponent: PowerupComponent,
+    func collectAndBroadcast(powerupNode: SKSpriteNode,
                              by sprite: SpriteComponent
     ) {
-        guard let powerupSprite = powerupComponent.parent.get(SpriteComponent.self) else {
+        guard let powerupComponent = findPowerup(at: powerupNode.position) else {
             return
         }
-
+        let powerupPos = Vector(point: powerupNode.position)
+        let powerupType = powerupComponent.type
+        let animatedNode = powerupType.animateRemoval(from: powerupNode.position)
+        delegate?.hasAdded(node: animatedNode)
         collect(powerupComponent: powerupComponent, by: sprite)
-        let powerupPos = Vector(point: powerupSprite.node.position)
+        broadcastCollection(of: powerupComponent, by: sprite, at: powerupPos)
+    }
+
+    private func broadcastCollection(of powerup: PowerupComponent,
+                                     by sprite: SpriteComponent,
+                                     at position: Vector
+    ) {
         let info = [
             "data": PowerupCollectionSystemEvent(sprite: sprite,
-                                                 powerupPos: powerupPos,
-                                                 powerupType: powerupComponent.type)
+                                                 powerupPos: position,
+                                                 powerupType: powerup.type)
         ]
         NotificationCenter.default.post(name: Notification.Name.broadcastPowerupCollectionEvent,
                                         object: nil,
@@ -223,17 +232,27 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private func collect(powerupComponent: PowerupComponent,
                          by sprite: SpriteComponent
     ) {
-        guard let powerupSprite = powerupComponent.parent.get(SpriteComponent.self)
-            else {
-                return
-        }
-        powerups.remove(powerupComponent)
-        powerupComponent.parent.removeComponents(SpriteComponent.self)
         add(player: sprite, with: powerupComponent)
+        remove(collectablePowerup: powerupComponent) { success in
+            if success {
+                self.delegate?.collected(powerup: powerupComponent, by: sprite)
+            }
+        }
+    }
 
+    private func remove(collectablePowerup: PowerupComponent,
+                        complete: @escaping (_ success: Bool) -> Void
+    ) {
+        guard let powerupSprite = collectablePowerup.parent.get(SpriteComponent.self)
+            else {
+                return complete(false)
+        }
+
+        collectablePowerups.remove(collectablePowerup)
         let fade = SKAction.fadeOut(withDuration: 0.5)
         powerupSprite.node.run(fade, completion: {
             powerupSprite.node.removeFromParent()
+            complete(true)
         })
     }
 
@@ -500,7 +519,6 @@ extension PowerupSystem {
 
         powerup.type = collectionEvent.powerupType
         collect(powerupComponent: powerup, by: sprite)
-        delegate?.collected(powerup: powerup, by: sprite)
     }
 
     @objc private func receivedPowerupEventAction(_ notification: Notification) {
@@ -520,7 +538,7 @@ extension PowerupSystem {
     }
 
     private func findPowerup(at point: CGPoint) -> PowerupComponent? {
-        for powerup in powerups {
+        for powerup in collectablePowerups {
             guard let sprite = powerup.parent.get(SpriteComponent.self) else {
                 continue
             }

@@ -43,7 +43,7 @@ class PowerupSystemTests: XCTestCase {
 
         powerupSystem.add(powerup: shieldPowerupComponent)
         powerupSystem.add(powerup: stealPowerupComponent)
-        XCTAssertEqual(powerupSystem.powerups.count, 2)
+        XCTAssertEqual(powerupSystem.collectablePowerups.count, 2)
 
         powerupSystem.add(player: player1Sprite)
         powerupSystem.add(player: player2Sprite)
@@ -53,12 +53,12 @@ class PowerupSystemTests: XCTestCase {
     func testCollectionOfPowerup() {
         powerupSystem.collectAndBroadcast(powerupComponent: shieldPowerupComponent,
                                           by: player1Sprite)
-        XCTAssertEqual(powerupSystem.powerups.count, 1)
+        XCTAssertEqual(powerupSystem.collectablePowerups.count, 1)
 
         // Collecting non-existent powerup should do nothing
         powerupSystem.collectAndBroadcast(powerupComponent: shieldPowerupComponent,
                                           by: player1Sprite)
-        XCTAssertEqual(powerupSystem.powerups.count, 1)
+        XCTAssertEqual(powerupSystem.collectablePowerups.count, 1)
 
         // Player should be assigned that powerup
         XCTAssertEqual(powerupSystem.ownedPowerups[player1Sprite]!,
@@ -72,7 +72,7 @@ class PowerupSystemTests: XCTestCase {
     func testRemovePowerupFromPlayer() {
         powerupSystem.collectAndBroadcast(powerupComponent: shieldPowerupComponent,
                                           by: player1Sprite)
-        XCTAssertEqual(powerupSystem.powerups.count, 1)
+        XCTAssertEqual(powerupSystem.collectablePowerups.count, 1)
 
         powerupSystem.removePowerup(from: player1Sprite)
         XCTAssertEqual(powerupSystem.ownedPowerups[player1Sprite], [])

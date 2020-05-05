@@ -68,4 +68,12 @@ protocol GameEngineDelegate: AnyObject {
     /// To add stolen powerup to the current player
     /// - Parameter powerup: the powerup type to add
     func hasStolen(powerup: PowerupType)
+
+    /// To add collected powerup to the current player
+    /// - Parameter powerup: the powerup type to add
+    func hasCollected(powerup: PowerupType)
+
+    /// Will be called when the node is to added into game scene
+    /// - Parameter node: The node to be added into game scene
+    func hasAdded(node: SKSpriteNode)
 }

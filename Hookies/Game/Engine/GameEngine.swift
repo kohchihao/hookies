@@ -196,19 +196,11 @@ class GameEngine {
 
     // MARK: - Contact with Powerups
     /// Handles the logic of collecting of powerups for current player
-    func currentPlayerContactWith(powerup: SKSpriteNode) -> PowerupType? {
-        guard let playerSprite = currentPlayer?.get(SpriteComponent.self),
-            let powerupEntity = findPowerupEntity(for: powerup),
-            let powerupSprite = powerupEntity.get(SpriteComponent.self),
-            let powerupComponent = powerupEntity.get(PowerupComponent.self) else {
-                return nil
+    func currentPlayerContactWith(powerup: SKSpriteNode) {
+        guard let playerSprite = currentPlayer?.get(SpriteComponent.self) else {
+            return
         }
-
-        powerups.removeAll(where: { $0 === powerupEntity })
-        spriteSystem.removePhysicsBody(to: powerupSprite)
-        powerupSystem.collectAndBroadcast(powerupComponent: powerupComponent,
-                                          by: playerSprite)
-        return powerupComponent.type
+        powerupSystem.collectAndBroadcast(powerupNode: powerup, by: playerSprite)
     }
 
     /// Handles the contact logic between a player and a trap in the game
@@ -643,10 +635,18 @@ extension GameEngine: EndSystemDelegate {
 
 extension GameEngine: PowerupSystemDelegate {
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent) {
-        guard let powerupEntity = powerup.parent as? PowerupEntity else {
-            return
+        guard let powerupEntity = powerup.parent as? PowerupEntity,
+            let powerupSprite = powerupEntity.get(SpriteComponent.self),
+            let player = sprite.parent as? PlayerEntity else {
+                return
         }
+
+        powerup.parent.removeComponents(SpriteComponent.self)
+        spriteSystem.removePhysicsBody(to: powerupSprite)
         powerups.removeAll(where: { $0 === powerupEntity })
+        if player === currentPlayer {
+            delegate?.hasCollected(powerup: powerup.type)
+        }
     }
 
     func hasAddedTrap(sprite spriteComponent: SpriteComponent) {
@@ -696,5 +696,11 @@ extension GameEngine: MovementControlDelegate {
             Logger.log.show(details: "Disable movement", logType: .information)
             delegate?.movementButton(isDisabled: isDisabled)
         }
+    }
+}
+
+extension GameEngine: SceneDelegate {
+    func hasAdded(node: SKSpriteNode) {
+        delegate?.hasAdded(node: node)
     }
 }
