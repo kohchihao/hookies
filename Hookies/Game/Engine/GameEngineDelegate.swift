@@ -57,6 +57,14 @@ protocol GameEngineDelegate: AnyObject {
     /// - Parameter sprite: the trap's node
     func addTrap(with sprite: SKSpriteNode)
 
+    /// Add the given sprite into the scene
+    /// - Parameter sprite: The sprite to be added into the game scene.
+    func addToScene(with sprite: SKSpriteNode)
+
+    /// Indicate that the given powerup type has been obtained by the current player
+    /// - Parameter powerupType: The powerup type that has been obtained.
+    func hasObtained(powerupType: PowerupType)
+
     /// To enable or disable movement buttons in the scene
     /// - Parameter isDisabled:true is enable the buttons, vice versa for false
     func movementButton(isDisabled: Bool)

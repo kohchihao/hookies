@@ -29,6 +29,7 @@ class GameEngine {
     private var startSystem = StartSystem()
     private var endSystem: EndSystem?
     private var botSystem: BotSystem?
+    private var collectableSystem = CollectableSystem()
 
     // MARK: - Entity
 
@@ -39,6 +40,7 @@ class GameEngine {
     private var platforms = [PlatformEntity]()
     private var bolts = [BoltEntity]()
     private var powerups = [PowerupEntity]()
+    private var treasureBoxes = [TreasureBoxEntity]()
     private var cannon = CannonEntity()
     private var finishingLine = FinishingLineEntity()
 
@@ -48,7 +50,7 @@ class GameEngine {
         cannon: GameObject,
         finishingLine: GameObject,
         bolts: [GameObject],
-        powerups: [GameObject],
+        treasures: [GameObject],
         platforms: [GameObject],
         hasBot: Bool
     ) {
@@ -56,7 +58,8 @@ class GameEngine {
 
         let boltsSprite = initialiseBolts(bolts)
         let platformsSprite = initialisePlatforms(platforms)
-        initialisePowerups(powerups)
+
+        initialiseCollectables(treasures: treasures)
 
         userConnectionSystem = UserConnectionSystem()
         hookSystem = HookSystem(bolts: boltsSprite)
@@ -80,6 +83,7 @@ class GameEngine {
         hookSystem?.delegate = self
         userConnectionSystem?.delegate = self
         powerupSystem.delegate = self
+        collectableSystem.delegate = self
     }
 
     // MARK: - Add Players
@@ -194,21 +198,26 @@ class GameEngine {
         }
     }
 
-    // MARK: - Contact with Powerups
-    /// Handles the logic of collecting of powerups for current player
-    func currentPlayerContactWith(powerup: SKSpriteNode) -> PowerupType? {
-        guard let playerSprite = currentPlayer?.get(SpriteComponent.self),
-            let powerupEntity = findPowerupEntity(for: powerup),
-            let powerupSprite = powerupEntity.get(SpriteComponent.self),
-            let powerupComponent = powerupEntity.get(PowerupComponent.self) else {
-                return nil
+    // MARK: - Contact with Collectables
+    /// Handles the logic of collecting of treasure boxes for current player
+    func currentPlayerContactWith(treasureBox: SKSpriteNode) {
+        guard let currentPlayer = currentPlayer,
+            let currentPlayerSprite = currentPlayer.get(SpriteComponent.self) else {
+                return
         }
 
-        powerups.removeAll(where: { $0 === powerupEntity })
-        spriteSystem.removePhysicsBody(to: powerupSprite)
-        powerupSystem.collectAndBroadcast(powerupComponent: powerupComponent,
-                                          by: playerSprite)
-        return powerupComponent.type
+        let collectableOpt = collectableSystem.collect(node: treasureBox,
+                                                       by: currentPlayerSprite)
+        let treasureBoxEntityOpt = collectableOpt?.parent as? TreasureBoxEntity
+        let collectableSpriteOpt = treasureBoxEntityOpt?.get(SpriteComponent.self)
+
+        guard let treasureBoxEntity = treasureBoxEntityOpt,
+            let spriteComponent = collectableSpriteOpt else {
+                return
+        }
+
+        treasureBoxes.removeAll(where: { $0 === treasureBoxEntity })
+        spriteSystem.removePhysicsBody(to: spriteComponent)
     }
 
     /// Handles the contact logic between a player and a trap in the game
@@ -278,39 +287,22 @@ class GameEngine {
         return boltsSprite
     }
 
-    // MARK: - Power ups
+    // MARK: - Collectables
 
-    private func initialisePowerups(_ powerups: [GameObject]) {
-        powerups.forEach({ addNewRandomPowerup(for: $0.node) })
-    }
+    private func initialiseCollectables(treasures: [GameObject]) {
+        for treasure in treasures {
+            let treasureEntity = TreasureBoxEntity()
+            guard let sprite = treasureEntity.get(SpriteComponent.self),
+                let collectableComponent = treasureEntity.get(PowerupCollectableComponent.self) else {
+                continue
+            }
+            _ = spriteSystem.set(sprite: sprite, to: treasure.node)
+            _ = spriteSystem.setPhysicsBody(to: sprite, of: .treasureBox,
+                                            rectangleOf: sprite.node.size)
 
-    private func addNewRandomPowerup(for spriteNode: SKSpriteNode) {
-        let randType = PowerupType.allCases.randomElement() ?? .shield
-        addNewPowerup(with: randType, for: spriteNode)
-    }
-
-    private func addNewPowerup(with type: PowerupType,
-                               for spriteNode: SKSpriteNode
-    ) {
-        guard let powerupEntity = createPowerup(with: type, for: spriteNode),
-            let powerupComponent = powerupEntity.get(PowerupComponent.self) else {
-            return
+            treasureBoxes.append(treasureEntity)
+            collectableSystem.add(collectable: collectableComponent)
         }
-        powerups.append(powerupEntity)
-        powerupSystem.add(powerup: powerupComponent)
-    }
-
-    private func createPowerup(with type: PowerupType,
-                               for spriteNode: SKSpriteNode
-    ) -> PowerupEntity? {
-        let powerupEntity = PowerupEntity(for: type)
-        guard let powerupSprite = powerupEntity.get(SpriteComponent.self) else {
-            return nil
-        }
-        _ = spriteSystem.set(sprite: powerupSprite, to: spriteNode)
-        _ = spriteSystem.setPhysicsBody(to: powerupSprite, of: .powerup,
-                                        rectangleOf: powerupSprite.node.size)
-        return powerupEntity
     }
 
     // MARK: - Platform
@@ -696,5 +688,19 @@ extension GameEngine: MovementControlDelegate {
             Logger.log.show(details: "Disable movement", logType: .information)
             delegate?.movementButton(isDisabled: isDisabled)
         }
+    }
+}
+
+extension GameEngine: CollectableDelegate {
+    func didAnimate(for node: SKSpriteNode) {
+        delegate?.addToScene(with: node)
+    }
+
+    func didCollect(powerup powerupComponent: PowerupComponent) {
+        guard let entity = powerupComponent.parent as? PowerupEntity else {
+            return
+        }
+        powerups.append(entity)
+        delegate?.hasObtained(powerupType: powerupComponent.type)
     }
 }

@@ -81,6 +81,14 @@ class PowerupSystem: System, PowerupSystemProtocol {
         activatedPowerups[player] = []
     }
 
+    // MARK: Add player's Powerup
+
+    func add(player: SpriteComponent, with powerup: PowerupComponent) {
+        removePowerup(from: player)
+        ownedPowerups[player]?.append(powerup)
+        powerup.setOwner(player.parent)
+    }
+
     // MARK: Remove/Add Powerup
 
     /// Will add the powerup component into the system
@@ -208,14 +216,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         removePowerup(from: player1)
         add(player: player2, with: powerupToSteal)
         delegate?.indicateSteal(from: player1, by: player2, with: powerupToSteal)
-    }
-
-    // MARK: Add player's Powerup
-
-    private func add(player: SpriteComponent, with powerup: PowerupComponent) {
-        removePowerup(from: player)
-        ownedPowerups[player]?.append(powerup)
-        powerup.setOwner(player.parent)
     }
 
     // MARK: - Collect Powerup
@@ -490,8 +490,8 @@ extension PowerupSystem {
             let collectionEvent = data["data"] else {
                 return
         }
-        let positionOfCollection = CGPoint(vector: collectionEvent.powerupPos)
 
+        let positionOfCollection = CGPoint(vector: collectionEvent.powerupPos)
         guard let powerup = findPowerup(at: positionOfCollection),
             let sprite = collectionEvent.sprite.parent.get(SpriteComponent.self)
             else {

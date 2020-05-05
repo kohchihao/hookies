@@ -27,7 +27,7 @@ enum SpriteType {
     case player15
     case bolt
     case line
-    case powerup
+    case treasureBox
     case finishingLine
     case netTrap
 
@@ -64,7 +64,7 @@ extension SpriteType {
         .player9, .player10, .player11, .player12,
         .player13, .player14, .player15:
             return 2
-        case .finishingLine, .bolt, .powerup, .netTrap:
+        case .finishingLine, .bolt, .treasureBox, .netTrap:
             return 1
         default:
             return 0
@@ -174,7 +174,7 @@ extension SpriteType {
             return 0x1 << 14
         case .player15:
             return 0x1 << 15
-        case .powerup:
+        case .treasureBox:
             return 0x1 << 16
         case .finishingLine:
             return 0x1 << 17
@@ -231,7 +231,7 @@ extension SpriteType {
         .player9, .player10, .player11, .player12,
         .player13, .player14, .player15:
             return SpriteType.finishingLine.bitMask |
-                SpriteType.powerup.bitMask | SpriteType.netTrap.bitMask
+                SpriteType.treasureBox.bitMask | SpriteType.netTrap.bitMask
         default:
             return 0
         }

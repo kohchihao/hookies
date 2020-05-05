@@ -18,7 +18,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var background: Background?
     private var cannon: SKSpriteNode?
     private var finishingLine: SKSpriteNode?
-    private var powerups: [SKSpriteNode] = []
+    private var treasureBoxes: [SKSpriteNode] = []
     private var traps: [SKSpriteNode] = []
 
     private var grapplingHookButton: GrapplingHookButton?
@@ -92,8 +92,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     return
                 }
                 if player == currentPlayer {
-                    for powerup in powerups where has(contact: contact, with: powerup) {
-                        handleContactWithPowerup(powerup)
+                    for treasure in treasureBoxes where has(contact: contact, with: treasure) {
+                        handleContactWithTreasureBox(treasure)
                         return
                     }
                 }
@@ -117,33 +117,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameEngine?.contactBetween(playerNode: player, trap: trap)
     }
 
-    /// Handles the contact with power up chests.
-    /// - Parameter powerup: The power up chest
-    private func handleContactWithPowerup(_ powerup: SKSpriteNode) {
-        powerups.removeAll(where: { $0 == powerup })
-        animateDisappear(of: powerup)
-    }
-
-    /// Animate the removal of power up chest
-    /// - Parameter powerup: The power up chest
-    private func animateDisappear(of powerup: SKSpriteNode) {
-        guard let powerupType = gameEngine?.currentPlayerContactWith(powerup: powerup) else {
-            return
-        }
-
-        let powerupDisplay = powerupType.buttonNode
-        powerupDisplay.position = powerup.position
-        powerupDisplay.zPosition = 0
-        addChild(powerupDisplay)
-
-        let finalPosition = CGPoint(x: powerupDisplay.position.x,
-                                    y: powerupDisplay.position.y + 60)
-        let powerupAnimation = SKAction.sequence([SKAction.move(to: finalPosition, duration: 1),
-                                                  SKAction.fadeOut(withDuration: 0.5)])
-        powerupDisplay.run(powerupAnimation, completion: {
-            powerupDisplay.removeFromParent()
-            self.powerupButton?.setPowerup(to: powerupType)
-        })
+    /// Handles the contact with treasure chest.
+    /// - Parameter treasureBox: The node of the treasure box
+    private func handleContactWithTreasureBox(_ treasureBox: SKSpriteNode) {
+        treasureBoxes.removeAll(where: { $0 == treasureBox })
+        gameEngine?.currentPlayerContactWith(treasureBox: treasureBox)
+//        animateDisappear(of: treasureBox)
     }
 
     // MARK: - Initialise contact delegate
@@ -241,10 +220,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let cannonObject = getGameObjects(of: .cannon)[0]
         let finishingLineObject = getGameObjects(of: .finishingLine)[0]
         let boltObjects = getGameObjects(of: .bolt)
-        let powerupObjects = getGameObjects(of: .powerup)
+        let treasureBoxObjects = getGameObjects(of: .treasureBox)
         let platformObjects = getGameObjects(of: .platform)
-
-        let powerupNodes = getGameNodes(of: .powerup)
 
         let hasBot = players.contains(where: { $0.isCurrentPlayer && $0.isHost })
 
@@ -252,7 +229,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             cannon: cannonObject,
             finishingLine: finishingLineObject,
             bolts: boltObjects,
-            powerups: powerupObjects,
+            treasures: treasureBoxObjects,
             platforms: platformObjects,
             hasBot: hasBot
         )
@@ -262,7 +239,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         self.cannon = cannonObject.node
         self.finishingLine = finishingLineObject.node
-        self.powerups = powerupNodes
+        self.treasureBoxes = treasureBoxObjects.map({ $0.node })
     }
 
     /// Get the nodes within the Game Scene.
@@ -488,13 +465,6 @@ extension GameScene: GameEngineDelegate {
         jumpButton?.state = .ButtonNodeStateActive
     }
 
-    func addNotActivatedPowerup(_ sprite: SKSpriteNode) {
-        powerups.append(sprite)
-        addChild(sprite)
-        let fadeIn = SKAction.fadeIn(withDuration: 1)
-        sprite.run(fadeIn)
-    }
-
     func addTrap(with sprite: SKSpriteNode) {
         addChild(sprite)
         traps.append(sprite)
@@ -597,5 +567,13 @@ extension GameScene: GameEngineDelegate {
             message.removeFromParent()
             powerupButton.setPowerup(to: powerup)
         })
+    }
+
+    func hasObtained(powerupType: PowerupType) {
+        powerupButton?.setPowerup(to: powerupType)
+    }
+
+    func addToScene(with sprite: SKSpriteNode) {
+        addChild(sprite)
     }
 }

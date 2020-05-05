@@ -47,6 +47,11 @@
 		119A3E3E242C73230064B034 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119A3E3D242C73230064B034 /* Constants.swift */; };
 		119C5421241691DF00F27D87 /* DocumentReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5420241691DF00F27D87 /* DocumentReference.swift */; };
 		119C5423241691EF00F27D87 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C5422241691EF00F27D87 /* Query.swift */; };
+		11B8CD70245FF4E600C652F0 /* NetTrapPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B8CD6F245FF4E600C652F0 /* NetTrapPowerup.swift */; };
+		11B8CD72245FF4F100C652F0 /* ShieldPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B8CD71245FF4F100C652F0 /* ShieldPowerup.swift */; };
+		11B8CD74245FF4FD00C652F0 /* PlayerHookPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B8CD73245FF4FD00C652F0 /* PlayerHookPowerup.swift */; };
+		11B8CD76245FF50800C652F0 /* CutHookPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B8CD75245FF50800C652F0 /* CutHookPowerup.swift */; };
+		11B8CD78245FF51400C652F0 /* StealPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B8CD77245FF51400C652F0 /* StealPowerup.swift */; };
 		11CC84432439E748006D3A8F /* HookSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84372439E747006D3A8F /* HookSystem.swift */; };
 		11CC84442439E748006D3A8F /* UserConnectionSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84382439E748006D3A8F /* UserConnectionSystem.swift */; };
 		11CC84452439E748006D3A8F /* DeadlockSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC84392439E748006D3A8F /* DeadlockSystem.swift */; };
@@ -143,6 +148,10 @@
 		11CC85352439E9EB006D3A8F /* ClosestBoltSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85302439E9EB006D3A8F /* ClosestBoltSystemTests.swift */; };
 		11CC85362439E9EB006D3A8F /* SpriteSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CC85312439E9EB006D3A8F /* SpriteSystemTests.swift */; };
 		11D3D2A62450159500B6BBC2 /* StealPowerupEffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D3D2A52450159500B6BBC2 /* StealPowerupEffectComponent.swift */; };
+		11EE66DD24605C05008B72FC /* CollectableSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE66DC24605C05008B72FC /* CollectableSystem.swift */; };
+		11EE66DF24605C1E008B72FC /* CollectableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE66DE24605C1E008B72FC /* CollectableComponent.swift */; };
+		11EE66E224610D99008B72FC /* PowerupCollectableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE66E124610D99008B72FC /* PowerupCollectableComponent.swift */; };
+		11EE66E624612261008B72FC /* TreasureBoxEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EE66E524612261008B72FC /* TreasureBoxEntity.swift */; };
 		2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */; };
 		2B4CCD442435AC4F0086DEC6 /* HookDelegateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */; };
 		2B4E43A12446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */; };
@@ -272,6 +281,11 @@
 		119A3E3D242C73230064B034 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		119C5420241691DF00F27D87 /* DocumentReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentReference.swift; sourceTree = "<group>"; };
 		119C5422241691EF00F27D87 /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
+		11B8CD6F245FF4E600C652F0 /* NetTrapPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetTrapPowerup.swift; sourceTree = "<group>"; };
+		11B8CD71245FF4F100C652F0 /* ShieldPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldPowerup.swift; sourceTree = "<group>"; };
+		11B8CD73245FF4FD00C652F0 /* PlayerHookPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHookPowerup.swift; sourceTree = "<group>"; };
+		11B8CD75245FF50800C652F0 /* CutHookPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutHookPowerup.swift; sourceTree = "<group>"; };
+		11B8CD77245FF51400C652F0 /* StealPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StealPowerup.swift; sourceTree = "<group>"; };
 		11CC84372439E747006D3A8F /* HookSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HookSystem.swift; sourceTree = "<group>"; };
 		11CC84382439E748006D3A8F /* UserConnectionSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConnectionSystem.swift; sourceTree = "<group>"; };
 		11CC84392439E748006D3A8F /* DeadlockSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeadlockSystem.swift; sourceTree = "<group>"; };
@@ -368,6 +382,10 @@
 		11CC85302439E9EB006D3A8F /* ClosestBoltSystemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestBoltSystemTests.swift; sourceTree = "<group>"; };
 		11CC85312439E9EB006D3A8F /* SpriteSystemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpriteSystemTests.swift; sourceTree = "<group>"; };
 		11D3D2A52450159500B6BBC2 /* StealPowerupEffectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StealPowerupEffectComponent.swift; sourceTree = "<group>"; };
+		11EE66DC24605C05008B72FC /* CollectableSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectableSystem.swift; sourceTree = "<group>"; };
+		11EE66DE24605C1E008B72FC /* CollectableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectableComponent.swift; sourceTree = "<group>"; };
+		11EE66E124610D99008B72FC /* PowerupCollectableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupCollectableComponent.swift; sourceTree = "<group>"; };
+		11EE66E524612261008B72FC /* TreasureBoxEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreasureBoxEntity.swift; sourceTree = "<group>"; };
 		2B4CCD4024358D460086DEC6 /* GameEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngineDelegate.swift; sourceTree = "<group>"; };
 		2B4CCD432435AC4F0086DEC6 /* HookDelegateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookDelegateModel.swift; sourceTree = "<group>"; };
 		2B4E43A02446BAD500D5BA86 /* PowerupCollectionSystemEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerupCollectionSystemEvent.swift; sourceTree = "<group>"; };
@@ -643,7 +661,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		11593D7A2432C6A400462BE6 /* PowerupEffectsComponent */ = {
+		11593D7A2432C6A400462BE6 /* PowerupEffectComponents */ = {
 			isa = PBXGroup;
 			children = (
 				11CC84842439E7A8006D3A8F /* MovementEffectComponent.swift */,
@@ -654,7 +672,7 @@
 				112B6196244FF6D900B60D72 /* CutRopeEffectComponent.swift */,
 				11D3D2A52450159500B6BBC2 /* StealPowerupEffectComponent.swift */,
 			);
-			path = PowerupEffectsComponent;
+			path = PowerupEffectComponents;
 			sourceTree = "<group>";
 		};
 		117BA3212418EBF7001089D1 /* UIViewController */ = {
@@ -774,6 +792,28 @@
 				119C5422241691EF00F27D87 /* Query.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		11B8CD6E245FF4BB00C652F0 /* PowerupEntities */ = {
+			isa = PBXGroup;
+			children = (
+				11CC84912439E7C0006D3A8F /* PowerupEntity.swift */,
+				11B8CD6F245FF4E600C652F0 /* NetTrapPowerup.swift */,
+				11B8CD71245FF4F100C652F0 /* ShieldPowerup.swift */,
+				11B8CD73245FF4FD00C652F0 /* PlayerHookPowerup.swift */,
+				11B8CD75245FF50800C652F0 /* CutHookPowerup.swift */,
+				11B8CD77245FF51400C652F0 /* StealPowerup.swift */,
+			);
+			path = PowerupEntities;
+			sourceTree = "<group>";
+		};
+		11EE66E024610D34008B72FC /* CollectableComponents */ = {
+			isa = PBXGroup;
+			children = (
+				11EE66DE24605C1E008B72FC /* CollectableComponent.swift */,
+				11EE66E124610D99008B72FC /* PowerupCollectableComponent.swift */,
+			);
+			path = CollectableComponents;
 			sourceTree = "<group>";
 		};
 		2B4CCD422435AC1B0086DEC6 /* Model */ = {
@@ -968,6 +1008,7 @@
 		D90876FB24299BD200B73D0E /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				11B8CD6E245FF4BB00C652F0 /* PowerupEntities */,
 				11CC84A02439E7D0006D3A8F /* BoltEntity.swift */,
 				785CE3E3244D997F00B1B5CD /* BotEntity.swift */,
 				11CC849D2439E7D0006D3A8F /* CannonEntity.swift */,
@@ -975,7 +1016,7 @@
 				11CC849C2439E7D0006D3A8F /* FinishingLineEntity.swift */,
 				11CC849E2439E7D0006D3A8F /* PlatformEntity.swift */,
 				11CC849F2439E7D0006D3A8F /* PlayerEntity.swift */,
-				11CC84912439E7C0006D3A8F /* PowerupEntity.swift */,
+				11EE66E524612261008B72FC /* TreasureBoxEntity.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -983,6 +1024,8 @@
 		D90876FC24299BD800B73D0E /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				11EE66E024610D34008B72FC /* CollectableComponents */,
+				11593D7A2432C6A400462BE6 /* PowerupEffectComponents */,
 				11CC84722439E798006D3A8F /* BounceComponent.swift */,
 				11CC84712439E798006D3A8F /* Component.swift */,
 				11CC84752439E799006D3A8F /* HookComponent.swift */,
@@ -991,7 +1034,6 @@
 				11CC84742439E799006D3A8F /* PowerupComponent.swift */,
 				11CC847E2439E79F006D3A8F /* RotateComponent.swift */,
 				11CC847D2439E79E006D3A8F /* SpriteComponent.swift */,
-				11593D7A2432C6A400462BE6 /* PowerupEffectsComponent */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -1013,6 +1055,7 @@
 				D979D8FC244ACC3700830E8C /* StartSystem.swift */,
 				11CC843D2439E748006D3A8F /* System.swift */,
 				11CC84382439E748006D3A8F /* UserConnectionSystem.swift */,
+				11EE66DC24605C05008B72FC /* CollectableSystem.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1459,6 +1502,7 @@
 			files = (
 				11CC84FC2439E8E5006D3A8F /* RoundButton.swift in Sources */,
 				11CC85012439E8E5006D3A8F /* IncomingTableViewCell.swift in Sources */,
+				11B8CD76245FF50800C652F0 /* CutHookPowerup.swift in Sources */,
 				116AD648242DB7CD0070F00B /* Encoder.swift in Sources */,
 				11CC852A2439E9C4006D3A8F /* Social.swift in Sources */,
 				11CC85102439E921006D3A8F /* MapDelegate.swift in Sources */,
@@ -1475,6 +1519,7 @@
 				11CC84A22439E7D1006D3A8F /* FinishingLineEntity.swift in Sources */,
 				119A3E3E242C73230064B034 /* Constants.swift in Sources */,
 				1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */,
+				11EE66DD24605C05008B72FC /* CollectableSystem.swift in Sources */,
 				1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */,
 				D979D8FD244ACC3700830E8C /* StartSystem.swift in Sources */,
 				11CC851C2439E991006D3A8F /* SocialCoordinator.swift in Sources */,
@@ -1491,6 +1536,7 @@
 				11CC852C2439E9C4006D3A8F /* Vector.swift in Sources */,
 				11CC852B2439E9C4006D3A8F /* Request.swift in Sources */,
 				11CC84452439E748006D3A8F /* DeadlockSystem.swift in Sources */,
+				11EE66E224610D99008B72FC /* PowerupCollectableComponent.swift in Sources */,
 				11CC851D2439E991006D3A8F /* InviteManager.swift in Sources */,
 				119A3E3C242C72C70064B034 /* Config.swift in Sources */,
 				2B4CCD4124358D460086DEC6 /* GameEngineDelegate.swift in Sources */,
@@ -1512,6 +1558,7 @@
 				11CC84BC2439E832006D3A8F /* LobbyState.swift in Sources */,
 				11CC84DE2439E8A0006D3A8F /* User+SocketData.swift in Sources */,
 				D9FF1A7F241E325900E7965F /* GamePlayCoordinator.swift in Sources */,
+				11B8CD72245FF4F100C652F0 /* ShieldPowerup.swift in Sources */,
 				2BAACCBB244D78C6008D4659 /* EndSystem.swift in Sources */,
 				11CC84792439E799006D3A8F /* BounceComponent.swift in Sources */,
 				11CC84442439E748006D3A8F /* UserConnectionSystem.swift in Sources */,
@@ -1522,10 +1569,14 @@
 				D9DB89A7244DA6A600A86DFC /* ShortenButton.swift in Sources */,
 				11CC84BD2439E832006D3A8F /* CostumeType.swift in Sources */,
 				11CC84782439E799006D3A8F /* Component.swift in Sources */,
+				11B8CD74245FF4FD00C652F0 /* PlayerHookPowerup.swift in Sources */,
+				11B8CD70245FF4E600C652F0 /* NetTrapPowerup.swift in Sources */,
 				11CC84A12439E7D1006D3A8F /* Entity.swift in Sources */,
 				11CC84DD2439E8A0006D3A8F /* PowerupCollectionData.swift in Sources */,
 				11CC84462439E748006D3A8F /* FinishingLineSystem.swift in Sources */,
+				11EE66E624612261008B72FC /* TreasureBoxEntity.swift in Sources */,
 				11CC84432439E748006D3A8F /* HookSystem.swift in Sources */,
+				11EE66DF24605C1E008B72FC /* CollectableComponent.swift in Sources */,
 				11CC84472439E748006D3A8F /* SpriteSystem.swift in Sources */,
 				118A4A6F2424861E005B7188 /* UIViewController+Nameable.swift in Sources */,
 				11CC848A2439E7A8006D3A8F /* PlayerHookEffectComponent.swift in Sources */,
@@ -1535,6 +1586,7 @@
 				2BA5F943244364E4009AF93C /* DeviceStatus.swift in Sources */,
 				D923C13E241A4346004AB20A /* AppDelegate.swift in Sources */,
 				11CC84E82439E8B9006D3A8F /* GameplayStore.swift in Sources */,
+				11B8CD78245FF51400C652F0 /* StealPowerup.swift in Sources */,
 				11CC844E2439E748006D3A8F /* ClosestBoltSystem.swift in Sources */,
 				1191BD712435ADAD00189DB8 /* GenericPlayerEvent.swift in Sources */,
 				11CC844D2439E748006D3A8F /* GameObjectMovementSystem.swift in Sources */,
