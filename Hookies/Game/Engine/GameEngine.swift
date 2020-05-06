@@ -160,8 +160,7 @@ class GameEngine {
             let playerSprite = currentPlayer.get(SpriteComponent.self) else {
             return
         }
-        powerupSystem.activateAndBroadcast(powerupType: type,
-                                           for: playerSprite)
+        powerupSystem.activatePowerup(for: playerSprite)
     }
 
     // MARK: - Current Player Jump Action
@@ -200,7 +199,7 @@ class GameEngine {
         guard let playerSprite = currentPlayer?.get(SpriteComponent.self) else {
             return
         }
-        powerupSystem.collectAndBroadcast(powerupNode: powerup, by: playerSprite)
+        powerupSystem.collect(powerupNode: powerup, by: playerSprite)
     }
 
     /// Handles the contact logic between a player and a trap in the game
@@ -213,7 +212,7 @@ class GameEngine {
                 continue
             }
             if playerSprite.node == playerNode {
-                powerupSystem.activateNetTrapAndBroadcast(at: trap.position, on: playerSprite)
+                powerupSystem.activateTrap(at: trap.position, on: playerSprite)
                 break
             }
         }
@@ -633,7 +632,7 @@ extension GameEngine: PowerupSystemDelegate {
     }
 
     func hasAddedTrap(sprite spriteComponent: SpriteComponent) {
-        _ = spriteSystem.setPhysicsBody(to: spriteComponent, of: .netTrap,
+        _ = spriteSystem.setPhysicsBody(to: spriteComponent, of: .trap,
                                         rectangleOf: spriteComponent.node.size)
         delegate?.addTrap(with: spriteComponent.node)
     }

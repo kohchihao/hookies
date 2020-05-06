@@ -29,7 +29,7 @@ enum SpriteType {
     case line
     case powerup
     case finishingLine
-    case netTrap
+    case trap
 
     /// All the other player type that is usable
     static let otherPlayers = [
@@ -64,7 +64,7 @@ extension SpriteType {
         .player9, .player10, .player11, .player12,
         .player13, .player14, .player15:
             return 2
-        case .finishingLine, .bolt, .powerup, .netTrap:
+        case .finishingLine, .bolt, .powerup, .trap:
             return 1
         default:
             return 0
@@ -178,7 +178,7 @@ extension SpriteType {
             return 0x1 << 16
         case .finishingLine:
             return 0x1 << 17
-        case .netTrap:
+        case .trap:
             return 0x1 << 18
         default:
             return 0
@@ -231,7 +231,7 @@ extension SpriteType {
         .player9, .player10, .player11, .player12,
         .player13, .player14, .player15:
             return SpriteType.finishingLine.bitMask |
-                SpriteType.powerup.bitMask | SpriteType.netTrap.bitMask
+                SpriteType.powerup.bitMask | SpriteType.trap.bitMask
         default:
             return 0
         }

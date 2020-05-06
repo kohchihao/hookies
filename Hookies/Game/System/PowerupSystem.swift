@@ -14,10 +14,8 @@ protocol PowerupSystemProtocol {
     func add(player: SpriteComponent)
     func add(powerup: PowerupComponent)
     func removePowerup(from player: SpriteComponent)
-    func collectAndBroadcast(powerupNode: SKSpriteNode,
-                             by sprite: SpriteComponent)
-    func activateNetTrapAndBroadcast(at point: CGPoint,
-                                     on sprite: SpriteComponent)
+    func collect(powerupNode: SKSpriteNode, by sprite: SpriteComponent)
+    func activateTrap(at point: CGPoint, on sprite: SpriteComponent)
 }
 
 protocol PowerupSystemDelegate: MovementControlDelegate, SceneDelegate {
@@ -59,9 +57,11 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private(set) var ownedPowerups = [SpriteComponent: [PowerupComponent]]()
     // Key: sprite of player, Value: activated powerups of player
     private(set) var activatedPowerups = [SpriteComponent: [PowerupComponent]]()
+    // Powerups that has been activated and its sprite is placed on the map
+    // waiting for players to contact it.
+    private(set) var traps = Set<SpriteComponent>()
 
     private(set) var collectablePowerups = Set<PowerupComponent>()
-    private(set) var netTraps = Set<SpriteComponent>()
 
     var players: [SpriteComponent] {
         return Array(ownedPowerups.keys)
@@ -125,9 +125,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     /// - Parameters:
     ///   - powerupNode: The powerup sprite node to be collected
     ///   - sprite: The sprite that collects the powerup.
-    func collectAndBroadcast(powerupNode: SKSpriteNode,
-                             by sprite: SpriteComponent
-    ) {
+    func collect(powerupNode: SKSpriteNode, by sprite: SpriteComponent) {
         guard let powerupComponent = findCollectablePowerup(at: powerupNode.position) else {
             return
         }
@@ -158,42 +156,41 @@ class PowerupSystem: System, PowerupSystemProtocol {
     /// Will activate the powerup that is owned by the sprite.
     /// Will also broadcast this event to other players.
     /// - Parameters:
-    ///   - powerupType: The powerup type to be activated.
     ///   - sprite: the sprite that triggers this activation.
-    func activateAndBroadcast(powerupType: PowerupType,
-                              for sprite: SpriteComponent
-    ) {
-        activate(powerupType: powerupType, by: sprite)
-        let info = [
-            "data": PowerupSystemEvent(sprite: sprite,
-                                       powerupEventType: .activate,
-                                       powerupType: powerupType)
-        ]
-        NotificationCenter.default.post(name: Notification.Name.broadcastPowerupAction,
-                                        object: nil,
-                                        userInfo: info)
+    func activatePowerup(for sprite: SpriteComponent) {
+        guard let powerup = powerup(for: sprite) else {
+            return
+        }
+
+        activate(powerup, by: sprite)
+        broadcastPowerup(eventType: .activate, by: sprite)
     }
 
-    /// Will activate the netTrap event that is activated on the given sprite.
+    /// Will activate the trap event that is activated on the given sprite.
     /// Will also broadcast this event to other players.
     /// - Parameters:
     ///   - point: The point at which this activate occurs.
     ///   - sprite: The sprite that gets trap in the net
-    func activateNetTrapAndBroadcast(at point: CGPoint,
-                                     on sprite: SpriteComponent) {
+    func activateTrap(at point: CGPoint, on sprite: SpriteComponent) {
         guard let trap = findTrap(at: point) else {
-            Logger.log.show(details: "Unable find netTrap", logType: .error)
+            Logger.log.show(details: "Unable find trap", logType: .error)
             return
         }
 
-        activateNetTrap(at: point, on: sprite)
-        let info = [
-            "data": PowerupSystemEvent(sprite: sprite,
-                                       powerupEventType: .netTrapped,
-                                       powerupType: .netTrap,
-                                       powerupPos: Vector(point: trap.node.position))
-        ]
-        NotificationCenter.default.post(name: Notification.Name.broadcastPowerupAction,
+        activate(trap: trap, on: sprite)
+        broadcastPowerup(eventType: .activateTrap, by: sprite)
+    }
+
+    private func broadcastPowerup(eventType: PowerupEventType,
+                                  by sprite: SpriteComponent
+    ) {
+        let position = Vector(point: sprite.node.position)
+        let event = PowerupSystemEvent(sprite: sprite,
+                                       powerupEventType: eventType,
+                                       powerupPos: position)
+        let info = [ "data": event ]
+        let nameOfBroadcast = Notification.Name.broadcastPowerupAction
+        NotificationCenter.default.post(name: nameOfBroadcast,
                                         object: nil,
                                         userInfo: info)
     }
@@ -221,7 +218,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     // MARK: Add player's Powerup
 
     private func add(player: SpriteComponent, with powerup: PowerupComponent) {
-        removePowerup(from: player)
+        removePowerup(from: player) // Ensure player will only own 1 powerup
         ownedPowerups[player]?.append(powerup)
         powerup.setOwner(player.parent)
     }
@@ -260,7 +257,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     /// Will find a trap at the given point if any.
     private func findTrap(at point: CGPoint) -> SpriteComponent? {
-        for trap in netTraps where trap.node.frame.contains(point) {
+        for trap in traps where trap.node.frame.contains(point) {
             return trap
         }
         return nil
@@ -297,12 +294,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: - Activate Net Trap
 
-    private func activateNetTrap(at point: CGPoint, on sprite: SpriteComponent) {
-        guard let trap = findTrap(at: point),
-            let powerup = trap.parent.get(PowerupComponent.self),
-            let owner = powerup.owner
-            else {
-                Logger.log.show(details: "Unable find netTrap", logType: .error)
+    private func activate(trap: SpriteComponent, on sprite: SpriteComponent) {
+        guard let powerup = trap.parent.get(PowerupComponent.self),
+            let owner = powerup.owner else {
+                Logger.log.show(details: "Unable find trap", logType: .error)
                 return
         }
 
@@ -311,19 +306,16 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
         apply(powerup: powerup, on: sprite) { isSuccess in
             if isSuccess {
-                self.netTraps.remove(trap)
+                self.traps.remove(trap)
             }
         }
     }
 
     // MARK: - Activate Powerup
 
-    /// Will activate the powerup type which is triggered by the given sprite.
-    private func activate(powerupType: PowerupType,
-                          by sprite: SpriteComponent
-    ) {
-        guard let powerup = powerup(for: sprite),
-            let powerupEntity = powerup.parent as? PowerupEntity else {
+    /// Will activate the powerup that is owned by the sprite.
+    private func activate(_ powerup: PowerupComponent, by sprite: SpriteComponent) {
+        guard let powerupEntity = powerup.parent as? PowerupEntity else {
             return
         }
 
@@ -331,6 +323,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
         removePowerup(from: sprite)
         addActivated(powerup: powerup, to: sprite)
         apply(powerup: powerup, on: sprite)
+        powerupEntity.postActivationHook()
     }
 
     /// Will apply the powerup on the sprite.
@@ -341,7 +334,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         let effects = powerup.parent.getMultiple(PowerupEffectComponent.self)
         for effect in effects {
             apply(effect: effect, on: sprite) { isSuccess in
-                effect.parent.removeFirstComponent(of: effect)
                 self.removeActivated(powerup: powerup, from: sprite)
                 if let complete = complete {
                     complete(isSuccess)
@@ -432,27 +424,14 @@ extension PowerupSystem {
     private func applyPlacementEffect(_ effect: PlacementEffectComponent,
                                       by sprite: SpriteComponent,
                                       complete: (_ success: Bool) -> Void) {
-        guard let effectSprite = effect.parent.get(SpriteComponent.self),
-            let powerupCom = effect.parent.get(PowerupComponent.self) else {
+        guard let effectSprite = effect.parent.get(SpriteComponent.self) else {
             return
         }
-        switch powerupCom.type {
-        case .netTrap:
-            let movementComponent = MovementEffectComponent(parent: effect.parent,
-                                                            isNegativeEffect: true)
-            movementComponent.duration = 5.0
-            movementComponent.from = sprite.node.position
-            movementComponent.to = sprite.node.position
-            movementComponent.stopMovement = true
-            effect.parent.addComponent(movementComponent)
-            effectSprite.node.position = sprite.node.position
-            netTraps.insert(effectSprite)
-            delegate?.hasAddedTrap(sprite: effectSprite)
-            complete(true)
-        default:
-            complete(false)
-            return
-        }
+
+        effectSprite.node.position = sprite.node.position
+        traps.insert(effectSprite)
+        delegate?.hasAddedTrap(sprite: effectSprite)
+        complete(true)
     }
 
     private func applyMovementEffect(_ effect: MovementEffectComponent,
@@ -546,10 +525,14 @@ extension PowerupSystem {
         let playerSprite = powerupEvent.sprite
         switch powerupEvent.powerupEventType {
         case .activate:
-            activate(powerupType: powerupEvent.powerupType, by: playerSprite)
-        case .netTrapped:
+            if let powerup = powerup(for: playerSprite) {
+                activate(powerup, by: playerSprite)
+            }
+        case .activateTrap:
             let eventPos = CGPoint(vector: powerupEvent.powerupPos)
-            activateNetTrap(at: eventPos, on: playerSprite)
+            if let trap = findTrap(at: eventPos) {
+                activate(trap: trap, on: playerSprite)
+            }
         }
     }
 

@@ -42,13 +42,6 @@ class PowerupEntity: Entity {
         addComponent(powerupComponent)
     }
 
-    func activate() {
-        guard let powerupComponent = get(PowerupComponent.self) else {
-            return
-        }
-        powerupComponent.isActivated = true
-    }
-
     func sync(with type: PowerupType) -> PowerupEntity? {
         guard let existingSpriteComponent = get(SpriteComponent.self) else {
             return nil
@@ -68,4 +61,14 @@ class PowerupEntity: Entity {
         return newPowerupEntity
     }
 
+    func activate() {
+        guard let powerupComponent = get(PowerupComponent.self) else {
+            return
+        }
+        powerupComponent.isActivated = true
+    }
+
+    func postActivationHook() {
+        removeComponents(PowerupEffectComponent.self)
+    }
 }

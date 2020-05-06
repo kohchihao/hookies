@@ -8,7 +8,7 @@
 
 enum PowerupEventType: String, CaseIterable, StringRepresentable {
     case activate
-    case netTrapped
+    case activateTrap
 
     var stringValue: String {
         return self.rawValue

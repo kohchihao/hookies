@@ -13,13 +13,11 @@ import SpriteKit
 
 struct PowerupEventData: SocketData, Encoder {
     let playerData: PlayerData
-    let type: PowerupType
     let eventType: PowerupEventType
     let eventPos: Vector
 
     var encoding: [String: Any] {
         var defaultEncoding: [String: Any] = [
-            "type": type.stringValue,
             "eventType": eventType.stringValue,
             "eventPosX": eventPos.x,
             "eventPosY": eventPos.y
@@ -31,7 +29,6 @@ struct PowerupEventData: SocketData, Encoder {
     init(playerId: String,
          node: SKSpriteNode,
          eventType: PowerupEventType,
-         powerupType: PowerupType,
          eventPos: Vector? = nil
     ) {
         if eventPos == nil {
@@ -40,7 +37,6 @@ struct PowerupEventData: SocketData, Encoder {
             self.eventPos = eventPos!
         }
         self.playerData = PlayerData(playerId: playerId, node: node)
-        self.type = powerupType
         self.eventType = eventType
     }
 
@@ -49,10 +45,8 @@ struct PowerupEventData: SocketData, Encoder {
             return nil
         }
         do {
-            let powerupTypeString: String = try data.value(forKey: "type")
             let powerupEventTypeString: String = try data.value(forKey: "eventType")
-            guard let type = PowerupType(rawValue: powerupTypeString),
-                let eventType = PowerupEventType(rawValue: powerupEventTypeString) else {
+            guard let eventType = PowerupEventType(rawValue: powerupEventTypeString) else {
                 return nil
             }
             guard let eventPosX: Double = try data.value(forKey: "eventPosX"),
@@ -60,7 +54,6 @@ struct PowerupEventData: SocketData, Encoder {
                     return nil
             }
 
-            self.type = type
             self.playerData = playerData
             self.eventType = eventType
             self.eventPos = Vector(x: eventPosX, y: eventPosY)
