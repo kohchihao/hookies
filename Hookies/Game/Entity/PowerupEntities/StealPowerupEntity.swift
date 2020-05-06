@@ -10,7 +10,7 @@ import Foundation
 class StealPowerup: PowerupEntity {
     init() {
         super.init(components: [])
-        addDefaultComponents(for: .stealPowerup)
+        addInitialComponents(for: .stealPowerup)
         addComponent(StealPowerupEffectComponent(parent: self))
     }
 }

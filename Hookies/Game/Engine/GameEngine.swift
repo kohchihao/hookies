@@ -277,32 +277,18 @@ class GameEngine {
     }
 
     private func addNewRandomPowerup(for spriteNode: SKSpriteNode) {
-        let randType = PowerupType.allCases.randomElement() ?? .shield
-        addNewPowerup(with: randType, for: spriteNode)
-    }
-
-    private func addNewPowerup(with type: PowerupType,
-                               for spriteNode: SKSpriteNode
-    ) {
-        guard let powerupEntity = createPowerup(with: type, for: spriteNode),
-            let powerupComponent = powerupEntity.get(PowerupComponent.self) else {
+        let powerup = PowerupEntity.createWithRandomType()
+        guard let powerupComponent = powerup.get(PowerupComponent.self),
+            let powerupSprite = powerup.get(SpriteComponent.self) else {
             return
         }
-        powerups.append(powerupEntity)
-        powerupSystem.add(powerup: powerupComponent)
-    }
 
-    private func createPowerup(with type: PowerupType,
-                               for spriteNode: SKSpriteNode
-    ) -> PowerupEntity? {
-        let powerupEntity = PowerupEntity(for: type)
-        guard let powerupSprite = powerupEntity.get(SpriteComponent.self) else {
-            return nil
-        }
         _ = spriteSystem.set(sprite: powerupSprite, to: spriteNode)
         _ = spriteSystem.setPhysicsBody(to: powerupSprite, of: .powerup,
                                         rectangleOf: powerupSprite.node.size)
-        return powerupEntity
+
+        powerups.append(powerup)
+        powerupSystem.add(powerup: powerupComponent)
     }
 
     // MARK: - Platform
@@ -636,13 +622,10 @@ extension GameEngine: EndSystemDelegate {
 extension GameEngine: PowerupSystemDelegate {
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent) {
         guard let powerupEntity = powerup.parent as? PowerupEntity,
-            let powerupSprite = powerupEntity.get(SpriteComponent.self),
             let player = sprite.parent as? PlayerEntity else {
                 return
         }
 
-        powerup.parent.removeComponents(SpriteComponent.self)
-        spriteSystem.removePhysicsBody(to: powerupSprite)
         powerups.removeAll(where: { $0 === powerupEntity })
         if player === currentPlayer {
             delegate?.hasCollected(powerup: powerup.type)

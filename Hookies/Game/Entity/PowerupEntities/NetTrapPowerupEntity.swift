@@ -10,7 +10,7 @@ import Foundation
 class NetTrapPowerup: PowerupEntity {
     init() {
         super.init(components: [])
-        addDefaultComponents(for: .netTrap)
+        addInitialComponents(for: .netTrap)
         addComponent(PlacementEffectComponent(parent: self))
     }
 

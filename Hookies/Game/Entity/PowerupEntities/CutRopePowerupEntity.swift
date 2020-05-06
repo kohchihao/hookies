@@ -10,7 +10,7 @@ import Foundation
 class CutRopePowerup: PowerupEntity {
     init() {
         super.init(components: [])
-        addDefaultComponents(for: .cutRope)
+        addInitialComponents(for: .cutRope)
         addComponent(CutRopeEffectComponent(parent: self))
     }
 }

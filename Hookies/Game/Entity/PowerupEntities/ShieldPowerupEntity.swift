@@ -10,7 +10,7 @@ import Foundation
 class ShieldPowerup: PowerupEntity {
     init() {
         super.init(components: [])
-        addDefaultComponents(for: .shield)
+        addInitialComponents(for: .shield)
         addComponent(ShieldEffectComponent(parent: self))
     }
 }

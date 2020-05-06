@@ -60,7 +60,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
     // Key: sprite of player, Value: activated powerups of player
     private(set) var activatedPowerups = [SpriteComponent: [PowerupComponent]]()
 
-    // Powerups that are collectible on the map
     private(set) var collectablePowerups = Set<PowerupComponent>()
     private(set) var netTraps = Set<SpriteComponent>()
 
@@ -129,7 +128,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     func collectAndBroadcast(powerupNode: SKSpriteNode,
                              by sprite: SpriteComponent
     ) {
-        guard let powerupComponent = findPowerup(at: powerupNode.position) else {
+        guard let powerupComponent = findCollectablePowerup(at: powerupNode.position) else {
             return
         }
         let powerupPos = Vector(point: powerupNode.position)
@@ -235,6 +234,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
         add(player: sprite, with: powerupComponent)
         remove(collectablePowerup: powerupComponent) { success in
             if success {
+                powerupComponent.parent.removeComponents(SpriteComponent.self)
                 self.delegate?.collected(powerup: powerupComponent, by: sprite)
             }
         }
@@ -262,6 +262,21 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private func findTrap(at point: CGPoint) -> SpriteComponent? {
         for trap in netTraps where trap.node.frame.contains(point) {
             return trap
+        }
+        return nil
+    }
+
+    // MARK: - Find Powerup
+
+    private func findCollectablePowerup(at point: CGPoint
+    ) -> PowerupComponent? {
+        for powerup in collectablePowerups {
+            guard let sprite = powerup.parent.get(SpriteComponent.self) else {
+                continue
+            }
+            if sprite.node.frame.contains(point) {
+                return powerup
+            }
         }
         return nil
     }
@@ -307,13 +322,12 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private func activate(powerupType: PowerupType,
                           by sprite: SpriteComponent
     ) {
-        guard let powerup = powerup(for: sprite) else {
+        guard let powerup = powerup(for: sprite),
+            let powerupEntity = powerup.parent as? PowerupEntity else {
             return
         }
 
-        powerup.type = powerupType
-        powerup.isActivated = true
-        powerup.addEffectComponents(for: powerupType)
+        powerupEntity.activate()
         removePowerup(from: sprite)
         addActivated(powerup: powerup, to: sprite)
         apply(powerup: powerup, on: sprite)
@@ -511,14 +525,16 @@ extension PowerupSystem {
         }
         let positionOfCollection = CGPoint(vector: collectionEvent.powerupPos)
 
-        guard let powerup = findPowerup(at: positionOfCollection),
+        guard let powerup = findCollectablePowerup(at: positionOfCollection),
             let sprite = collectionEvent.sprite.parent.get(SpriteComponent.self)
             else {
                 return
         }
 
-        powerup.type = collectionEvent.powerupType
-        collect(powerupComponent: powerup, by: sprite)
+        if let syncedPowerup = sync(powerup: powerup,
+                                    with: collectionEvent.powerupType) {
+            collect(powerupComponent: syncedPowerup, by: sprite)
+        }
     }
 
     @objc private func receivedPowerupEventAction(_ notification: Notification) {
@@ -537,19 +553,22 @@ extension PowerupSystem {
         }
     }
 
-    private func findPowerup(at point: CGPoint) -> PowerupComponent? {
-        for powerup in collectablePowerups {
-            guard let sprite = powerup.parent.get(SpriteComponent.self) else {
-                continue
-            }
-            if sprite.node.frame.contains(point) {
-                return powerup
-            }
-        }
-        return nil
-    }
-
     @objc private func broadcastUnregisterObserver(_ notification: Notification) {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    private func sync(powerup: PowerupComponent,
+                      with type: PowerupType
+    ) -> PowerupComponent? {
+        guard let powerupEntity = powerup.parent as? PowerupEntity else {
+            return nil
+        }
+        let syncedPowerup = powerupEntity.sync(with: type)
+        guard let newPowerupCom = syncedPowerup?.get(PowerupComponent.self) else {
+            return nil
+        }
+        collectablePowerups.remove(powerup)
+        collectablePowerups.insert(newPowerupCom)
+        return newPowerupCom
     }
 }
