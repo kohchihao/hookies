@@ -20,10 +20,6 @@ protocol PowerupSystemProtocol {
 
 protocol PowerupSystemDelegate: MovementControlDelegate, SceneDelegate {
 
-    /// Indicates that the trap has been added.
-    /// - Parameter sprite: The trap's sprite
-    func hasAddedTrap(sprite: SpriteComponent)
-
     /// Indicates that the power up has been collected
     /// - Parameters:
     ///   - powerup: The power up collected
@@ -78,6 +74,12 @@ class PowerupSystem: System, PowerupSystemProtocol {
     func add(player: SpriteComponent) {
         ownedPowerups[player] = []
         activatedPowerups[player] = []
+    }
+
+    // MARK: - Add Trap
+
+    func add(trap: SpriteComponent) {
+        traps.insert(trap)
     }
 
     // MARK: Remove/Add Powerup
@@ -172,22 +174,32 @@ class PowerupSystem: System, PowerupSystemProtocol {
     ///   - point: The point at which this activate occurs.
     ///   - sprite: The sprite that gets trap in the net
     func activateTrap(at point: CGPoint, on sprite: SpriteComponent) {
-        guard let trap = findTrap(at: point) else {
+        guard let trap = findTrap(at: point),
+            let trapSprite = trap.parent.get(SpriteComponent.self),
+            let owner = trap.parent.get(PowerupComponent.self)?.owner else {
             Logger.log.show(details: "Unable find trap", logType: .error)
             return
         }
 
+        if sprite.parent === owner {
+            return
+        }
+
         activate(trap: trap, on: sprite)
-        broadcastPowerup(eventType: .activateTrap, by: sprite)
+        broadcastPowerup(eventType: .activateTrap, by: sprite,
+                         at: trapSprite.node.position)
     }
 
     private func broadcastPowerup(eventType: PowerupEventType,
-                                  by sprite: SpriteComponent
+                                  by sprite: SpriteComponent,
+                                  at position: CGPoint? = nil
     ) {
-        let position = Vector(point: sprite.node.position)
+        var eventPos: Vector
+        eventPos = position != nil ? Vector(point: position!)
+            : Vector(point: sprite.node.position)
         let event = PowerupSystemEvent(sprite: sprite,
                                        powerupEventType: eventType,
-                                       powerupPos: position)
+                                       powerupPos: eventPos)
         let info = [ "data": event ]
         let nameOfBroadcast = Notification.Name.broadcastPowerupAction
         NotificationCenter.default.post(name: nameOfBroadcast,
@@ -295,20 +307,26 @@ class PowerupSystem: System, PowerupSystemProtocol {
     // MARK: - Activate Net Trap
 
     private func activate(trap: SpriteComponent, on sprite: SpriteComponent) {
-        guard let powerup = trap.parent.get(PowerupComponent.self),
-            let owner = powerup.owner else {
-                Logger.log.show(details: "Unable find trap", logType: .error)
-                return
-        }
-
-        if sprite.parent === owner {
+        guard let trapEntity = trap.parent as? TrapEntity else {
             return
         }
-        apply(powerup: powerup, on: sprite) { isSuccess in
-            if isSuccess {
-                self.traps.remove(trap)
-            }
+
+        trapEntity.activateTrap(on: sprite)
+        guard let effect = sprite.parent.get(PowerupEffectComponent.self) else {
+            return
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + effect.duration) {
+            self.remove(trap: trap)
+        }
+    }
+
+    private func remove(trap: SpriteComponent) {
+        guard let trapSprite = trap.parent.get(SpriteComponent.self) else {
+            return
+        }
+        trapSprite.node.removeFromParent()
+        trap.parent.removeFirstComponent(of: trapSprite)
+        self.traps.remove(trap)
     }
 
     // MARK: - Activate Powerup
@@ -322,7 +340,8 @@ class PowerupSystem: System, PowerupSystemProtocol {
         powerupEntity.activate()
         removePowerup(from: sprite)
         addActivated(powerup: powerup, to: sprite)
-        if !(powerupEntity is PlayerHookPowerup || powerupEntity is ShieldPowerup) {
+        if !(powerupEntity is PlayerHookPowerup || powerupEntity is ShieldPowerup ||
+            powerupEntity is NetTrapPowerup) {
             apply(powerup: powerup, on: sprite)
             powerupEntity.postActivationHook()
         }
@@ -357,8 +376,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         switch effect {
         case let shield as ShieldEffectComponent:
             applyShieldEffect(shield, on: sprite, complete: complete)
-        case let movementEffect as MovementEffectComponent:
-            applyMovementEffect(movementEffect, on: sprite, complete: complete)
         case let placementEffect as PlacementEffectComponent:
             applyPlacementEffect(placementEffect, by: sprite, complete: complete)
         case let playerHookEffect as PlayerHookEffectComponent:
@@ -432,34 +449,33 @@ extension PowerupSystem {
 
         effectSprite.node.position = sprite.node.position
         traps.insert(effectSprite)
-        delegate?.hasAddedTrap(sprite: effectSprite)
         complete(true)
     }
 
-    private func applyMovementEffect(_ effect: MovementEffectComponent,
-                                     on sprite: SpriteComponent,
-                                     complete: @escaping (_ success: Bool) -> Void) {
-        guard let initialPoint = effect.from,
-            let endPoint = effect.to,
-            let duration = effect.duration else {
-                complete(false)
-                return
-        }
-
-        delegate?.movement(isDisabled: true, for: sprite)
-        if effect.stopMovement {
-            sprite.node.physicsBody?.velocity = CGVector.zero
-            sprite.node.physicsBody?.affectedByGravity = false
-        }
-        sprite.node.position = initialPoint
-        let action = SKAction.move(to: endPoint, duration: duration)
-        sprite.node.run(action, completion: {
-            sprite.node.physicsBody?.affectedByGravity = true
-            effect.parent.get(SpriteComponent.self)?.node.removeFromParent()
-            self.delegate?.movement(isDisabled: false, for: sprite)
-            complete(true)
-        })
-    }
+//    private func applyMovementEffect(_ effect: MovementEffectComponent,
+//                                     on sprite: SpriteComponent,
+//                                     complete: @escaping (_ success: Bool) -> Void) {
+//        guard let initialPoint = effect.from,
+//            let endPoint = effect.to,
+//            let duration = effect.duration else {
+//                complete(false)
+//                return
+//        }
+//
+//        delegate?.movement(isDisabled: true, for: sprite)
+//        if effect.stopMovement {
+//            sprite.node.physicsBody?.velocity = CGVector.zero
+//            sprite.node.physicsBody?.affectedByGravity = false
+//        }
+//        sprite.node.position = initialPoint
+//        let action = SKAction.move(to: endPoint, duration: duration)
+//        sprite.node.run(action, completion: {
+//            sprite.node.physicsBody?.affectedByGravity = true
+//            effect.parent.get(SpriteComponent.self)?.node.removeFromParent()
+//            self.delegate?.movement(isDisabled: false, for: sprite)
+//            complete(true)
+//        })
+//    }
 
     private func applyShieldEffect(_ effect: ShieldEffectComponent,
                                    on sprite: SpriteComponent,

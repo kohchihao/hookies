@@ -10,8 +10,8 @@ import Foundation
 import CoreGraphics
 
 class MovementEffectComponent: PowerupEffectComponent {
+
     var from: CGPoint?
     var to: CGPoint?
-    var duration: Double?
     var stopMovement = false
 }

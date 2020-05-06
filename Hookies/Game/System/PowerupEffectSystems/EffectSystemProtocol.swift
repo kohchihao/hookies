@@ -14,7 +14,7 @@ protocol EffectSystemProtocol {
 
 extension EffectSystemProtocol {
     func getEffectComponents<T: PowerupEffectComponent>(
-        from entities: [PowerupEntity],
+        from entities: [Entity],
         with type: T.Type
     ) -> [T] {
         var effects = [T]()

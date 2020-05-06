@@ -7,42 +7,35 @@
 //
 import Foundation
 
-class NetTrapPowerup: PowerupEntity {
+class NetTrapPowerup: PowerupEntity, TrapEntity {
     init() {
         super.init(components: [])
         addInitialComponents(for: .netTrap)
-        addComponent(PlacementEffectComponent(parent: self))
     }
 
     override func activate() {
         super.activate()
+        addComponent(PlacementEffectComponent(parent: self))
         addNetTrapSprite()
     }
 
-    override func postActivationHook() {
-        super.postActivationHook()
-        addMovementEffect()
+    func activateTrap(on sprite: SpriteComponent) {
+        guard let trapSprite = get(SpriteComponent.self) else {
+            return
+        }
+
+        let movementComponent = MovementEffectComponent(parent: sprite.parent,
+                                                        isNegativeEffect: true)
+        movementComponent.duration = 5.0
+        movementComponent.from = trapSprite.node.position
+        movementComponent.to = trapSprite.node.position
+        movementComponent.stopMovement = true
+        sprite.parent.addComponent(movementComponent)
     }
 
     private func addNetTrapSprite() {
         let spriteComponent = SpriteComponent(parent: self)
         spriteComponent.node = PowerupType.netTrap.node
         self.addComponent(spriteComponent)
-    }
-
-    private func addMovementEffect() {
-        let powerupComponent = get(PowerupComponent.self)
-        let owner = powerupComponent?.owner
-        guard let ownerSprite = owner?.get(SpriteComponent.self) else {
-            return
-        }
-
-        let movementComponent = MovementEffectComponent(parent: self,
-                                                        isNegativeEffect: true)
-        movementComponent.duration = 5.0
-        movementComponent.from = ownerSprite.node.position
-        movementComponent.to = ownerSprite.node.position
-        movementComponent.stopMovement = true
-        self.addComponent(movementComponent)
     }
 }

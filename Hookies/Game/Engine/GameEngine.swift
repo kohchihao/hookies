@@ -34,11 +34,12 @@ class GameEngine {
 
     private var playerHookEffectSystem = PlayerHookEffectSystem()
     private var shieldEffectSystem = ShieldEffectSystem()
+    private var placementEffectSystem = PlacementEffectSystem()
+    private var movementEffectSystem = MovementEffectSystem()
 
     // MARK: - Entity
 
     private var currentPlayer: PlayerEntity?
-
     private var numOtherPlayers = 0
     private var localPlayers: [PlayerEntity] = []
     private var platforms = [PlatformEntity]()
@@ -87,6 +88,8 @@ class GameEngine {
         userConnectionSystem?.delegate = self
         powerupSystem.delegate = self
         playerHookEffectSystem.delegate = self
+        placementEffectSystem.delegate = self
+        movementEffectSystem.delegate = self
     }
 
     // MARK: - Add Players
@@ -240,6 +243,8 @@ class GameEngine {
     private func updateEffectSystems() {
         playerHookEffectSystem.update(entities: ownedPowerups)
         shieldEffectSystem.update(entities: ownedPowerups)
+        placementEffectSystem.update(entities: ownedPowerups)
+        movementEffectSystem.update(entities: ownedPowerups)
     }
 
     // MARK: - Bolts
@@ -426,6 +431,7 @@ class GameEngine {
         hookSystem?.add(player: sprite)
         powerupSystem.add(player: sprite)
         playerHookEffectSystem.add(player: sprite)
+        movementEffectSystem.add(player: sprite)
 
         delegate?.addCurrentPlayer(with: sprite.node)
     }
@@ -447,6 +453,7 @@ class GameEngine {
         hookSystem?.add(player: sprite)
         powerupSystem.add(player: sprite)
         playerHookEffectSystem.add(player: sprite)
+        movementEffectSystem.add(player: sprite)
 
         if player.playerType == .bot {
             if let botType = player.botType {
@@ -647,12 +654,6 @@ extension GameEngine: PowerupSystemDelegate {
         }
     }
 
-    func hasAddedTrap(sprite spriteComponent: SpriteComponent) {
-        _ = spriteSystem.setPhysicsBody(to: spriteComponent, of: .trap,
-                                        rectangleOf: spriteComponent.node.size)
-        delegate?.addTrap(with: spriteComponent.node)
-    }
-
     func hook(_ sprite: SpriteComponent,
               from anchorSprite: SpriteComponent) {
         if !finishingLineSystem.hasPlayerFinish(player: sprite) {
@@ -691,7 +692,8 @@ extension GameEngine: MovementControlDelegate {
             return
         }
         if player === currentPlayer {
-            Logger.log.show(details: "Disable movement", logType: .information)
+            Logger.log.show(details: "Disable movement \(isDisabled)",
+                            logType: .information)
             delegate?.movementButton(isDisabled: isDisabled)
         }
     }
@@ -703,6 +705,14 @@ extension GameEngine: SceneDelegate {
     }
 }
 
-extension GameEngine: PlayerHookEffectDelegate {
-
+extension GameEngine: PlacementEffectSystemDelegate {
+    func hasAddedTrap(sprite spriteComponent: SpriteComponent) {
+        _ = spriteSystem.setPhysicsBody(to: spriteComponent, of: .trap,
+                                        rectangleOf: spriteComponent.node.size)
+        powerupSystem.add(trap: spriteComponent)
+        delegate?.addTrap(with: spriteComponent.node)
+    }
 }
+
+extension GameEngine: PlayerHookEffectDelegate {}
+extension GameEngine: MovementEffectSystemDelegate {}
