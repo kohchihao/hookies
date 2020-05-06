@@ -8,7 +8,13 @@
 
 import Foundation
 
+enum CutRopeStrategy {
+    case allPlayers
+    case nearestFrontPlayer
+}
+
 class CutRopeEffectComponent: PowerupEffectComponent {
+    var strategy = CutRopeStrategy.allPlayers
 
     init(parent: Entity) {
         super.init(parent: parent, isNegativeEffect: true)

@@ -16,5 +16,9 @@ class PlayerHookPowerup: PowerupEntity {
     override func activate() {
         super.activate()
         addComponent(PlayerHookEffectComponent(parent: self))
+
+        let cutRopeEffect = CutRopeEffectComponent(parent: self)
+        addComponent(cutRopeEffect)
+        cutRopeEffect.strategy = .nearestFrontPlayer
     }
 }

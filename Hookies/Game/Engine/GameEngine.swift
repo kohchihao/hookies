@@ -36,6 +36,7 @@ class GameEngine {
     private var shieldEffectSystem = ShieldEffectSystem()
     private var placementEffectSystem = PlacementEffectSystem()
     private var movementEffectSystem = MovementEffectSystem()
+    private var cutRopeEffectSystem = CutRopeEffectSystem()
 
     // MARK: - Entity
 
@@ -90,6 +91,7 @@ class GameEngine {
         playerHookEffectSystem.delegate = self
         placementEffectSystem.delegate = self
         movementEffectSystem.delegate = self
+        cutRopeEffectSystem.delegate = self
     }
 
     // MARK: - Add Players
@@ -245,6 +247,7 @@ class GameEngine {
         shieldEffectSystem.update(entities: ownedPowerups)
         placementEffectSystem.update(entities: ownedPowerups)
         movementEffectSystem.update(entities: ownedPowerups)
+        cutRopeEffectSystem.update(entities: ownedPowerups)
     }
 
     // MARK: - Bolts
@@ -432,6 +435,7 @@ class GameEngine {
         powerupSystem.add(player: sprite)
         playerHookEffectSystem.add(player: sprite)
         movementEffectSystem.add(player: sprite)
+        cutRopeEffectSystem.add(player: sprite)
 
         delegate?.addCurrentPlayer(with: sprite.node)
     }
@@ -454,6 +458,7 @@ class GameEngine {
         powerupSystem.add(player: sprite)
         playerHookEffectSystem.add(player: sprite)
         movementEffectSystem.add(player: sprite)
+        cutRopeEffectSystem.add(player: sprite)
 
         if player.playerType == .bot {
             if let botType = player.botType {
@@ -661,16 +666,6 @@ extension GameEngine: PowerupSystemDelegate {
         }
     }
 
-    func forceUnhookFor(player: SpriteComponent) {
-        guard let sprite = player.parent.get(SpriteComponent.self),
-            let velocity = sprite.node.physicsBody?.velocity else {
-            return
-        }
-        _ = hookSystem?.unhook(entity: player.parent,
-                               at: sprite.node.position,
-                               with: velocity)
-    }
-
     func indicateSteal(from sprite1: SpriteComponent,
                        by sprite2: SpriteComponent,
                        with powerup: PowerupComponent
@@ -711,6 +706,18 @@ extension GameEngine: PlacementEffectSystemDelegate {
                                         rectangleOf: spriteComponent.node.size)
         powerupSystem.add(trap: spriteComponent)
         delegate?.addTrap(with: spriteComponent.node)
+    }
+}
+
+extension GameEngine: CutRopeEffectSystemDelegate {
+    func forceUnhookFor(player: SpriteComponent) {
+        guard let sprite = player.parent.get(SpriteComponent.self),
+            let velocity = sprite.node.physicsBody?.velocity else {
+            return
+        }
+        _ = hookSystem?.unhook(entity: player.parent,
+                               at: sprite.node.position,
+                               with: velocity)
     }
 }
 

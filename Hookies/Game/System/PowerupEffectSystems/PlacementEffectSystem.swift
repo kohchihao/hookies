@@ -45,4 +45,5 @@ class PlacementEffectSystem: PlacementEffectSystemProtocol {
 
         effectSprite.node.position = sprite.node.position
         delegate?.hasAddedTrap(sprite: effectSprite)
-    }}
+    }
+}
