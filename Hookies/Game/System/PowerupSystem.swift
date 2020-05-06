@@ -322,7 +322,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
         powerupEntity.activate()
         removePowerup(from: sprite)
         addActivated(powerup: powerup, to: sprite)
-        if !(powerupEntity is PlayerHookPowerup) {
+        if !(powerupEntity is PlayerHookPowerup || powerupEntity is ShieldPowerup) {
             apply(powerup: powerup, on: sprite)
             powerupEntity.postActivationHook()
         }

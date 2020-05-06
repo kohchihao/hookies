@@ -10,12 +10,14 @@ import Foundation
 import SpriteKit
 
 protocol PlayerHookEffectDelegate: MovementControlDelegate, SceneDelegate {}
-protocol PlayerHookEffectSystemProtocol: EffectSystemProtocol {}
+
+protocol PlayerHookEffectSystemProtocol: EffectSystemProtocol,
+    PlayerDenpendencyProtocol {}
 
 class PlayerHookEffectSystem: System, PlayerHookEffectSystemProtocol {
     private let effectType = PlayerHookEffectComponent.self
 
-    private var players = [SpriteComponent]()
+    var players = [SpriteComponent]()
 
     weak var delegate: PlayerHookEffectDelegate?
 
@@ -23,12 +25,8 @@ class PlayerHookEffectSystem: System, PlayerHookEffectSystemProtocol {
         let effects = self.getEffectComponents(from: entities, with: effectType)
         for effect in effects {
             applyHook(effect)
-            effect.parent.removeFirstComponent(of: effect)
+            remove(effect: effect)
         }
-    }
-
-    func add(player: SpriteComponent) {
-        players.append(player)
     }
 
     private func applyHook(_ effect: PlayerHookEffectComponent) {
@@ -42,6 +40,11 @@ class PlayerHookEffectSystem: System, PlayerHookEffectSystemProtocol {
             Logger.log.show(details: "No players in front to hook", logType: .alert)
             return
         }
+        guard !isProtected(spriteComponent: spriteToHook, from: effect) else {
+            Logger.log.show(details: "Cannot hook protected player", logType: .alert)
+            return
+        }
+
         hookAndPull(spriteToHook, from: ownerSprite)
     }
 

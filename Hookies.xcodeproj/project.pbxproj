@@ -30,13 +30,15 @@
 		1127C58C24161B9500A78AA0 /* UILabel+DynamicHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */; };
 		112B6195244FDA7C00B60D72 /* MovementControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */; };
 		112B6197244FF6D900B60D72 /* CutRopeEffectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B6196244FF6D900B60D72 /* CutRopeEffectComponent.swift */; };
+		1130492D2462C910002AEB7E /* ShieldEffectSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1130492C2462C910002AEB7E /* ShieldEffectSystem.swift */; };
+		1130492F2462D0CA002AEB7E /* PlayerDependencyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1130492E2462D0CA002AEB7E /* PlayerDependencyProtocol.swift */; };
 		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
 		11593D772431EAD000462BE6 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11593D762431EAD000462BE6 /* CGPoint+Extension.swift */; };
-		11601F8A2461922A00190E34 /* PlayerHookPowerupEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F892461922900190E34 /* PlayerHookPowerupEntity.swift */; };
-		11601F8C2461923E00190E34 /* NetTrapPowerupEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F8B2461923E00190E34 /* NetTrapPowerupEntity.swift */; };
-		11601F8E2461924A00190E34 /* ShieldPowerupEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F8D2461924A00190E34 /* ShieldPowerupEntity.swift */; };
-		11601F902461925D00190E34 /* CutRopePowerupEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F8F2461925D00190E34 /* CutRopePowerupEntity.swift */; };
-		11601F922461929F00190E34 /* StealPowerupEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F912461929F00190E34 /* StealPowerupEntity.swift */; };
+		11601F8A2461922A00190E34 /* PlayerHookPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F892461922900190E34 /* PlayerHookPowerup.swift */; };
+		11601F8C2461923E00190E34 /* NetTrapPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F8B2461923E00190E34 /* NetTrapPowerup.swift */; };
+		11601F8E2461924A00190E34 /* ShieldPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F8D2461924A00190E34 /* ShieldPowerup.swift */; };
+		11601F902461925D00190E34 /* CutRopePowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F8F2461925D00190E34 /* CutRopePowerup.swift */; };
+		11601F922461929F00190E34 /* StealPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F912461929F00190E34 /* StealPowerup.swift */; };
 		1160C5EE244485F1007BE5DA /* SocketRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160C5ED244485F1007BE5DA /* SocketRoom.swift */; };
 		116AD648242DB7CD0070F00B /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116AD647242DB7CD0070F00B /* Encoder.swift */; };
 		116AD64C242DBC670070F00B /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116AD64B242DBC670070F00B /* Decoder.swift */; };
@@ -263,13 +265,15 @@
 		1127C58B24161B9500A78AA0 /* UILabel+DynamicHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+DynamicHeight.swift"; sourceTree = "<group>"; };
 		112B6194244FDA7C00B60D72 /* MovementControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementControlDelegate.swift; sourceTree = "<group>"; };
 		112B6196244FF6D900B60D72 /* CutRopeEffectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutRopeEffectComponent.swift; sourceTree = "<group>"; };
+		1130492C2462C910002AEB7E /* ShieldEffectSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldEffectSystem.swift; sourceTree = "<group>"; };
+		1130492E2462D0CA002AEB7E /* PlayerDependencyProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDependencyProtocol.swift; sourceTree = "<group>"; };
 		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
 		11593D762431EAD000462BE6 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
-		11601F892461922900190E34 /* PlayerHookPowerupEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHookPowerupEntity.swift; sourceTree = "<group>"; };
-		11601F8B2461923E00190E34 /* NetTrapPowerupEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetTrapPowerupEntity.swift; sourceTree = "<group>"; };
-		11601F8D2461924A00190E34 /* ShieldPowerupEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldPowerupEntity.swift; sourceTree = "<group>"; };
-		11601F8F2461925D00190E34 /* CutRopePowerupEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutRopePowerupEntity.swift; sourceTree = "<group>"; };
-		11601F912461929F00190E34 /* StealPowerupEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StealPowerupEntity.swift; sourceTree = "<group>"; };
+		11601F892461922900190E34 /* PlayerHookPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHookPowerup.swift; sourceTree = "<group>"; };
+		11601F8B2461923E00190E34 /* NetTrapPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetTrapPowerup.swift; sourceTree = "<group>"; };
+		11601F8D2461924A00190E34 /* ShieldPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldPowerup.swift; sourceTree = "<group>"; };
+		11601F8F2461925D00190E34 /* CutRopePowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutRopePowerup.swift; sourceTree = "<group>"; };
+		11601F912461929F00190E34 /* StealPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StealPowerup.swift; sourceTree = "<group>"; };
 		1160C5ED244485F1007BE5DA /* SocketRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketRoom.swift; sourceTree = "<group>"; };
 		116AD647242DB7CD0070F00B /* Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encoder.swift; sourceTree = "<group>"; };
 		116AD64B242DBC670070F00B /* Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
@@ -677,11 +681,11 @@
 			isa = PBXGroup;
 			children = (
 				11CC84912439E7C0006D3A8F /* PowerupEntity.swift */,
-				11601F892461922900190E34 /* PlayerHookPowerupEntity.swift */,
-				11601F8B2461923E00190E34 /* NetTrapPowerupEntity.swift */,
-				11601F8D2461924A00190E34 /* ShieldPowerupEntity.swift */,
-				11601F8F2461925D00190E34 /* CutRopePowerupEntity.swift */,
-				11601F912461929F00190E34 /* StealPowerupEntity.swift */,
+				11601F892461922900190E34 /* PlayerHookPowerup.swift */,
+				11601F8B2461923E00190E34 /* NetTrapPowerup.swift */,
+				11601F8D2461924A00190E34 /* ShieldPowerup.swift */,
+				11601F8F2461925D00190E34 /* CutRopePowerup.swift */,
+				11601F912461929F00190E34 /* StealPowerup.swift */,
 			);
 			path = PowerupEntities;
 			sourceTree = "<group>";
@@ -808,8 +812,10 @@
 		11CCFDE924629C4300AF42FD /* PowerupEffectSystems */ = {
 			isa = PBXGroup;
 			children = (
-				11CCFDEA24629C9700AF42FD /* PlayerHookEffectSystem.swift */,
 				11CCFDEC24629D7600AF42FD /* EffectSystemProtocol.swift */,
+				1130492E2462D0CA002AEB7E /* PlayerDependencyProtocol.swift */,
+				11CCFDEA24629C9700AF42FD /* PlayerHookEffectSystem.swift */,
+				1130492C2462C910002AEB7E /* ShieldEffectSystem.swift */,
 			);
 			path = PowerupEffectSystems;
 			sourceTree = "<group>";
@@ -1513,7 +1519,7 @@
 				785CE3EF2450915100B1B5CD /* BotInstruction.swift in Sources */,
 				1127C58A24161B6400A78AA0 /* UIViewController+ErrorToaster.swift in Sources */,
 				11CC84A22439E7D1006D3A8F /* FinishingLineEntity.swift in Sources */,
-				11601F902461925D00190E34 /* CutRopePowerupEntity.swift in Sources */,
+				11601F902461925D00190E34 /* CutRopePowerup.swift in Sources */,
 				119A3E3E242C73230064B034 /* Constants.swift in Sources */,
 				1127C5742415EA5200A78AA0 /* Nameable.swift in Sources */,
 				1127C56E2415E58400A78AA0 /* HomeViewModel.swift in Sources */,
@@ -1542,7 +1548,7 @@
 				117BA3242418EDE7001089D1 /* UIViewController+ActivityIndicator.swift in Sources */,
 				D9F180642431B923009D7A52 /* CGVector+Extension.swift in Sources */,
 				11CC84EB2439E8B9006D3A8F /* UserStore.swift in Sources */,
-				11601F922461929F00190E34 /* StealPowerupEntity.swift in Sources */,
+				11601F922461929F00190E34 /* StealPowerup.swift in Sources */,
 				11CC84AF2439E81A006D3A8F /* JumpButton.swift in Sources */,
 				11CC84A52439E7D1006D3A8F /* PlayerEntity.swift in Sources */,
 				112B6195244FDA7C00B60D72 /* MovementControlDelegate.swift in Sources */,
@@ -1553,7 +1559,7 @@
 				1127C57E2415FBA200A78AA0 /* AuthViewModel.swift in Sources */,
 				D9A123D6241E71C000A6DB7F /* MapType.swift in Sources */,
 				11CC84BC2439E832006D3A8F /* LobbyState.swift in Sources */,
-				11601F8A2461922A00190E34 /* PlayerHookPowerupEntity.swift in Sources */,
+				11601F8A2461922A00190E34 /* PlayerHookPowerup.swift in Sources */,
 				11CC84DE2439E8A0006D3A8F /* User+SocketData.swift in Sources */,
 				D9FF1A7F241E325900E7965F /* GamePlayCoordinator.swift in Sources */,
 				2BAACCBB244D78C6008D4659 /* EndSystem.swift in Sources */,
@@ -1571,7 +1577,7 @@
 				11CC84DD2439E8A0006D3A8F /* PowerupCollectionData.swift in Sources */,
 				11CC84462439E748006D3A8F /* FinishingLineSystem.swift in Sources */,
 				11CC84432439E748006D3A8F /* HookSystem.swift in Sources */,
-				11601F8C2461923E00190E34 /* NetTrapPowerupEntity.swift in Sources */,
+				11601F8C2461923E00190E34 /* NetTrapPowerup.swift in Sources */,
 				11CC84472439E748006D3A8F /* SpriteSystem.swift in Sources */,
 				118A4A6F2424861E005B7188 /* UIViewController+Nameable.swift in Sources */,
 				11CC848A2439E7A8006D3A8F /* PlayerHookEffectComponent.swift in Sources */,
@@ -1593,14 +1599,16 @@
 				11CC844B2439E748006D3A8F /* PowerupSystem.swift in Sources */,
 				11CC844C2439E748006D3A8F /* HealthSystem.swift in Sources */,
 				11CC84CB2439E88A006D3A8F /* FirestoreDataModel.swift in Sources */,
-				11601F8E2461924A00190E34 /* ShieldPowerupEntity.swift in Sources */,
+				11601F8E2461924A00190E34 /* ShieldPowerup.swift in Sources */,
 				2BA5F93824434C89009AF93C /* Player.swift in Sources */,
 				11CC84972439E7C0006D3A8F /* PowerupEntity.swift in Sources */,
 				11CC84892439E7A8006D3A8F /* ShieldEffectComponent.swift in Sources */,
 				D9FF1A64241E0D8500E7965F /* PreGameLobbyCoordinator.swift in Sources */,
 				111D2EF52418C8BA0083373C /* UserStoreError.swift in Sources */,
 				11CC85122439E921006D3A8F /* MapsCoordinator.swift in Sources */,
+				1130492F2462D0CA002AEB7E /* PlayerDependencyProtocol.swift in Sources */,
 				785CE3E2244D997100B1B5CD /* BotComponent.swift in Sources */,
+				1130492D2462C910002AEB7E /* ShieldEffectSystem.swift in Sources */,
 				785CE3E0244D6C3700B1B5CD /* BotSystem.swift in Sources */,
 				11CC844A2439E748006D3A8F /* CannonSystem.swift in Sources */,
 				785CE3E7244EB3C500B1B5CD /* PostGameLobbyCoordinator.swift in Sources */,

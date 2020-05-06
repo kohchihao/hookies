@@ -11,6 +11,9 @@ class ShieldPowerup: PowerupEntity {
     init() {
         super.init(components: [])
         addInitialComponents(for: .shield)
+    }
+
+    override func activate() {
         addComponent(ShieldEffectComponent(parent: self))
     }
 }

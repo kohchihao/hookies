@@ -32,7 +32,8 @@ class GameEngine {
 
     // MARK: - Powerup Effect Systems
 
-    private let playerHookEffectSystem = PlayerHookEffectSystem()
+    private var playerHookEffectSystem = PlayerHookEffectSystem()
+    private var shieldEffectSystem = ShieldEffectSystem()
 
     // MARK: - Entity
 
@@ -238,6 +239,7 @@ class GameEngine {
 
     private func updateEffectSystems() {
         playerHookEffectSystem.update(entities: ownedPowerups)
+        shieldEffectSystem.update(entities: ownedPowerups)
     }
 
     // MARK: - Bolts
@@ -702,5 +704,5 @@ extension GameEngine: SceneDelegate {
 }
 
 extension GameEngine: PlayerHookEffectDelegate {
-    
+
 }
