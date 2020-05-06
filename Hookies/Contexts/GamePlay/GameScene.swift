@@ -578,7 +578,7 @@ extension GameScene: GameEngineDelegate {
         })
     }
 
-    func hasAdded(node: SKSpriteNode) {
+    func hasAdded(node: SKNode) {
         addChild(node)
     }
 

@@ -30,6 +30,10 @@ class GameEngine {
     private var endSystem: EndSystem?
     private var botSystem: BotSystem?
 
+    // MARK: - Powerup Effect Systems
+
+    private let playerHookEffectSystem = PlayerHookEffectSystem()
+
     // MARK: - Entity
 
     private var currentPlayer: PlayerEntity?
@@ -38,7 +42,8 @@ class GameEngine {
     private var localPlayers: [PlayerEntity] = []
     private var platforms = [PlatformEntity]()
     private var bolts = [BoltEntity]()
-    private var powerups = [PowerupEntity]()
+    private var collectablePowerups = [PowerupEntity]()
+    private var ownedPowerups = [PowerupEntity]()
     private var cannon = CannonEntity()
     private var finishingLine = FinishingLineEntity()
 
@@ -80,6 +85,7 @@ class GameEngine {
         hookSystem?.delegate = self
         userConnectionSystem?.delegate = self
         powerupSystem.delegate = self
+        playerHookEffectSystem.delegate = self
     }
 
     // MARK: - Add Players
@@ -225,8 +231,13 @@ class GameEngine {
     func update(time: TimeInterval) {
         checkLocalPlayerHealth()
         updateClosestBolt()
+        updateEffectSystems()
         checkDeadlock()
         finishingLineSystem.bringPlayersToStop()
+    }
+
+    private func updateEffectSystems() {
+        playerHookEffectSystem.update(entities: ownedPowerups)
     }
 
     // MARK: - Bolts
@@ -286,7 +297,7 @@ class GameEngine {
         _ = spriteSystem.setPhysicsBody(to: powerupSprite, of: .powerup,
                                         rectangleOf: powerupSprite.node.size)
 
-        powerups.append(powerup)
+        collectablePowerups.append(powerup)
         powerupSystem.add(powerup: powerupComponent)
     }
 
@@ -412,6 +423,7 @@ class GameEngine {
         startSystem.add(player: player, with: sprite)
         hookSystem?.add(player: sprite)
         powerupSystem.add(player: sprite)
+        playerHookEffectSystem.add(player: sprite)
 
         delegate?.addCurrentPlayer(with: sprite.node)
     }
@@ -432,6 +444,7 @@ class GameEngine {
         startSystem.add(player: player, with: sprite)
         hookSystem?.add(player: sprite)
         powerupSystem.add(player: sprite)
+        playerHookEffectSystem.add(player: sprite)
 
         if player.playerType == .bot {
             if let botType = player.botType {
@@ -496,7 +509,7 @@ class GameEngine {
     }
 
     private func findPowerupEntity(for sprite: SKSpriteNode) -> PowerupEntity? {
-        for powerup in powerups {
+        for powerup in collectablePowerups {
             guard let powerupSprite = powerup.get(SpriteComponent.self) else {
                 continue
             }
@@ -625,7 +638,8 @@ extension GameEngine: PowerupSystemDelegate {
                 return
         }
 
-        powerups.removeAll(where: { $0 === powerupEntity })
+        collectablePowerups.removeAll(where: { $0 === powerupEntity })
+        ownedPowerups.append(powerupEntity)
         if player === currentPlayer {
             delegate?.hasCollected(powerup: powerup.type)
         }
@@ -682,7 +696,11 @@ extension GameEngine: MovementControlDelegate {
 }
 
 extension GameEngine: SceneDelegate {
-    func hasAdded(node: SKSpriteNode) {
+    func hasAdded(node: SKNode) {
         delegate?.hasAdded(node: node)
     }
+}
+
+extension GameEngine: PlayerHookEffectDelegate {
+    
 }

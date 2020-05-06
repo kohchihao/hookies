@@ -8,9 +8,9 @@
 
 import SpriteKit
 
-protocol SceneDelegate {
+protocol SceneDelegate: AnyObject {
 
     /// Will be called when the given node is to be added into the UI
     /// - Parameter node: The node to be added into the game scene.
-    func hasAdded(node: SKSpriteNode)
+    func hasAdded(node: SKNode)
 }

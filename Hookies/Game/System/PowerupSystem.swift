@@ -322,8 +322,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
         powerupEntity.activate()
         removePowerup(from: sprite)
         addActivated(powerup: powerup, to: sprite)
-        apply(powerup: powerup, on: sprite)
-        powerupEntity.postActivationHook()
+        if !(powerupEntity is PlayerHookPowerup) {
+            apply(powerup: powerup, on: sprite)
+            powerupEntity.postActivationHook()
+        }
     }
 
     /// Will apply the powerup on the sprite.

@@ -75,5 +75,5 @@ protocol GameEngineDelegate: AnyObject {
 
     /// Will be called when the node is to added into game scene
     /// - Parameter node: The node to be added into game scene
-    func hasAdded(node: SKSpriteNode)
+    func hasAdded(node: SKNode)
 }
