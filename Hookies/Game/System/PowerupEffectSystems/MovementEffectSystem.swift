@@ -37,7 +37,7 @@ class MovementEffectSystem: MovementEffectSystemProtocol {
 
     private func applyMovementEffect(_ effect: MovementEffectComponent,
                                      on sprite: SpriteComponent) {
-        guard !isProtected(spriteComponent: sprite, from: effect) else {
+        guard !sprite.isProtected(from: effect) else {
             return
         }
 

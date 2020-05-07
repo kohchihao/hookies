@@ -54,7 +54,7 @@ class PlayerHookEffectSystem: System, PlayerHookEffectSystemProtocol {
             Logger.log.show(details: "No players in front to hook", logType: .alert)
             return
         }
-        guard !isProtected(spriteComponent: spriteToHook, from: effect) else {
+        guard !spriteToHook.isProtected(from: effect) else {
             Logger.log.show(details: "Cannot hook protected player", logType: .alert)
             return
         }

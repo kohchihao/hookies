@@ -54,7 +54,7 @@ class StealEffectSystem: System, StealEffectSystemProtocol {
                             logType: .warning)
             return
         }
-        guard !isProtected(spriteComponent: nearestSprite, from: effect) else {
+        guard !nearestSprite.isProtected(from: effect) else {
             Logger.log.show(details: "Cannot steal from shielded player.",
                             logType: .warning)
             return

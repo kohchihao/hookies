@@ -26,16 +26,6 @@ extension EffectSystemProtocol {
         return effects
     }
 
-    /// Determine whether the sprite is protected from the given effect
-    func isProtected(spriteComponent: SpriteComponent,
-                     from effect: PowerupEffectComponent
-    ) -> Bool {
-        guard spriteComponent.parent.get(ShieldEffectComponent.self) != nil else {
-            return false
-        }
-        return effect.isNegativeEffect
-    }
-
     func remove(effect: PowerupEffectComponent) {
         effect.parent.removeFirstComponent(of: effect)
     }

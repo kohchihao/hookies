@@ -48,7 +48,7 @@ class CutRopeEffectSystem: System, CutRopeEffectSystemProtocol {
                                    by sprite: SpriteComponent
     ) {
         let players = self.players.filter({
-            $0 !== sprite && !isProtected(spriteComponent: $0, from: effect)
+            $0 !== sprite && !$0.isProtected(from: effect)
         })
 
         for player in players {
@@ -61,7 +61,7 @@ class CutRopeEffectSystem: System, CutRopeEffectSystemProtocol {
         by sprite: SpriteComponent
     ) {
         guard let playerToCut = sprite.nearestSpriteInFront(from: players),
-            !isProtected(spriteComponent: playerToCut, from: effect) else {
+            !playerToCut.isProtected(from: effect) else {
             return
         }
         delegate?.forceUnhookFor(player: playerToCut)
