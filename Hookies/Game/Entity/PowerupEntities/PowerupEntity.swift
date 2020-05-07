@@ -67,12 +67,4 @@ class PowerupEntity: Entity {
         }
         powerupComponent.isActivated = true
     }
-
-    func getMaxEffectDuration() -> Double {
-        var result = 0.0
-        getMultiple(PowerupEffectComponent.self).forEach({
-            result = max($0.duration, result)
-        })
-        return result
-    }
 }

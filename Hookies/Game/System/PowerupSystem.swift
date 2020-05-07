@@ -59,8 +59,7 @@ protocol PowerupSystemDelegate: MovementControlDelegate, SceneDelegate {
     /// Indicates that the power up has been collected
     /// - Parameters:
     ///   - powerup: The power up collected
-    ///   - sprite: The sprite that colelcted the power up
-    func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
+    func collected(powerup: PowerupComponent)
 
     /// Removes the powerup from ownership
     /// - Parameter powerup: the powerup to be removed from ownership
@@ -72,6 +71,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // Key: sprite of player, Value: powerups of player
     private(set) var ownedPowerups = [SpriteComponent: [PowerupComponent]]()
+    private(set) var activatedPowerups = [PowerupComponent]()
     // Powerups that has been activated and its sprite is placed on the map
     // waiting for players to contact it.
     private(set) var traps = Set<SpriteComponent>()
@@ -126,9 +126,8 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
         let powerupPos = Vector(point: powerupNode.position)
         let powerupType = powerupComponent.type
-        let animatedNode = powerupType.animateRemoval(from: powerupNode.position) {
-            self.collect(powerupComponent: powerupComponent, by: sprite)
-        }
+        let animatedNode = powerupType.animateRemoval(from: powerupNode.position)
+        collect(powerupComponent: powerupComponent, by: sprite)
         delegate?.hasAdded(node: animatedNode)
         broadcastCollection(of: powerupComponent, by: sprite, at: powerupPos)
     }
@@ -137,9 +136,11 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     func activatePowerup(for sprite: SpriteComponent) {
         guard let powerup = powerup(for: sprite) else {
+            Logger.log.show(details: "No Powerup to activate", logType: .alert)
             return
         }
 
+        Logger.log.show(details: "Activating powerup \(powerup.type)", logType: .alert)
         activate(powerup, by: sprite)
         broadcastPowerup(eventType: .activate, by: sprite)
     }
@@ -171,11 +172,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private func collect(powerupComponent: PowerupComponent,
                          by sprite: SpriteComponent
     ) {
-        add(powerup: powerupComponent, to: sprite)
         remove(collectablePowerup: powerupComponent) { success in
             if success {
-                powerupComponent.parent.removeComponents(SpriteComponent.self)
-                self.delegate?.collected(powerup: powerupComponent, by: sprite)
+                self.add(powerup: powerupComponent, to: sprite)
+                self.delegate?.collected(powerup: powerupComponent)
             }
         }
     }
@@ -192,6 +192,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
         let fade = SKAction.fadeOut(withDuration: 0.5)
         powerupSprite.node.run(fade, completion: {
             powerupSprite.node.removeFromParent()
+            collectablePowerup.parent.removeComponents(SpriteComponent.self)
             complete(true)
         })
     }
@@ -290,10 +291,17 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
 
         powerupEntity.activate()
-        let powerupDuration = powerupEntity.getMaxEffectDuration()
-        DispatchQueue.main.asyncAfter(deadline: .now() + powerupDuration) {
-            self.removePowerup(from: sprite)
+        activatedPowerups.append(powerup)
+    }
+
+    func removeActivatedPowerups() {
+        for powerup in activatedPowerups {
+            guard let owner = powerup.owner?.get(SpriteComponent.self) else {
+                continue
+            }
+            removePowerup(from: owner)
         }
+        activatedPowerups.removeAll()
     }
 }
 

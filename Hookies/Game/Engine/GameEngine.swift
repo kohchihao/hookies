@@ -251,6 +251,7 @@ class GameEngine {
         movementEffectSystem.update(entities: ownedPowerups)
         cutRopeEffectSystem.update(entities: ownedPowerups)
         stealEffectSystem.update(entities: ownedPowerups)
+        powerupSystem.removeActivatedPowerups()
     }
 
     // MARK: - Bolts
@@ -651,15 +652,16 @@ extension GameEngine: EndSystemDelegate {
 // MARK: - PowerupSystemDelegate
 
 extension GameEngine: PowerupSystemDelegate {
-    func collected(powerup: PowerupComponent, by sprite: SpriteComponent) {
+    func collected(powerup: PowerupComponent) {
         guard let powerupEntity = powerup.parent as? PowerupEntity,
-            let player = sprite.parent as? PlayerEntity else {
+            let owner = powerup.owner else {
                 return
         }
 
+        Logger.log.show(details: "Appeneded to collectable", logType: .alert)
         collectablePowerups.removeAll(where: { $0 === powerupEntity })
         ownedPowerups.append(powerupEntity)
-        if player === currentPlayer {
+        if owner === currentPlayer {
             delegate?.hasCollected(powerup: powerup.type)
         }
     }
@@ -695,6 +697,7 @@ extension GameEngine: PlacementEffectSystemDelegate {
         _ = spriteSystem.setPhysicsBody(to: spriteComponent, of: .trap,
                                         rectangleOf: spriteComponent.node.size)
         powerupSystem.add(trap: spriteComponent)
+        Logger.log.show(details: "Has added trap", logType: .alert)
         delegate?.addTrap(with: spriteComponent.node)
     }
 }

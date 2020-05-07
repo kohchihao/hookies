@@ -11,6 +11,5 @@ import Foundation
 class StealPowerupEffectComponent: PowerupEffectComponent {
     init(parent: Entity) {
         super.init(parent: parent, isNegativeEffect: true)
-        duration = 1.0
     }
 }
