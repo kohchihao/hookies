@@ -140,7 +140,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
             return
         }
 
-        Logger.log.show(details: "Activating powerup \(powerup.type)", logType: .alert)
         activate(powerup, by: sprite)
         broadcastPowerup(eventType: .activate, by: sprite)
     }
@@ -264,21 +263,29 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
 
         trapEntity.activateTrap(on: sprite)
-        guard let effect = sprite.parent.get(PowerupEffectComponent.self) else {
+        let negativeEffects = sprite.parent.getMultiple(PowerupEffectComponent.self).filter({
+            $0.isNegativeEffect
+        })
+        guard !negativeEffects.isEmpty else {
             return
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + effect.duration) {
-            self.remove(trap: trap)
+
+        guard let maxNegativeEffectDuration = negativeEffects.map({ $0.duration }).max() else {
+            return
+        }
+
+        self.traps.remove(trap)
+        DispatchQueue.main.asyncAfter(deadline: .now() + maxNegativeEffectDuration) {
+            self.removeFromScene(trap: trap)
         }
     }
 
-    private func remove(trap: SpriteComponent) {
+    private func removeFromScene(trap: SpriteComponent) {
         guard let trapSprite = trap.parent.get(SpriteComponent.self) else {
             return
         }
         trapSprite.node.removeFromParent()
         trap.parent.removeFirstComponent(of: trapSprite)
-        self.traps.remove(trap)
     }
 
     // MARK: - Activate Powerup

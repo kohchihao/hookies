@@ -30,7 +30,10 @@ class NetTrapPowerup: PowerupEntity, TrapEntity {
         movementComponent.from = trapSprite.node.position
         movementComponent.to = trapSprite.node.position
         movementComponent.stopMovement = true
-        sprite.parent.addComponent(movementComponent)
+
+        if !sprite.isProtected(from: movementComponent) {
+            sprite.parent.addComponent(movementComponent)
+        }
     }
 
     private func addNetTrapSprite() {

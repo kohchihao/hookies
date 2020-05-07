@@ -658,7 +658,6 @@ extension GameEngine: PowerupSystemDelegate {
                 return
         }
 
-        Logger.log.show(details: "Appeneded to collectable", logType: .alert)
         collectablePowerups.removeAll(where: { $0 === powerupEntity })
         ownedPowerups.append(powerupEntity)
         if owner === currentPlayer {
@@ -697,7 +696,6 @@ extension GameEngine: PlacementEffectSystemDelegate {
         _ = spriteSystem.setPhysicsBody(to: spriteComponent, of: .trap,
                                         rectangleOf: spriteComponent.node.size)
         powerupSystem.add(trap: spriteComponent)
-        Logger.log.show(details: "Has added trap", logType: .alert)
         delegate?.addTrap(with: spriteComponent.node)
     }
 }

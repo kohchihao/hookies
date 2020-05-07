@@ -16,7 +16,8 @@ class PowerupEntity: Entity {
     }
 
     static func createWithRandomType() -> PowerupEntity {
-        let randType = PowerupType.allCases.randomElement() ?? .shield
+        let randType = [PowerupType.shield, PowerupType.netTrap].randomElement() ?? PowerupType.shield
+//        let randType = PowerupType.allCases.randomElement() ?? .shield
         return create(for: randType)
     }
 
