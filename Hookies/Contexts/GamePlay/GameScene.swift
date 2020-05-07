@@ -555,7 +555,6 @@ extension GameScene: GameEngineDelegate {
         guard let powerupButton = powerupButton else {
             return
         }
-        print("hasObtained")
         let node = powerup.buttonNode
         node.position = CGPoint(x: powerupButton.position.x + 100,
                                 y: powerupButton.position.y)

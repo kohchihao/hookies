@@ -11,6 +11,10 @@ class StealPowerup: PowerupEntity {
     init() {
         super.init(components: [])
         addInitialComponents(for: .stealPowerup)
+    }
+
+    override func activate() {
+        super.activate()
         addComponent(StealPowerupEffectComponent(parent: self))
     }
 }

@@ -14,6 +14,8 @@ class ShieldPowerup: PowerupEntity {
     }
 
     override func activate() {
-        addComponent(ShieldEffectComponent(parent: self))
+        super.activate()
+        let owner = get(PowerupComponent.self)?.owner
+        owner?.addComponent(ShieldEffectComponent(parent: self))
     }
 }

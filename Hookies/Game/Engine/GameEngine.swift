@@ -37,6 +37,7 @@ class GameEngine {
     private var placementEffectSystem = PlacementEffectSystem()
     private var movementEffectSystem = MovementEffectSystem()
     private var cutRopeEffectSystem = CutRopeEffectSystem()
+    private var stealEffectSystem = StealEffectSystem()
 
     // MARK: - Entity
 
@@ -92,6 +93,7 @@ class GameEngine {
         placementEffectSystem.delegate = self
         movementEffectSystem.delegate = self
         cutRopeEffectSystem.delegate = self
+        stealEffectSystem.delegate = self
     }
 
     // MARK: - Add Players
@@ -248,6 +250,7 @@ class GameEngine {
         placementEffectSystem.update(entities: ownedPowerups)
         movementEffectSystem.update(entities: ownedPowerups)
         cutRopeEffectSystem.update(entities: ownedPowerups)
+        stealEffectSystem.update(entities: ownedPowerups)
     }
 
     // MARK: - Bolts
@@ -436,6 +439,7 @@ class GameEngine {
         playerHookEffectSystem.add(player: sprite)
         movementEffectSystem.add(player: sprite)
         cutRopeEffectSystem.add(player: sprite)
+        stealEffectSystem.add(player: sprite)
 
         delegate?.addCurrentPlayer(with: sprite.node)
     }
@@ -459,6 +463,7 @@ class GameEngine {
         playerHookEffectSystem.add(player: sprite)
         movementEffectSystem.add(player: sprite)
         cutRopeEffectSystem.add(player: sprite)
+        stealEffectSystem.add(player: sprite)
 
         if player.playerType == .bot {
             if let botType = player.botType {
@@ -659,25 +664,17 @@ extension GameEngine: PowerupSystemDelegate {
         }
     }
 
-    func hook(_ sprite: SpriteComponent,
-              from anchorSprite: SpriteComponent) {
-        if !finishingLineSystem.hasPlayerFinish(player: sprite) {
-            hookSystem?.hookAndPull(sprite, from: anchorSprite)
-        }
-    }
+//    func hook(_ sprite: SpriteComponent,
+//              from anchorSprite: SpriteComponent) {
+//        if !finishingLineSystem.hasPlayerFinish(player: sprite) {
+//            hookSystem?.hookAndPull(sprite, from: anchorSprite)
+//        }
+//    }
 
-    func indicateSteal(from sprite1: SpriteComponent,
-                       by sprite2: SpriteComponent,
-                       with powerup: PowerupComponent
-    ) {
-        guard let currentPlayerSprite = currentPlayer?.get(SpriteComponent.self) else {
-            return
-        }
-        if currentPlayerSprite === sprite1 {
-            delegate?.hasPowerupStolen(powerup: powerup.type)
-        } else if currentPlayerSprite === sprite2 {
-            delegate?.hasStolen(powerup: powerup.type)
-        }
+    func didRemoveOwned(powerup: PowerupComponent) {
+        ownedPowerups.removeAll(where: {
+            $0.get(PowerupComponent.self) === powerup
+        })
     }
 }
 
@@ -718,6 +715,25 @@ extension GameEngine: CutRopeEffectSystemDelegate {
         _ = hookSystem?.unhook(entity: player.parent,
                                at: sprite.node.position,
                                with: velocity)
+    }
+}
+
+extension GameEngine: StealEffectSystemDelegate {
+    func didSteal(from sprite1: SpriteComponent,
+                  by sprite2: SpriteComponent,
+                  with powerup: PowerupComponent
+    ) {
+        guard let currentPlayerSprite = currentPlayer?.get(SpriteComponent.self) else {
+            return
+        }
+
+        powerupSystem.removePowerup(from: sprite1)
+        powerupSystem.add(player: sprite2, with: powerup)
+        if currentPlayerSprite === sprite1 {
+            delegate?.hasPowerupStolen(powerup: powerup.type)
+        } else if currentPlayerSprite === sprite2 {
+            delegate?.hasStolen(powerup: powerup.type)
+        }
     }
 }
 

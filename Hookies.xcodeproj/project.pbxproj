@@ -37,6 +37,7 @@
 		113049352462E7F8002AEB7E /* TrapEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113049342462E7F8002AEB7E /* TrapEntity.swift */; };
 		113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113727052424C3C700AB4B79 /* StringRepresentable.swift */; };
 		11427C1E24631958008E704D /* CutRopeEffectSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11427C1D24631958008E704D /* CutRopeEffectSystem.swift */; };
+		11427C20246326EE008E704D /* StealEffectSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11427C1F246326EE008E704D /* StealEffectSystem.swift */; };
 		11593D772431EAD000462BE6 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11593D762431EAD000462BE6 /* CGPoint+Extension.swift */; };
 		11601F8A2461922A00190E34 /* PlayerHookPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F892461922900190E34 /* PlayerHookPowerup.swift */; };
 		11601F8C2461923E00190E34 /* NetTrapPowerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11601F8B2461923E00190E34 /* NetTrapPowerup.swift */; };
@@ -276,6 +277,7 @@
 		113049342462E7F8002AEB7E /* TrapEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrapEntity.swift; sourceTree = "<group>"; };
 		113727052424C3C700AB4B79 /* StringRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringRepresentable.swift; sourceTree = "<group>"; };
 		11427C1D24631958008E704D /* CutRopeEffectSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutRopeEffectSystem.swift; sourceTree = "<group>"; };
+		11427C1F246326EE008E704D /* StealEffectSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StealEffectSystem.swift; sourceTree = "<group>"; };
 		11593D762431EAD000462BE6 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		11601F892461922900190E34 /* PlayerHookPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHookPowerup.swift; sourceTree = "<group>"; };
 		11601F8B2461923E00190E34 /* NetTrapPowerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetTrapPowerup.swift; sourceTree = "<group>"; };
@@ -828,6 +830,7 @@
 				113049322462DB88002AEB7E /* PlacementEffectSystem.swift */,
 				113049302462DB70002AEB7E /* MovementEffectSystem.swift */,
 				11427C1D24631958008E704D /* CutRopeEffectSystem.swift */,
+				11427C1F246326EE008E704D /* StealEffectSystem.swift */,
 			);
 			path = PowerupEffectSystems;
 			sourceTree = "<group>";
@@ -1680,6 +1683,7 @@
 				1127C56A2415E4B400A78AA0 /* NavigatorTransitionType.swift in Sources */,
 				113727062424C3C700AB4B79 /* StringRepresentable.swift in Sources */,
 				785B79E324237659001D7028 /* JoinGameViewController.swift in Sources */,
+				11427C20246326EE008E704D /* StealEffectSystem.swift in Sources */,
 				2BA5F93A24434CE7009AF93C /* PlayerType.swift in Sources */,
 				112B6197244FF6D900B60D72 /* CutRopeEffectComponent.swift in Sources */,
 				11CC84882439E7A8006D3A8F /* PowerupEffectComponent.swift in Sources */,

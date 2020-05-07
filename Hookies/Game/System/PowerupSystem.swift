@@ -26,20 +26,9 @@ protocol PowerupSystemDelegate: MovementControlDelegate, SceneDelegate {
     ///   - sprite: The sprite that colelcted the power up
     func collected(powerup: PowerupComponent, by sprite: SpriteComponent)
 
-    /// Hooking power up applied.
-    /// - Parameters:
-    ///   - sprite: The sprite that applied the power up
-    ///   - anchorSprite: The sprite that was affected by the power up
-    func hook(_ sprite: SpriteComponent, from anchorSprite: SpriteComponent)
-
-    /// Indicates that steal has occurred.
-    /// - Parameters:
-    ///   - sprite: The sprite that was stolen from
-    ///   - sprite: The sprite that stole
-    ///   - powerup: The power up stolen
-    func indicateSteal(from sprite: SpriteComponent,
-                       by sprite: SpriteComponent,
-                       with powerup: PowerupComponent)
+    /// Removes the powerup from ownership
+    /// - Parameter powerup: the powerup to be removed from ownership
+    func didRemoveOwned(powerup: PowerupComponent)
 }
 
 class PowerupSystem: System, PowerupSystemProtocol {
@@ -47,12 +36,9 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // Key: sprite of player, Value: powerups of player
     private(set) var ownedPowerups = [SpriteComponent: [PowerupComponent]]()
-    // Key: sprite of player, Value: activated powerups of player
-    private(set) var activatedPowerups = [SpriteComponent: [PowerupComponent]]()
     // Powerups that has been activated and its sprite is placed on the map
     // waiting for players to contact it.
     private(set) var traps = Set<SpriteComponent>()
-
     private(set) var collectablePowerups = Set<PowerupComponent>()
 
     var players: [SpriteComponent] {
@@ -69,7 +55,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
     /// - Parameter player: The sprite component of the player.
     func add(player: SpriteComponent) {
         ownedPowerups[player] = []
-        activatedPowerups[player] = []
     }
 
     // MARK: - Add Trap
@@ -94,26 +79,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
             return
         }
         ownedPowerups[player]?.remove(at: indexToRemove)
-        player.parent.removeFirstComponent(of: powerupToRemove)
-    }
-
-    /// Will add the activated powerup into the activated power up array.
-    /// If not activated, do nothing.
-    /// - Parameters:
-    ///   - powerup: The activated powerup component
-    ///   - sprite: The sprite that owns the powerup
-    private func addActivated(powerup: PowerupComponent, to sprite: SpriteComponent) {
-        if powerup.isActivated {
-            activatedPowerups[sprite]?.append(powerup)
-        }
-    }
-
-    /// Will remove the activated powerup from the system. To use then when the powerup has be used.
-    /// - Parameters:
-    ///   - powerup: The activated powerup component to remove.
-    ///   - sprite: The sprite that owns the powerup.
-    private func removeActivated(powerup: PowerupComponent, from sprite: SpriteComponent) {
-        activatedPowerups[sprite]?.removeAll(where: { $0 === powerup })
+        delegate?.didRemoveOwned(powerup: powerupToRemove)
     }
 
     // MARK: - Collect Powerup
@@ -129,9 +95,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
         let powerupPos = Vector(point: powerupNode.position)
         let powerupType = powerupComponent.type
-        let animatedNode = powerupType.animateRemoval(from: powerupNode.position)
+        let animatedNode = powerupType.animateRemoval(from: powerupNode.position) {
+            self.collect(powerupComponent: powerupComponent, by: sprite)
+        }
         delegate?.hasAdded(node: animatedNode)
-        collect(powerupComponent: powerupComponent, by: sprite)
         broadcastCollection(of: powerupComponent, by: sprite, at: powerupPos)
     }
 
@@ -208,24 +175,9 @@ class PowerupSystem: System, PowerupSystemProtocol {
         return ownedPowerups[sprite]?.first
     }
 
-    // MARK: - Steal Powerup
-
-    private func steal(from player1: SpriteComponent,
-                       by player2: SpriteComponent
-    ) {
-        guard let powerupToSteal = powerup(for: player1) else {
-            Logger.log.show(details: "No powerup to steal", logType: .warning)
-            return
-        }
-
-        removePowerup(from: player1)
-        add(player: player2, with: powerupToSteal)
-        delegate?.indicateSteal(from: player1, by: player2, with: powerupToSteal)
-    }
-
     // MARK: Add player's Powerup
 
-    private func add(player: SpriteComponent, with powerup: PowerupComponent) {
+    func add(player: SpriteComponent, with powerup: PowerupComponent) {
         removePowerup(from: player) // Ensure player will only own 1 powerup
         ownedPowerups[player]?.append(powerup)
         powerup.setOwner(player.parent)
@@ -286,20 +238,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         return nil
     }
 
-    // MARK: - isProtected
-
-    /// Determine whether the sprite is protected from the given effect
-    private func isProtected(spriteComponent: SpriteComponent,
-                             from effect: PowerupEffectComponent
-    ) -> Bool {
-        guard let shieldPowerup = activatedPowerups[spriteComponent]?
-            .first(where: { $0.type == .shield }) else {
-                return false
-        }
-        let hasShieldEffect = shieldPowerup.parent.get(ShieldEffectComponent.self) != nil
-        return effect.isNegativeEffect && shieldPowerup.isActivated && hasShieldEffect
-    }
-
     // MARK: - Activate Net Trap
 
     private func activate(trap: SpriteComponent, on sprite: SpriteComponent) {
@@ -335,67 +273,10 @@ class PowerupSystem: System, PowerupSystemProtocol {
         }
 
         powerupEntity.activate()
-        removePowerup(from: sprite)
-        addActivated(powerup: powerup, to: sprite)
-        if !(powerupEntity is PlayerHookPowerup || powerupEntity is ShieldPowerup ||
-            powerupEntity is NetTrapPowerup || powerupEntity is CutRopePowerup) {
-            apply(powerup: powerup, on: sprite)
-            powerupEntity.postActivationHook()
+        let powerupDuration = powerupEntity.getMaxEffectDuration()
+        DispatchQueue.main.asyncAfter(deadline: .now() + powerupDuration) {
+            self.removePowerup(from: sprite)
         }
-    }
-
-    /// Will apply the powerup on the sprite.
-    private func apply(powerup: PowerupComponent,
-                       on sprite: SpriteComponent,
-                       complete: ((Bool) -> Void)? = nil
-    ) {
-        let effects = powerup.parent.getMultiple(PowerupEffectComponent.self)
-        for effect in effects {
-            apply(effect: effect, on: sprite) { isSuccess in
-                self.removeActivated(powerup: powerup, from: sprite)
-                if let complete = complete {
-                    complete(isSuccess)
-                }
-            }
-        }
-    }
-
-    /// Will apply the effect on the sprite
-    private func apply(effect: PowerupEffectComponent,
-                       on sprite: SpriteComponent,
-                       complete: @escaping (_ success: Bool) -> Void
-    ) {
-        if isProtected(spriteComponent: sprite, from: effect) {
-            complete(false)
-            return
-        }
-
-        switch effect {
-        case let stealEffect as StealPowerupEffectComponent:
-            applyStealPowerupEffect(stealEffect, by: sprite, complete: complete)
-        default:
-            return
-        }
-    }
-}
-
-// MARK: - Apply Effects
-extension PowerupSystem {
-    private func applyStealPowerupEffect(_ effect: StealPowerupEffectComponent,
-                                         by sprite: SpriteComponent,
-                                         complete: (_ success: Bool) -> Void) {
-        guard let nearestSprite = sprite.nearestSpriteInFront(from: players) else {
-            Logger.log.show(details: "No players in front to steal powerup",
-                            logType: .warning)
-            return
-        }
-        guard !isProtected(spriteComponent: nearestSprite, from: effect) else {
-            Logger.log.show(details: "Cannot steal from shielded player.",
-                            logType: .warning)
-            return
-        }
-        steal(from: nearestSprite, by: sprite)
-        complete(true)
     }
 }
 

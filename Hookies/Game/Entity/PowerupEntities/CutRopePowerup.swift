@@ -14,6 +14,7 @@ class CutRopePowerup: PowerupEntity {
     }
 
     override func activate() {
+        super.activate()
         addComponent(CutRopeEffectComponent(parent: self))
     }
 }

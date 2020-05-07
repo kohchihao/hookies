@@ -45,7 +45,9 @@ enum PowerupType: String, CaseIterable, StringRepresentable {
         return rawValue
     }
 
-    func animateRemoval(from position: CGPoint) -> SKSpriteNode {
+    func animateRemoval(from position: CGPoint,
+                        complete: @escaping () -> Void
+    ) -> SKSpriteNode {
         let powerupDisplay = buttonNode
         powerupDisplay.position = position
         powerupDisplay.zPosition = 0
@@ -56,6 +58,7 @@ enum PowerupType: String, CaseIterable, StringRepresentable {
                                                   SKAction.fadeOut(withDuration: 0.5)])
         powerupDisplay.run(powerupAnimation, completion: {
             powerupDisplay.removeFromParent()
+            complete()
         })
         return powerupDisplay
     }
