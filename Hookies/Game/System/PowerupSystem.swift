@@ -11,10 +11,46 @@ import CoreGraphics
 import SpriteKit
 
 protocol PowerupSystemProtocol {
+    /// Will add the player to the system.
+    /// - Parameter player: The sprite component of the player.
     func add(player: SpriteComponent)
-    func add(powerup: PowerupComponent)
+
+    /// Will add the trap into the list of traps
+    /// - Parameter trap: The trap to be added
+    func add(trap: SpriteComponent)
+
+    /// Will add the powerup component into the list of collectables
+    /// - Parameter powerup: The powerup component to add into the system.
+    func addCollectable(powerup: PowerupComponent)
+
+    /// Player will obtain the given powerup
+    /// - Parameters:
+    ///   - powerup: The powerup that is being obtained
+    ///   - player: The player that obtains the powerup
+    func add(powerup: PowerupComponent, to player: SpriteComponent)
+
+    /// Will remove the powerup owned by the  player.
+    /// - Parameter player: The player which you want the power up to be removed.
     func removePowerup(from player: SpriteComponent)
+
+    /// Will trigger the sprite to collect the given powerup.
+    /// Will also broadcast this event to other players.
+    /// - Parameters:
+    ///   - powerupNode: The powerup sprite node to be collected
+    ///   - sprite: The sprite that collects the powerup.
     func collect(powerupNode: SKSpriteNode, by sprite: SpriteComponent)
+
+    /// Will activate the powerup that is owned by the sprite.
+    /// Will also broadcast this event to other players.
+    /// - Parameters:
+    ///   - sprite: the sprite that triggers this activation.
+    func activatePowerup(for sprite: SpriteComponent)
+
+    /// Will activate the trap event that is activated on the given sprite.
+    /// Will also broadcast this event to other players.
+    /// - Parameters:
+    ///   - point: The point at which this activate occurs.
+    ///   - sprite: The sprite that gets trap in the net
     func activateTrap(at point: CGPoint, on sprite: SpriteComponent)
 }
 
@@ -51,8 +87,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: Add Player
 
-    /// Will add the player to the system.
-    /// - Parameter player: The sprite component of the player.
     func add(player: SpriteComponent) {
         ownedPowerups[player] = []
     }
@@ -65,14 +99,16 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: Remove/Add Powerup
 
-    /// Will add the powerup component into the system
-    /// - Parameter powerup: The powerup component to add into the system.
-    func add(powerup: PowerupComponent) {
+    func addCollectable(powerup: PowerupComponent) {
         collectablePowerups.insert(powerup)
     }
 
-    /// Will remove the powerup owned by the  player.
-    /// - Parameter player: The player which you want the power up to be removed.
+    func add(powerup: PowerupComponent, to player: SpriteComponent) {
+        removePowerup(from: player) // Ensure player will only own 1 powerup
+        ownedPowerups[player]?.append(powerup)
+        powerup.setOwner(player.parent)
+    }
+
     func removePowerup(from player: SpriteComponent) {
         guard let powerupToRemove = powerup(for: player),
             let indexToRemove = ownedPowerups[player]?.firstIndex(of: powerupToRemove) else {
@@ -84,11 +120,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
     // MARK: - Collect Powerup
 
-    /// Will trigger the sprite to collect the given powerup.
-    /// Will also broadcast this event to other players.
-    /// - Parameters:
-    ///   - powerupNode: The powerup sprite node to be collected
-    ///   - sprite: The sprite that collects the powerup.
     func collect(powerupNode: SKSpriteNode, by sprite: SpriteComponent) {
         guard let powerupComponent = findCollectablePowerup(at: powerupNode.position) else {
             return
@@ -102,26 +133,8 @@ class PowerupSystem: System, PowerupSystemProtocol {
         broadcastCollection(of: powerupComponent, by: sprite, at: powerupPos)
     }
 
-    private func broadcastCollection(of powerup: PowerupComponent,
-                                     by sprite: SpriteComponent,
-                                     at position: Vector
-    ) {
-        let info = [
-            "data": PowerupCollectionSystemEvent(sprite: sprite,
-                                                 powerupPos: position,
-                                                 powerupType: powerup.type)
-        ]
-        NotificationCenter.default.post(name: Notification.Name.broadcastPowerupCollectionEvent,
-                                        object: nil,
-                                        userInfo: info)
-    }
-
     // MARK: - Activate Powerup
 
-    /// Will activate the powerup that is owned by the sprite.
-    /// Will also broadcast this event to other players.
-    /// - Parameters:
-    ///   - sprite: the sprite that triggers this activation.
     func activatePowerup(for sprite: SpriteComponent) {
         guard let powerup = powerup(for: sprite) else {
             return
@@ -131,11 +144,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
         broadcastPowerup(eventType: .activate, by: sprite)
     }
 
-    /// Will activate the trap event that is activated on the given sprite.
-    /// Will also broadcast this event to other players.
-    /// - Parameters:
-    ///   - point: The point at which this activate occurs.
-    ///   - sprite: The sprite that gets trap in the net
     func activateTrap(at point: CGPoint, on sprite: SpriteComponent) {
         guard let trap = findTrap(at: point),
             let trapSprite = trap.parent.get(SpriteComponent.self),
@@ -153,34 +161,9 @@ class PowerupSystem: System, PowerupSystemProtocol {
                          at: trapSprite.node.position)
     }
 
-    private func broadcastPowerup(eventType: PowerupEventType,
-                                  by sprite: SpriteComponent,
-                                  at position: CGPoint? = nil
-    ) {
-        var eventPos: Vector
-        eventPos = position != nil ? Vector(point: position!)
-            : Vector(point: sprite.node.position)
-        let event = PowerupSystemEvent(sprite: sprite,
-                                       powerupEventType: eventType,
-                                       powerupPos: eventPos)
-        let info = [ "data": event ]
-        let nameOfBroadcast = Notification.Name.broadcastPowerupAction
-        NotificationCenter.default.post(name: nameOfBroadcast,
-                                        object: nil,
-                                        userInfo: info)
-    }
-
     // MARK: - Get player's powerup
     private func powerup(for sprite: SpriteComponent) -> PowerupComponent? {
         return ownedPowerups[sprite]?.first
-    }
-
-    // MARK: Add player's Powerup
-
-    func add(player: SpriteComponent, with powerup: PowerupComponent) {
-        removePowerup(from: player) // Ensure player will only own 1 powerup
-        ownedPowerups[player]?.append(powerup)
-        powerup.setOwner(player.parent)
     }
 
     // MARK: - Collect Powerup
@@ -188,7 +171,7 @@ class PowerupSystem: System, PowerupSystemProtocol {
     private func collect(powerupComponent: PowerupComponent,
                          by sprite: SpriteComponent
     ) {
-        add(player: sprite, with: powerupComponent)
+        add(powerup: powerupComponent, to: sprite)
         remove(collectablePowerup: powerupComponent) { success in
             if success {
                 powerupComponent.parent.removeComponents(SpriteComponent.self)
@@ -213,9 +196,43 @@ class PowerupSystem: System, PowerupSystemProtocol {
         })
     }
 
+    // MARK: - Broadcast Collection
+
+    private func broadcastCollection(of powerup: PowerupComponent,
+                                     by sprite: SpriteComponent,
+                                     at position: Vector
+    ) {
+        let info = [
+            "data": PowerupCollectionSystemEvent(sprite: sprite,
+                                                 powerupPos: position,
+                                                 powerupType: powerup.type)
+        ]
+        NotificationCenter.default.post(name: Notification.Name.broadcastPowerupCollectionEvent,
+                                        object: nil,
+                                        userInfo: info)
+    }
+
+    // MARK: - Broadcast Powerup Event
+
+    private func broadcastPowerup(eventType: PowerupEventType,
+                                  by sprite: SpriteComponent,
+                                  at position: CGPoint? = nil
+    ) {
+        var eventPos: Vector
+        eventPos = position != nil ? Vector(point: position!)
+            : Vector(point: sprite.node.position)
+        let event = PowerupSystemEvent(sprite: sprite,
+                                       powerupEventType: eventType,
+                                       powerupPos: eventPos)
+        let info = [ "data": event ]
+        let nameOfBroadcast = Notification.Name.broadcastPowerupAction
+        NotificationCenter.default.post(name: nameOfBroadcast,
+                                        object: nil,
+                                        userInfo: info)
+    }
+
     // MARK: - Find Trap
 
-    /// Will find a trap at the given point if any.
     private func findTrap(at point: CGPoint) -> SpriteComponent? {
         for trap in traps where trap.node.frame.contains(point) {
             return trap

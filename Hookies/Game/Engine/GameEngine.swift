@@ -311,7 +311,7 @@ class GameEngine {
                                         rectangleOf: powerupSprite.node.size)
 
         collectablePowerups.append(powerup)
-        powerupSystem.add(powerup: powerupComponent)
+        powerupSystem.addCollectable(powerup: powerupComponent)
     }
 
     // MARK: - Platform
@@ -721,7 +721,7 @@ extension GameEngine: StealEffectSystemDelegate {
         }
 
         powerupSystem.removePowerup(from: sprite1)
-        powerupSystem.add(player: sprite2, with: powerup)
+        powerupSystem.add(powerup: powerup, to: sprite2)
         if currentPlayerSprite === sprite1 {
             delegate?.hasPowerupStolen(powerup: powerup.type)
         } else if currentPlayerSprite === sprite2 {
