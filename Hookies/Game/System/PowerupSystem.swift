@@ -202,11 +202,11 @@ class PowerupSystem: System, PowerupSystemProtocol {
                 return complete(false)
         }
 
+        collectablePowerup.parent.removeComponents(SpriteComponent.self)
         collectablePowerups.remove(collectablePowerup)
         let fade = SKAction.fadeOut(withDuration: 0.5)
         powerupSprite.node.run(fade, completion: {
             powerupSprite.node.removeFromParent()
-            collectablePowerup.parent.removeComponents(SpriteComponent.self)
             complete(true)
         })
     }
