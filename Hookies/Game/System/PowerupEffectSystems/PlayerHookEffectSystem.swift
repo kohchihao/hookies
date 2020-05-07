@@ -9,10 +9,24 @@
 import Foundation
 import SpriteKit
 
-protocol PlayerHookEffectDelegate: MovementControlDelegate, SceneDelegate {}
+protocol PlayerHookEffectDelegate: MovementControlDelegate, SceneDelegate {
+
+    /// Will be called to confirm whether it is appropriate to hook the sprite
+    /// - Parameters:
+    ///   - sprite: The sprite to be hooked
+    ///   - anchorSprite: The sprite that activates  the hook 
+    func toHook(_ sprite: SpriteComponent, from anchorSprite: SpriteComponent)
+}
 
 protocol PlayerHookEffectSystemProtocol: EffectSystemProtocol,
-    PlayerDenpendencyProtocol {}
+    PlayerDenpendencyProtocol {
+
+    /// To hook and pull back the other player's sprite.
+    /// - Parameters:
+    ///   - sprite: The player's sprite
+    ///   - anchorSprite: The other player that is hooked to by `sprite`
+    func hookAndPull( _ sprite: SpriteComponent, from anchorSprite: SpriteComponent)
+}
 
 class PlayerHookEffectSystem: System, PlayerHookEffectSystemProtocol {
     private let effectType = PlayerHookEffectComponent.self
@@ -45,14 +59,10 @@ class PlayerHookEffectSystem: System, PlayerHookEffectSystemProtocol {
             return
         }
 
-        hookAndPull(spriteToHook, from: ownerSprite)
+        delegate?.toHook(spriteToHook, from: ownerSprite)
     }
 
-    /// To hook and pull back the other player's sprite.
-    /// - Parameters:
-    ///   - sprite: The player's sprite
-    ///   - anchorSprite: The other player that is hooked to by `sprite`
-    private func hookAndPull(
+    func hookAndPull(
         _ sprite: SpriteComponent,
         from anchorSprite: SpriteComponent
     ) {

@@ -664,13 +664,6 @@ extension GameEngine: PowerupSystemDelegate {
         }
     }
 
-//    func hook(_ sprite: SpriteComponent,
-//              from anchorSprite: SpriteComponent) {
-//        if !finishingLineSystem.hasPlayerFinish(player: sprite) {
-//            hookSystem?.hookAndPull(sprite, from: anchorSprite)
-//        }
-//    }
-
     func didRemoveOwned(powerup: PowerupComponent) {
         ownedPowerups.removeAll(where: {
             $0.get(PowerupComponent.self) === powerup
@@ -737,5 +730,12 @@ extension GameEngine: StealEffectSystemDelegate {
     }
 }
 
-extension GameEngine: PlayerHookEffectDelegate {}
+extension GameEngine: PlayerHookEffectDelegate {
+    func toHook(_ sprite: SpriteComponent,
+                from anchorSprite: SpriteComponent) {
+        if !finishingLineSystem.hasPlayerFinish(player: sprite) {
+            playerHookEffectSystem.hookAndPull(sprite, from: anchorSprite)
+        }
+    }
+}
 extension GameEngine: MovementEffectSystemDelegate {}
