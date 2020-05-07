@@ -13,6 +13,7 @@ protocol EffectSystemProtocol {
 }
 
 extension EffectSystemProtocol {
+    /// Will get an array of specified effect component from the given array of entities
     func getEffectComponents<T: PowerupEffectComponent>(
         from entities: [Entity],
         with type: T.Type
@@ -26,6 +27,7 @@ extension EffectSystemProtocol {
         return effects
     }
 
+    /// Will remove the effect from the entity
     func remove(effect: PowerupEffectComponent) {
         effect.parent.removeFirstComponent(of: effect)
     }

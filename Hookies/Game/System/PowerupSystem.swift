@@ -52,6 +52,9 @@ protocol PowerupSystemProtocol {
     ///   - point: The point at which this activate occurs.
     ///   - sprite: The sprite that gets trap in the net
     func activateTrap(at point: CGPoint, on sprite: SpriteComponent)
+
+    /// Will remove the activated powerups from all the players
+    func removeActivatedPowerups()
 }
 
 protocol PowerupSystemDelegate: MovementControlDelegate, SceneDelegate {
@@ -159,6 +162,18 @@ class PowerupSystem: System, PowerupSystemProtocol {
         activate(trap: trap, on: sprite)
         broadcastPowerup(eventType: .activateTrap, by: sprite,
                          at: trapSprite.node.position)
+    }
+
+    // MARK: - Remove Activated Powerups
+
+    func removeActivatedPowerups() {
+        for powerup in activatedPowerups {
+            guard let owner = powerup.owner?.get(SpriteComponent.self) else {
+                continue
+            }
+            removePowerup(from: owner)
+        }
+        activatedPowerups.removeAll()
     }
 
     // MARK: - Get player's powerup
@@ -299,16 +314,6 @@ class PowerupSystem: System, PowerupSystemProtocol {
 
         powerupEntity.activate()
         activatedPowerups.append(powerup)
-    }
-
-    func removeActivatedPowerups() {
-        for powerup in activatedPowerups {
-            guard let owner = powerup.owner?.get(SpriteComponent.self) else {
-                continue
-            }
-            removePowerup(from: owner)
-        }
-        activatedPowerups.removeAll()
     }
 }
 
