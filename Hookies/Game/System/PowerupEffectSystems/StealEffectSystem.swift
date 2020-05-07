@@ -21,7 +21,7 @@ protocol StealEffectSystemDelegate: AnyObject {
 }
 
 protocol StealEffectSystemProtocol: EffectSystemProtocol,
-    PlayerDenpendencyProtocol {}
+    PlayerDependencyProtocol {}
 
 class StealEffectSystem: System, StealEffectSystemProtocol {
     private let effectType = StealPowerupEffectComponent.self

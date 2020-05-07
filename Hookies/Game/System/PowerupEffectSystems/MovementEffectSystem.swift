@@ -9,7 +9,7 @@
 import SpriteKit
 
 protocol MovementEffectSystemDelegate: MovementControlDelegate {}
-protocol MovementEffectSystemProtocol: EffectSystemProtocol, PlayerDenpendencyProtocol {}
+protocol MovementEffectSystemProtocol: EffectSystemProtocol, PlayerDependencyProtocol {}
 
 class MovementEffectSystem: MovementEffectSystemProtocol {
     var players = [SpriteComponent]()

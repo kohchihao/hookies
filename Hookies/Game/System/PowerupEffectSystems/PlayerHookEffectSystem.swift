@@ -14,12 +14,12 @@ protocol PlayerHookEffectDelegate: MovementControlDelegate, SceneDelegate {
     /// Will be called to confirm whether it is appropriate to hook the sprite
     /// - Parameters:
     ///   - sprite: The sprite to be hooked
-    ///   - anchorSprite: The sprite that activates  the hook 
+    ///   - anchorSprite: The sprite that activates  the hook
     func toHook(_ sprite: SpriteComponent, from anchorSprite: SpriteComponent)
 }
 
 protocol PlayerHookEffectSystemProtocol: EffectSystemProtocol,
-    PlayerDenpendencyProtocol {
+    PlayerDependencyProtocol {
 
     /// To hook and pull back the other player's sprite.
     /// - Parameters:

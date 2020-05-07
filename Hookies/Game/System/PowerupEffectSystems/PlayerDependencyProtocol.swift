@@ -8,11 +8,11 @@
 
 import Foundation
 
-protocol PlayerDenpendencyProtocol {
+protocol PlayerDependencyProtocol {
     var players: [SpriteComponent] { get set }
 }
 
-extension PlayerDenpendencyProtocol {
+extension PlayerDependencyProtocol {
     mutating func add(player: SpriteComponent) {
         players.append(player)
     }

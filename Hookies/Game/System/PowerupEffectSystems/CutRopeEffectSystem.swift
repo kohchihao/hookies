@@ -15,7 +15,7 @@ protocol CutRopeEffectSystemDelegate: AnyObject {
 }
 
 protocol CutRopeEffectSystemProtocol: EffectSystemProtocol,
-    PlayerDenpendencyProtocol {}
+    PlayerDependencyProtocol {}
 
 class CutRopeEffectSystem: System, CutRopeEffectSystemProtocol {
     var players = [SpriteComponent]()
