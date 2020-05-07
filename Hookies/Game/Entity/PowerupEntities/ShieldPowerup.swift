@@ -8,11 +8,6 @@
 import Foundation
 
 class ShieldPowerup: PowerupEntity {
-    init() {
-        super.init(components: [])
-        addInitialComponents(for: .shield)
-    }
-
     override func activate() {
         super.activate()
         addComponent(ShieldEffectComponent(parent: self))

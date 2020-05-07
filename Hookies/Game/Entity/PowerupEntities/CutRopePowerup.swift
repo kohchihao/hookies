@@ -8,11 +8,6 @@
 import Foundation
 
 class CutRopePowerup: PowerupEntity {
-    init() {
-        super.init(components: [])
-        addInitialComponents(for: .cutRope)
-    }
-
     override func activate() {
         super.activate()
         addComponent(CutRopeEffectComponent(parent: self))

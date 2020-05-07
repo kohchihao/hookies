@@ -8,11 +8,6 @@
 import Foundation
 
 class NetTrapPowerup: PowerupEntity, TrapEntity {
-    init() {
-        super.init(components: [])
-        addInitialComponents(for: .netTrap)
-    }
-
     override func activate() {
         super.activate()
         addComponent(PlacementEffectComponent(parent: self))

@@ -15,26 +15,38 @@ class PowerupEntity: Entity {
         self.components = components
     }
 
+    convenience init() {
+        self.init(components: [])
+    }
+
+    /// Create a powerup entity of random type
     static func createWithRandomType() -> PowerupEntity {
         let randType = PowerupType.allCases.randomElement() ?? .shield
         return create(for: randType)
     }
 
+    /// A factory that is used to create a powerup entity of a given type
+    /// - Parameter type: The type of powerup entity to create
     static func create(for type: PowerupType) -> PowerupEntity {
+        let powerup: PowerupEntity
         switch type {
         case .cutRope:
-            return CutRopePowerup()
+            powerup = CutRopePowerup()
         case .netTrap:
-            return NetTrapPowerup()
+            powerup = NetTrapPowerup()
         case .playerHook:
-            return PlayerHookPowerup()
+            powerup = PlayerHookPowerup()
         case .shield:
-            return ShieldPowerup()
+            powerup = ShieldPowerup()
         case .stealPowerup:
-            return StealPowerup()
+            powerup = StealPowerup()
         }
+        powerup.addInitialComponents(for: type)
+        return powerup
     }
 
+    /// Add the initial components related to powerup entities.
+    /// - Parameter type: The type of the powerup
     func addInitialComponents(for type: PowerupType) {
         let powerupSprite = SpriteComponent(parent: self)
         let powerupComponent = PowerupComponent(parent: self, type: type)
@@ -42,6 +54,9 @@ class PowerupEntity: Entity {
         addComponent(powerupComponent)
     }
 
+    /// Will create a new powerup entity that has the same initial state as the existing one.
+    /// But with a different type
+    /// - Parameter type: The type of powerup entity to create to create
     func sync(with type: PowerupType) -> PowerupEntity? {
         guard let existingSpriteComponent = get(SpriteComponent.self) else {
             return nil
@@ -61,6 +76,7 @@ class PowerupEntity: Entity {
         return newPowerupEntity
     }
 
+    /// Will activate the powerup entity
     func activate() {
         guard let powerupComponent = get(PowerupComponent.self) else {
             return
