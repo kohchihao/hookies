@@ -35,8 +35,8 @@ class PlayerHookEffectSystem: System, PlayerHookEffectSystemProtocol {
 
     weak var delegate: PlayerHookEffectDelegate?
 
-    func update(entities: [PowerupEntity]) {
-        let effects = self.getEffectComponents(from: entities, with: effectType)
+    func apply(on powerups: [PowerupEntity]) {
+        let effects = self.getEffectComponents(from: powerups, with: effectType)
         for effect in effects {
             applyHook(effect)
             remove(effect: effect)

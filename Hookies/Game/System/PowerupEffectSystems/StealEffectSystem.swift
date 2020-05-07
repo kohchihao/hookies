@@ -30,9 +30,9 @@ class StealEffectSystem: System, StealEffectSystemProtocol {
 
     weak var delegate: StealEffectSystemDelegate?
 
-    func update(entities: [PowerupEntity]) {
-        self.powerups = entities
-        let effects = getEffectComponents(from: entities, with: effectType)
+    func apply(on powerups: [PowerupEntity]) {
+        self.powerups = powerups
+        let effects = getEffectComponents(from: powerups, with: effectType)
         effects.forEach({
             apply(effect: $0)
             remove(effect: $0)

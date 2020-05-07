@@ -20,8 +20,8 @@ class PlacementEffectSystem: PlacementEffectSystemProtocol {
 
     weak var delegate: PlacementEffectSystemDelegate?
 
-    func update(entities: [PowerupEntity]) {
-        let effects = getEffectComponents(from: entities, with: effectType)
+    func apply(on powerups: [PowerupEntity]) {
+        let effects = getEffectComponents(from: powerups, with: effectType)
         effects.forEach({
             apply(effect: $0)
             remove(effect: $0)

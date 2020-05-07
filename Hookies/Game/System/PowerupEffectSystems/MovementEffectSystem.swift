@@ -18,9 +18,9 @@ class MovementEffectSystem: MovementEffectSystemProtocol {
 
     weak var delegate: MovementEffectSystemDelegate?
 
-    func update(entities: [PowerupEntity]) {
+    func apply(on powerups: [PowerupEntity]) {
         let playerEntities = players.compactMap({ $0.parent as? PlayerEntity })
-        let effects = getEffectComponents(from: entities + playerEntities,
+        let effects = getEffectComponents(from: powerups + playerEntities,
                                           with: effectType)
         effects.forEach({
             apply(effect: $0)

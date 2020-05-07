@@ -13,8 +13,8 @@ protocol ShieldEffectSystemProtocol: EffectSystemProtocol {}
 class ShieldEffectSystem: System, ShieldEffectSystemProtocol {
     private let effectType = ShieldEffectComponent.self
 
-    func update(entities: [PowerupEntity]) {
-        let effects = getEffectComponents(from: entities, with: effectType)
+    func apply(on powerups: [PowerupEntity]) {
+        let effects = getEffectComponents(from: powerups, with: effectType)
         for effect in effects {
             applyShieldEffect(effect)
             remove(effect: effect)

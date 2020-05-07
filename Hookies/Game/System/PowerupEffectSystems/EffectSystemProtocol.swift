@@ -9,7 +9,7 @@
 import Foundation
 
 protocol EffectSystemProtocol {
-    func update(entities: [PowerupEntity])
+    func apply(on powerups: [PowerupEntity])
 }
 
 extension EffectSystemProtocol {

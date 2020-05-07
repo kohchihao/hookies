@@ -245,12 +245,12 @@ class GameEngine {
     }
 
     private func updateEffectSystems() {
-        playerHookEffectSystem.update(entities: ownedPowerups)
-        shieldEffectSystem.update(entities: ownedPowerups)
-        placementEffectSystem.update(entities: ownedPowerups)
-        movementEffectSystem.update(entities: ownedPowerups)
-        cutRopeEffectSystem.update(entities: ownedPowerups)
-        stealEffectSystem.update(entities: ownedPowerups)
+        playerHookEffectSystem.apply(on: ownedPowerups)
+        shieldEffectSystem.apply(on: ownedPowerups)
+        placementEffectSystem.apply(on: ownedPowerups)
+        movementEffectSystem.apply(on: ownedPowerups)
+        cutRopeEffectSystem.apply(on: ownedPowerups)
+        stealEffectSystem.apply(on: ownedPowerups)
         powerupSystem.removeActivatedPowerups()
     }
 
