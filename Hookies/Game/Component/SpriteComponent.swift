@@ -97,4 +97,12 @@ extension SpriteComponent {
         }
         return nearestSprite
     }
+
+    /// Determine whether it is protected from the given effect
+    func isProtected(from effect: PowerupEffectComponent) -> Bool {
+        guard parent.get(ShieldEffectComponent.self) != nil else {
+            return false
+        }
+        return effect.isNegativeEffect
+    }
 }

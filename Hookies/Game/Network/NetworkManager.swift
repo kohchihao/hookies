@@ -214,7 +214,6 @@ class NetworkManager: NetworkManagerProtocol {
             playerId: playerId,
             node: powerupSystemEvent.sprite.node,
             eventType: powerupSystemEvent.powerupEventType,
-            powerupType: powerupSystemEvent.powerupType,
             eventPos: powerupSystemEvent.powerupPos
         )
     }
@@ -522,7 +521,6 @@ class NetworkManager: NetworkManagerProtocol {
         return PowerupSystemEvent(
             sprite: playerSprite,
             powerupEventType: powerupEventData.eventType,
-            powerupType: powerupEventData.type,
             powerupPos: powerupEventData.eventPos)
     }
 

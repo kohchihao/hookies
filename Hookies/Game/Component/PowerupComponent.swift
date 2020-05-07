@@ -28,15 +28,6 @@ class PowerupComponent: Component {
         }
         owner = playerEntity
     }
-
-    /// Add the effect for the component.
-    /// - Parameter type: The type of pwoerup
-    func addEffectComponents(for type: PowerupType) {
-        guard let powerupEntity = parent as? PowerupEntity else {
-            return
-        }
-        powerupEntity.addEffectComponents(for: type)
-    }
 }
 
 // MARK: - Hashable

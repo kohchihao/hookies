@@ -10,26 +10,18 @@
 /// - Parameters:
 ///     - sprite: The SpriteComponent associated to the event
 ///     - powerupEventType: The powerup event type
-///     - powerupType: The type of the powerup
-///     - powerupPos: The position of the powerup in which the event occur
+///     - powerupPos: The position of the powerup in which this event took place
 struct PowerupSystemEvent {
     let sprite: SpriteComponent
     let powerupEventType: PowerupEventType
-    let powerupType: PowerupType
     let powerupPos: Vector
 
     init(sprite: SpriteComponent,
          powerupEventType: PowerupEventType,
-         powerupType: PowerupType,
-         powerupPos: Vector? = nil
+         powerupPos: Vector
     ) {
         self.sprite = sprite
-        self.powerupType = powerupType
         self.powerupEventType = powerupEventType
-        if powerupPos == nil {
-            self.powerupPos = Vector(point: sprite.node.position)
-        } else {
-            self.powerupPos = powerupPos!
-        }
+        self.powerupPos = powerupPos
     }
 }

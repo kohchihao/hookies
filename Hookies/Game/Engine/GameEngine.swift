@@ -30,15 +30,24 @@ class GameEngine {
     private var endSystem: EndSystem?
     private var botSystem: BotSystem?
 
+    // MARK: - Powerup Effect Systems
+
+    private var playerHookEffectSystem = PlayerHookEffectSystem()
+    private var shieldEffectSystem = ShieldEffectSystem()
+    private var placementEffectSystem = PlacementEffectSystem()
+    private var movementEffectSystem = MovementEffectSystem()
+    private var cutRopeEffectSystem = CutRopeEffectSystem()
+    private var stealEffectSystem = StealEffectSystem()
+
     // MARK: - Entity
 
     private var currentPlayer: PlayerEntity?
-
     private var numOtherPlayers = 0
     private var localPlayers: [PlayerEntity] = []
     private var platforms = [PlatformEntity]()
     private var bolts = [BoltEntity]()
-    private var powerups = [PowerupEntity]()
+    private var collectablePowerups = [PowerupEntity]()
+    private var ownedPowerups = [PowerupEntity]()
     private var cannon = CannonEntity()
     private var finishingLine = FinishingLineEntity()
 
@@ -80,6 +89,11 @@ class GameEngine {
         hookSystem?.delegate = self
         userConnectionSystem?.delegate = self
         powerupSystem.delegate = self
+        playerHookEffectSystem.delegate = self
+        placementEffectSystem.delegate = self
+        movementEffectSystem.delegate = self
+        cutRopeEffectSystem.delegate = self
+        stealEffectSystem.delegate = self
     }
 
     // MARK: - Add Players
@@ -160,8 +174,7 @@ class GameEngine {
             let playerSprite = currentPlayer.get(SpriteComponent.self) else {
             return
         }
-        powerupSystem.activateAndBroadcast(powerupType: type,
-                                           for: playerSprite)
+        powerupSystem.activatePowerup(for: playerSprite)
     }
 
     // MARK: - Current Player Jump Action
@@ -196,19 +209,11 @@ class GameEngine {
 
     // MARK: - Contact with Powerups
     /// Handles the logic of collecting of powerups for current player
-    func currentPlayerContactWith(powerup: SKSpriteNode) -> PowerupType? {
-        guard let playerSprite = currentPlayer?.get(SpriteComponent.self),
-            let powerupEntity = findPowerupEntity(for: powerup),
-            let powerupSprite = powerupEntity.get(SpriteComponent.self),
-            let powerupComponent = powerupEntity.get(PowerupComponent.self) else {
-                return nil
+    func currentPlayerContactWith(powerup: SKSpriteNode) {
+        guard let playerSprite = currentPlayer?.get(SpriteComponent.self) else {
+            return
         }
-
-        powerups.removeAll(where: { $0 === powerupEntity })
-        spriteSystem.removePhysicsBody(to: powerupSprite)
-        powerupSystem.collectAndBroadcast(powerupComponent: powerupComponent,
-                                          by: playerSprite)
-        return powerupComponent.type
+        powerupSystem.collect(powerupNode: powerup, by: playerSprite)
     }
 
     /// Handles the contact logic between a player and a trap in the game
@@ -221,7 +226,7 @@ class GameEngine {
                 continue
             }
             if playerSprite.node == playerNode {
-                powerupSystem.activateNetTrapAndBroadcast(at: trap.position, on: playerSprite)
+                powerupSystem.activateTrap(at: trap.position, on: playerSprite)
                 break
             }
         }
@@ -234,8 +239,19 @@ class GameEngine {
     func update(time: TimeInterval) {
         checkLocalPlayerHealth()
         updateClosestBolt()
+        updateEffectSystems()
         checkDeadlock()
         finishingLineSystem.bringPlayersToStop()
+    }
+
+    private func updateEffectSystems() {
+        playerHookEffectSystem.apply(on: ownedPowerups)
+        shieldEffectSystem.apply(on: ownedPowerups)
+        placementEffectSystem.apply(on: ownedPowerups)
+        movementEffectSystem.apply(on: ownedPowerups)
+        cutRopeEffectSystem.apply(on: ownedPowerups)
+        stealEffectSystem.apply(on: ownedPowerups)
+        powerupSystem.removeActivatedPowerups()
     }
 
     // MARK: - Bolts
@@ -285,32 +301,18 @@ class GameEngine {
     }
 
     private func addNewRandomPowerup(for spriteNode: SKSpriteNode) {
-        let randType = PowerupType.allCases.randomElement() ?? .shield
-        addNewPowerup(with: randType, for: spriteNode)
-    }
-
-    private func addNewPowerup(with type: PowerupType,
-                               for spriteNode: SKSpriteNode
-    ) {
-        guard let powerupEntity = createPowerup(with: type, for: spriteNode),
-            let powerupComponent = powerupEntity.get(PowerupComponent.self) else {
+        let powerup = PowerupEntity.createWithRandomType()
+        guard let powerupComponent = powerup.get(PowerupComponent.self),
+            let powerupSprite = powerup.get(SpriteComponent.self) else {
             return
         }
-        powerups.append(powerupEntity)
-        powerupSystem.add(powerup: powerupComponent)
-    }
 
-    private func createPowerup(with type: PowerupType,
-                               for spriteNode: SKSpriteNode
-    ) -> PowerupEntity? {
-        let powerupEntity = PowerupEntity(for: type)
-        guard let powerupSprite = powerupEntity.get(SpriteComponent.self) else {
-            return nil
-        }
         _ = spriteSystem.set(sprite: powerupSprite, to: spriteNode)
         _ = spriteSystem.setPhysicsBody(to: powerupSprite, of: .powerup,
                                         rectangleOf: powerupSprite.node.size)
-        return powerupEntity
+
+        collectablePowerups.append(powerup)
+        powerupSystem.addCollectable(powerup: powerupComponent)
     }
 
     // MARK: - Platform
@@ -435,6 +437,10 @@ class GameEngine {
         startSystem.add(player: player, with: sprite)
         hookSystem?.add(player: sprite)
         powerupSystem.add(player: sprite)
+        playerHookEffectSystem.add(player: sprite)
+        movementEffectSystem.add(player: sprite)
+        cutRopeEffectSystem.add(player: sprite)
+        stealEffectSystem.add(player: sprite)
 
         delegate?.addCurrentPlayer(with: sprite.node)
     }
@@ -455,6 +461,10 @@ class GameEngine {
         startSystem.add(player: player, with: sprite)
         hookSystem?.add(player: sprite)
         powerupSystem.add(player: sprite)
+        playerHookEffectSystem.add(player: sprite)
+        movementEffectSystem.add(player: sprite)
+        cutRopeEffectSystem.add(player: sprite)
+        stealEffectSystem.add(player: sprite)
 
         if player.playerType == .bot {
             if let botType = player.botType {
@@ -519,7 +529,7 @@ class GameEngine {
     }
 
     private func findPowerupEntity(for sprite: SKSpriteNode) -> PowerupEntity? {
-        for powerup in powerups {
+        for powerup in collectablePowerups {
             guard let powerupSprite = powerup.get(SpriteComponent.self) else {
                 continue
             }
@@ -642,48 +652,23 @@ extension GameEngine: EndSystemDelegate {
 // MARK: - PowerupSystemDelegate
 
 extension GameEngine: PowerupSystemDelegate {
-    func collected(powerup: PowerupComponent, by sprite: SpriteComponent) {
-        guard let powerupEntity = powerup.parent as? PowerupEntity else {
-            return
+    func collected(powerup: PowerupComponent) {
+        guard let powerupEntity = powerup.parent as? PowerupEntity,
+            let owner = powerup.owner else {
+                return
         }
-        powerups.removeAll(where: { $0 === powerupEntity })
-    }
 
-    func hasAddedTrap(sprite spriteComponent: SpriteComponent) {
-        _ = spriteSystem.setPhysicsBody(to: spriteComponent, of: .netTrap,
-                                        rectangleOf: spriteComponent.node.size)
-        delegate?.addTrap(with: spriteComponent.node)
-    }
-
-    func hook(_ sprite: SpriteComponent,
-              from anchorSprite: SpriteComponent) {
-        if !finishingLineSystem.hasPlayerFinish(player: sprite) {
-            hookSystem?.hookAndPull(sprite, from: anchorSprite)
+        collectablePowerups.removeAll(where: { $0 === powerupEntity })
+        ownedPowerups.append(powerupEntity)
+        if owner === currentPlayer {
+            delegate?.hasCollected(powerup: powerup.type)
         }
     }
 
-    func forceUnhookFor(player: SpriteComponent) {
-        guard let sprite = player.parent.get(SpriteComponent.self),
-            let velocity = sprite.node.physicsBody?.velocity else {
-            return
-        }
-        _ = hookSystem?.unhook(entity: player.parent,
-                               at: sprite.node.position,
-                               with: velocity)
-    }
-
-    func indicateSteal(from sprite1: SpriteComponent,
-                       by sprite2: SpriteComponent,
-                       with powerup: PowerupComponent
-    ) {
-        guard let currentPlayerSprite = currentPlayer?.get(SpriteComponent.self) else {
-            return
-        }
-        if currentPlayerSprite === sprite1 {
-            delegate?.hasPowerupStolen(powerup: powerup.type)
-        } else if currentPlayerSprite === sprite2 {
-            delegate?.hasStolen(powerup: powerup.type)
-        }
+    func didRemoveOwned(powerup: PowerupComponent) {
+        ownedPowerups.removeAll(where: {
+            $0.get(PowerupComponent.self) === powerup
+        })
     }
 }
 
@@ -693,8 +678,65 @@ extension GameEngine: MovementControlDelegate {
             return
         }
         if player === currentPlayer {
-            Logger.log.show(details: "Disable movement", logType: .information)
+            Logger.log.show(details: "Disable movement \(isDisabled)",
+                            logType: .information)
             delegate?.movementButton(isDisabled: isDisabled)
         }
     }
 }
+
+extension GameEngine: SceneDelegate {
+    func hasAdded(node: SKNode) {
+        delegate?.hasAdded(node: node)
+    }
+}
+
+extension GameEngine: PlacementEffectSystemDelegate {
+    func hasAddedTrap(sprite spriteComponent: SpriteComponent) {
+        _ = spriteSystem.setPhysicsBody(to: spriteComponent, of: .trap,
+                                        rectangleOf: spriteComponent.node.size)
+        powerupSystem.add(trap: spriteComponent)
+        delegate?.addTrap(with: spriteComponent.node)
+    }
+}
+
+extension GameEngine: CutRopeEffectSystemDelegate {
+    func forceUnhookFor(player: SpriteComponent) {
+        guard let sprite = player.parent.get(SpriteComponent.self),
+            let velocity = sprite.node.physicsBody?.velocity else {
+            return
+        }
+        _ = hookSystem?.unhook(entity: player.parent,
+                               at: sprite.node.position,
+                               with: velocity)
+    }
+}
+
+extension GameEngine: StealEffectSystemDelegate {
+    func didSteal(from sprite1: SpriteComponent,
+                  by sprite2: SpriteComponent,
+                  with powerup: PowerupComponent
+    ) {
+        guard let currentPlayerSprite = currentPlayer?.get(SpriteComponent.self) else {
+            return
+        }
+
+        powerupSystem.removePowerup(from: sprite1)
+        powerupSystem.add(powerup: powerup, to: sprite2)
+        if currentPlayerSprite === sprite1 {
+            delegate?.hasPowerupStolen(powerup: powerup.type)
+        } else if currentPlayerSprite === sprite2 {
+            delegate?.hasStolen(powerup: powerup.type)
+        }
+    }
+}
+
+extension GameEngine: PlayerHookEffectDelegate {
+    func toHook(_ sprite: SpriteComponent,
+                from anchorSprite: SpriteComponent) {
+        if !finishingLineSystem.hasPlayerFinish(player: sprite) {
+            playerHookEffectSystem.hookAndPull(sprite, from: anchorSprite)
+        }
+    }
+}
+extension GameEngine: MovementEffectSystemDelegate {}

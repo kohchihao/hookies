@@ -23,7 +23,6 @@ struct PowerupCollectionData: SocketData, Encoder {
             "powerupPosY": powerupPos.y
         ]
         defaultEncoding.merge(playerData.encoding) { _, new in new }
-        print(defaultEncoding)
         return defaultEncoding
     }
 

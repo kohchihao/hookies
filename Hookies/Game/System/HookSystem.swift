@@ -132,10 +132,6 @@ class HookSystem: System, HookSystemProtocol {
     ///   - sprite: The player's sprite
     ///   - anchorSprite: The other player that is hooked to by `sprite`
     func hookAndPull(_ sprite: SpriteComponent, from anchorSprite: SpriteComponent) {
-        guard let sprite = anchorSprite.nearestSpriteInFront(from: players) else {
-            Logger.log.show(details: "No sprite found in the front", logType: .warning)
-            return
-        }
         let line = anchorSprite.makeLine(to: sprite)
         delegate?.hookPlayerApplied(with: line)
         delegate?.movement(isDisabled: true, for: sprite)
